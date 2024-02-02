@@ -1,0 +1,122 @@
+/* Estilos para pantallas grandes */
+.styles.app_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #001449; /* Cambia el color de fondo según tu diseño */
+  color: #fff; /* Cambia el color de texto según tu diseño */
+  padding: 20px; /* Ajusta el espaciado según tu diseño */
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 99%;
+}
+
+.social {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 25%;
+  margin-left: 100px;
+}
+
+.social_icon {
+  width: 40px; /* Ajusta el tamaño de los iconos sociales según tu diseño */
+  height: 40px;
+  margin-right: 20px;
+}
+
+.contact_box {
+  padding: 20px;
+  width: 300px;
+  margin: 0 auto;
+  margin-left: 90px;
+  text-align: center;
+}
+
+.contact_title {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.contact_button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff; /* Cambia el color de fondo según tu diseño */
+  color: #fff; /* Cambia el color de texto según tu diseño */
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.map {
+  margin-left: 99px;
+}
+
+.llave {
+  bottom: 0;
+  width: 370px; /* Ajusta el ancho de la imagen según tu diseño */
+  height: auto;
+}
+
+.imagen {
+  margin-right: 10px;
+  margin-left: 7px;
+}
+
+.styles.copyright {
+  font-size: 12px; /* Ajusta el tamaño de fuente según tu diseño */
+  margin-top: 20px; /* Ajusta el espaciado superior según tu diseño */
+  color: #888; /* Cambia el color de texto según tu diseño */
+}
+
+/* Estilos para pantallas medianas */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .social {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .contact_box {
+    width: 100%;
+    margin: 20px 0; /* Añade margen arriba y abajo para separar el cuadro de contacto */
+  }
+
+  .contact_button {
+    width: 100%;
+  }
+
+  .map {
+    margin-left: 0;
+  }
+
+  .llave {
+    width: 100%;
+    margin: 20px 0; /* Añade margen arriba y abajo para separar la imagen "llave" */
+  }
+
+  .imagen {
+    margin: 10px 0; /* Añade margen arriba y abajo para separar las imágenes */
+  }
+}

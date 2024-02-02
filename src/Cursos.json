@@ -1,0 +1,72 @@
+[
+    { 
+      "id":"1",
+      "nombre": "Introducción a la Programación",
+      "duracion": "6 semanas",
+      "url": "https://www.ejemplo.com/intro-programacion",
+      "tema": "Desarrollo de Software"
+    },
+    {
+      "id": "2",
+      "nombre": "Diseño Gráfico para Principiantes",
+      "duracion": "4 semanas",
+      "url": "https://www.ejemplo.com/diseno-grafico",
+      "tema": "Diseño Gráfico"
+    },
+    {
+      "id": "3",
+      "nombre": "Inglés Conversacional",
+      "duracion": "8 semanas",
+      "url": "https://www.ejemplo.com/ingles-conversacional",
+      "tema": "Idiomas"
+    },
+    {   
+      "id": "4",
+      "nombre": "Marketing Digital Avanzado",
+      "duracion": "5 semanas",
+      "url": "https://www.ejemplo.com/marketing-digital",
+      "tema": "Marketing Online"
+    },
+    {
+      "id": "5",
+      "nombre": "Fotografía Creativa",
+      "duracion": "6 semanas",
+      "url": "https://www.ejemplo.com/fotografia-creativa",
+      "tema": "Fotografía"
+    },
+    {   
+      "id": "6",
+      "nombre": "Desarrollo Web con JavaScript",
+      "duracion": "7 semanas",
+      "url": "https://www.ejemplo.com/desarrollo-web-js",
+      "tema": "Desarrollo Web"
+    },
+    {
+      "id": "7",
+      "nombre": "Gestión del Tiempo y Productividad",
+      "duracion": "3 semanas",
+      "url": "https://www.ejemplo.com/gestion-tiempo",
+      "tema": "Productividad Personal"
+    },
+    {
+      "id": "8",
+      "nombre": "Introducción a la Inteligencia Artificial",
+      "duracion": "8 semanas",
+      "url": "https://www.ejemplo.com/inteligencia-artificial",
+      "tema": "Inteligencia Artificial"
+    },
+    {
+      "id": "9",
+      "nombre": "Cocina Creativa para Aficionados",
+      "duracion": "5 semanas",
+      "url": "https://www.ejemplo.com/cocina-creativa",
+      "tema": "Cocina"
+    },
+    {
+      "id": "10",
+      "nombre": "Historia del Arte Contemporáneo",
+      "duracion": "4 semanas",
+      "url": "https://www.ejemplo.com/arte-contemporaneo",
+      "tema": "Historia del Arte"
+    }
+  ]

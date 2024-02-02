@@ -1,0 +1,113 @@
+[
+    {
+      "id": 1,
+      "nombre": "Juan",
+      "apellido": "Pérez",
+      "telefono": "555-123-4567",
+      "correo": "juan.perez@example.com",
+      "cursos": ["Matemáticas", "Historia"],
+      "pais": "Mexico",
+    "curso": "Curso A",
+    "baneado": false
+    },
+    {
+      "id": 2,
+      "nombre": "María",
+      "apellido": "González",
+      "telefono": "555-234-5678",
+      "correo": "maria.gonzalez@example.com",
+      "cursos": ["Ciencias", "Literatura"],
+      "pais": "Argentina",
+    "curso": "Curso A",
+    "baneado": false
+    },
+    {
+      "id": 3,
+      "nombre": "Pedro",
+      "apellido": "Sánchez",
+      "telefono": "555-345-6789",
+      "correo": "pedro.sanchez@example.com",
+      "cursos": ["Física", "Inglés"],
+      "pais": "Colombia",
+    "curso": "Curso B",
+    "baneado": false
+    },
+    {
+      "id": 4,
+      "nombre": "Ana",
+      "apellido": "López",
+      "telefono": "555-456-7890",
+      "correo": "ana.lopez@example.com",
+      "cursos": ["Química", "Música"],
+      "pais": "Argentina",
+    "curso": "Curso C",
+    "baneado": false
+    },
+    {
+      "id": 5,
+      "nombre": "Carlos",
+      "apellido": "Martínez",
+      "telefono": "555-567-8901",
+      "correo": "carlos.martinez@example.com",
+      "cursos": ["Biología", "Arte"],
+      "pais": "Mexico",
+    "curso": "Curso C",
+    "baneado": false
+    },
+    {
+      "id": 6,
+      "nombre": "Laura",
+      "apellido": "Hernández",
+      "telefono": "555-678-9012",
+      "correo": "laura.hernandez@example.com",
+      "cursos": ["Geografía", "Deportes"],
+      "pais": "Colombia",
+    "curso": "Curso A",
+    "baneado": false
+    },
+    {
+      "id": 7,
+      "nombre": "José",
+      "apellido": "Ramírez",
+      "telefono": "555-789-0123",
+      "correo": "jose.ramirez@example.com",
+      "cursos": ["Economía", "Informática"],
+      "pais": "Argentina",
+    "curso": "Curso B",
+    "baneado": false
+    },
+    {
+      "id": 8,
+      "nombre": "Sofía",
+      "apellido": "Díaz",
+      "telefono": "555-890-1234",
+      "correo": "sofia.diaz@example.com",
+      "cursos": ["Historia del Arte", "Psicología"],
+      "pais": "Argentina",
+    "curso": "Curso A",
+    "baneado": false
+    },
+    {
+      "id": 9,
+      "nombre": "Miguel",
+      "apellido": "Fernández",
+      "telefono": "555-901-2345",
+      "correo": "miguel.fernandez@example.com",
+      "cursos": ["Programación", "Diseño Gráfico"],
+      "pais": "Mexico",
+    "curso": "Curso A",
+    "baneado": false
+    },
+    {
+      "id": 10,
+      "nombre": "Isabel",
+      "apellido": "Luna",
+      "telefono": "555-012-3456",
+      "correo": "isabel.luna@example.com",
+      "cursos": ["Ciencias Sociales", "Derecho"],
+      "pais": "Colombia",
+    "curso": "Curso C",
+    "baneado": false
+    }
+  ]
+  
