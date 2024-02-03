@@ -53,7 +53,7 @@ import axios from "axios";
 
 //axios.defaults.baseURL = "http://localhost:3001";
 //axios.defaults.baseURL = "https://back-end-llave.onrender.com";
-axios.defaults.baseURL = "http://3.144.16.218";
+axios.defaults.baseURL = "http://18.222.118.152";
 //axios.defaults.baseURL = "https://2600:1f16:34:1300:f19e:6e85:5eaf:7105:3001";
 const isLoggedIn = localStorage.getItem("isLoggedIn");
 
