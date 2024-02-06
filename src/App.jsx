@@ -55,7 +55,7 @@ import axios from "axios";
 //axios.defaults.baseURL = "https://back-end-llave.onrender.com";
 //axios.defaults.baseURL = "http://18.222.118.152";
 //axios.defaults.baseURL = "http://3.144.1.20";
-axios.defaults.baseURL = "http://00354aa78619d06746e7b5cc70768b2b-1167851419.us-east-2.elb.amazonaws.com/";
+axios.defaults.baseURL = "https://ad60f4726e9e5038b42f61e734771dfc-1903081141.us-east-2.elb.amazonaws.com/";
 const isLoggedIn = localStorage.getItem("isLoggedIn");
 
 function App() {
