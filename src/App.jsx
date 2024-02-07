@@ -51,11 +51,11 @@ import ViewClasesUser from "./views/ViewCursoUser/ViewCursoUser";
 import ViewMyPost from "./views/ViewMenuStudent/ViewMyPost";
 import axios from "axios";
 
-//axios.defaults.baseURL = "http://localhost:3001";
-//axios.defaults.baseURL = "https://back-end-llave.onrender.com";
+//axios.defaults.baseURL = "https://localhost:3001";
+axios.defaults.baseURL = "https://ancient-falls-91374-828594f7d42c.herokuapp.com/";
 //axios.defaults.baseURL = "http://18.222.118.152";
 //axios.defaults.baseURL = "http://3.144.1.20";
-axios.defaults.baseURL = "https://ad60f4726e9e5038b42f61e734771dfc-1903081141.us-east-2.elb.amazonaws.com/";
+//axios.defaults.baseURL = "http://ad60f4726e9e5038b42f61e734771dfc-1903081141.us-east-2.elb.amazonaws.com";
 const isLoggedIn = localStorage.getItem("isLoggedIn");
 
 function App() {
