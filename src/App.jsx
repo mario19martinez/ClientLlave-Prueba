@@ -2,6 +2,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import ViewHome from "./views/ViewHome/viewHome";
+import ViewRegistro from "./views/ViewRigistro/ViewRegistro";
 import ViewAbaut from "./views/ViewAbaut/ViewAbaut";
 import ViewBlogs from "./views/ViewBlogs/ViewBlogs";
 import ViewBlog from "./views/ViewBlogs/ViewBlog";
@@ -51,7 +52,7 @@ import ViewClasesUser from "./views/ViewCursoUser/ViewCursoUser";
 import ViewMyPost from "./views/ViewMenuStudent/ViewMyPost";
 import axios from "axios";
 
-//axios.defaults.baseURL = "https://localhost:3001";
+//axios.defaults.baseURL = "http://localhost:3001";
 axios.defaults.baseURL = "https://ancient-falls-91374-828594f7d42c.herokuapp.com/";
 //axios.defaults.baseURL = "http://18.222.118.152";
 //axios.defaults.baseURL = "http://3.144.1.20";
@@ -89,6 +90,7 @@ function App() {
         <Route path="/admin/ajustes" element={isLoggedIn ? <ViewAjustesAdmin />: <Navigate to="/"/>} />
         <Route path="/cursos/:id/clases/:claseId/pdf" element={isLoggedIn ? <ViewClasesTalleresPDF /> : <Navigate to="/"/>}/>
         <Route path="/userDetail/:identificacion" element={isLoggedIn ? <UserDetail/> : <Navigate to="/"/>} />
+        <Route path="/RegistroUser" element={<ViewRegistro />} />
         <Route path="/cursos" element={<Cursos />} />
         <Route path="/Nosotros" element={<ViewAbaut />} />
         <Route path="/blogs" element={<ViewBlogs />} />
