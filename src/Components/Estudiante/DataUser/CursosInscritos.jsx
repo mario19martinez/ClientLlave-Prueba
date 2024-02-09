@@ -9,7 +9,6 @@ import { getUserData } from "../../../Redux/features/Users/usersSlice";
 function CursosInscritos() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.users.userData);
-  const [cursoActivo, setCursoActivo] = useState(0);
   const [cursosInscritos, setCursosInscritos] = useState([]);
   const navigate = useNavigate(); // Obtener la función de navegación
 
@@ -22,79 +21,57 @@ function CursosInscritos() {
 
   useEffect(() => {
     const fetchCourses = async () => {
-      if (userData?.sub) {
-        const inscripcionResponse = await dispatch(fetchInscripcion(userData.sub));
-        const inscripciones = inscripcionResponse.payload.inscripciones || [];
-        const cursoIds = inscripciones.map((inscripcion) => inscripcion.cursoId);
-        const cursoPromises = cursoIds.map((cursoId) => dispatch(fetchCursoDetail(cursoId)));
+      if (userData?.sub && cursosInscritos.length === 0) {
+        try {
+          const inscripcionResponse = await dispatch(fetchInscripcion(userData.sub));
+          const inscripciones = inscripcionResponse.payload.inscripciones || [];
+          const cursoIds = inscripciones.map((inscripcion) => inscripcion.cursoId);
+          const cursoPromises = cursoIds.map((cursoId) => dispatch(fetchCursoDetail(cursoId)));
 
-        Promise.all(cursoPromises).then((responses) => {
-          const cursosNombres = responses
-            .filter((cursoResponse) => cursoResponse.payload)
-            .map((cursoResponse) => cursoResponse.payload.name);
+          Promise.all(cursoPromises).then((responses) => {
+            const cursos = responses
+              .filter((cursoResponse) => cursoResponse.payload)
+              .map((cursoResponse) => cursoResponse.payload);
 
-          setCursosInscritos(cursosNombres);
-        });
+            setCursosInscritos(cursos);
+          });
+        } catch (error) {
+          console.error("Error al obtener los cursos:", error);
+        }
       }
     };
 
     fetchCourses();
-  }, [dispatch, userData]);
+  }, [dispatch, userData, cursosInscritos]);
 
-  const handleCursoClick = (cursoIndex) => {
+  const handleCursoClick = (curso) => {
     // Redirigir a la URL del curso seleccionado
-    navigate(`/user/curso/${cursoIndex + 1}`); // +1 porque los IDs empiezan desde 1
+    navigate(`/user/curso/${curso.id}`);
   };
-
-  const cursos = [
-    {
-      tipo: "Inscritos",
-      cursos: cursosInscritos,
-    },
-    {
-      tipo: "Activos",
-      cursos: cursosInscritos,
-    },
-    {
-      tipo: "Completados",
-      cursos: [],
-    },
-  ];
 
   return (
     <div className="px-4 md:px-20 lg:px-40">
-      <div className="mb-8 flex flex-col md:flex-row items-center justify-center md:justify-start space-y-4 md:space-y-0 md:space-x-8">
-        {cursos.map((categoria, index) => (
-          <button
-            key={index}
-            className={`${
-              cursoActivo === index
-                ? "bg-blue-400 text-white"
-                : "bg-gray-200 text-gray-700"
-            } px-4 py-2 rounded-sm hover:bg-blue-700 hover:text-white border-b-2 border-blue-500 font-medium`}
-            onClick={() => setCursoActivo(index)}
-          >
-            {categoria.tipo}
-          </button>
-        ))}
+      <div className="mb-8 flex flex-col items-center justify-center">
+        <h2 className="text-2xl font-bold">Mis cursos inscritos</h2>
       </div>
 
-      <div className="font-normal text-center md:text-left">
-        {cursos[cursoActivo].cursos.length > 0 ? (
-          <div className="flex flex-wrap justify-center">
-            {cursos[cursoActivo].cursos.map((curso, index) => (
+      <div className="font-normal text-center md:text-left flex flex-col">
+        {cursosInscritos.length > 0 ? (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {cursosInscritos.map((curso, index) => (
               <button
                 key={index}
-                onClick={() => handleCursoClick(index)}
-                className="m-2 px-4 py-2 bg-gray-200 hover:bg-gray-100 text-gray-800 font-semibold rounded-lg focus:outline-none"
-                style={{ minWidth: "120px" }}
+                onClick={() => handleCursoClick(curso)}
+                className="p-4 bg-blue-200 shadow-md rounded-md hover:shadow-lg focus:outline-none"
+                style={{ minWidth: "200px" }}
               >
-                {curso}
+                <p className="text-lg font-semibold">{curso.name}</p>
+                <p className="text-gray-500">{curso.description}</p>
               </button>
             ))}
           </div>
         ) : (
-          <p>No hay cursos disponibles</p>
+          <p className="text-gray-500">No hay cursos disponibles</p>
         )}
       </div>
     </div>
