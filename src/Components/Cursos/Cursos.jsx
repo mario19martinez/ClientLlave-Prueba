@@ -80,23 +80,10 @@ function CursoClases() {
                 ) : claseSeleccionada &&
                   claseSeleccionada.url &&
                   claseSeleccionada.platform === "youtube" ? (
-                  <div
-                    style={{
-                      position: "relative",
-                      width: "100%",
-                      height: "0",
-                      paddingBottom: "56.25%",
-                    }}
-                  >
+                  <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
                     <iframe
                       title="url"
-                      style={{
-                        position: "absolute",
-                        top: "0",
-                        left: "0",
-                        width: "60%",
-                        height: "70%",
-                      }}
+                      className="absolute top-0 left-0 w-full h-full"
                       src={`https://www.youtube.com/embed/${extractYoutubeVideoId(
                         claseSeleccionada.url
                       )}`}

@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchCursoDetail } from "../../Redux/features/courses/coursesSlice";
 import { getUserData } from "../../Redux/features/Users/usersSlice";
-//import { addStudentToCourse } from "../../Redux/features/UsersCourses/UsersCursesSlices";
 
 function CursoDetail() {
   const { id } = useParams();
@@ -31,37 +30,16 @@ function CursoDetail() {
 
   console.log(userData);
 
-  /*const handleRegistrarseClick = async () => {
-    try {
-      console.log("Intentando registrarse al curso...");
-      console.log("userData:", userData);
-
-      console.log('Id de usuario: ',userData.sub, 'Id de curso: ',id)
-      localStorage.setItem("IdCurso", id);
-
-      if (userData && userData.sub) {
-        const response = await dispatch(
-          addStudentToCourse({ userId: userData.sub, cursoId: id })
-        );
-        console.log("Estudiante agregado con éxito al curso", response.payload);
-        alert('Curso ', cursoDetail.name, ' agregado con exito ', userData.name)
-      } else {
-        console.log("Datos de usuario no válidos");
-      }
-    } catch (error) {
-      console.error("Error al agregar estudiante al curso:", error);
-    }
-  };*/
-
   return (
-    <div className="">
-      <div className="mt-4 p-8 rounded-lg bg-gray-300 lg:flex">
+    <>
+      {/* Elemento para pantallas medianas y grandes */}
+      <div className="hidden sm:block bg-gray-100 p-8 rounded-lg lg:flex">
         {status === "loading" ? (
-          <div className="text-center mt-8 ml-8">
+          <div className="text-center">
             <h1 className="text-xl font-semibold">Cargando...</h1>
           </div>
         ) : status === "failed" ? (
-          <div className="text-center text-red-500 mt-8">Error: {error}</div>
+          <div className="text-center text-red-500">Error: {error}</div>
         ) : (
           <div className="flex items-start ml-8 lg:w-3/4">
             <img
@@ -86,25 +64,59 @@ function CursoDetail() {
                 <strong>Nivel: </strong>
                 {cursoDetail.nivel}
               </p>
-              <p className="font-gabarito text-gray-900">
-                <strong>Descripcion: </strong>
-                {cursoDetail.descripcion}
-              </p>
-              <p className="font-gabarito text-gray-900">
-                <strong>Fecha de Inicio: </strong>
-                {cursoDetail.fechaInicio}
-              </p>
-              {/*<button
-                onClick={handleRegistrarseClick}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Registrarse al curso
-        </button>*/}
+              {/*<p className="font-gabarito text-gray-900">
+                  <strong>Fecha de Inicio: </strong>
+                  {cursoDetail.fechaInicio}
+                </p>*}
+                {/*<button
+                  onClick={handleRegistrarseClick}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Registrarse al curso
+            </button>*/}
             </div>
           </div>
         )}
       </div>
-    </div>
+
+      {/* Elemento para pantallas pequeñas (móviles) */}
+      <div className="bg-gray-100 p-8 text-gray-800 block sm:hidden">
+        {status === "loading" ? (
+          <div className="text-center">
+            <h1 className="text-lg font-semibold">Cargando...</h1>
+          </div>
+        ) : status === "failed" ? (
+          <div className="text-center text-red-500">Error: {error}</div>
+        ) : (
+          <div className="flex flex-col items-center">
+            <img
+              src={cursoDetail.image || "https://via.placeholder.com/300"}
+              alt="Curso"
+              className="w-full h-auto object-contain rounded-lg mb-4"
+            />
+            <h1 className="text-xl font-bold mb-2">{cursoDetail.name}</h1>
+            <p className="text-base text-gray-700">
+              <strong>Duración: </strong>
+              {cursoDetail.duracion}
+            </p>
+            <p className="text-base text-gray-700">
+              <strong>Costo: </strong>
+              {cursoDetail.costo}
+            </p>
+            <p className="text-base text-gray-700">
+              <strong>Nivel: </strong>
+              {cursoDetail.nivel}
+            </p>
+            {/*<button
+              onClick={handleRegistrarseClick}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+            >
+              Registrarse al curso
+            </button>*/}
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
