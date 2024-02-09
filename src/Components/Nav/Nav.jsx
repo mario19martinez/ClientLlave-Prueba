@@ -204,10 +204,8 @@ export default function Nav() {
             >
               Entrenamiento
             </a>
-            <a href="#" className="hover:text-gray-300 transition-colors">
-              Miembros
-            </a>
-            <a href="#" className="hover:text-gray-300 transition-colors">
+            <a href="#" className="hover:text-gray-300 transition-colors"
+            onClick={() => navigate("/Nosotros")}>
               Nosotros
             </a>
           </nav>

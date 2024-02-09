@@ -47,6 +47,21 @@ export default function UsersRegisterCursos() {
     usuariosInscritos.includes(user.sub)
   );
 
+  const handleEliminarInscripcion = async (userId) => {
+    const confirmacion = window.confirm("¿Estás seguro de eliminar la inscripción de este usuario?");
+    if (confirmacion) {
+      try {
+        await axios.delete(`/eliminarInscripcion/${userId}/${storedIdCurso}`);
+        // Actualizar la lista de usuarios inscritos después de eliminar
+        const response = await axios.get(`/usuariosPorCurso/${storedIdCurso}`);
+        const { data } = response;
+        setUsuariosInscritos(data.usuariosEnCurso);
+      } catch (error) {
+        console.error("Error al eliminar la inscripción:", error);
+      }
+    }
+  };
+
   const filteredUsersRows = filteredUsers.map((user) => (
     <tr key={user.identificacion} className="text-center">
       <td className="border p-2">{user.name}</td>
@@ -54,8 +69,12 @@ export default function UsersRegisterCursos() {
       <td className="border p-2">{user.email}</td>
       <td className="border p-2">{user.pais}</td>
       <td className="border p-2">{user.telefono}</td>
+      <td className="border p-2">
+        <button onClick={() => handleEliminarInscripcion(user.sub)} className="bg-red-500 text-white px-4 py-2 rounded-md">Eliminar Inscripción</button>
+      </td>
     </tr>
   ));
+
   if (isLoading) {
     return (
       <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75 z-50">
@@ -90,6 +109,7 @@ export default function UsersRegisterCursos() {
               <th className="border p-2 px-12">Correo</th>
               <th className="border p-2 px-8">País</th>
               <th className="border p-2 px-8">Teléfono</th>
+              <th className="border p-2"></th>
             </tr>
           </thead>
 

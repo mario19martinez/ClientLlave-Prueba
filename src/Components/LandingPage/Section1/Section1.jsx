@@ -22,7 +22,7 @@ const Section1 = () => {
 
   return (
     <motion.div
-      className="relative w-screen md:w-4/5 h-96 md:h-120 mx-auto overflow-hidden rounded-lg shadow-lg"
+      className="relative w-screen h-96 overflow-hidden rounded-lg shadow-lg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
@@ -40,7 +40,7 @@ const Section1 = () => {
             whileTap={{ scale: 0.95 }}
             className="px-8 py-3 md:px-10 md:py-4 bg-blue-600 text-white rounded-full focus:outline-none hover:bg-blue-700 transition duration-300 ease-in-out"
           >
-            <Link to="/RegistroUser">Regístrate ahora</Link> {/* Enlace al componente RegistroUser */}
+            <Link to="/RegistroUser">Regístrate ahora</Link>
           </motion.button>
         </motion.div>
       </div>
