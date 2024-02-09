@@ -2,6 +2,7 @@
 import React from 'react';
 import Nav from '../../Components/Nav/Nav';
 import LandingPage from '../../Components/LandingPage/LandingPage'
+import ComponentesProfeticos from '../../Components/LandingPage/Profetico/ComponenteProfetico';
 import Footer from '../../Components/Footer/Footer';
 import BlogHome from '../../Components/Blog/BlogHome';
 import Testimonios from '../../Components/Testimonios/Testimonios';
@@ -11,6 +12,7 @@ export default function ViewHome() {
         <div>
             <Nav />
             <LandingPage />
+            <ComponentesProfeticos />
             <BlogHome />
             <Testimonios />
             <Footer />
