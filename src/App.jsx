@@ -16,6 +16,7 @@ import UserDetail from "./Components/Admin/UserDetail/UserDetail";
 import ViewDashBoardAdmin from "./views/ViewAdmin/ViewDashBoardAdmin";
 import Cursos from "./Components/Admin/Cursos/Cursos";
 import Error404 from "./Components/Error404/Error404";
+import ViewErrorPaginaConstruccion from "./views/ViewErrores/ViewErrorPaginaConstruccion";
 import AgregarCurso from "./Components/Admin/Cursos/AgregarCurso";
 import ViewAjustes from "./views/ViewMenuStudent/ViewAjustes";
 import ViewPreguntasRespuestas from "./views/ViewMenuStudent/ViewPreguntasRespuestas";
@@ -97,6 +98,7 @@ function App() {
         <Route path="/blog/:blogId" element={<ViewBlog />} />
         <Route path="/blog/CrearBlog" element={<ViewBlogCreate/>} />
         <Route path="/error" element={<Error404 />}/>
+        <Route path="/Error404" element={<ViewErrorPaginaConstruccion /> }/>
         <Route path="/agregar" element={<AgregarCurso />} />
         <Route path="/clases" element={<Clases />}/>
         <Route path="/viewclases" element={<ViewClases />}/>

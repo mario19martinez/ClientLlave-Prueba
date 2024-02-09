@@ -8,8 +8,8 @@ import { useNavigate } from "react-router-dom";
 export default function ViewClases() {
   const navigate = useNavigate();
   // Supongamos que tienes una variable en el estado que indica si el usuario está inscrito en el curso
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"; // Obtén el estado de inicio de sesión
-  const isUserInCourse = true; // Aquí deberías tener la lógica para determinar si el usuario está inscrito en el curso
+  //const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"; // Obtén el estado de inicio de sesión
+  //const isUserInCourse = true; // Aquí deberías tener la lógica para determinar si el usuario está inscrito en el curso
 
   return (
     <div>
@@ -22,12 +22,13 @@ export default function ViewClases() {
       <div className="flex flex-col">
         <CursoDetail />
         {/* Condición para renderizar el componente CursoClases */}
-        {isLoggedIn && isUserInCourse ? (
+        {/*isLoggedIn && isUserInCourse ? (
           <Cursos />
         ) : (
           // Mensaje si el usuario no está inscrito en el curso
           <h1>Para ver las clases, debes inscribirte en el curso.</h1>
-        )}
+        )*/}
+        <Cursos />
       </div>
     </div>
   );

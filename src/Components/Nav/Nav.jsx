@@ -128,7 +128,7 @@ export default function Nav() {
           </a>
           <a
             href=""
-            onClick={() => navigate("/entrenamiento")}
+            onClick={() => navigate("/Error404")}
             className="hover:text-gray-300 transition-colors"
           >
             Entrenamiento
@@ -137,7 +137,7 @@ export default function Nav() {
             Miembros
   </a>*/}
           <a href="" 
-          onClick={() => navigate("/comunidad")}
+          onClick={() => navigate("/Error404")}
           className="hover:text-gray-300 transition-colors">
             Comunidad
           </a>
@@ -199,7 +199,7 @@ export default function Nav() {
             </a>
             <a
               href="#"
-              onClick={() => navigate("/entrenamiento")}
+              onClick={() => navigate("/Error404")}
               className="hover:text-gray-300 transition-colors"
             >
               Entrenamiento
