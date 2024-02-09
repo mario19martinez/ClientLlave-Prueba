@@ -91,6 +91,10 @@ const RegistroComponent = () => {
     }
   }, [registrationStatus, error, dispatch]);
 
+  const handleGoBack = () => {
+    navigate("/");
+  };
+
   return (
     <div
       className="bg-cover bg-center min-h-screen relative"
@@ -100,6 +104,12 @@ const RegistroComponent = () => {
     >
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
       <div className="flex flex-col items-center justify-center h-full relative z-10">
+      <button
+          className="absolute top-0 left-0 mt-4 ml-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          onClick={handleGoBack}
+        >
+          Atrás
+        </button>
         <h1 className="text-3xl font-semibold mb-6 text-center text-blue-100">
           Registro de usuario
         </h1>
