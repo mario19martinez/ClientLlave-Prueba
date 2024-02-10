@@ -3,7 +3,7 @@ import SidebarAdmin from "../../Components/Admin/SidebarAdmin/SidebarAdmin";
 import Informacion from "../../Components/Admin/Informacion/Informacion";
 import { useState } from "react";
 
-export default function Viewinformacion() {
+export default function Viewinformacion () {
     const [selectedTab] = useState("Informacion")
   return (
     <div>
