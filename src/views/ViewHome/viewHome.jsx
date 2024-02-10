@@ -6,6 +6,7 @@ import ComponentesProfeticos from '../../Components/LandingPage/Profetico/Compon
 import Footer from '../../Components/Footer/Footer';
 import BlogHome from '../../Components/Blog/BlogHome';
 import Testimonios from '../../Components/Testimonios/Testimonios';
+import Viewcardhome from '../ViewCardHome/ViewCardHome';
 
 export default function ViewHome() {
     return (
@@ -13,6 +14,7 @@ export default function ViewHome() {
             <Nav />
             <LandingPage />
             <ComponentesProfeticos />
+            <Viewcardhome />
             <BlogHome />
             <Testimonios />
             <Footer />
