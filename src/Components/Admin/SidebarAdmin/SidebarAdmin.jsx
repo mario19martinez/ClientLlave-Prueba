@@ -194,6 +194,40 @@ function SidebarAdmin({ selectedTab }) {
           </li>
           <li className="mb-4">
             <button
+              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
+                selectedTab === "Noticias"
+                  ? "bg-blue-400 text-white"
+                  : "hover:bg-blue-500 hover:text-white"
+              }`}
+              onClick={() => navigate("/admin/noticias")}
+            >
+              <SourceIcon
+                className={`${
+                  selectedTab === "Noticias" ? "text-white" : ""
+                }`}
+              />{" "}
+              Noticias
+            </button>
+          </li>
+          <li className="mb-4">
+            <button
+              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
+                selectedTab === "Informacion"
+                  ? "bg-blue-400 text-white"
+                  : "hover:bg-blue-500 hover:text-white"
+              }`}
+              onClick={() => navigate("/admin/informacion")}
+            >
+              <SourceIcon
+                className={`${
+                  selectedTab === "Informacion" ? "text-white" : ""
+                }`}
+              />{" "}
+              Informacion
+            </button>
+          </li>
+          <li className="mb-4">
+            <button
               onClick={() => navigate("/admin/ajustes")}
               className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
                 selectedTab === "Ajustes"
