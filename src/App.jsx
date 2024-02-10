@@ -51,7 +51,7 @@ import ViewAdminAbautCreate from "./views/ViewAdmin/ViewAdminAbautCreate";
 import ViewAdminAbautActualizar from "./views/ViewAdmin/ViewAdminAbautActualizar";
 import ViewClasesUser from "./views/ViewCursoUser/ViewCursoUser";
 import ViewMyPost from "./views/ViewMenuStudent/ViewMyPost";
-import Viewinformacion from "./views/ViewInformacion/Viewinformacion"; 
+import Viewinformacion from "./views/Viewinformacionn/Viewinformacion"; 
 import ViewNoticias from "./views/ViewAdmin/ViewNoticias";
 import axios from "axios";
 
