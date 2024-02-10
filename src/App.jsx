@@ -50,6 +50,8 @@ import ViewAdminAbautCreate from "./views/ViewAdmin/ViewAdminAbautCreate";
 import ViewAdminAbautActualizar from "./views/ViewAdmin/ViewAdminAbautActualizar";
 import ViewClasesUser from "./views/ViewCursoUser/ViewCursoUser";
 import ViewMyPost from "./views/ViewMenuStudent/ViewMyPost";
+import ViewInformacion from "./views/ViewInformacion/Viewinformacion";
+import ViewNoticias from "./views/ViewAdmin/ViewNoticias";
 import axios from "axios";
 
 //axios.defaults.baseURL = "http://localhost:3001";
@@ -110,6 +112,8 @@ function App() {
         <Route path="/chat-users" element={<ViewChat />} />
         <Route path="/user/curso/:id" element={<ViewClasesUser />} />
         <Route path="/my-posts" element={<ViewMyPost />} />
+        <Route path="/admin/informacion" element={<ViewInformacion />} />
+        <Route path="/admin/noticias" element={<ViewNoticias />} />
       </Routes>
     </Router>
   );
