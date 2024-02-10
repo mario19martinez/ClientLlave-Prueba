@@ -10,6 +10,6 @@ export default function Viewinformacion () {
       <NavAdmin />
       <SidebarAdmin selectedTab={selectedTab}/>
       <Informacion  classname="-translate-y-96"/>
-    </div>
+    </div> 
   );
 }
