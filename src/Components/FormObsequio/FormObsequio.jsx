@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import * as Yup from "yup";
@@ -68,7 +69,7 @@ const FormObsequio = ({ isOpen, onClose }) => {
         });
         console.log('Este es el token',token);
         localStorage.setItem("token", token);
-        navigate("/curso/1");
+        navigate("/curso/2");
         window.location.reload();
       } catch (error) {
         console.error("Error al registrar al usuario:", error);
