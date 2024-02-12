@@ -13,9 +13,9 @@ export default function ViewHome() {
   return (
     <div>
       <Nav />
+      <LandingPage />
       <div className="flex flex-col md:flex-row w-screen">
         <div className="w-full md:w-10/12 pr-1">
-          <LandingPage />
           <Videoshome />
           <ComponentesProfeticos />
         </div>

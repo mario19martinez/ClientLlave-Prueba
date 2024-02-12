@@ -1,12 +1,15 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom'; 
-import Fondo1 from './Fondo1.jpg';
-import Fondo2 from './Fondo2.jpg';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import Fondo1 from "./Fondo1.jpg";
+import Fondo2 from "./Fondo2.jpg";
 
 const images = [Fondo1, Fondo2];
-const texts = ['Alcanza tus sueños y metas', 'Alcanza Tus Sueños y metas Tu Entrenamiento Profético®Te espera'];
+const texts = [
+  "Alcanza tus sueños y metas",
+  "Alcanza Tus Sueños y metas Tu Entrenamiento Profético®Te espera",
+];
 
 const Section1 = () => {
   const [index, setIndex] = useState(0);
@@ -34,18 +37,20 @@ const Section1 = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
         >
-          <h1 className="text-3xl md:text-4xl font-semibold text-white mb-4">{texts[index]}</h1>
-          <motion.button 
+          <h1 className="text-3xl md:text-4xl font-semibold text-white mb-4">
+            {texts[index]}
+          </h1>
+          <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="px-8 py-3 md:px-10 md:py-4 bg-blue-600 text-white rounded-full focus:outline-none hover:bg-blue-700 transition duration-300 ease-in-out mr-2"
           >
             <Link to="/RegistroUser">Regístrate ahora</Link>
           </motion.button>
-          <motion.button 
+          <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 md:px-10 md:py-4 bg-blue-600 text-white rounded-full focus:outline-none hover:bg-blue-700 transition duration-300 ease-in-out block md:hidden"
+            className="block md:hidden mx-auto mt-4 px-8 py-3 md:px-10 md:py-4 bg-blue-600 text-white rounded-full focus:outline-none hover:bg-blue-700 transition duration-300 ease-in-out"
           >
             <Link to="/login">Iniciar Sesion</Link>
           </motion.button>
