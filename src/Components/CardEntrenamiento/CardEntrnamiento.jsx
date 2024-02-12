@@ -24,7 +24,7 @@ const CardEntrenamiento = () => {
       {informacion ? (
         informacion.map((info) => (
           <Link to={`/informacion/${info.id}`} key={info.id}>
-            <div className="w-64 h-60 bg-gradient-to-br from-blue-400 via-blue-700 to-blue-400 shadow-md rounded-md overflow-hidden border-solid border-2 border-blue-500">
+            <div className="w-64 h-60 bg-gradient-to-br from-gray-400 via-gray-500 to-gray-400 shadow-md rounded-md overflow-hidden border-solid border-2 border-gray-500">
               <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2 text-white">
                   {info.titulo}

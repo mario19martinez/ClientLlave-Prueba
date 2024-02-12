@@ -25,7 +25,7 @@ const Videoshome = () => {
   };
 
   return (
-    <div className="flex justify-center overflow-x-auto space-x-7 mt-8">
+    <div className="flex justify-center overflow-x-auto space-x-6 mt-8">
       {videos.map((video) => (
         <div key={video.id} className="w-72 border rounded-lg overflow-hidden">
           <h3 className="text-base font-semibold p-2">{video.titulo}</h3>
