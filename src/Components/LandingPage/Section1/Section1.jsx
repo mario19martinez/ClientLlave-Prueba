@@ -22,7 +22,7 @@ const Section1 = () => {
 
   return (
     <motion.div
-      className="relative w-screen h-96 overflow-hidden rounded-lg shadow-lg"
+      className="relative w-full h-96 overflow-hidden rounded-lg shadow-lg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}

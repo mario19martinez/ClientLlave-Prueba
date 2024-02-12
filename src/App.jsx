@@ -53,7 +53,7 @@ import ViewClasesUser from "./views/ViewCursoUser/ViewCursoUser";
 import ViewMyPost from "./views/ViewMenuStudent/ViewMyPost";
 import Viewinformacion from "./views/Viewinformacionn/Viewinformacion"; 
 import ViewNoticias from "./views/ViewAdmin/ViewNoticias";
-import Detailentrenamiento from "./Components/DetailEntrenamiento/Detailentrenamiento";
+import Viewdetailsentrenamiento from "./views/Viewdetailsentrenamiento/Viewdetailsentrenamiento";
 import axios from "axios";
 
 //axios.defaults.baseURL = "http://localhost:3001";
@@ -115,7 +115,7 @@ function App() {
         <Route path="/my-posts" element={<ViewMyPost />} />
         <Route path="/admin/informacion" element={<Viewinformacion />} />
         <Route path="/admin/noticias" element={<ViewNoticias />} />
-        <Route path="/informacion/:id" element={<Detailentrenamiento />} />
+        <Route path="/informacion/:id" element={<Viewdetailsentrenamiento />} />
       </Routes>
     </Router>
   );

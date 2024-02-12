@@ -16,7 +16,7 @@ export default function ComponentesProfeticos() {
       };
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 style={h1Styles}>Palabras Proféticas</h1>
+      <h1 style={h1Styles}>Entrenando Tus Sentidos</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <motion.div
           whileHover={{ scale: 1.1 }}
