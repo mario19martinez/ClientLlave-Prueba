@@ -28,21 +28,21 @@ const Noticias = () => {
   };
 
   return (
-    <div className="w-64 h-60 bg-white shadow-md rounded-md overflow-hidden border-solid border-2 border-blue-500">
+    <div className="w-64 h-60 bg-gradient-to-br from-blue-400 via-blue-700 to-blue-400 shadow-md rounded-md overflow-hidden border-solid border-2 border-blue-500">
       {/* <h1 className="text-2xl font-bold mb-4">Noticias</h1> */}
-      {noticias.length === 0 && <div>No hay noticias disponibles.</div>}
+      {noticias.length === 0 && <div className="text-white">No hay noticias disponibles.</div>}
       {noticias.map((noticia) => (
         <div
           key={noticia.id}
           onClick={() => handleNoticiaClick(noticia.id)}
-          className="bg-white shadow-md rounded-lg p-4 mb-4 cursor-pointer hover:shadow-lg transition duration-300"
+          className=" shadow-md rounded-lg p-4 mb-4 cursor-pointer hover:shadow-lg transition duration-300"
         >
-          <h2 className="text-lg font-semibold mb-2 text-gray-700">{noticia.titulo}</h2>
-          <p className="text-gray-600">{noticia.contenido}</p>
+          <h2 className="text-lg font-semibold mb-2 text-white">{noticia.titulo}</h2>
+          <p className="text-white">{noticia.contenido}</p>
         </div>
       ))}
       {selectedNoticia && (
-        <div className="bg-white shadow-md rounded-lg p-4 mb-4">
+        <div className=" shadow-md rounded-lg p-4 mb-4">
           <h2 className="text-lg font-semibold mb-2">{selectedNoticia.titulo}</h2>
           <p className="text-gray-600">{selectedNoticia.contenido}</p>
           <p className="text-gray-600">Fecha: {selectedNoticia.fecha}</p>

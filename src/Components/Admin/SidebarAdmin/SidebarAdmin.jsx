@@ -10,6 +10,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import SourceIcon from "@mui/icons-material/Source";
 import BookIcon from "@mui/icons-material/Book";
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
+import VideoFileIcon from '@mui/icons-material/VideoFile';
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserData } from "../../../Redux/features/Users/usersSlice";
@@ -226,6 +227,25 @@ function SidebarAdmin({ selectedTab }) {
               Informacion
             </button>
           </li>
+
+          <li className="mb-4">
+            <button
+              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
+                selectedTab === "Videos"
+                  ? "bg-blue-400 text-white"
+                  : "hover:bg-blue-500 hover:text-white"
+              }`}
+              onClick={() => navigate("/admin/videos")}
+            >
+              <VideoFileIcon
+                className={`${
+                  selectedTab === "Videos" ? "text-white" : ""
+                }`}
+              />{" "}
+              Videos
+            </button>
+          </li>
+
           <li className="mb-4">
             <button
               onClick={() => navigate("/admin/ajustes")}
