@@ -38,9 +38,16 @@ const Section1 = () => {
           <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 md:px-10 md:py-4 bg-blue-600 text-white rounded-full focus:outline-none hover:bg-blue-700 transition duration-300 ease-in-out"
+            className="px-8 py-3 md:px-10 md:py-4 bg-blue-600 text-white rounded-full focus:outline-none hover:bg-blue-700 transition duration-300 ease-in-out mr-2"
           >
             <Link to="/RegistroUser">Regístrate ahora</Link>
+          </motion.button>
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-8 py-3 md:px-10 md:py-4 bg-blue-600 text-white rounded-full focus:outline-none hover:bg-blue-700 transition duration-300 ease-in-out block md:hidden"
+          >
+            <Link to="/login">Iniciar Sesion</Link>
           </motion.button>
         </motion.div>
       </div>
