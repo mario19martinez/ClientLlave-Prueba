@@ -27,6 +27,7 @@ function Detailentrenamiento() {
 
   return (
     <div className="max-w-2xl mx-auto mt-8 p-4 bg-gray-200 rounded-lg shadow-md">
+
       <Link to="/" className="block mb-4 text-blue-700 hover:underline font-bold">Atrás</Link>
       {loading ? (
         <p className="text-center">Cargando detalle de la información...</p>

@@ -4,18 +4,16 @@ import CardEntrenamiento from "../../Components/CardEntrenamiento/CardEntrnamien
 
 export default function Viewcardhome() {
   return (
-    <div className="flex justify-center p-4 translate-y-2">
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="w-full sm:w-1/3">
+      <div className="w-72 flex flex-col" >
+        <div className="pt-2">
           <CardObsequio />
         </div>
-        <div className="w-full sm:w-1/3">
+        <div className="pt-2">
           <CardEntrenamiento />
         </div>
-        <div className="w-full sm:w-1/3">
+        <div className="pt-2">
           <Noticias />
         </div>
-      </div>
     </div>
   );
 }
