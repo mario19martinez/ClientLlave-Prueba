@@ -54,6 +54,7 @@ import ViewMyPost from "./views/ViewMenuStudent/ViewMyPost";
 import Viewinformacion from "./views/Viewinformacionn/Viewinformacion"; 
 import ViewNoticias from "./views/ViewAdmin/ViewNoticias";
 import Viewdetailsentrenamiento from "./views/Viewdetailsentrenamiento/Viewdetailsentrenamiento";
+import Viewadminvideo from "./views/ViewAdmin/Viewadminvideo";
 import axios from "axios";
 
 //axios.defaults.baseURL = "http://localhost:3001";
@@ -116,6 +117,7 @@ function App() {
         <Route path="/admin/informacion" element={<Viewinformacion />} />
         <Route path="/admin/noticias" element={<ViewNoticias />} />
         <Route path="/informacion/:id" element={<Viewdetailsentrenamiento />} />
+        <Route path="/admin/videos" element={<Viewadminvideo />} />
       </Routes>
     </Router>
   );
