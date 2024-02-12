@@ -7,6 +7,7 @@ const Informacion = () => {
   const [informacion, setInformacion] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedInfoId, setSelectedInfoId] = useState(null);
 
   useEffect(() => {
     const fetchInformacion = async () => {
@@ -22,6 +23,22 @@ const Informacion = () => {
 
     fetchInformacion();
   }, []);
+
+  const handleConfirmation = (id) => {
+    setSelectedInfoId(id);
+    if (window.confirm('¿Estas seguro de eliminar est informacion?')) {
+      handleDelete(id)
+    }
+  }
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/informacion/${id}`);
+      setInformacion(informacion.filter(info => info.id !== id));
+    } catch (error) {
+      console.error('Hubo un error al eliminar la informacion:', error);
+    }
+  }
 
   return (
     <div className="absolute top-0 left-0 mt-28 ml-96 p-4">
@@ -42,6 +59,9 @@ const Informacion = () => {
             <li key={info.id} className="mb-4">
               <h2 className="text-lg font-semibold">{info.titulo}</h2>
               <p className="text-gray-700">{info.content}</p>
+              <button onClick={() => handleConfirmation(info.id)} className="bg-red-500 text-white py-2 px-4 rounded-lg mt-2">
+                Eliminar
+              </button>
             </li>
           ))}
         </ul>
