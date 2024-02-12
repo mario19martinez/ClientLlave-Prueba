@@ -8,7 +8,7 @@ const Videoshome = () => {
     const fetchVideos = async () => {
       try {
         const response = await axios.get("/videos");
-        setVideos(response.data.slice(0, 4)); // Obtener solo los primeros tres videos
+        setVideos(response.data.slice(0, 4)); // Obtener solo los primeros cuatro videos
       } catch (error) {
         console.error('Error al obtener los videos:', error);
       }
@@ -25,16 +25,16 @@ const Videoshome = () => {
   };
 
   return (
-    <div className="flex justify-center overflow-x-auto space-x-6 mt-8">
+    <div className="flex flex-col md:flex-row justify-center items-center overflow-x-auto space-x-7 mt-8">
       {videos.map((video) => (
-        <div key={video.id} className="w-72 border rounded-lg overflow-hidden">
+        <div key={video.id} className="w-full md:w-72 border rounded-lg overflow-hidden mb-4 md:mb-0">
           <h3 className="text-base font-semibold p-2">{video.titulo}</h3>
           <iframe
             title="url"
             src={`https://www.youtube.com/embed/${extractYoutubeVideoId(
                   video.url
                 )}`}
-            className="w-full h-36"
+            className="w-full h-36 md:h-48"
             frameBorder="0"
             allowFullScreen
           ></iframe>
