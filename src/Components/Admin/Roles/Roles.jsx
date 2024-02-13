@@ -41,7 +41,6 @@ function Roles() {
       <table className="min-w-full border-collapse- border bg-blue-600">
         <thead className="">
           <tr className="text-white">
-            <th className="py-2 px-4 border">ID</th>
             <th className="py-2 px-4 border">Nombre</th>
             <th className="py-2 px-4 border">Apellido</th>
             <th className="py-2 px-4 border">Rol</th>
@@ -51,7 +50,6 @@ function Roles() {
         <tbody>
           {usuarios.map((usuario, index) => (
             <tr key={usuario.sub} className={index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}>
-              <td className="py-2 px-4 border">{usuario.sub}</td>
               <td className="py-2 px-4 border">{usuario.name}</td>
               <td className="py-2 px-4 border">{usuario.last_name}</td>
               <td className="py-2 px-4 border">{usuario.rol}</td>
