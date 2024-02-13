@@ -37,6 +37,7 @@ const NavSocial = () => {
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userName");
+    window.localStorage.clear()
     navigate("/");
   };
 
