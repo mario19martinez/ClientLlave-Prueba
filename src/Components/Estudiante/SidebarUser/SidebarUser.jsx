@@ -23,6 +23,8 @@ function SidebarUser({ selectedTab }) {
     // Lógica para realizar la salida de la sesión
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userName");
+    // Eliminar la Cache
+    window.localStorage.clear();
     // Redirige al usuario a la página de inicio de sesión o a la página de inicio
     navigate("/");
   };
