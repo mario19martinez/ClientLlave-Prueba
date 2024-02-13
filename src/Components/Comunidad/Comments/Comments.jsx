@@ -12,7 +12,13 @@ const Comments = ({ postId }) => {
     // Lógica para recuperar comentarios asociados a postId
     const fetchComments = async () => {
       try {
-        const response = await axios.get(`/comments/${postId}`);
+        const authToken = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      };
+        const response = await axios.get(`/comments/${postId}`, config);
         setComments(response.data.comments);
       } catch (error) {
         console.error("Error fetching comments:", error);
