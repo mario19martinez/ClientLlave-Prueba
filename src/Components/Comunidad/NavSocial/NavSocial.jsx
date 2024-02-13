@@ -11,7 +11,7 @@ import {
   Logout as LogoutIcon,
 } from "@mui/icons-material";
 //import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import ChatIcon from '@mui/icons-material/Chat';
+// import ChatIcon from '@mui/icons-material/Chat';
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -53,9 +53,9 @@ const NavSocial = () => {
         <GridViewOutlinedIcon className="text-white" />
         {/* <PersonAddIcon className="text-white"
         onClick={() => navigate('/agregarAmigo')}/> */}
-        <ChatIcon className="text-white"
+        {/* <ChatIcon className="text-white"
         onClick={() => navigate('/chat-users')} 
-        />
+        /> */}
         <div className="hidden md:flex items-center border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white">
           <SearchOutlinedIcon className="text-blue-600 dark:text-whitesmoke" />
           <input

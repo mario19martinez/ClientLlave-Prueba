@@ -12,6 +12,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ShareIcon from "@mui/icons-material/Share";
 import PropTypes from "prop-types";
+import Comments from '../Comments/Comments'
 import axios from "axios";
 
 const Post = ({ username, userImg, date, content, imageSrc, initialLikes, postId }) => {
@@ -91,6 +92,7 @@ const Post = ({ username, userImg, date, content, imageSrc, initialLikes, postId
               </div>
             )}
           </div>
+          <Comments postId={postId} />
         </CardContent>
         <CardActions className="flex justify-between items-center">
           <IconButton
@@ -122,7 +124,7 @@ Post.propTypes = {
   username: PropTypes.string.isRequired,
   userImg: PropTypes.string,
   date: PropTypes.string,
-  content: PropTypes.string.isRequired,
+  content: PropTypes.string,
   imageSrc: PropTypes.string,
   initialLikes: PropTypes.number,
   postId: PropTypes.number.isRequired,

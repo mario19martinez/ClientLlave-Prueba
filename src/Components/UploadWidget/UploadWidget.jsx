@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
+import { AddPhotoAlternate } from "@mui/icons-material";
 
 //const { VITE_CLOUND_NAME, VITE_UPLOAD_PRESENT } = import.meta.env;
 
@@ -31,10 +32,10 @@ const UploadWidget = ({ onImageUpload }) => {
 
   return (
     <button
-      className="bg-blue-500 text-white font-hammersmithOne w-24 mt-2"
+      className="bg-blue-500 text-white font-hammersmithOne w-10 mt-2"
       onClick={() => widgetRef.current.open()}
     >
-      Cargar
+      <AddPhotoAlternate fontSize="large" />
     </button>
   );
 };
