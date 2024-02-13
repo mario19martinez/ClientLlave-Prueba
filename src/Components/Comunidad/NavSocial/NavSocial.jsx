@@ -95,7 +95,7 @@ const NavSocial = () => {
                   <span>Ver Perfil</span>
                 </Link>
                 <Link
-                  to="/mis-publicaciones"
+                  to="/my-posts"
                   className="flex items-center gap-2 text-white dark:text-whitesmoke hover:bg-white hover:text-blue-600 dark:hover:bg-gray-800 dark:hover:text-whitesmoke px-2 py-1 rounded-md"
                 >
                   <EmailOutlinedIcon />
