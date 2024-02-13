@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useContext, useEffect } from "react";
-import { AddPhotoAlternate } from "@mui/icons-material";
+// import { AddPhotoAlternate } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserData } from "../../../Redux/features/Users/usersSlice";
 import UploadWidget from "../../UploadWidget/UploadWidget";
@@ -61,7 +61,7 @@ const Publicacion = () => {
   };
 
   return (
-    <div className="shadow-lg rounded-3xl bg-white dark:bg-gray-800 text-black dark:text-white mb-20">
+    <div className="shadow-lg rounded-3xl bg-gray-100 dark:bg-gray-800 text-black dark:text-white mb-20">
       <div className="container p-5">
         <div className="top flex items-center gap-4">
           <img
@@ -80,7 +80,7 @@ const Publicacion = () => {
             className="border-none outline-none bg-transparent w-3/4 text-black dark:text-white"
           />
         </div>
-        <hr className="my-5 border-t border-gray-300 dark:border-gray-600" />
+        <hr className="my-5 border-t border-gray-500 dark:border-gray-600" />
         <div className="bottom flex justify-between items-center">
           <div className="left flex items-center gap-4">
             <UploadWidget
