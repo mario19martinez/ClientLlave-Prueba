@@ -33,8 +33,8 @@ function MyPost() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-8 -translate-y-80">
-      <h2 className="text-3xl font-bold mb-4">Mis Publicaciones</h2>
+    <div className="max-w-md mx-auto mt-8 -translate-y-80 w-60 md:w-96">
+      <h2 className="text-2xl font-bold mb-4 text-gray-700">Mis Publicaciones</h2>
       {userPosts.length === 0 ? (
         <p className="text-gray-600">Todavia no tienes publicaciones hechas.</p>
       ) : (
