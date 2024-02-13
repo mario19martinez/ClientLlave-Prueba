@@ -32,6 +32,8 @@ function SidebarAdmin({ selectedTab }) {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userName");
     localStorage.removeItem("email");
+    // Eliminar la Cache
+    window.localStorage.clear()
     navigate("/");
   };
 
