@@ -9,8 +9,14 @@ import facebook from '../../../logos/facebook.ico'
 import llaveblanca from '../../../logos/llaveblanca.png'
 import Mapa from "../Map/Map";
 import styles from "../Footer/Footer.module.css"
+import { useNavigate } from "react-router-dom";
 
 function Footer() {
+  const navigate = useNavigate();
+
+  const politica = () => {
+    navigate("/PoliticasPrivacidad")
+  }
   
   return (
     <div className={styles.app_container}>
@@ -72,12 +78,24 @@ function Footer() {
         </div>
       </footer>
       <div
-        className={styles.copyright}
-        style={{ textAlign: "center", padding: "10px" }}
-      >
-        Copyright © 2023 Llave Para Las Naciones | Funciona con Llave Para Las
-        Naciones
-      </div>
+  className={styles.copyright}
+  style={{
+    textAlign: "center",
+    padding: "10px",
+    color: "rgba(0, 0, 0, 0.6)", // Color de texto discreto
+  }}
+>
+  Copyright © 2024 Llave Para Las Naciones | Funciona con Llave Para Las
+  Naciones |{" "}
+  <a
+    href=""
+    onClick={politica}
+    style={{ color: "blue" }} // Cambiar color del enlace a azul
+  >
+    Políticas de privacidad
+  </a>
+</div>
+
     </div>
   );
 }

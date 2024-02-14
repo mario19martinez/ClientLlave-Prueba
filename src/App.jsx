@@ -57,6 +57,7 @@ import Viewdetailsentrenamiento from "./views/Viewdetailsentrenamiento/Viewdetai
 import Viewadminvideo from "./views/ViewAdmin/Viewadminvideo";
 import ViewLogin from "./views/ViewLogin/ViewLogin";
 import ViewFormObsequio from "./views/ViewRigistro/ViewFormObsequio";
+import PoliticasPrivacidad from "./Components/Politicas/PoliticasPrivacidad";
 import axios from "axios";
 
 //axios.defaults.baseURL = "http://localhost:3001";
@@ -122,6 +123,7 @@ function App() {
         <Route path="/admin/videos" element={<Viewadminvideo />} />
         <Route path="/login" element={<ViewLogin />} />
         <Route path="/FormObsequio" element={<ViewFormObsequio />} />
+        <Route path="/PoliticasPrivacidad" element={<PoliticasPrivacidad/>} />
       </Routes>
     </Router>
   );
