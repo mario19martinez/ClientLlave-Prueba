@@ -15,7 +15,7 @@ export default function ViewClases() {
     <div>
       <Nav />
       <button
-        onClick={() => navigate("/entrenamiento")}
+        onClick={() => navigate("/")}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 translate-y-2 translate-x-8 rounded transition duration-300 ease-in-out"
       >
         Atras

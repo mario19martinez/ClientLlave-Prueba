@@ -33,7 +33,7 @@ import ViewClases from "./views/ViewClases/ViewClases";
 import ViewAdminTestimonio from "./views/ViewAdmin/ViewAdminTestimonio";
 //import Entrenamiento from "./Components/Entrenamiento/Entrenamiento";
 import AgregarClases from "./Components/Admin/Clases/AgregarClases";
-import ViewEntrenamiento from "./views/ViewEntrenamiento/ViewEntrenamiento";
+//import ViewEntrenamiento from "./views/ViewEntrenamiento/ViewEntrenamiento";
 import ViewUsersDeleted from "./views/ViewAdmin/ViewUsersDeleted";
 import CursoEdit from "./Components/Admin/Cursos/CursoEdit";
 import ViewCursosEliminados from "./views/ViewAdmin/ViewCursosEliminados";
@@ -105,7 +105,7 @@ function App() {
         <Route path="/agregar" element={<AgregarCurso />} />
         <Route path="/clases" element={<Clases />}/>
         <Route path="/viewclases" element={<ViewClases />}/>
-        <Route path="/entrenamiento" element={<ViewEntrenamiento />}/>
+        {/*<Route path="/entrenamiento" element={<ViewEntrenamiento />}/> */}
         <Route path="/curso/:id" element={<ViewClases />}/>
         <Route path="/agregarclases" element={<AgregarClases />}/>
         <Route path="/Comunidad" element={<HomeComunidadView />} />
