@@ -1,22 +1,16 @@
 // eslint-disable-next-line no-unused-vars
-import { useState } from "react";
-import Modal from "react-modal";
-import FormObsequio from "../FormObsequio/FormObsequio";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const CardObsequio = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
+  const register = () => {
+    navigate("/FormObsequio");
+  }
   return (
     <div className="flex justify-center">
-      <div className="max-w-xs rounded overflow-hidden shadow-md border border-blue-500">
+      <div className="max-w-xs rounded overflow-hidden shadow-lg border border-blue-500 m-4">
         <div className="px-6 py-4">
           <h2 className="text-lg font-semibold text-gray-700 mb-2 text-center">
             Regístrate para obtener <br />
@@ -27,23 +21,12 @@ const CardObsequio = () => {
           </p>
           <button
             className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-            onClick={openModal}
+            onClick={register}
           >
             Regístrate aquí
           </button>
         </div>
       </div>
-
-      {/* Modal para el formulario de registro */}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Registro"
-        className="Modal"
-        overlayClassName="Overlay"
-      >
-        <FormObsequio isOpen={modalIsOpen} onClose={closeModal} />
-      </Modal>
     </div>
   );
 };

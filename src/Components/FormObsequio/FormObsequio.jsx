@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import paisesData from "../FormResgistro/Paises.json";
@@ -26,7 +25,6 @@ const initialValues = {
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("El nombre es requerido"),
   last_name: Yup.string().required("El apellido es requerido"),
-  //identificacion: Yup.string().required("La identificación es requerida"),
   email: Yup.string()
     .email("Ingresa un email válido")
     .required("El email es requerido"),
@@ -40,7 +38,7 @@ const validationSchema = Yup.object().shape({
   pais: Yup.string().required("El país es requerido"),
 });
 
-const FormObsequio = ({ isOpen, onClose }) => {
+const FormObsequio = () => {
   const dispatch = useDispatch();
   const [fullPhoneNumber, setFullPhoneNumber] = useState("");
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
@@ -58,7 +56,6 @@ const FormObsequio = ({ isOpen, onClose }) => {
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("email", values.email);
         //localStorage.setItem("token", token);
-        onClose();
 
         toast.success(message, {
           position: "top-center",
@@ -97,199 +94,233 @@ const FormObsequio = ({ isOpen, onClose }) => {
     }
   }, [registrationStatus, error, dispatch]);
 
+  const handleGoBack = () => {
+    navigate("/");
+  };
+
   return (
     <div
-      className={`fixed ${isOpen ? "block" : "hidden"} inset-0 overflow-y-auto`}
+      className="bg-cover bg-center min-h-screen relative"
+      style={{
+        backgroundImage: `url('https://llaveparalasnaciones.online/wp-content/uploads/2023/09/28-2-scaled.jpg')`,
+      }}
     >
-      <div className="flex items-center justify-center min-h-screen p-4 text-center">
-        <div className="fixed inset-0 transition-opacity" aria-hidden="true">
-          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-        </div>
-
-        <span
-          className="hidden sm:inline-block sm:align-middle sm:h-screen"
-          aria-hidden="true"
+      <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
+      <div className="flex flex-col items-center justify-center h-full relative z-10">
+      <button
+          className="absolute top-0 left-0 mt-4 ml-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          onClick={handleGoBack}
         >
-          &#8203;
-        </span>
+          Atrás
+        </button>
+        <h1 className="text-3xl font-semibold mb-6 text-center text-blue-100">
+          Registro de usuario
+        </h1>
+        <form
+          onSubmit={formik.handleSubmit}
+          className="max-w-md mx-auto bg-black bg-opacity-50 p-8 rounded-lg shadow-md"
+        >
+          <div className="mb-4">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-white"
+            >
+              Nombre:
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.name}
+              className="form-input mt-1 block w-full border border-blue-500 rounded-md focus:outline-none focus:border-blue-800"
+            />
+            {formik.touched.name && formik.errors.name ? (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.name}</p>
+            ) : null}
+          </div>
 
-        <div className="inline-block align-bottom bg-blue-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full">
-          <form onSubmit={formik.handleSubmit} className="p-6">
-            <h1 className="text-2xl font-semibold mb-4 text-white">Registro</h1>
-            <div className="mb-3">
-              <label htmlFor="name" className="text-white">
-                Nombre:
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.name}
-                className="w-full p-2 rounded-md bg-blue-600 text-white"
-              />
-              {formik.touched.name && formik.errors.name ? (
-                <p className="text-red-500 mt-1">{formik.errors.name}</p>
-              ) : null}
-            </div>
+          <div className="mb-4">
+            <label
+              htmlFor="last_name"
+              className="block text-sm font-medium text-white"
+            >
+              Apellido:
+            </label>
+            <input
+              type="text"
+              id="last_name"
+              name="last_name"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.last_name}
+              className="form-input mt-1 block w-full border border-blue-400 rounded-md focus:outline-none focus:border-blue-500"
+            />
+            {formik.touched.last_name && formik.errors.last_name ? (
+              <p className="text-red-500 text-sm mt-1">
+                {formik.errors.last_name}
+              </p>
+            ) : null}
+          </div>
 
-            <div className="mb-3">
-              <label htmlFor="last_name" className="text-white">
-                Apellido:
-              </label>
-              <input
-                type="text"
-                id="last_name"
-                name="last_name"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.last_name}
-                className="w-full p-2 rounded-md bg-blue-600 text-white"
-              />
-              {formik.touched.last_name && formik.errors.last_name ? (
-                <p className="text-red-500 mt-1">{formik.errors.last_name}</p>
-              ) : null}
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="pais" className="text-white">
-                País:
-              </label>
-              <select
-                id="pais"
-                name="pais"
-                onChange={(e) => {
-                  formik.handleChange(e);
-                  // Guarda el código de país seleccionado
-                  setSelectedCountryCode(
-                    paisesData.paises.find(
-                      (pais) => pais.nombre === e.target.value
-                    ).codigo_telefonico
-                  );
-                }}
-                onBlur={formik.handleBlur}
-                value={formik.values.pais}
-                className="w-full p-2 rounded-md bg-blue-600 text-white"
-              >
-                <option value="" disabled>
-                  Seleccione país
+          <div className="mb-4">
+            <label
+              htmlFor="pais"
+              className="block text-sm font-medium text-white"
+            >
+              País:
+            </label>
+            <select
+              id="pais"
+              name="pais"
+              onChange={(e) => {
+                formik.handleChange(e);
+                setSelectedCountryCode(
+                  paisesData.paises.find(
+                    (pais) => pais.nombre === e.target.value
+                  ).codigo_telefonico
+                );
+              }}
+              onBlur={formik.handleBlur}
+              value={formik.values.pais}
+              className="form-select mt-1 block w-full border border-blue-400 rounded-md focus:outline-none focus:border-blue-500"
+            >
+              <option value="" disabled>
+                Seleccione país
+              </option>
+              {paisesData.paises.map((pais) => (
+                <option key={pais.nombre} value={pais.nombre}>
+                  {pais.nombre}
                 </option>
-                {paisesData.paises.map((pais) => (
-                  <option key={pais.nombre} value={pais.nombre}>
-                    {pais.nombre}
-                  </option>
-                ))}
-              </select>
-              {formik.touched.pais && formik.errors.pais ? (
-                <p className="text-red-500 mt-1">{formik.errors.pais}</p>
-              ) : null}
-            </div>
+              ))}
+            </select>
+            {formik.touched.pais && formik.errors.pais ? (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.pais}</p>
+            ) : null}
+          </div>
 
-            <div className="mb-3">
-              <label htmlFor="telefono" className="text-white">
+          <div className="flex mb-4">
+            <div className="flex-1 pr-2 w-1/2">
+              <label
+                htmlFor="indicativo"
+                className="block text-sm font-medium text-white"
+              >
+                Indicativo:
+              </label>
+              <input
+                type="text"
+                id="indicativo"
+                name="indicativo"
+                value={selectedCountryCode}
+                readOnly
+                className="form-input mt-1 block w-full border border-blue-400 rounded-md focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div className="flex-1 pl-2">
+              <label
+                htmlFor="telefono"
+                className="block text-sm font-medium text-white"
+              >
                 Teléfono:
               </label>
-              <div className="flex items-center">
-                <input
-                  type="text"
-                  id="telefono"
-                  name="telefono"
-                  onChange={(e) => {
-                    formik.handleChange(e);
-                    setFullPhoneNumber(e.target.value);
-                  }}
-                  onBlur={formik.handleBlur}
-                  value={fullPhoneNumber}
-                  className="w-full p-2 rounded-md bg-blue-600 text-white"
-                />
-                {formik.touched.telefono && formik.errors.telefono ? (
-                  <p className="text-red-500 mt-1">{formik.errors.telefono}</p>
-                ) : null}
-              </div>
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="email" className="text-white">
-                Email:
-              </label>
               <input
-                type="email"
-                id="email"
-                name="email"
-                onChange={formik.handleChange}
+                type="text"
+                id="telefono"
+                name="telefono"
+                onChange={(e) => {
+                  formik.handleChange(e);
+                  setFullPhoneNumber(e.target.value);
+                }}
                 onBlur={formik.handleBlur}
-                value={formik.values.email}
-                className="w-full p-2 rounded-md bg-blue-600 text-white"
+                value={fullPhoneNumber}
+                className="form-input mt-1 block w-full border border-blue-400 rounded-md focus:outline-none focus:border-blue-500"
               />
-              {formik.touched.email && formik.errors.email ? (
-                <p className="text-red-500 mt-1">{formik.errors.email}</p>
-              ) : null}
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="contraseña" className="text-white">
-                Contraseña:
-              </label>
-              <input
-                type="password"
-                id="contraseña"
-                name="contraseña"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.contraseña}
-                className="w-full p-2 rounded-md bg-blue-600 text-white"
-              />
-              {formik.touched.contraseña && formik.errors.contraseña ? (
-                <p className="text-red-500 mt-1">{formik.errors.contraseña}</p>
-              ) : null}
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="confirmPassword" className="text-white">
-                Confirmar Contraseña:
-              </label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.confirmPassword}
-                className="w-full p-2 rounded-md bg-blue-600 text-white"
-              />
-              {formik.touched.confirmPassword &&
-              formik.errors.confirmPassword ? (
-                <p className="text-red-500 mt-1">
-                  {formik.errors.confirmPassword}
+              {formik.touched.telefono && formik.errors.telefono ? (
+                <p className="text-red-500 text-sm mt-1">
+                  {formik.errors.telefono}
                 </p>
               ) : null}
             </div>
+          </div>
 
-            <button
-              type="button"
-              className="absolute top-2 right-2 bg-blue-600 hover-bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-              onClick={onClose}
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-white"
             >
-              X
-            </button>
+              Email:
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+              className="form-input mt-1 block w-full border border-blue-400 rounded-md focus:outline-none focus:border-blue-500"
+            />
+            {formik.touched.email && formik.errors.email ? (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.email}</p>
+            ) : null}
+          </div>
 
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover-bg-blue-600"
+          <div className="mb-4">
+            <label
+              htmlFor="contraseña"
+              className="block text-sm font-medium text-white"
             >
-              Regístrate
-            </button>
-          </form>
-        </div>
+              Contraseña:
+            </label>
+            <input
+              type="password"
+              id="contraseña"
+              name="contraseña"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.contraseña}
+              className="form-input mt-1 block w-full border border-blue-400 rounded-md focus:outline-none focus:border-blue-500"
+            />
+            {formik.touched.contraseña && formik.errors.contraseña ? (
+              <p className="text-red-500 text-sm mt-1">
+                {formik.errors.contraseña}
+              </p>
+            ) : null}
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-medium text-white"
+            >
+              Confirmar Contraseña:
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.confirmPassword}
+              className="form-input mt-1 block w-full border border-blue-400 rounded-md focus:outline-none focus:border-blue-500"
+            />
+            {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+              <p className="text-red-500 text-sm mt-1">
+                {formik.errors.confirmPassword}
+              </p>
+            ) : null}
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Regístrate
+          </button>
+        </form>
       </div>
     </div>
   );
-};
-
-FormObsequio.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default FormObsequio;
