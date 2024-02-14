@@ -56,6 +56,7 @@ import ViewNoticias from "./views/ViewAdmin/ViewNoticias";
 import Viewdetailsentrenamiento from "./views/Viewdetailsentrenamiento/Viewdetailsentrenamiento";
 import Viewadminvideo from "./views/ViewAdmin/Viewadminvideo";
 import ViewLogin from "./views/ViewLogin/ViewLogin";
+import ViewFormObsequio from "./views/ViewRigistro/ViewFormObsequio";
 import axios from "axios";
 
 //axios.defaults.baseURL = "http://localhost:3001";
@@ -108,7 +109,7 @@ function App() {
         {/*<Route path="/entrenamiento" element={<ViewEntrenamiento />}/> */}
         <Route path="/curso/:id" element={<ViewClases />}/>
         <Route path="/agregarclases" element={<AgregarClases />}/>
-        <Route path="/Comunidad" element={<HomeComunidadView />} />
+        <Route path="/Comunidad" element={isLoggedIn ? <HomeComunidadView /> : <Navigate to="/"/>} />
         <Route path="/Comunidad/users" element={<UserList users={userData}/>} />
         <Route path="/message" element={<Message />} />
         <Route path="/agregarAmigo" element={<AgregarAmigo />} />
@@ -120,6 +121,7 @@ function App() {
         <Route path="/informacion/:id" element={<Viewdetailsentrenamiento />} />
         <Route path="/admin/videos" element={<Viewadminvideo />} />
         <Route path="/login" element={<ViewLogin />} />
+        <Route path="/FormObsequio" element={<ViewFormObsequio />} />
       </Routes>
     </Router>
   );

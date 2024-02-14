@@ -136,9 +136,11 @@ export default function Nav() {
           {/*<a href="#" className="hover:text-gray-300 transition-colors">
             Miembros
   </a>*/}
-          <a href="" 
-          onClick={() => navigate("/Error404")}
-          className="hover:text-gray-300 transition-colors">
+          <a
+            href=""
+            onClick={() => navigate("/Comunidad")}
+            className="hover:text-gray-300 transition-colors"
+          >
             Comunidad
           </a>
           <a
@@ -204,8 +206,18 @@ export default function Nav() {
             >
               Entrenamiento
             </a>
-            <a href="#" className="hover:text-gray-300 transition-colors"
-            onClick={() => navigate("/Nosotros")}>
+            <a
+              href=""
+              onClick={() => navigate("/Comunidad")}
+              className="hover:text-gray-300 transition-colors"
+            >
+              Comunidad
+            </a>
+            <a
+              href="#"
+              className="hover:text-gray-300 transition-colors"
+              onClick={() => navigate("/Nosotros")}
+            >
               Nosotros
             </a>
           </nav>
