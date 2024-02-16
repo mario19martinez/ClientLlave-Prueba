@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import axios from "axios";
 
 function MyPost() {
@@ -28,51 +29,93 @@ function MyPost() {
     fetchMyPosts();
   }, []); // Solo se ejecuta al montar el componente
 
+  const toggleCommentsVisibility = (postId) => {
+    setUserPosts((prevUserPosts) =>
+      prevUserPosts.map((post) => {
+        if (post.id === postId) {
+          return { ...post, showComments: !post.showComments };
+        }
+        return post;
+      })
+    );
+  };
+
   if (loading) {
-    return <p>Cargando...</p>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+        <p className="ml-4 text-gray-700 text-lg">Cargando...</p>
+      </div>
+    );
   }
 
   return (
     <div className="max-w-md mx-auto mt-8 -translate-y-80 w-60 md:w-96">
-      <h2 className="text-2xl font-bold mb-4 text-gray-700">Mis Publicaciones</h2>
-      {userPosts.length === 0 ? (
-        <p className="text-gray-600">Todavia no tienes publicaciones hechas.</p>
-      ) : (
-        <ul>
-          {userPosts.map((post) => (
-            <li key={post.id}
-            className="bg-white shadow-md mb-4 p-6 rounded-md"
-            >
-              {post.content && <p className="text-xl font-semibold mb-2">{post.content}</p>}
-              {post.image && <img src={post.image} alt="Publicacion" className="mb-2 rounded-md" />}
+      <h2 className="text-2xl font-bold mb-4 text-gray-700">
+        Mis Publicaciones
+      </h2>
+      <ul>
+        {userPosts.map((post) => (
+          <li key={post.id} className="bg-white shadow-md mb-4 p-6 rounded-md">
+            {post.content && (
+              <p className="text-xl font-semibold mb-2">{post.content}</p>
+            )}
+            {post.image && (
+              <img
+                src={post.image}
+                alt="Publicación"
+                className="mb-2 rounded-md"
+              />
+            )}
+            <div className="flex justify-between items-center">
               <div>
-                <p className="text-gray-600 mb-2">Comentarios: </p>
-                {post.Comments && post.Comments.length > 0 && (
-                  <ul>
-                    {post.Comments.map((comment) => (
-                      <li key={comment.id} className="text-sm">
-                        {comment.content} - {comment.User.name}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                <p className="text-gray-600 mb-2">
+                  <FavoriteIcon /> {post.likesCount || 0}
+                </p>
               </div>
               <div>
-                <p className="text-gray">Like: </p>
-                {post.Likes && post.Likes.length > 0 && (
-                  <ul>
-                    {post.Likes.map((like) => (
-                      <li key={like.id} className="text-sm">
-                        {like.User.name}
-                      </li>
-                    ))}
-                  </ul>
+                {post.showComments ? (
+                  <button
+                    className="text-gray-600 underline"
+                    onClick={() => toggleCommentsVisibility(post.id)}
+                  >
+                    Ocultar comentarios
+                  </button>
+                ) : (
+                  <button
+                    className="text-gray-600 underline"
+                    onClick={() => toggleCommentsVisibility(post.id)}
+                  >
+                    Ver comentarios ({post.comments.length})
+                  </button>
                 )}
               </div>
-            </li>
-          ))}
-        </ul>
-      )}
+            </div>
+            {post.showComments && post.comments && post.comments.length > 0 && (
+              <div className="mt-4">
+                <ul>
+                  {post.comments.map((comment) => (
+                    <li
+                      key={comment.id}
+                      className="text-sm bg-gray-200 p-4 rounded-lg border-b-4 border-gray-300 mb-2"
+                    ><div className="flex items-center mt-2">
+                    {comment.user.image ? (
+                      <img src={comment.user.image} alt="Avatar" className="w-8 h-8 rounded-full mr-2" />
+                    ) : (
+                      <img src="https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280.jpg" alt="Default Avatar" className="w-8 h-8 rounded-full mr-2" />
+                    )}
+                    <p className="text-base font-hammersmithOne">{comment.user.name} {comment.user.last_name}</p>
+                  </div>
+                      {/* <p className="text-base font-hammersmithOne">{comment.user.name} {comment.user.last_name}</p> */}
+                      <p className="text-base">{comment.content}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
