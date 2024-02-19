@@ -4,9 +4,10 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCursoDetail,
-  deleteCurso,
+  // deleteCurso,
 } from "../../../Redux/features/courses/coursesSlice";
 import CursoEdit from "./CursoEdit";
+import axios from "axios";
 
 function CursoDetail() {
   const { id } = useParams();
@@ -17,20 +18,18 @@ function CursoDetail() {
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const handleDeletedCurso = () => {
+  const handleDeletedCurso = async () => {
     const confirmDelete = window.confirm(
-      "¿Estás seguro de eliminar este curso?"
+      "¿Estas seguro de eliminar este curso?"
     );
     if (confirmDelete) {
-      dispatch(deleteCurso(id))
-        .unwrap()
-        .then(() => {
-          alert("Curso eliminado exitosamente");
-          navigate("/admin/cursos");
-        })
-        .catch((error) => {
-          console.error("Error al eliminar el curso:", error);
-        });
+      try {
+        const response = await axios.delete(`/cursos/delete/${id}`);
+        alert(response.data.message);
+        navigate("/admin/cursos");
+      } catch (error) {
+        console.error("Error al eliminar el curso:", error);
+      }
     }
   };
 

@@ -127,42 +127,6 @@ function SidebarAdmin({ selectedTab }) {
               Nosotros
             </button>
           </li>
-
-          <li className="mb-4">
-            <button
-              href=""
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Usuarios Eliminados"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-              onClick={() => navigate("/admin/usersDeleted")}
-            >
-              <GroupIcon
-                className={`${
-                  selectedTab === "Usuarios Eliminados" ? "text-white" : ""
-                }`}
-              />{" "}
-              Usuarios Eliminados
-            </button>
-          </li>
-          <li className="mb-4">
-            <button
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Cursos Eliminados"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-              onClick={() => navigate("/admin/cursosDeleted")}
-            >
-              <SchoolIcon
-                className={`${
-                  selectedTab === "Cursos Eliminados" ? "text-white" : ""
-                }`}
-              />{" "}
-              Cursos Eliminados
-            </button>
-          </li>
           <li className="mb-4">
             <button
               className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
