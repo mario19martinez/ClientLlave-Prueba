@@ -5,7 +5,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PersonOffIcon from "@mui/icons-material/PersonOff";
 import PersonIcon from "@mui/icons-material/Person";
 import Modal from "react-modal";
-import RegistrationModal from './RegistroUsuario';
+import RegistrationModal from "./RegistroUsuario";
+import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import Paises from "./Paises.json";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchUsers as fetchUsersAction,
@@ -26,6 +28,7 @@ function AllUsersAdmin() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortAsc, setSortAsc] = useState(true); // Variable para controlar el orden ascendente/descendente
   const usersPerPage = 10;
 
   useEffect(() => {
@@ -36,7 +39,7 @@ function AllUsersAdmin() {
     const confirmMessage = `¿Estás seguro de que quieres ${
       user.banned ? "desbanear" : "banear"
     } a ${user.name}?`;
-  
+
     const userConfirmed = window.confirm(confirmMessage);
     if (userConfirmed) {
       const identificacion = user.sub;
@@ -46,7 +49,9 @@ function AllUsersAdmin() {
   };
 
   const deleteUser = async (id) => {
-    const confirmDelete = window.confirm("¿Estás seguro de que quieres eliminar este usuario?");
+    const confirmDelete = window.confirm(
+      "¿Estás seguro de que quieres eliminar este usuario?"
+    );
 
     if (confirmDelete) {
       await dispatch(deleteUserAction(id));
@@ -88,6 +93,13 @@ function AllUsersAdmin() {
     setShowRegistrationModal(false);
   };
 
+  const resetFilters = () => {
+    setSearchTerm("");
+    setCountryFilter("");
+    setStartDateFilter("");
+    setEndDateFilter("");
+  };
+
   if (isLoading) {
     return (
       <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75 z-50">
@@ -99,21 +111,29 @@ function AllUsersAdmin() {
     );
   }
 
-  // Filtrado de usuarios
-  const filteredUsers = usersState.filter(user => {
+  // Filtrado y ordenamiento de usuarios
+  const filteredAndSortedUsers = usersState.filter((user) => {
     const nameMatch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
     const lastNameMatch = user.last_name.toLowerCase().includes(searchTerm.toLowerCase());
+    const phoneMatch = user.telefono.toLowerCase().includes(searchTerm.toLowerCase()); // Búsqueda por teléfono
     const countryMatch = countryFilter === "" || user.pais.toLowerCase() === countryFilter.toLowerCase();
     const startDateMatch = startDateFilter === "" || new Date(user.registeredAt) >= new Date(startDateFilter);
     const endDateMatch = endDateFilter === "" || new Date(user.registeredAt) <= new Date(endDateFilter);
 
-    return nameMatch && lastNameMatch && countryMatch && startDateMatch && endDateMatch;
+    return nameMatch || lastNameMatch || phoneMatch || (countryMatch && startDateMatch && endDateMatch);
+  }).sort((a, b) => {
+    // Ordenar alfabéticamente
+    if (sortAsc) {
+      return a.name.localeCompare(b.name);
+    } else {
+      return b.name.localeCompare(a.name);
+    }
   });
 
   // Paginación - Calcula índices de usuarios
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+  const currentUsers = filteredAndSortedUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   // Cambia de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -134,7 +154,7 @@ function AllUsersAdmin() {
         className="Modal absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg p-6"
         overlayClassName="Overlay fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75"
       >
-         <button
+        <button
           onClick={closeRegistrationModal}
           className="absolute top-4 right-4 text-white hover:text-gray-300 focus:outline-none rounded-full w-8 h-8 flex items-center justify-center bg-blue-500 hover:bg-blue-700 transition duration-300"
         >
@@ -156,7 +176,11 @@ function AllUsersAdmin() {
           className="border-2 p-2 mr-2 focus:border-blue-500 focus:outline-none rounded-lg"
         >
           <option value="">Todos los países</option>
-          {/* Aquí puedes mapear una lista de países si lo deseas */}
+          {Paises.paises.map((pais, index) => (
+            <option key={index} value={pais.nombre}>
+              {pais.nombre}
+            </option>
+          ))}
         </select>
         <input
           type="date"
@@ -170,6 +194,12 @@ function AllUsersAdmin() {
           onChange={handleEndDateFilterChange}
           className="border-2 p-2 mr-2 focus:border-blue-500 focus:outline-none rounded-lg"
         />
+        <button
+          onClick={resetFilters}
+          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg ml-2"
+        >
+          <RotateLeftIcon />
+        </button>
       </div>
       {userNotFound ? (
         <p className="text-red-500">El usuario no existe.</p>
@@ -177,8 +207,9 @@ function AllUsersAdmin() {
         <table className="w-full border">
           <thead>
             <tr className="bg-blue-600 text-white">
-              {/*<th className="border p-2 px-8">ID</th>*/}
-              <th className="border p-2 px-4">Nombre</th>
+              <th className="border p-2 px-4 cursor-pointer" onClick={() => setSortAsc(!sortAsc)}>
+                Nombre {sortAsc ? "▼" : "▲"}
+              </th>
               <th className="border p-2 px-6">Apellido</th>
               <th className="border p-2 px-12">Correo</th>
               <th className="border p-2 px-8">País</th>
@@ -193,13 +224,16 @@ function AllUsersAdmin() {
           <tbody>
             {currentUsers.map((user) => (
               <tr key={user.identificacion} className="text-center">
-                {/*<td className="border p-2">{user.identificacion}</td>*/}
                 <td className="border p-2">{user.name}</td>
                 <td className="border p-2">{user.last_name}</td>
                 <td className="border p-2">{user.email}</td>
                 <td className="border p-2">{user.pais}</td>
                 <td className="border p-2">{user.telefono}</td>
-                <td className="border p-2">{user.registeredAt ? new Date(user.registeredAt).toLocaleDateString() : "Sin fecha"}</td>
+                <td className="border p-2">
+                  {user.registeredAt
+                    ? new Date(user.registeredAt).toLocaleDateString()
+                    : "Sin fecha"}
+                </td>
                 <td className="translate-x-2">
                   <button
                     className="text-blue-500 hover:underline"
@@ -241,12 +275,28 @@ function AllUsersAdmin() {
       {isModalOpen && (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75 z-50">
           <div className="bg-white p-8 rounded-lg shadow-lg">
-            <button onClick={handleCloseModal} className="absolute top-2 right-2 text-blue-600 hover:text-blue-700 focus:outline-none">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+            <button
+              onClick={handleCloseModal}
+              className="absolute top-2 right-2 text-blue-600 hover:text-blue-700 focus:outline-none"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
               </svg>
             </button>
-            <p className="text-center text-lg font-semibold mb-4">Detalles del usuario</p>
+            <p className="text-center text-lg font-semibold mb-4">
+              Detalles del usuario
+            </p>
             <div>
               <p>Nombre: {selectedUser.name}</p>
               <p>Apellido: {selectedUser.last_name}</p>
@@ -262,16 +312,23 @@ function AllUsersAdmin() {
       {/* Pagination */}
       <nav className="mt-4">
         <ul className="flex justify-center">
-          {Array.from({ length: Math.ceil(filteredUsers.length / usersPerPage) }, (_, i) => (
-            <li key={i} className="mx-1">
-              <button
-                onClick={() => paginate(i + 1)}
-                className={`px-3 py-1 rounded-full ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700 hover:bg-gray-400'}`}
-              >
-                {i + 1}
-              </button>
-            </li>
-          ))}
+          {Array.from(
+            { length: Math.ceil(filteredAndSortedUsers.length / usersPerPage) },
+            (_, i) => (
+              <li key={i} className="mx-1">
+                <button
+                  onClick={() => paginate(i + 1)}
+                  className={`px-3 py-1 rounded-full ${
+                    currentPage === i + 1
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              </li>
+            )
+          )}
         </ul>
       </nav>
     </div>
