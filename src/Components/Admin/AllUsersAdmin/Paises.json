@@ -1,0 +1,91 @@
+{
+  "paises": [
+    {
+      "nombre": "Argentina",
+      "codigo_telefonico": "+54"
+    },
+    {
+      "nombre": "Bolivia",
+      "codigo_telefonico": "+591"
+    },
+    {
+      "nombre": "Chile",
+      "codigo_telefonico": "+56"
+    },
+    {
+      "nombre": "Colombia",
+      "codigo_telefonico": "+57"
+    },
+    {
+      "nombre": "Costa Rica",
+      "codigo_telefonico": "+506"
+    },
+    {
+      "nombre": "Cuba",
+      "codigo_telefonico": "+53"
+    },
+    {
+      "nombre": "Ecuador",
+      "codigo_telefonico": "+593"
+    },
+    {
+      "nombre": "El Salvador",
+      "codigo_telefonico": "+503"
+    },
+    {
+      "nombre": "España",
+      "codigo_telefonico": "+34"
+    },
+    {
+      "nombre": "Estados Unidos (EEUU)",
+      "codigo_telefonico": "+1"
+    },
+    {
+      "nombre": "Guatemala",
+      "codigo_telefonico": "+502"
+    },
+    {
+      "nombre": "Honduras",
+      "codigo_telefonico": "+504"
+    },
+    {
+      "nombre": "México",
+      "codigo_telefonico": "+52"
+    },
+    {
+      "nombre": "Nicaragua",
+      "codigo_telefonico": "+505"
+    },
+    {
+      "nombre": "Panamá",
+      "codigo_telefonico": "+507"
+    },
+    {
+      "nombre": "Paraguay",
+      "codigo_telefonico": "+595"
+    },
+    {
+      "nombre": "Perú",
+      "codigo_telefonico": "+51"
+    },
+    {
+      "nombre": "Puerto Rico",
+      "codigo_telefonico": "+1-787",
+      "codigo_telefonico2": "+1-939"
+    },
+    {
+      "nombre": "República Dominicana",
+      "codigo_telefonico": "+1-809",
+      "codigo_telefonico2": "+1-829",
+      "codigo_telefonico3": "+1-849"
+    },
+    {
+      "nombre": "Uruguay",
+      "codigo_telefonico": "+598"
+    },
+    {
+      "nombre": "Venezuela",
+      "codigo_telefonico": "+58"
+    }
+  ]
+}

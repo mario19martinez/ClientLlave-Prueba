@@ -5,12 +5,14 @@ import SidebarAdmin from "../../Components/Admin/SidebarAdmin/SidebarAdmin";
 import AllUsersAdmin from "../../Components/Admin/AllUsersAdmin/AllUsersAdmin";
 
 export default function ViewDashBoardAdmin() {
-const [selectedTab] = useState("Usuarios")
+  const [selectedTab] = useState("Usuarios");
   return (
     <div>
       <NavAdmin />
-      <SidebarAdmin selectedTab={selectedTab}/>
-      <AllUsersAdmin />
+      <div className="flex">
+        <SidebarAdmin selectedTab={selectedTab} />
+        <AllUsersAdmin />
+      </div>
     </div>
   );
 }
