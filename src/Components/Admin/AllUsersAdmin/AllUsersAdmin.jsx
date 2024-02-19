@@ -18,10 +18,15 @@ function AllUsersAdmin() {
   const usersState = useSelector((state) => state.adminUsers.users);
   const isLoading = useSelector((state) => state.adminUsers.isLoading);
   const [searchTerm, setSearchTerm] = useState("");
+  const [countryFilter, setCountryFilter] = useState("");
+  const [startDateFilter, setStartDateFilter] = useState("");
+  const [endDateFilter, setEndDateFilter] = useState("");
   const [userNotFound, setUserNotFound] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 10;
 
   useEffect(() => {
     dispatch(fetchUsersAction());
@@ -54,6 +59,18 @@ function AllUsersAdmin() {
     setUserNotFound(false);
   };
 
+  const handleCountryFilterChange = (event) => {
+    setCountryFilter(event.target.value);
+  };
+
+  const handleStartDateFilterChange = (event) => {
+    setStartDateFilter(event.target.value);
+  };
+
+  const handleEndDateFilterChange = (event) => {
+    setEndDateFilter(event.target.value);
+  };
+
   const handleOpenModal = (user) => {
     setIsModalOpen(true);
     setSelectedUser(user);
@@ -82,6 +99,25 @@ function AllUsersAdmin() {
     );
   }
 
+  // Filtrado de usuarios
+  const filteredUsers = usersState.filter(user => {
+    const nameMatch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const lastNameMatch = user.last_name.toLowerCase().includes(searchTerm.toLowerCase());
+    const countryMatch = countryFilter === "" || user.pais.toLowerCase() === countryFilter.toLowerCase();
+    const startDateMatch = startDateFilter === "" || new Date(user.registeredAt) >= new Date(startDateFilter);
+    const endDateMatch = endDateFilter === "" || new Date(user.registeredAt) <= new Date(endDateFilter);
+
+    return nameMatch && lastNameMatch && countryMatch && startDateMatch && endDateMatch;
+  });
+
+  // Paginación - Calcula índices de usuarios
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+
+  // Cambia de página
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="absolute top-0 left-0 w-auto translate-y-40 translate-x-72">
       <h1 className="text-2xl font-gabarito mb-4 text-gray-700">Usuarios</h1>
@@ -106,13 +142,35 @@ function AllUsersAdmin() {
         </button>
         <RegistrationModal />
       </Modal>
-      <input
-        type="text"
-        placeholder="Buscar..."
-        value={searchTerm}
-        onChange={(e) => handleSearchChange(e.target.value)}
-        className="border-2 p-2 mb-4 focus:border-blue-500 focus:outline-none rounded-lg w-full"
-      />
+      <div className="flex mb-4">
+        <input
+          type="text"
+          placeholder="Buscar..."
+          value={searchTerm}
+          onChange={(e) => handleSearchChange(e.target.value)}
+          className="border-2 p-2 mr-2 focus:border-blue-500 focus:outline-none rounded-lg"
+        />
+        <select
+          value={countryFilter}
+          onChange={handleCountryFilterChange}
+          className="border-2 p-2 mr-2 focus:border-blue-500 focus:outline-none rounded-lg"
+        >
+          <option value="">Todos los países</option>
+          {/* Aquí puedes mapear una lista de países si lo deseas */}
+        </select>
+        <input
+          type="date"
+          value={startDateFilter}
+          onChange={handleStartDateFilterChange}
+          className="border-2 p-2 mr-2 focus:border-blue-500 focus:outline-none rounded-lg"
+        />
+        <input
+          type="date"
+          value={endDateFilter}
+          onChange={handleEndDateFilterChange}
+          className="border-2 p-2 mr-2 focus:border-blue-500 focus:outline-none rounded-lg"
+        />
+      </div>
       {userNotFound ? (
         <p className="text-red-500">El usuario no existe.</p>
       ) : (
@@ -125,6 +183,7 @@ function AllUsersAdmin() {
               <th className="border p-2 px-12">Correo</th>
               <th className="border p-2 px-8">País</th>
               <th className="border p-2 px-8">Teléfono</th>
+              <th className="border p-2 px-8">Fecha de registro</th>
               <th className="border p-2">Detalles</th>
               <th className="border p-2">Banear</th>
               <th className="border p-2">Eliminar</th>
@@ -132,55 +191,50 @@ function AllUsersAdmin() {
           </thead>
 
           <tbody>
-            {usersState
-              .filter((user) =>
-                user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                user.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                user.email.toLowerCase().includes(searchTerm.toLowerCase())
-              )
-              .map((user) => (
-                <tr key={user.identificacion} className="text-center">
-                  {/*<td className="border p-2">{user.identificacion}</td>*/}
-                  <td className="border p-2">{user.name}</td>
-                  <td className="border p-2">{user.last_name}</td>
-                  <td className="border p-2">{user.email}</td>
-                  <td className="border p-2">{user.pais}</td>
-                  <td className="border p-2">{user.telefono}</td>
-                  <td className="translate-x-2">
+            {currentUsers.map((user) => (
+              <tr key={user.identificacion} className="text-center">
+                {/*<td className="border p-2">{user.identificacion}</td>*/}
+                <td className="border p-2">{user.name}</td>
+                <td className="border p-2">{user.last_name}</td>
+                <td className="border p-2">{user.email}</td>
+                <td className="border p-2">{user.pais}</td>
+                <td className="border p-2">{user.telefono}</td>
+                <td className="border p-2">{user.registeredAt ? new Date(user.registeredAt).toLocaleDateString() : "Sin fecha"}</td>
+                <td className="translate-x-2">
+                  <button
+                    className="text-blue-500 hover:underline"
+                    onClick={() => handleOpenModal(user)}
+                  >
+                    <VisibilityIcon fontSize="large" />
+                  </button>
+                </td>
+                <td className="translate-x-2">
+                  {user.banned ? (
                     <button
-                      className="text-blue-500 hover:underline"
-                      onClick={() => handleOpenModal(user)}
+                      className="text-red-700 font-sans py-2 px-4 mr-2 rounded"
+                      onClick={() => bandUser(user)}
                     >
-                      <VisibilityIcon fontSize="large" />
+                      <PersonOffIcon fontSize="large" />
                     </button>
-                  </td>
-                  <td className="translate-x-2">
-                    {user.banned ? (
-                      <button
-                        className="text-red-700 font-sans py-2 px-4 mr-2 rounded"
-                        onClick={() => bandUser(user)}
-                      >
-                        <PersonOffIcon fontSize="large" />
-                      </button>
-                    ) : (
-                      <button
-                        className="text-blue-700 font-sans py-2 px-4 mr-2 rounded"
-                        onClick={() => bandUser(user)}
-                      >
-                        <PersonIcon fontSize="large" />
-                      </button>
-                    )}
-                  </td>
-                  <td>
+                  ) : (
                     <button
-                      className="text-gray-700 font-sans py-2 px-4 rounded"
-                      onClick={() => deleteUser(user.identificacion)}
+                      className="text-blue-700 font-sans py-2 px-4 mr-2 rounded"
+                      onClick={() => bandUser(user)}
                     >
-                      <DeleteIcon fontSize="large" />
+                      <PersonIcon fontSize="large" />
                     </button>
-                  </td>
-                </tr>
-              ))}
+                  )}
+                </td>
+                <td>
+                  <button
+                    className="text-gray-700 font-sans py-2 px-4 rounded"
+                    onClick={() => deleteUser(user.identificacion)}
+                  >
+                    <DeleteIcon fontSize="large" />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       )}
@@ -204,6 +258,22 @@ function AllUsersAdmin() {
           </div>
         </div>
       )}
+
+      {/* Pagination */}
+      <nav className="mt-4">
+        <ul className="flex justify-center">
+          {Array.from({ length: Math.ceil(filteredUsers.length / usersPerPage) }, (_, i) => (
+            <li key={i} className="mx-1">
+              <button
+                onClick={() => paginate(i + 1)}
+                className={`px-3 py-1 rounded-full ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700 hover:bg-gray-400'}`}
+              >
+                {i + 1}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
   );
 }
