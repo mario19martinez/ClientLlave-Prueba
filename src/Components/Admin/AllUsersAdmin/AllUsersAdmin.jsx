@@ -6,8 +6,8 @@ import PersonOffIcon from "@mui/icons-material/PersonOff";
 import PersonIcon from "@mui/icons-material/Person";
 import Modal from "react-modal";
 import RegistrationModal from "./RegistroUsuario";
-import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 import Paises from "./Paises.json";
+import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchUsers as fetchUsersAction,
@@ -62,7 +62,7 @@ function AllUsersAdmin() {
   const handleSearchChange = (newSearchTerm) => {
     setSearchTerm(newSearchTerm);
     setUserNotFound(false);
-  };
+  };  
 
   const handleCountryFilterChange = (event) => {
     setCountryFilter(event.target.value);
@@ -113,14 +113,29 @@ function AllUsersAdmin() {
 
   // Filtrado y ordenamiento de usuarios
   const filteredAndSortedUsers = usersState.filter((user) => {
-    const nameMatch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const lastNameMatch = user.last_name.toLowerCase().includes(searchTerm.toLowerCase());
-    const phoneMatch = user.telefono.toLowerCase().includes(searchTerm.toLowerCase()); // Búsqueda por teléfono
-    const countryMatch = countryFilter === "" || user.pais.toLowerCase() === countryFilter.toLowerCase();
-    const startDateMatch = startDateFilter === "" || new Date(user.registeredAt) >= new Date(startDateFilter);
-    const endDateMatch = endDateFilter === "" || new Date(user.registeredAt) <= new Date(endDateFilter);
+    const nameMatch = user.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const lastNameMatch = user.last_name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const countryMatch =
+      countryFilter === "" ||
+      user.pais.toLowerCase() === countryFilter.toLowerCase();
+    const startDateMatch =
+      startDateFilter === "" ||
+      new Date(user.registeredAt) >= new Date(startDateFilter);
+    const endDateMatch =
+      endDateFilter === "" ||
+      new Date(user.registeredAt) <= new Date(endDateFilter);
 
-    return nameMatch || lastNameMatch || phoneMatch || (countryMatch && startDateMatch && endDateMatch);
+    return (
+      nameMatch &&
+      lastNameMatch &&
+      countryMatch &&
+      startDateMatch &&
+      endDateMatch
+    );
   }).sort((a, b) => {
     // Ordenar alfabéticamente
     if (sortAsc) {
