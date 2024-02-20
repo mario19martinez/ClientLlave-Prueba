@@ -7,8 +7,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import Modal from "react-modal";
 import { useNavigate } from "react-router-dom";
 import RegistrationModal from "./RegistroUsuario";
-import Paises from "./Paises.json";
-import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import Paises from "../../FormResgistro/Paises.json";
+import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchUsers as fetchUsersAction,
@@ -29,7 +29,7 @@ function AllUsersAdmin() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortAsc, setSortAsc] = useState(true); 
+  const [sortAsc, setSortAsc] = useState(true);
   const usersPerPage = 10;
 
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ function AllUsersAdmin() {
   const handleSearchChange = (newSearchTerm) => {
     setSearchTerm(newSearchTerm);
     setUserNotFound(false);
-  };  
+  };
 
   const handleCountryFilterChange = (event) => {
     setCountryFilter(event.target.value);
@@ -115,51 +115,42 @@ function AllUsersAdmin() {
   }
 
   // Filtrado y ordenamiento de usuarios
-  const filteredAndSortedUsers = usersState.filter((user) => {
-    const nameMatch = user.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase()) ||
-      user.last_name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase()) ||
-      user.email
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase()) ||
-      user.pais
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase()) ||
-      user.telefono
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    const countryMatch =
-      countryFilter === "" ||
-      user.pais.toLowerCase() === countryFilter.toLowerCase();
-    const startDateMatch =
-      startDateFilter === "" ||
-      new Date(user.registeredAt) >= new Date(startDateFilter);
-    const endDateMatch =
-      endDateFilter === "" ||
-      new Date(user.registeredAt) <= new Date(endDateFilter);
+  const filteredAndSortedUsers = usersState
+    .filter((user) => {
+      const nameMatch =
+        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.pais.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.telefono.toLowerCase().includes(searchTerm.toLowerCase());
+      const countryMatch =
+        countryFilter === "" ||
+        user.pais.toLowerCase() === countryFilter.toLowerCase();
+      const startDateMatch =
+        startDateFilter === "" ||
+        new Date(user.registeredAt) >= new Date(startDateFilter);
+      const endDateMatch =
+        endDateFilter === "" ||
+        new Date(user.registeredAt) <= new Date(endDateFilter);
 
-    return (
-      nameMatch &&
-      countryMatch &&
-      startDateMatch &&
-      endDateMatch
-    );
-  }).sort((a, b) => {
-    // Ordenar alfabéticamente
-    if (sortAsc) {
-      return a.name.localeCompare(b.name);
-    } else {
-      return b.name.localeCompare(a.name);
-    }
-  });
+      return nameMatch && countryMatch && startDateMatch && endDateMatch;
+    })
+    .sort((a, b) => {
+      // Ordenar alfabéticamente
+      if (sortAsc) {
+        return a.name.localeCompare(b.name);
+      } else {
+        return b.name.localeCompare(a.name);
+      }
+    });
 
   // Paginación - Calcula índices de usuarios
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = filteredAndSortedUsers.slice(indexOfFirstUser, indexOfLastUser);
+  const currentUsers = filteredAndSortedUsers.slice(
+    indexOfFirstUser,
+    indexOfLastUser
+  );
 
   // Cambia de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -167,21 +158,28 @@ function AllUsersAdmin() {
   return (
     <div className="absolute top-0 left-0 w-auto translate-y-40 translate-x-72">
       <h1 className="text-2xl font-gabarito mb-4 text-gray-700">Usuarios</h1>
-      <div className="flex mb-4 space-x-4">
-      <button
-        onClick={openRegistrationModal}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mb-4"
-      >
-        Agregar usuario
-      </button>
-      <button
-        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg mb-4"
-        onClick={() => navigate("/admin/usersDeleted")}
-      >
-        {" "}
-        <DeleteIcon /> Usuarios{" "}
-      </button>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex space-x-4">
+          <button
+            onClick={openRegistrationModal}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+          >
+            Agregar usuario
+          </button>
+          <button
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+            onClick={() => navigate("/admin/usersDeleted")}
+          >
+            <DeleteIcon className="inline-block mr-2" /> Usuarios eliminados
+          </button>
+        </div>
+        <div>
+          <p className="text-gray-600 text-sm">
+            Usuarios registrados: {filteredAndSortedUsers.length}
+          </p>
+        </div>
       </div>
+
       <Modal
         isOpen={showRegistrationModal}
         onRequestClose={closeRegistrationModal}
@@ -242,7 +240,10 @@ function AllUsersAdmin() {
         <table className="w-full border">
           <thead>
             <tr className="bg-blue-600 text-white">
-              <th className="border p-2 px-4 cursor-pointer" onClick={() => setSortAsc(!sortAsc)}>
+              <th
+                className="border p-2 px-4 cursor-pointer"
+                onClick={() => setSortAsc(!sortAsc)}
+              >
                 Nombre {sortAsc ? "▼" : "▲"}
               </th>
               <th className="border p-2 px-6">Apellido</th>

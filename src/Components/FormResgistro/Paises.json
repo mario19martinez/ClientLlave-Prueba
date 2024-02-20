@@ -86,6 +86,114 @@
     {
       "nombre": "Venezuela",
       "codigo_telefonico": "+58"
+    },
+    {
+      "nombre": "Alemania",
+      "codigo_telefonico": "+49"
+    },
+    {
+      "nombre": "Austria",
+      "codigo_telefonico": "+43"
+    },
+    {
+      "nombre": "Bélgica",
+      "codigo_telefonico": "+32"
+    },
+    {
+      "nombre": "Bulgaria",
+      "codigo_telefonico": "+359"
+    },
+    {
+      "nombre": "Chipre",
+      "codigo_telefonico": "+357"
+    },
+    {
+      "nombre": "Croacia",
+      "codigo_telefonico": "+385"
+    },
+    {
+      "nombre": "Dinamarca",
+      "codigo_telefonico": "+45"
+    },
+    {
+      "nombre": "Eslovaquia",
+      "codigo_telefonico": "+421"
+    },
+    {
+      "nombre": "Eslovenia",
+      "codigo_telefonico": "+386"
+    },
+    {
+      "nombre": "Estonia",
+      "codigo_telefonico": "+372"
+    },
+    {
+      "nombre": "Finlandia",
+      "codigo_telefonico": "+358"
+    },
+    {
+      "nombre": "Francia",
+      "codigo_telefonico": "+33"
+    },
+    {
+      "nombre": "Grecia",
+      "codigo_telefonico": "+30"
+    },
+    {
+      "nombre": "Hungría",
+      "codigo_telefonico": "+36"
+    },
+    {
+      "nombre": "Irlanda",
+      "codigo_telefonico": "+353"
+    },
+    {
+      "nombre": "Italia",
+      "codigo_telefonico": "+39"
+    },
+    {
+      "nombre": "Letonia",
+      "codigo_telefonico": "+371"
+    },
+    {
+      "nombre": "Lituania",
+      "codigo_telefonico": "+370"
+    },
+    {
+      "nombre": "Luxemburgo",
+      "codigo_telefonico": "+352"
+    },
+    {
+      "nombre": "Malta",
+      "codigo_telefonico": "+356"
+    },
+    {
+      "nombre": "Países Bajos",
+      "codigo_telefonico": "+31"
+    },
+    {
+      "nombre": "Polonia",
+      "codigo_telefonico": "+48"
+    },
+    {
+      "nombre": "Portugal",
+      "codigo_telefonico": "+351"
+    },
+    {
+      "nombre": "Reino Unido",
+      "codigo_telefonico": "+44"
+    },
+    {
+      "nombre": "República Checa",
+      "codigo_telefonico": "+420"
+    },
+    {
+      "nombre": "Rumanía",
+      "codigo_telefonico": "+40"
+    },
+    {
+      "nombre": "Suecia",
+      "codigo_telefonico": "+46"
     }
   ]
 }
