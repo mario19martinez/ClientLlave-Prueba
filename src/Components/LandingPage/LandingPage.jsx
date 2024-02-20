@@ -96,7 +96,7 @@ export default function LandingPage() {
       className="flex justify-center items-center bg-cover bg-center"
       style={{
         backgroundImage: `url(${backgroundImage})`,
-        height: "85vh",
+        height: "100vh",
         width: "100%",
       }}
     >

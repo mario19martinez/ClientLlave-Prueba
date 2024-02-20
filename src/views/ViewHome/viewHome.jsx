@@ -8,6 +8,7 @@ import BlogHome from "../../Components/Blog/BlogHome";
 import Testimonios from "../../Components/Testimonios/Testimonios";
 import Viewcardhome from "../ViewCardHome/ViewCardHome";
 import Videoshome from "../../Components/Videoshome/Videoshome";
+//import Empresas from "../../Components/Empresas/Empresas";
 
 export default function ViewHome() {
   return (
@@ -17,12 +18,13 @@ export default function ViewHome() {
       <div className="flex flex-col md:flex-row flex-grow w-full">
         <div className="w-full md:w-3/4 md:pr-4">
           <div className="pl-2 pr-2">
-          <Videoshome />
+            {/*<Empresas />*/}
+            <Videoshome />
           </div>
           <ComponentesProfeticos />
-          <div className="pl-2 pr-2"> 
-          <BlogHome />
-          <Testimonios />
+          <div className="pl-2 pr-2">
+            <BlogHome />
+            <Testimonios />
           </div>
         </div>
         <div className="w-full md:w-1/4 mt-4 md:mt-0 md:pl-4">
