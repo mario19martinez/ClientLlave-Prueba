@@ -28,7 +28,7 @@ function AllUsersAdmin() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortAsc, setSortAsc] = useState(true); // Variable para controlar el orden ascendente/descendente
+  const [sortAsc, setSortAsc] = useState(true); 
   const usersPerPage = 10;
 
   useEffect(() => {
@@ -115,8 +115,17 @@ function AllUsersAdmin() {
   const filteredAndSortedUsers = usersState.filter((user) => {
     const nameMatch = user.name
       .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    const lastNameMatch = user.last_name
+      .includes(searchTerm.toLowerCase()) ||
+      user.last_name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase()) ||
+      user.email
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase()) ||
+      user.pais
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase()) ||
+      user.telefono
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const countryMatch =
@@ -131,7 +140,6 @@ function AllUsersAdmin() {
 
     return (
       nameMatch &&
-      lastNameMatch &&
       countryMatch &&
       startDateMatch &&
       endDateMatch
