@@ -9,8 +9,6 @@ import {
 } from "../../Redux/features/Users/usersSlice.js";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
-// Importa la imagen de fondo
 import backgroundImage from "../../assets/fondo.png";
 
 const initialValues = {
@@ -98,7 +96,7 @@ export default function LandingPage() {
       className="flex justify-center items-center bg-cover bg-center"
       style={{
         backgroundImage: `url(${backgroundImage})`,
-        height: "70vh",
+        height: "85vh",
         width: "100%",
       }}
     >
