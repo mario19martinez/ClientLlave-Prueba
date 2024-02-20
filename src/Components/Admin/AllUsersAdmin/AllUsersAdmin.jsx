@@ -5,6 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PersonOffIcon from "@mui/icons-material/PersonOff";
 import PersonIcon from "@mui/icons-material/Person";
 import Modal from "react-modal";
+import { useNavigate } from "react-router-dom";
 import RegistrationModal from "./RegistroUsuario";
 import Paises from "./Paises.json";
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
@@ -30,6 +31,8 @@ function AllUsersAdmin() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortAsc, setSortAsc] = useState(true); 
   const usersPerPage = 10;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchUsersAction());
@@ -164,12 +167,21 @@ function AllUsersAdmin() {
   return (
     <div className="absolute top-0 left-0 w-auto translate-y-40 translate-x-72">
       <h1 className="text-2xl font-gabarito mb-4 text-gray-700">Usuarios</h1>
+      <div className="flex mb-4 space-x-4">
       <button
         onClick={openRegistrationModal}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mb-4"
       >
         Agregar usuario
       </button>
+      <button
+        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg mb-4"
+        onClick={() => navigate("/admin/usersDeleted")}
+      >
+        {" "}
+        <DeleteIcon /> Usuarios{" "}
+      </button>
+      </div>
       <Modal
         isOpen={showRegistrationModal}
         onRequestClose={closeRegistrationModal}

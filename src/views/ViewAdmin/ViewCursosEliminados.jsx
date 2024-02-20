@@ -9,7 +9,7 @@ export default function ViewCursosEliminados() {
     <div>
       <NavAdmin />
       <SidebarAdmin selectedTab={selectedTab} />
-      <div className="-translate-y-52">
+      <div className="-translate-y-60">
         <CursosEliminados />
       </div>
     </div>
