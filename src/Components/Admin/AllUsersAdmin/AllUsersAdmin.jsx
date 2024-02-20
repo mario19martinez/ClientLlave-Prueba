@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import PersonOffIcon from "@mui/icons-material/PersonOff";
 import PersonIcon from "@mui/icons-material/Person";
 import Modal from "react-modal";
@@ -159,21 +160,27 @@ function AllUsersAdmin() {
     <div className="absolute top-0 left-0 w-auto translate-y-40 translate-x-72">
       <h1 className="text-2xl font-gabarito mb-4 text-gray-700">Usuarios</h1>
       <div className="flex items-center justify-between mb-4">
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 items-center">
           <button
             onClick={openRegistrationModal}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             Agregar usuario
           </button>
           <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out"
             onClick={() => navigate("/admin/usersDeleted")}
+            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 flex items-center"
           >
-            <DeleteIcon className="inline-block mr-2" /> Usuarios eliminados
+            <DeleteIcon className="mr-2" />
+            Usuarios eliminados
+          </button>
+          <button 
+          onClick={() => navigate("/admin/AnalyticsUser")}
+          className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
+            <BarChartIcon className="text-green-400" />
           </button>
         </div>
-        <div>
+        <div className="mt-4">
           <p className="text-gray-600 text-sm">
             Usuarios registrados: {filteredAndSortedUsers.length}
           </p>
