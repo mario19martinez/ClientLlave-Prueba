@@ -13,7 +13,11 @@ function Clases() {
   const [claseSeleccionada, setClaseSeleccionada] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalAgregarClaseIsOpen, setModalAgregarClaseIsOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1); // Estado para la página actual
   const navigate = useNavigate();
+
+  const clasesPerPage = 10; // Número de clases por página
+  const maxPagesToShow = 5; // Número máximo de páginas de paginación a mostrar
 
   useEffect(() => {
     const fetchClases = async () => {
@@ -69,7 +73,29 @@ function Clases() {
       }
     }
   }, [claseSeleccionada]);
-  const clasesOrdenadas = [...clases].sort((a, b) => a.id - b.id);
+  
+  // Calcular el índice de la primera y última clase de la página actual
+  const indexOfLastClase = currentPage * clasesPerPage;
+  const indexOfFirstClase = indexOfLastClase - clasesPerPage;
+  const currentClases = clases.slice(indexOfFirstClase, indexOfLastClase);
+
+  // Calcular el número total de páginas
+  const totalPages = Math.ceil(clases.length / clasesPerPage);
+
+  // Calcular el rango de páginas a mostrar en la paginación
+  let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+  let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+  // Ajustar el inicio y el final si el número total de páginas es menor que maxPagesToShow
+  if (totalPages <= maxPagesToShow) {
+    startPage = 1;
+    endPage = totalPages;
+  } else {
+    // Ajustar el inicio si estamos cerca del final
+    if (endPage === totalPages) {
+      startPage = endPage - maxPagesToShow + 1;
+    }
+  }
 
   return (
     <div className="container p-6 w-3/5">
@@ -78,6 +104,7 @@ function Clases() {
         Clases del Curso
       </h2>
 
+      {/* Modal de edición */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
@@ -95,6 +122,7 @@ function Clases() {
         )}
       </Modal>
 
+      {/* Modal de agregar clase */}
       <Modal
         isOpen={modalAgregarClaseIsOpen}
         onRequestClose={() => setModalAgregarClaseIsOpen(false)}
@@ -127,7 +155,7 @@ function Clases() {
       </div>
 
       <ul className="space-y-4">
-      {clasesOrdenadas.map((clase) => (
+        {currentClases.map((clase) => (
           <li
             key={clase.id}
             className={`cursor-pointer bg-gray-300 p-4 rounded-lg ${
@@ -211,6 +239,26 @@ function Clases() {
           </li>
         ))}
       </ul>
+
+      {/* Paginación */}
+      <div className="flex justify-center">
+        {clases.length > clasesPerPage && (
+          <ul className="flex list-none space-x-2">
+            {Array.from({ length: endPage - startPage + 1 }, (_, i) => (
+              <li key={startPage + i}>
+                <button
+                  className={`px-3 py-1 rounded-full ${
+                    startPage + i === currentPage ? "bg-blue-500 text-white" : "bg-gray-200"
+                  }`}
+                  onClick={() => setCurrentPage(startPage + i)}
+                >
+                  {startPage + i}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }

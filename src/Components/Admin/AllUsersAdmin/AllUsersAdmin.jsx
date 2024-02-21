@@ -16,6 +16,7 @@ import {
   banUser as banUserAction,
   deleteUser as deleteUserAction,
 } from "../../../Redux/features/AdminUsers/AdminUsersSlices";
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 
 function AllUsersAdmin() {
   const dispatch = useDispatch();
@@ -155,6 +156,12 @@ function AllUsersAdmin() {
 
   // Cambia de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Array de páginas a mostrar
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(filteredAndSortedUsers.length / usersPerPage); i++) {
+    pageNumbers.push(i);
+  }
 
   return (
     <div className="absolute top-0 left-0 w-auto translate-y-40 translate-x-72">
@@ -353,25 +360,44 @@ function AllUsersAdmin() {
       )}
 
       {/* Pagination */}
-      <nav className="mt-4">
+      <nav className="mt-4" aria-label="Pagination">
         <ul className="flex justify-center">
-          {Array.from(
-            { length: Math.ceil(filteredAndSortedUsers.length / usersPerPage) },
-            (_, i) => (
-              <li key={i} className="mx-1">
-                <button
-                  onClick={() => paginate(i + 1)}
-                  className={`px-3 py-1 rounded-full ${
-                    currentPage === i + 1
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-300 text-gray-700 hover:bg-gray-400"
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              </li>
-            )
-          )}
+          <li>
+            <button
+              onClick={() => setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`${
+                currentPage === 1 ? 'bg-gray-200 text-gray-600' : 'bg-white hover:bg-gray-50'
+              } px-3 py-1 border border-gray-300 rounded-l-md font-medium text-sm focus:outline-none`}
+            >
+              <ChevronLeftIcon className="w-5 h-5" aria-hidden="true" />
+              <span className="sr-only">Previous</span>
+            </button>
+          </li>
+          {pageNumbers.slice(Math.max(currentPage - 5, 0), currentPage + 5).map((pageNumber) => (
+            <li key={pageNumber}>
+              <button
+                onClick={() => paginate(pageNumber)}
+                className={`${
+                  pageNumber === currentPage ? 'bg-blue-500 text-white' : 'bg-white hover:bg-gray-50'
+                } px-3 py-1 border border-gray-300 font-medium text-sm focus:outline-none`}
+              >
+                {pageNumber}
+              </button>
+            </li>
+          ))}
+          <li>
+            <button
+              onClick={() => setCurrentPage(currentPage === pageNumbers.length ? pageNumbers.length : currentPage + 1)}
+              disabled={currentPage === pageNumbers.length}
+              className={`${
+                currentPage === pageNumbers.length ? 'bg-gray-200 text-gray-600' : 'bg-white hover:bg-gray-50'
+              } px-3 py-1 border border-gray-300 rounded-r-md font-medium text-sm focus:outline-none`}
+            >
+              <ChevronRightIcon className="w-5 h-5" aria-hidden="true" />
+              <span className="sr-only">Next</span>
+            </button>
+          </li>
         </ul>
       </nav>
     </div>
