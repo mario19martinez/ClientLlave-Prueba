@@ -26,22 +26,26 @@ export default function GraficaFechaDeRegistro() {
     // Count users by registration date
     const userCountByDate = userData.reduce((acc, user) => {
       const registrationDate = user.registeredAt
-        ? new Date(user.registeredAt).toDateString()
+        ? formatDate(user.registeredAt)
         : "Sin fecha";
       acc[registrationDate] = (acc[registrationDate] || 0) + 1;
       return acc;
     }, {});
 
     // Prepare data for chart
-    const dates = Object.keys(userCountByDate);
-    const userCounts = Object.values(userCountByDate);
+    const sortedDates = Object.keys(userCountByDate).sort((a, b) => {
+      const dateA = new Date(a);
+      const dateB = new Date(b);
+      return dateA - dateB;
+    });
+    const userCounts = sortedDates.map(date => userCountByDate[date]);
 
     // Draw chart
     const ctx = chartRef.current.getContext("2d");
     new Chart(ctx, {
       type: "bar",
       data: {
-        labels: dates,
+        labels: sortedDates,
         datasets: [
           {
             label: "Usuarios por día de registro",
@@ -71,6 +75,15 @@ export default function GraficaFechaDeRegistro() {
       },
     });
   }, [userData]);
+
+  // Función para formatear la fecha en DD-MM-YYYY
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1; 
+    const year = date.getFullYear();
+    return `${day < 10 ? '0' : ''}${day}-${month < 10 ? '0' : ''}${month}-${year}`;
+  };
 
   return (
     <div>
