@@ -13,19 +13,25 @@ export default function AnalyticsUsers() {
   };
 
   return (
-    <div className="flex flex-col p-10">
-      <div>
+    <div className="container mx-auto p-10">
+      <div className="mb-6">
         <button
           onClick={handleGoBack}
-          className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 mb-4"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
         >
           Volver
         </button>
       </div>
-      <div>
-        <GraficaUsuarioPais />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <GraficaUsuarioPais />
+        </div>
+        <div>
+          <GraficaTipoDeUsuario />
+        </div>
+      </div>
+      <div className="mt-6 max-w-lg">
         <GraficaFechaDeRegistro />
-        <GraficaTipoDeUsuario />
       </div>
     </div>
   );
