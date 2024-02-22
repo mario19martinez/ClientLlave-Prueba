@@ -38,7 +38,7 @@ function SidebarAdmin({ selectedTab }) {
   };
 
   return (
-    <div className="bg-blue-700 text-white w-56 min-h-screen translate-y-0 -translate-x-2">
+    <div className="bg-blue-700 text-white w-56 min-h-screen translate-y-0 -translate-x-2 pr-7">
       <div className="p-4 translate-x-10 translate-y-10">
         <div className="md:text-2xl font-semibold">
           <h2>{userData && userData.name}</h2>

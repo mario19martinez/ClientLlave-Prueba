@@ -164,7 +164,7 @@ function AllUsersAdmin() {
   }
 
   return (
-    <div className="absolute top-0 left-0 w-auto translate-y-40 translate-x-72">
+    <div className="w-full p-5">
       <h1 className="text-2xl font-gabarito mb-4 text-gray-700">Usuarios</h1>
       <div className="flex items-center justify-between mb-4">
         <div className="flex space-x-4 items-center">

@@ -12,9 +12,9 @@ export default function NavAdmin() {
   };
 
   return (
-    <nav className="bg-blue-700 py-2 lg:py-3 px-8 lg:px-12 shadow-md w-full top-0 z-50">
+    <div className="bg-blue-700 py-2 lg:py-3 px-8 lg:px-12 shadow-md w-screen top-0 z-50">
       <div className="flex items-center justify-between max-w-screen-lg mx-auto">
-        <div className="w-1/4 lg:w-2/12 -translate-x-36">
+        <div className="w-1/4 lg:w-2/12">
           <img src={llave} alt="logo" className="h-auto" />
         </div>
 
@@ -30,35 +30,48 @@ export default function NavAdmin() {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-8 h-8"
+              className="w-8 h-8 text-white"
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
+                d="M3 12h18M3 6h18M3 18h18"
               />
             </svg>
           </button>
         </div>
 
         <nav className="hidden lg:flex justify-center items-center gap-2 text-white font-medium">
-          <a href="" 
-          onClick={() => navigate("/")}
-          className="hover:text-gray-300 transition-colors hover:bg-blue-500 px-4 py-1 rounded">
+          <a
+            href="#"
+            onClick={() => navigate("/")}
+            className="hover:text-gray-300 transition-colors px-4 py-2 rounded"
+          >
             Inicio
           </a>
-          <a href="#" className="hover:text-gray-300 transition-colors hover:bg-blue-500 px-4 py-1 rounded">
+          <a
+            href="#"
+            className="hover:text-gray-300 transition-colors px-4 py-2 rounded"
+          >
             Blog
           </a>
-          <a href="" 
-          onClick={() => navigate("/entrenamiento")}
-          className="hover:text-gray-300 transition-colors hover:bg-blue-500 px-4 py-1 rounded">
+          <a
+            href="#"
+            onClick={() => navigate("/entrenamiento")}
+            className="hover:text-gray-300 transition-colors px-4 py-2 rounded"
+          >
             Entrenamiento
           </a>
-          <a href="#" className="hover:text-gray-300 transition-colors hover:bg-blue-500 px-4 py-1 rounded">
+          <a
+            href="#"
+            className="hover:text-gray-300 transition-colors px-4 py-2 rounded"
+          >
             Miembros
           </a>
-          <a href="#" className="hover:text-gray-300 transition-colors hover:bg-blue-500 px-4 py-1 rounded">
+          <a
+            href="#"
+            className="hover:text-gray-300 transition-colors px-4 py-2 rounded"
+          >
             Nosotros
           </a>
         </nav>
@@ -67,24 +80,39 @@ export default function NavAdmin() {
       {mobileMenuOpen && (
         <div className="mt-4 max-w-screen-lg mx-auto">
           <nav className="flex flex-col text-white font-medium">
-            <a href="#" className="hover:text-gray-300 transition-colors">
+            <a
+              href="#"
+              className="hover:text-gray-300 transition-colors px-4 py-2"
+            >
               Inicio
             </a>
-            <a href="#" className="hover:text-gray-300 transition-colors">
+            <a
+              href="#"
+              className="hover:text-gray-300 transition-colors px-4 py-2"
+            >
               Blog
             </a>
-            <a href="#" className="hover:text-gray-300 transition-colors">
+            <a
+              href="#"
+              className="hover:text-gray-300 transition-colors px-4 py-2"
+            >
               Entrenamiento
             </a>
-            <a href="#" className="hover:text-gray-300 transition-colors">
+            <a
+              href="#"
+              className="hover:text-gray-300 transition-colors px-4 py-2"
+            >
               Miembros
             </a>
-            <a href="#" className="hover:text-gray-300 transition-colors">
+            <a
+              href="#"
+              className="hover:text-gray-300 transition-colors px-4 py-2"
+            >
               Nosotros
             </a>
           </nav>
         </div>
       )}
-    </nav>
+    </div>
   );
 }
