@@ -13,12 +13,7 @@ import { getUserData } from "../../../Redux/features/Users/usersSlice";
 
 export default function NavUser() {
   const navigate = useNavigate();
-  //const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  /*const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };*/
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -36,7 +31,7 @@ export default function NavUser() {
   }, [dispatch, storedEmail]);
 
   return (
-    <div className="bg-white p-4 border-b-2 border-blue-500 md:translate-x-14 md:w-3/4 lg:w-11/12 h-full">
+    <div className="p-4 bg-white border-b-2 border-blue-500 md:translate-x-14 md:w-3/4 lg:w-11/12 h-full">
       <div className="md:flex md:items-center">
         <div className="relative rounded-full overflow-hidden cursor-pointer w-32 h-32 md:w-20 md:h-20 md:mr-4">
           <img
@@ -133,18 +128,6 @@ export default function NavUser() {
           </button>
         </div>
       )}
-      {/*isModalOpen && (
-        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded-lg">
-            <img
-              src={userData?.image || "https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280.jpg"}
-              alt="Profile"
-              className="max-w-screen-md cursor-pointer"
-              onClick={toggleModal}
-            />
-          </div>
-        </div>
-      )*/}
     </div>
   );
 }
