@@ -20,6 +20,8 @@ const initialValues = {
   confirmPassword: "",
   telefono: "",
   pais: "",
+  privacyPolicy: false,
+  dataTreatmentPolicy: false,
 };
 
 const validationSchema = Yup.object().shape({
@@ -36,6 +38,14 @@ const validationSchema = Yup.object().shape({
     .required("Confirma la contraseña"),
   telefono: Yup.string().required("El teléfono es requerido"),
   pais: Yup.string().required("El país es requerido"),
+  privacyPolicy: Yup.boolean().oneOf(
+    [true],
+    "Debes aceptar la política de privacidad"
+  ),
+  dataTreatmentPolicy: Yup.boolean().oneOf(
+    [true],
+    "Debes aceptar la política de tratamiento de datos"
+  ),
 });
 
 export default function LandingPage() {
@@ -108,8 +118,10 @@ export default function LandingPage() {
         <div className="bg-black bg-opacity-70 p-4 md:p-8 rounded-lg shadow-lg">
           <div className="text-center mb-2 md:mb-4">
             <h1 className="text-2xl md:text-3xl font-bold text-white">
-              Regístrate Ahora
+              Regístrate Ahora para obtener <br />
+              10 Clases de Obsequio
             </h1>
+            <p className="text-white">¡No te pierdas esta oferta especial!</p>
           </div>
           <form onSubmit={formik.handleSubmit} className="w-full md:w-auto">
             <div className="flex flex-col md:flex-row">
@@ -283,9 +295,59 @@ export default function LandingPage() {
                   )}
               </div>
             </div>
+            <div className="mb-4">
+              <div className="flex">
+              <label className="flex items-center text-white">
+                <input
+                  type="checkbox"
+                  name="privacyPolicy"
+                  checked={formik.values.privacyPolicy}
+                  onChange={(e) =>
+                    formik.setFieldValue("privacyPolicy", e.target.checked)
+                  }
+                  onBlur={formik.handleBlur}
+                  className="mr-2"
+                />
+                He leído y acepto las .
+              </label>
+              <a href="" onClick={() => navigate("/PoliticasPrivacidad")} className="text-blue-500"> políticas de privacidad </a>
+              {formik.touched.privacyPolicy && !formik.values.privacyPolicy && (
+                <p className="text-red-500 text-sm mt-1">
+                  Debes aceptar las políticas de privacidad
+                </p>
+              )}
+              </div>
+              <label className="flex items-center text-white">
+                <input
+                  type="checkbox"
+                  name="dataTreatmentPolicy"
+                  checked={formik.values.dataTreatmentPolicy}
+                  onChange={(e) =>
+                    formik.setFieldValue(
+                      "dataTreatmentPolicy",
+                      e.target.checked
+                    )
+                  }
+                  onBlur={formik.handleBlur}
+                  className="mr-2"
+                />
+                He leído y acepto las políticas de tratamiento de datos
+              </label>
+              {formik.touched.dataTreatmentPolicy &&
+                !formik.values.dataTreatmentPolicy && (
+                  <p className="text-red-500 text-sm mt-1">
+                    Debes aceptar las políticas de tratamiento de datos
+                  </p>
+                )}
+            </div>
             <button
               type="submit"
               className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              disabled={
+                !formik.isValid ||
+                !formik.values.privacyPolicy ||
+                !formik.values.dataTreatmentPolicy
+              }
             >
               Regístrate
             </button>
