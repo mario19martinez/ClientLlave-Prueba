@@ -10,6 +10,7 @@ import {
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import backgroundImage from "../../assets/fondo.png";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
 
 const initialValues = {
   name: "",
@@ -52,6 +53,7 @@ export default function LandingPage() {
   const dispatch = useDispatch();
   const [fullPhoneNumber, setFullPhoneNumber] = useState("");
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -59,6 +61,10 @@ export default function LandingPage() {
     validationSchema,
     onSubmit: async (values) => {
       values.telefono = `${selectedCountryCode} ${values.telefono}`;
+      if (!values.privacyPolicy || !values.dataTreatmentPolicy) {
+        setOpenDialog(true);
+        return;
+      }
       try {
         const response = await dispatch(registerUser(values));
         const { token, message } = response.payload;
@@ -297,25 +303,33 @@ export default function LandingPage() {
             </div>
             <div className="mb-4">
               <div className="flex">
-              <label className="flex items-center text-white">
-                <input
-                  type="checkbox"
-                  name="privacyPolicy"
-                  checked={formik.values.privacyPolicy}
-                  onChange={(e) =>
-                    formik.setFieldValue("privacyPolicy", e.target.checked)
-                  }
-                  onBlur={formik.handleBlur}
-                  className="mr-2"
-                />
-                He leído y acepto las .
-              </label>
-              <a href="" onClick={() => navigate("/PoliticasPrivacidad")} className="text-blue-500"> políticas de privacidad </a>
-              {formik.touched.privacyPolicy && !formik.values.privacyPolicy && (
-                <p className="text-red-500 text-sm mt-1">
-                  Debes aceptar las políticas de privacidad
-                </p>
-              )}
+                <label className="flex items-center text-white">
+                  <input
+                    type="checkbox"
+                    name="privacyPolicy"
+                    checked={formik.values.privacyPolicy}
+                    onChange={(e) =>
+                      formik.setFieldValue("privacyPolicy", e.target.checked)
+                    }
+                    onBlur={formik.handleBlur}
+                    className="mr-2"
+                  />
+                  He leído y acepto las .
+                </label>
+                <a
+                  href=""
+                  onClick={() => navigate("/PoliticasPrivacidad")}
+                  className="text-blue-500"
+                >
+                  {" "}
+                  políticas de privacidad{" "}
+                </a>
+                {formik.touched.privacyPolicy &&
+                  !formik.values.privacyPolicy && (
+                    <p className="text-red-500 text-sm mt-1">
+                      Debes aceptar las políticas de privacidad
+                    </p>
+                  )}
               </div>
               <label className="flex items-center text-white">
                 <input
@@ -331,7 +345,14 @@ export default function LandingPage() {
                   onBlur={formik.handleBlur}
                   className="mr-2"
                 />
-                He leído y acepto las políticas de tratamiento de datos
+                He leído y acepto las políticas de . <a
+                  href=""
+                  onClick={() => navigate("/TratamientoDeDatos")}
+                  className="text-blue-500"
+                >
+                  {" "}
+                    tratamiento de datos{" "}
+                </a>
               </label>
               {formik.touched.dataTreatmentPolicy &&
                 !formik.values.dataTreatmentPolicy && (
@@ -354,6 +375,19 @@ export default function LandingPage() {
           </form>
         </div>
       </div>
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>{"Aviso"}</DialogTitle>
+        <DialogContent>
+          <p>
+            Debe aceptar las políticas de privacidad y tratamiento de datos para continuar.
+          </p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="primary">
+            Entendido
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

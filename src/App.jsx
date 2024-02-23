@@ -59,6 +59,7 @@ import ViewLogin from "./views/ViewLogin/ViewLogin";
 import ViewFormObsequio from "./views/ViewRigistro/ViewFormObsequio";
 import ViewPoliticas from "./views/ViewPoliticas/ViewPoliticas";
 import ViewAnalyticsUsers from "./views/ViewAdmin/ViewAnalyticsUsers";
+import ViewTratamientoDeDatos from "./views/ViewTratamientoDeDatos/ViewTratamientoDeDatos";
 import axios from "axios";
 
 //axios.defaults.baseURL = "http://localhost:3001";
@@ -127,6 +128,7 @@ function App() {
         <Route path="/FormObsequio" element={<ViewFormObsequio />} />
         <Route path="/PoliticasPrivacidad" element={<ViewPoliticas/>} />
         <Route path="/admin/AnalyticsUser" element={<ViewAnalyticsUsers />}/>
+        <Route path="/TratamientoDeDatos" element={<ViewTratamientoDeDatos />} />
       </Routes>
     </Router>
   );
