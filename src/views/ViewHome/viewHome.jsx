@@ -6,19 +6,22 @@ import ComponentesProfeticos from "../../Components/LandingPage/Profetico/Compon
 import Footer from "../../Components/Footer/Footer";
 import BlogHome from "../../Components/Blog/BlogHome";
 import Testimonios from "../../Components/Testimonios/Testimonios";
-import Viewcardhome from "../ViewCardHome/ViewCardHome";
-import Videoshome from "../../Components/Videoshome/Videoshome";
-//import Empresas from "../../Components/Empresas/Empresas";
+import CardObsequio from "../../Components/CardObsequio/CardObsequio";
+import Egresados from "../../Components/LandingPage/Egresados/Egresados";
+//import Viewcardhome from "../ViewCardHome/ViewCardHome";
+//import Videoshome from "../../Components/Videoshome/Videoshome";
+import Empresas from "../../Components/Empresas/Empresas";
 
 export default function ViewHome() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div>
+      {/*<div className="flex flex-col min-h-screen">
       <Nav />
       <LandingPage />
       <div className="flex flex-col md:flex-row flex-grow w-full">
         <div className="w-full md:w-3/4 md:pr-4">
           <div className="pl-2 pr-2">
-            {/*<Empresas />*/}
+            <Empresas />
             <Videoshome />
           </div>
           <ComponentesProfeticos />
@@ -31,6 +34,16 @@ export default function ViewHome() {
           <Viewcardhome />
         </div>
       </div>
+      <Footer />
+  </div>*/}
+      <Nav />
+      <LandingPage />
+      <Empresas />
+      <Egresados />
+      <ComponentesProfeticos />
+      <CardObsequio />
+      <BlogHome />
+      <Testimonios />
       <Footer />
     </div>
   );

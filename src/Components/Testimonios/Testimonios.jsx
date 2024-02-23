@@ -1,9 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 function Testimonios() {
   const [testimonios, setTestimonios] = useState([]);
@@ -12,7 +9,11 @@ function Testimonios() {
     const fetchTestimonios = async () => {
       try {
         const response = await axios.get("/testimonios");
-        setTestimonios(response.data.testimonios);
+        // Ordenar los testimonios por ID de forma descendente para obtener los últimos 4
+        const sortedTestimonios = response.data.testimonios.sort((a, b) => b.id - a.id);
+        // Tomar solo los últimos 4 testimonios
+        const lastFourTestimonios = sortedTestimonios.slice(0, 4);
+        setTestimonios(lastFourTestimonios);
       } catch (error) {
         console.error("Error al obtener testimonios", error);
       }
@@ -20,41 +21,14 @@ function Testimonios() {
     fetchTestimonios();
   }, []);
 
-  const testimoniosSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    cssEase: "linear",
-    centerMode: true,
-    centerPadding: "60px",
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
-
   const testimonioItems =
     testimonios.length > 0 &&
     testimonios.map((testimonio) => (
       <div
         key={testimonio.id}
-        className="p-4 border rounded-lg shadow-md max-w-md mx-auto"
+        className="p-6 border rounded-lg shadow-md mx-auto max-w-2xl"
       >
-        <h3 className="text-xl font-bold mb-2">
+        <h3 className="text-xl font-bold mb-4">
           {testimonio.descripcion}
         </h3>
         <div className="relative w-full h-0" style={{ paddingBottom: "56.25%" }}>
@@ -70,11 +44,16 @@ function Testimonios() {
     ));
 
   return (
-    <div className="container mx-auto my-8 pt-10 text-center">
+    <div className=" w-screen mx-auto my-8 pt-10 pl-2 pr-6 text-center">
       <h1 className="text-3xl font-bold mb-6" style={{ color: "#012677" }}>
         Testimonios
       </h1>
-      <Slider {...testimoniosSettings}>{testimonioItems}</Slider>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {testimonioItems}
+      </div>
+      <a href="/ver-mas-testimonios" className="text-blue-500 font-bold hover:underline mt-4 block">
+        Ver más testimonios
+      </a>
     </div>
   );
 }
