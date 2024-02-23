@@ -77,9 +77,10 @@ export default function LandingPage() {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
-        });
+        }); 
         localStorage.setItem("token", token);
-        navigate("/estudiante/Escritorio");
+        console.log('Este es el token',token);
+        navigate("/curso/2");
         window.location.reload();
       } catch (error) {
         console.error("Error al registrar al usuario:", error);
