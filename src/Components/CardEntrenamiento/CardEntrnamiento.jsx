@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+// eslint-disable-next-line no-unused-vars
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -25,19 +26,19 @@ const CardEntrenamiento = () => {
   };
 
   return (
-    <>
+    <div className="w-full">
       {informacion ? (
         informacion.map((info) => (
-          <Link to={`/informacion/${info.id}`} key={info.id}>
-            <div className="max-w-xs rounded overflow-hidden shadow-lg border border-gray-300 m-4 bg-gray-200">
+          <Link to={`/informacion/${info.id}`} key={info.id} className="block mb-4">
+            <div className="max-w-md rounded overflow-hidden shadow-lg border border-gray-300 bg-gray-200">
               <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2 text-gray-800">
                   {info.titulo}
                 </div>
                 <p className="text-gray-700 text-base">
-                  {recortarTexto(info.content, 100)}
+                  {recortarTexto(info.content, 280)} 
                 </p>
-                <div className="text-right mt-2">
+                <div className="text-right mt-2 pt-3">
                   <Link
                     to={`/informacion/${info.id}`}
                     className="text-blue-500 hover:underline"
@@ -52,7 +53,7 @@ const CardEntrenamiento = () => {
       ) : (
         <p className="text-gray-700 text-base">No hay información disponible.</p>
       )}
-    </>
+    </div>
   );
 };
 

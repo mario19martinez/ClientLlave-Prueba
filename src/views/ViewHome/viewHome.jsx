@@ -8,6 +8,7 @@ import BlogHome from "../../Components/Blog/BlogHome";
 import Testimonios from "../../Components/Testimonios/Testimonios";
 import CardObsequio from "../../Components/CardObsequio/CardObsequio";
 import Egresados from "../../Components/LandingPage/Egresados/Egresados";
+import EntrenamientoProfetico from "../../Components/LandingPage/EntrenammientoProfetico/EntrenamientoProfetico";
 //import Viewcardhome from "../ViewCardHome/ViewCardHome";
 //import Videoshome from "../../Components/Videoshome/Videoshome";
 import Empresas from "../../Components/Empresas/Empresas";
@@ -22,6 +23,7 @@ export default function ViewHome() {
         <Egresados />
         <ComponentesProfeticos />
         <CardObsequio />
+        <EntrenamientoProfetico />
         <BlogHome />
         <Testimonios />
       </div>
