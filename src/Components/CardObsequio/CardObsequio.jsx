@@ -17,9 +17,6 @@ const CardObsequio = () => {
               Regístrate para obtener <br />
               10 Clases de Obsequio
             </h2>
-            <p className="text-gray-600 mb-8 text-center">
-              ¡No te pierdas esta oferta especial!
-            </p>
             <button
               className="w-full py-3 px-6 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
               onClick={register}
