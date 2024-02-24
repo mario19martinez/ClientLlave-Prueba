@@ -19,37 +19,49 @@ export default function ComponentesProfeticos() {
 
   const cardStyles = {
     borderRadius: "12px",
-    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+    boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
   };
 
   const cardStylesBlue = {
     ...cardStyles,
     backgroundColor: "#00b4fc",
-    height: "100%",
+    color: "white",
   };
 
   const cardStylesDarkBlue = {
     ...cardStyles,
     backgroundColor: "#005bc5",
-    height: "100%",
+    color: "white",
   };
 
   const iconStyles = {
     fontSize: 48,
-    color: "white",
+    marginBottom: "16px",
+  };
+
+  const containerStyles = {
+    height: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div style={containerStyles}>
       <h1 style={h1Styles}>Entrenando Tus Sentidos Espirituales</h1>
       <div className="grid grid-cols-2 gap-8">
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Card style={cardStylesBlue}>
-            <CardContent className="flex flex-col items-center justify-center h-full">
+            <CardContent className="flex flex-col items-center justify-center">
               <BackupIcon sx={iconStyles} />
               <Typography
                 variant="h6"
-                className="mt-4 text-white font-semibold text-center"
+                className="font-semibold text-center"
               >
                 Con los pies en la tierra y la mirada en el cielo
               </Typography>
@@ -59,17 +71,17 @@ export default function ComponentesProfeticos() {
 
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Card style={cardStylesDarkBlue}>
-            <CardContent className="flex flex-col items-center justify-center h-full">
+            <CardContent className="flex flex-col items-center justify-center">
               <LanguageIcon sx={iconStyles} />
               <Typography
                 variant="h6"
-                className="mt-4 text-white font-semibold text-center"
+                className="font-semibold text-center"
               >
                 Rompiendo Límites Culturales
               </Typography>
               <Typography
                 variant="body2"
-                className="text-white mt-2 text-center"
+                className="mt-2 text-center"
               >
                 Condicionamientos provenientes de padres, familia, país, pueblo, educación, y redes sociales.
               </Typography>
@@ -79,19 +91,19 @@ export default function ComponentesProfeticos() {
 
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Card style={cardStylesBlue}>
-            <CardContent className="flex flex-col items-center justify-center h-full">
+            <CardContent className="flex flex-col items-center justify-center">
               <DiamondIcon sx={iconStyles} />
               <Typography
                 variant="h6"
-                className="mt-4 text-white font-semibold text-center"
+                className="font-semibold text-center"
               >
                 Formando Caracter
               </Typography>
               <Typography
                 variant="body2"
-                className="text-white mt-2 text-center"
+                className="mt-2 text-center"
               >
-                . <br/>.
+                .
               </Typography>
             </CardContent>
           </Card>
@@ -99,19 +111,19 @@ export default function ComponentesProfeticos() {
 
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Card style={cardStylesDarkBlue}>
-            <CardContent className="flex flex-col items-center justify-center h-full">
+            <CardContent className="flex flex-col items-center justify-center">
               <SettingsIcon sx={iconStyles} />
               <Typography
                 variant="h6"
-                className="mt-4 text-white font-semibold text-center"
+                className="font-semibold text-center"
               >
                 Trabajando en Disciplina
               </Typography>
               <Typography
                 variant="body2"
-                className="text-white mt-2 text-center"
+                className="mt-2 text-center"
               >
-                . <br/>.
+                .
               </Typography>
             </CardContent>
           </Card>

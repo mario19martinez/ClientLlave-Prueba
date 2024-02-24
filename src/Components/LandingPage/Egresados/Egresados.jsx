@@ -3,15 +3,15 @@ import React from 'react';
 
 const Egresados = () => {
   return (
-    <div className="flex flex-row items-center justify-center w-screen">
-      <div className="rounded-lg max-w-5xl overflow-hidden shadow-lg p-8 mx-6">
-        <h2 className="text-4xl font-bold mb-6 text-center">Egresados</h2>
-        <div className="flex flex-col md:flex-row items-center justify-center">
+    <div className="flex justify-center items-center w-full h-full">
+      <div className="max-w-6xl w-full p-8 bg-white rounded-lg shadow-xl">
+        <h2 className="text-4xl font-bold mb-6 text-center text-gray-800">Egresados</h2>
+        <div className="flex flex-col md:flex-row items-center justify-center h-full">
           <div className="w-full md:w-1/2 pr-4 md:pr-8">
-            <p className="text-gray-800 text-lg md:text-xl text-center">¡Explora las historias de nuestros egresados y su éxito después de graduarse!</p>
+            <p className="text-gray-800 text-lg md:text-xl text-center leading-relaxed">¡Descubre cómo nuestros egresados han triunfado en el mundo real después de graduarse!</p>
           </div>
-          <div className="w-full md:w-1/2 mt-4 md:mt-0">
-            <img src="https://llaveparalasnaciones.online/wp-content/uploads/2024/02/EGRESADOS.png" alt="Egresados" className="w-full h-auto rounded-lg transition transform hover:scale-105" />
+          <div className="w-full md:w-1/2 mt-4 md:mt-0 flex justify-center">
+            <img src="https://llaveparalasnaciones.online/wp-content/uploads/2024/02/EGRESADOS.png" alt="Egresados" className="w-full h-auto rounded-lg shadow-lg hover:shadow-xl transition duration-500 transform hover:scale-105" />
           </div>
         </div>
       </div>
