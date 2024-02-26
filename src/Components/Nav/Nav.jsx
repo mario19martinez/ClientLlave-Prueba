@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import logo from "../../assets/logo2.png";
 import LoginForm from "../InicioSesion/InicioSesion.jsx";
-import RegistrationModal from "../FormResgistro/FormRegistro.jsx";
 import { getUserData } from "../../Redux/features/Users/usersSlice.js";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 export default function Nav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
-  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true"
@@ -34,7 +32,7 @@ export default function Nav() {
   };
 
   const toggleRegistrationModal = () => {
-    setIsRegistrationModalOpen(!isRegistrationModalOpen);
+    navigate("/RegistroUser");
   };
 
   useEffect(() => {
@@ -257,17 +255,6 @@ export default function Nav() {
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
           <div className="rounded-lg p-8 w-full max-w-md">
             <LoginForm onClose={toggleLoginForm} />
-          </div>
-        </div>
-      )}
-
-      {isRegistrationModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="rounded-lg p-8 w-full max-w-md">
-            <RegistrationModal
-              isOpen={isRegistrationModalOpen}
-              onClose={toggleRegistrationModal}
-            />
           </div>
         </div>
       )}

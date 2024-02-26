@@ -4,13 +4,13 @@ import CardEntrenamiento from "../../CardEntrenamiento/CardEntrnamiento";
 
 export default function EntrenamientoProfetico() {
   return (
-    <div className="flex flex-col items-center justify-center pt-10">
+    <div className="flex flex-col items-center justify-center pt-20 pb-20">
       <h1 className="text-3xl font-bold mb-8">Entrenamiento Profético</h1>
       <div className="flex max-w-4xl w-full mx-auto">
-        <div className="w-1/2 pr-4">
+        <div className="w-1/2 pr-4 transition duration-300 ease-in-out transform hover:scale-105">
           <CardEntrenamiento />
         </div>
-        <div className="w-1/2 pl-4">
+        <div className="w-1/2 pl-4 transition duration-300 ease-in-out transform hover:scale-105">
           <img
             src="https://llaveparalasnaciones.online/wp-content/uploads/2023/09/28-scaled.jpg"
             alt="Entrenamiento"

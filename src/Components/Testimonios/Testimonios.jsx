@@ -1,9 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 function Testimonios() {
   const [testimonios, setTestimonios] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTestimonios = async () => {
@@ -51,7 +53,9 @@ function Testimonios() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {testimonioItems}
       </div>
-      <a href="/ver-mas-testimonios" className="text-blue-500 font-bold hover:underline mt-4 block">
+      <a href="" 
+      onClick={() => navigate("/Testimonios")}
+      className="text-blue-500 font-bold hover:underline mt-4 block">
         Ver más testimonios
       </a>
     </div>
