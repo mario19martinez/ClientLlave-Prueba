@@ -61,6 +61,11 @@ import ViewPoliticas from "./views/ViewPoliticas/ViewPoliticas";
 import ViewAnalyticsUsers from "./views/ViewAdmin/ViewAnalyticsUsers";
 import ViewTratamientoDeDatos from "./views/ViewTratamientoDeDatos/ViewTratamientoDeDatos";
 import ViewTestimonios from "./views/ViewTestimonios/ViewTestimonios";
+import ViewCaracter from "./views/ViewCompProfeticos/ViewCararcter";
+import ViewFormProfetico from "./views/ViewCompProfeticos/ViewFormProfetico";
+import ViewHistria from "./views/ViewCompProfeticos/ViewHistoria";
+import ViewDoctrina from "./views/ViewCompProfeticos/ViewDoctrina";
+import ViewLlamamiento from "./views/ViewCompProfeticos/ViewLlamamiento";
 import axios from "axios";
 
 //axios.defaults.baseURL = "http://localhost:3001";
@@ -131,6 +136,11 @@ function App() {
         <Route path="/admin/AnalyticsUser" element={<ViewAnalyticsUsers />}/>
         <Route path="/TratamientoDeDatos" element={<ViewTratamientoDeDatos />} />
         <Route path="/Testimonios" element={<ViewTestimonios />} />
+        <Route path="/Caracter" element={<ViewCaracter />} />
+        <Route path="/Historia" element={<ViewHistria />} />
+        <Route path="/Doctrina" element={<ViewDoctrina />} />
+        <Route path="/Llamamiento" element={<ViewLlamamiento />} />
+        <Route path="/CrearProfetico" element={<ViewFormProfetico/>} />
       </Routes>
     </Router>
   );

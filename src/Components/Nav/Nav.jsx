@@ -5,7 +5,7 @@ import LoginForm from "../InicioSesion/InicioSesion.jsx";
 import { getUserData } from "../../Redux/features/Users/usersSlice.js";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+ 
 export default function Nav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
