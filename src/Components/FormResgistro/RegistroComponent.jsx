@@ -9,7 +9,7 @@ import {
   clearRegistrationStatus,
 } from "../../Redux/features/Users/usersSlice.js";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; 
 
 const initialValues = {
   name: "",
