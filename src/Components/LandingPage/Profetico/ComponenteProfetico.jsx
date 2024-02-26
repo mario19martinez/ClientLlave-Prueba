@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, Typography } from "@mui/material";
 import BackupIcon from "@mui/icons-material/Backup";
 import LanguageIcon from "@mui/icons-material/Language";
@@ -8,6 +9,9 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { motion } from "framer-motion";
 
 export default function ComponentesProfeticos() {
+
+  const navigate = useNavigate();
+
   const h1Styles = {
     textAlign: "center",
     fontSize: "2.5rem",
@@ -56,74 +60,97 @@ export default function ComponentesProfeticos() {
       <h1 style={h1Styles}>Entrenando Tus Sentidos Espirituales</h1>
       <div className="grid grid-cols-2 gap-8">
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Card style={cardStylesBlue}>
+          <Card style={cardStylesBlue} onClick={() => navigate("/Caracter")}>
             <CardContent className="flex flex-col items-center justify-center">
               <BackupIcon sx={iconStyles} />
               <Typography
                 variant="h6"
                 className="font-semibold text-center"
               >
-                Con los pies en la tierra y la mirada en el cielo
+                Caracter probado y aprobado
+              </Typography>
+              <Typography
+                variant="body2"
+                className="mt-2 text-center"
+              >
+                <ul>
+                  <li>- El caracter del profeta</li>
+                  <li>- Detonantes del alma que gobierna</li>
+                </ul>
               </Typography>
             </CardContent>
           </Card>
         </motion.div>
 
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Card style={cardStylesDarkBlue}>
+          <Card style={cardStylesDarkBlue} onClick={() => navigate("/Doctrina")}>
             <CardContent className="flex flex-col items-center justify-center">
               <LanguageIcon sx={iconStyles} />
               <Typography
                 variant="h6"
                 className="font-semibold text-center"
               >
-                Rompiendo Límites Culturales
+                Doctrina de demonios
               </Typography>
               <Typography
                 variant="body2"
                 className="mt-2 text-center"
               >
-                Condicionamientos provenientes de padres, familia, país, pueblo, educación, y redes sociales.
+                 <ul>
+                  <li>- La verdadera Iglesia Apóstata</li>
+                  <li>- ¿Los profetas llegaron hasta Juan?</li>
+                  <li>- ¿Fue Pablo el último Apostol?</li>
+                  <li>- ¿A solas con el Espíritu Santo?</li>
+                  <li>- ¿Son Mentoreados los Profetas?</li>
+                </ul>
               </Typography>
             </CardContent>
           </Card>
         </motion.div>
 
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Card style={cardStylesBlue}>
+          <Card style={cardStylesBlue} onClick={() => navigate("/Llamamiento")}>
             <CardContent className="flex flex-col items-center justify-center">
               <DiamondIcon sx={iconStyles} />
               <Typography
                 variant="h6"
                 className="font-semibold text-center"
               >
-                Formando Caracter
+                Llamamiento y asiganción
               </Typography>
               <Typography
                 variant="body2"
                 className="mt-2 text-center"
               >
-                .
+                <ul>
+                  <li>- Llamado y Enviados por Dios</li>
+                  <li>- Enfocados en la asiganción</li>
+                </ul>
               </Typography>
             </CardContent>
           </Card>
         </motion.div>
 
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Card style={cardStylesDarkBlue}>
+          <Card style={cardStylesDarkBlue} onClick={() => navigate("/Historia")}>
             <CardContent className="flex flex-col items-center justify-center">
               <SettingsIcon sx={iconStyles} />
               <Typography
                 variant="h6"
                 className="font-semibold text-center"
               >
-                Trabajando en Disciplina
+                Historia Profética
               </Typography>
               <Typography
                 variant="body2"
                 className="mt-2 text-center"
               >
-                .
+                <ul>
+                  <li>- Escuela de Profetas en la Biblia</li>
+                  <li>- Terminologia Biblica</li>
+                  <li>- Hijos de los Profetas</li>
+                  <li>- Profetas que mentorearon y entrenaron a Profetas</li>
+                </ul>
               </Typography>
             </CardContent>
           </Card>
