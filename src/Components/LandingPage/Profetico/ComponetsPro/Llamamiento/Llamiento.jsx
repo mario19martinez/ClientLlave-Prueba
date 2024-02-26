@@ -23,24 +23,24 @@ export default function Llamamiento() {
     setExpandedCard(expandedCard === index ? null : index);
   };
 
-  // Filtrar los proféticos con el tipo "Doctrina"
+  // Filtrar los proféticos con el tipo "Llamamiento"
   const llamamientoProfeticos = profeticos.filter(profetico => profetico.tipo === "Llamamiento");
 
   return (
     <div className="container mx-auto mt-10 pb-5 pt-5 justify-center">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold">Llamamiento y asiganción</h1>
+        <h1 className="text-3xl font-bold">Llamamiento y asignación</h1>
       </div>
-      <div className="flex flex-col justify-center">
+      <div>
         {llamamientoProfeticos.map((profetico, index) => (
           <div
             key={profetico.id}
-            className="bg-gray-200 bg-opacity-70 p-6 rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 mx-auto w-full md:w-auto mb-6"
-            style={{ maxWidth: "500px" }}
+            className="bg-gray-200 bg-opacity-70 p-6 rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 mx-auto w-full"
+            style={{ maxWidth: "500px", marginBottom: "20px" }}
           >
-            <div className="cursor-pointer w-screen" onClick={() => toggleExpand(index)}>
+            <div className="cursor-pointer" onClick={() => toggleExpand(index)}>
               <h2 className="text-lg font-bold mb-2">{profetico.titulo}</h2>
-              <p className="text-gray-700 mb-4">{profetico.descripcion}</p>
+              <p className="text-gray-700 mb-4 overflow-hidden" style={{ maxHeight: expandedCard === index ? "none" : "3rem" }}>{profetico.descripcion}</p>
             </div>
             {expandedCard === index && (
               <>
