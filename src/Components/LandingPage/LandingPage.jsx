@@ -10,7 +10,13 @@ import {
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import backgroundImage from "../../assets/fondo.png";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
 
 const initialValues = {
   name: "",
@@ -77,9 +83,9 @@ export default function LandingPage() {
           closeOnClick: true,
           pauseOnHover: false,
           theme: "colored",
-        }); 
+        });
         localStorage.setItem("token", token);
-        console.log('Este es el token',token);
+        console.log("Este es el token", token);
         navigate("/curso/2");
         window.location.reload();
       } catch (error) {
@@ -109,20 +115,22 @@ export default function LandingPage() {
   }, [registrationStatus, error, dispatch]);
 
   return (
-    <div className="flex justify-center items-center bg-cover bg-center" style={{backgroundImage: `url(${backgroundImage})`, height: "100vh", width: "100%"}}>
-      <div className="flex flex-col md:flex-row">
-        <h2 className="text-2xl md:text-3xl font-bold text-white text-center md:text-left md:pr-8">
-          No te pierdas esta oportunidad de avanzar <br/>
-          hacia el cumplimiento de tus sueños y metas.
+    <div
+      className="flex justify-center items-center bg-cover bg-center"
+      style={{ backgroundImage: `url(${backgroundImage})`, width: "100%" }}
+    >
+      <div className="flex flex-col md:flex-row max-w-4xl w-full mx-auto bg-black bg-opacity-70 p-4 md:p-8 rounded-lg shadow-lg">
+        <h2 className="text-2xl md:text-3xl font-bold text-white text-center md:text-left md:pr-8 mb-4 md:mb-0">
+          No te pierdas esta oportunidad de avanzar hacia el cumplimiento de tus
+          sueños y metas.
         </h2>
-        <div className="bg-black bg-opacity-70 p-4 md:p-8 rounded-lg shadow-lg">
-          <div className="text-center mb-2 md:mb-4">
+        <div className="w-full md:w-auto">
+          <div className="text-center mb-4">
             <h1 className="text-2xl md:text-3xl font-bold text-white">
-              Regístrate Ahora para obtener <br />
-              10 Clases de Obsequio
+              Regístrate Ahora para obtener 10 Clases de Obsequio
             </h1>
           </div>
-          <form onSubmit={formik.handleSubmit} className="w-full md:w-auto">
+          <form onSubmit={formik.handleSubmit} className="w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="mb-4">
                 <label htmlFor="name" className="block text-white">
@@ -307,14 +315,19 @@ export default function LandingPage() {
                   className="mr-2"
                 />
                 <span className="pr-1">He leído y acepto las </span>
-                <a href="" onClick={() => navigate("/PoliticasPrivacidad")} className="text-blue-500">políticas de privacidad</a>
+                <a
+                  href=""
+                  onClick={() => navigate("/PoliticasPrivacidad")}
+                  className="text-blue-500"
+                >
+                  políticas de privacidad
+                </a>
               </div>
-              {formik.touched.privacyPolicy &&
-                !formik.values.privacyPolicy && (
-                  <p className="text-red-500 text-sm mt-1">
-                    Debes aceptar las políticas de privacidad
-                  </p>
-                )}
+              {formik.touched.privacyPolicy && !formik.values.privacyPolicy && (
+                <p className="text-red-500 text-sm mt-1">
+                  Debes aceptar las políticas de privacidad
+                </p>
+              )}
               <div className="flex items-center text-white mt-2">
                 <input
                   type="checkbox"
@@ -329,8 +342,16 @@ export default function LandingPage() {
                   onBlur={formik.handleBlur}
                   className="mr-2"
                 />
-                <span className="pr-1">He leído y acepto las políticas de </span>
-                <a href="" onClick={() => navigate("/TratamientoDeDatos")} className="text-blue-500">tratamiento de datos</a>
+                <span className="pr-1">
+                  He leído y acepto las políticas de{" "}
+                </span>
+                <a
+                  href=""
+                  onClick={() => navigate("/TratamientoDeDatos")}
+                  className="text-blue-500"
+                >
+                  tratamiento de datos
+                </a>
               </div>
               {formik.touched.dataTreatmentPolicy &&
                 !formik.values.dataTreatmentPolicy && (
@@ -357,7 +378,8 @@ export default function LandingPage() {
         <DialogTitle>{"Aviso"}</DialogTitle>
         <DialogContent>
           <p>
-            Debe aceptar las políticas de privacidad y tratamiento de datos para continuar.
+            Debe aceptar las políticas de privacidad y tratamiento de datos para
+            continuar.
           </p>
         </DialogContent>
         <DialogActions>

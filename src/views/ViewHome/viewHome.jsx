@@ -9,23 +9,21 @@ import Testimonios from "../../Components/Testimonios/Testimonios";
 import CardObsequio from "../../Components/CardObsequio/CardObsequio";
 import Egresados from "../../Components/LandingPage/Egresados/Egresados";
 import EntrenamientoProfetico from "../../Components/LandingPage/EntrenammientoProfetico/EntrenamientoProfetico";
-//import Viewcardhome from "../ViewCardHome/ViewCardHome";
-//import Videoshome from "../../Components/Videoshome/Videoshome";
 import Empresas from "../../Components/Empresas/Empresas";
 
 export default function ViewHome() {
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Nav />
       <LandingPage />
-      <Empresas />
-      <div className="bg-gradient-to-b from-gray-200 white">
-        <Egresados />
-        <ComponentesProfeticos />
-        <CardObsequio />
-        <EntrenamientoProfetico />
-        <BlogHome />
-        <Testimonios />
+      <Empresas className="mt-8" />
+      <div className="bg-gradient-to-b from-gray-200 white flex-grow">
+        <Egresados className="mt-8" />
+        <ComponentesProfeticos className="mt-8" />
+        <CardObsequio className="mt-8" />
+        <EntrenamientoProfetico className="mt-8" />
+        <BlogHome className="mt-8" />
+        <Testimonios className="mt-8" />
       </div>
       <Footer />
     </div>
