@@ -66,6 +66,8 @@ import ViewFormProfetico from "./views/ViewCompProfeticos/ViewFormProfetico";
 import ViewHistria from "./views/ViewCompProfeticos/ViewHistoria";
 import ViewDoctrina from "./views/ViewCompProfeticos/ViewDoctrina";
 import ViewLlamamiento from "./views/ViewCompProfeticos/ViewLlamamiento";
+import ViewEgresados from "./views/ViewEgresados/ViewEgresados";
+import ViewCreateEgresados from "./views/ViewEgresados/ViewCreateEgresados";
 import axios from "axios";
 
 //axios.defaults.baseURL = "http://localhost:3001";
@@ -141,6 +143,8 @@ function App() {
         <Route path="/Doctrina" element={<ViewDoctrina />} />
         <Route path="/Llamamiento" element={<ViewLlamamiento />} />
         <Route path="/CrearProfetico" element={<ViewFormProfetico/>} />
+        <Route path="/Egresados" element={<ViewEgresados />} />
+        <Route path="/admin/crearEgresado" element={<ViewCreateEgresados />} />
       </Routes>
     </Router>
   );
