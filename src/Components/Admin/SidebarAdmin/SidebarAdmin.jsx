@@ -135,6 +135,22 @@ function SidebarAdmin({ selectedTab }) {
                   ? "bg-blue-400 text-white"
                   : "hover:bg-blue-500 hover:text-white"
               }`}
+              onClick={() => navigate("/AdminPage")}
+            >
+              <AccessibilityNewIcon
+                className={`${selectedTab === "Nosotros" ? "text-white" : ""}`}
+              />{" "}
+              Pagina
+            </button>
+          </li>
+          <li className="mb-4">
+            <button
+              href=""
+              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
+                selectedTab === "Nosotros"
+                  ? "bg-blue-400 text-white"
+                  : "hover:bg-blue-500 hover:text-white"
+              }`}
               onClick={() => navigate("/admin/crearEgresado")}
             >
               <AccessibilityNewIcon
