@@ -5,8 +5,8 @@ import axios from "axios";
 export default function Historia() {
   const [profeticos, setProfeticos] = useState([]);
   const [expandedCard, setExpandedCard] = useState(null);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [feedback, setFeedback] = useState(null);
+  const [selectedOption, setSelectedOption] = useState({});
+  const [feedback, setFeedback] = useState({});
 
   useEffect(() => {
     async function fetchProfeticos() {
@@ -32,22 +32,15 @@ export default function Historia() {
   };
 
   const handleSubmitAnswer = (profetico, preguntaIndex) => {
-    const respuestaCorrecta =
-      profetico.preguntas[preguntaIndex].respuestaCorrecta;
+    const respuestaCorrecta = profetico.preguntas[preguntaIndex].respuestaCorrecta;
     const opcionSeleccionada = selectedOption[preguntaIndex];
-
-    const opcionSeleccionadaLetra = String.fromCharCode(
-      97 +
-        profetico.preguntas[preguntaIndex].opciones.indexOf(opcionSeleccionada)
-    );
+    const opcionSeleccionadaIndex = profetico.preguntas[preguntaIndex].opciones.indexOf(opcionSeleccionada);
+    const opcionSeleccionadaLetra = String.fromCharCode(97 + opcionSeleccionadaIndex);
 
     if (opcionSeleccionadaLetra === respuestaCorrecta) {
-      setFeedback({ ...feedback, [preguntaIndex]: "¡Respuesta correcta!" });
+      setFeedback({ ...feedback, [preguntaIndex]: <span style={{ color: "green" }}>¡Respuesta correcta!</span> });
     } else {
-      setFeedback({
-        ...feedback,
-        [preguntaIndex]: "Respuesta incorrecta. ¡Inténtalo de nuevo!",
-      });
+      setFeedback({ ...feedback, [preguntaIndex]: <span style={{ color: "red" }}>Respuesta incorrecta. ¡Inténtalo de nuevo!</span> });
     }
   };
 
@@ -93,7 +86,7 @@ export default function Historia() {
                 )}
                 {profetico.contenido && (
                   <div className="mt-4">
-                    <h3 className="font-bold text-lg">Taller:</h3>
+                    <h3 className="font-bold text-lg">Contenido:</h3>
                     <div
                       dangerouslySetInnerHTML={{ __html: profetico.contenido }}
                     />
@@ -107,9 +100,9 @@ export default function Historia() {
                         <p>{pregunta.pregunta}</p>
                         <ul>
                           {pregunta.opciones.map((opcion, opcionIndex) => (
-                            <li key={opcionIndex}>
+                            <li key={opcionIndex} className="pl-2 pr-2">
                               <label>
-                                <input
+                                <input 
                                   type="radio"
                                   name={`pregunta${preguntaIndex}`}
                                   value={opcion}
@@ -120,8 +113,7 @@ export default function Historia() {
                                     handleOptionSelect(preguntaIndex, opcion)
                                   }
                                 />
-                                {String.fromCharCode(65 + opcionIndex)}.{" "}
-                                {opcion}
+                                {opcion.substr(0)} {/* Quitando la letra al inicio */}
                               </label>
                             </li>
                           ))}
@@ -135,7 +127,7 @@ export default function Historia() {
                             handleSubmitAnswer(profetico, preguntaIndex)
                           }
                         >
-                          Enviar respuesta
+                          Responder
                         </button>
                       </div>
                     ))}
