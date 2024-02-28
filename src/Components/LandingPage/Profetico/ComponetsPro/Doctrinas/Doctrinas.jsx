@@ -43,11 +43,20 @@ export default function Doctrinas() {
     );
 
     if (opcionSeleccionadaLetra === respuestaCorrecta) {
-      setFeedback({ ...feedback, [preguntaIndex]: "¡Respuesta correcta!" });
+      setFeedback({
+        ...feedback,
+        [preguntaIndex]: (
+          <span style={{ color: "green" }}>¡Respuesta correcta!</span>
+        ),
+      });
     } else {
       setFeedback({
         ...feedback,
-        [preguntaIndex]: "Respuesta incorrecta. ¡Inténtalo de nuevo!",
+        [preguntaIndex]: (
+          <span style={{ color: "red" }}>
+            Respuesta incorrecta. ¡Inténtalo de nuevo!
+          </span>
+        ),
       });
     }
   };
@@ -100,48 +109,41 @@ export default function Doctrinas() {
                     />
                   </div>
                 )}
-                {profetico.preguntas && (
-                  <div className="mt-4">
-                    <h3 className="font-bold text-lg">Preguntas:</h3>
-                    {profetico.preguntas.map((pregunta, preguntaIndex) => (
-                      <div key={preguntaIndex}>
-                        <p>{pregunta.pregunta}</p>
-                        <ul>
-                          {pregunta.opciones.map((opcion, opcionIndex) => (
-                            <li key={opcionIndex}>
-                              <label>
-                                <input
-                                  type="radio"
-                                  name={`pregunta${preguntaIndex}`}
-                                  value={opcion}
-                                  checked={
-                                    selectedOption[preguntaIndex] === opcion
-                                  }
-                                  onChange={() =>
-                                    handleOptionSelect(preguntaIndex, opcion)
-                                  }
-                                />
-                                {String.fromCharCode(65 + opcionIndex)}.{" "}
-                                {opcion}
-                              </label>
-                            </li>
-                          ))}
-                        </ul>
-                        {feedback[preguntaIndex] && (
-                          <p>{feedback[preguntaIndex]}</p>
-                        )}
-                        <button
-                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-                          onClick={() =>
-                            handleSubmitAnswer(profetico, preguntaIndex)
-                          }
-                        >
-                          Enviar respuesta
-                        </button>
-                      </div>
-                    ))}
+                {profetico.preguntas.map((pregunta, preguntaIndex) => (
+                  <div key={preguntaIndex}>
+                    <p>{pregunta.pregunta}</p>
+                    <ul>
+                      {pregunta.opciones.map((opcion, opcionIndex) => (
+                        <li key={opcionIndex} className="pl-2 pr-2">
+                          <label>
+                            <input
+                              type="radio"
+                              name={`pregunta${preguntaIndex}`}
+                              value={opcion}
+                              checked={selectedOption[preguntaIndex] === opcion}
+                              onChange={() =>
+                                handleOptionSelect(preguntaIndex, opcion)
+                              }
+                            />
+                            {opcion.substr(0)}{" "}
+                            {/* Quitando la letra al inicio */}
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                    {feedback[preguntaIndex] && (
+                      <p>{feedback[preguntaIndex]}</p>
+                    )}
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+                      onClick={() =>
+                        handleSubmitAnswer(profetico, preguntaIndex)
+                      }
+                    >
+                      Responder
+                    </button>
                   </div>
-                )}
+                ))}
               </>
             )}
           </div>

@@ -43,17 +43,27 @@ export default function Llamamiento() {
     );
 
     if (opcionSeleccionadaLetra === respuestaCorrecta) {
-      setFeedback({ ...feedback, [preguntaIndex]: "¡Respuesta correcta!" });
+      setFeedback({
+        ...feedback,
+        [preguntaIndex]: (
+          <span style={{ color: "green" }}>¡Respuesta correcta!</span>
+        ),
+      });
     } else {
       setFeedback({
         ...feedback,
-        [preguntaIndex]: "Respuesta incorrecta. ¡Inténtalo de nuevo!",
+        [preguntaIndex]: (
+          <span style={{ color: "red" }}>
+            Respuesta incorrecta. ¡Inténtalo de nuevo!
+          </span>
+        ),
       });
     }
   };
-
   // Filtrar los proféticos con el tipo "Llamamiento"
-  const llamamientoProfeticos = profeticos.filter(profetico => profetico.tipo === "Llamamiento");
+  const llamamientoProfeticos = profeticos.filter(
+    (profetico) => profetico.tipo === "Llamamiento"
+  );
 
   return (
     <div className="container mx-auto mt-10 pb-5 pt-5 justify-center">
@@ -69,7 +79,12 @@ export default function Llamamiento() {
           >
             <div className="cursor-pointer" onClick={() => toggleExpand(index)}>
               <h2 className="text-lg font-bold mb-2">{profetico.titulo}</h2>
-              <p className="text-gray-700 mb-4 overflow-hidden" style={{ maxHeight: expandedCard === index ? "none" : "3rem" }}>{profetico.descripcion}</p>
+              <p
+                className="text-gray-700 mb-4 overflow-hidden"
+                style={{ maxHeight: expandedCard === index ? "none" : "3rem" }}
+              >
+                {profetico.descripcion}
+              </p>
             </div>
             {expandedCard === index && (
               <>
@@ -88,51 +103,46 @@ export default function Llamamiento() {
                 {profetico.contenido && (
                   <div className="mt-4">
                     <h3 className="font-bold text-lg">Contenido:</h3>
-                    <div dangerouslySetInnerHTML={{ __html: profetico.contenidor }} />
+                    <div
+                      dangerouslySetInnerHTML={{ __html: profetico.contenido }}
+                    />
                   </div>
                 )}
-                {profetico.preguntas && (
-                  <div className="mt-4">
-                    <h3 className="font-bold text-lg">Preguntas:</h3>
-                    {profetico.preguntas.map((pregunta, preguntaIndex) => (
-                      <div key={preguntaIndex}>
-                        <p>{pregunta.pregunta}</p>
-                        <ul>
-                          {pregunta.opciones.map((opcion, opcionIndex) => (
-                            <li key={opcionIndex}>
-                              <label>
-                                <input
-                                  type="radio"
-                                  name={`pregunta${preguntaIndex}`}
-                                  value={opcion}
-                                  checked={
-                                    selectedOption[preguntaIndex] === opcion
-                                  }
-                                  onChange={() =>
-                                    handleOptionSelect(preguntaIndex, opcion)
-                                  }
-                                />
-                                {String.fromCharCode(65 + opcionIndex)}.{" "}
-                                {opcion}
-                              </label>
-                            </li>
-                          ))}
-                        </ul>
-                        {feedback[preguntaIndex] && (
-                          <p>{feedback[preguntaIndex]}</p>
-                        )}
-                        <button
-                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-                          onClick={() =>
-                            handleSubmitAnswer(profetico, preguntaIndex)
-                          }
-                        >
-                          Enviar respuesta
-                        </button>
-                      </div>
-                    ))}
+                {profetico.preguntas.map((pregunta, preguntaIndex) => (
+                  <div key={preguntaIndex}>
+                    <p>{pregunta.pregunta}</p>
+                    <ul>
+                      {pregunta.opciones.map((opcion, opcionIndex) => (
+                        <li key={opcionIndex} className="pl-2 pr-2">
+                          <label>
+                            <input
+                              type="radio"
+                              name={`pregunta${preguntaIndex}`}
+                              value={opcion}
+                              checked={selectedOption[preguntaIndex] === opcion}
+                              onChange={() =>
+                                handleOptionSelect(preguntaIndex, opcion)
+                              }
+                            />
+                            {opcion.substr(0)}{" "}
+                            {/* Quitando la letra al inicio */}
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                    {feedback[preguntaIndex] && (
+                      <p>{feedback[preguntaIndex]}</p>
+                    )}
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+                      onClick={() =>
+                        handleSubmitAnswer(profetico, preguntaIndex)
+                      }
+                    >
+                      Responder
+                    </button>
                   </div>
-                )}
+                ))}
               </>
             )}
           </div>

@@ -2,7 +2,7 @@
 import React from "react";
 import NavAdmin from "../../Components/Admin/NavAdmin/NavAdmin";
 import SidebarAdmin from "../../Components/Admin/SidebarAdmin/SidebarAdmin";
-import AdminPage from "../../Components/Admin/AdminHome/AdminPage";
+import AdminPage from "../../Components/Admin/AdminPage/AdminPage";
 
 export default function ViewAdminPage() {
   return (
