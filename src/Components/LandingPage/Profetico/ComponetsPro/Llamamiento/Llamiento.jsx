@@ -5,6 +5,8 @@ import axios from "axios";
 export default function Llamamiento() {
   const [profeticos, setProfeticos] = useState([]);
   const [expandedCard, setExpandedCard] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [feedback, setFeedback] = useState(null);
 
   useEffect(() => {
     async function fetchProfeticos() {
@@ -21,6 +23,33 @@ export default function Llamamiento() {
 
   const toggleExpand = (index) => {
     setExpandedCard(expandedCard === index ? null : index);
+    setFeedback({});
+    setSelectedOption({});
+  };
+
+  const handleOptionSelect = (preguntaIndex, opcion) => {
+    setSelectedOption({ ...selectedOption, [preguntaIndex]: opcion });
+  };
+
+  const handleSubmitAnswer = (profetico, preguntaIndex) => {
+    const respuestaCorrecta =
+      profetico.preguntas[preguntaIndex].respuestaCorrecta;
+    const opcionSeleccionada = selectedOption[preguntaIndex];
+
+    // Convertir la respuesta seleccionada al formato de letra ('a', 'b', 'c', 'd')
+    const opcionSeleccionadaLetra = String.fromCharCode(
+      97 +
+        profetico.preguntas[preguntaIndex].opciones.indexOf(opcionSeleccionada)
+    );
+
+    if (opcionSeleccionadaLetra === respuestaCorrecta) {
+      setFeedback({ ...feedback, [preguntaIndex]: "¡Respuesta correcta!" });
+    } else {
+      setFeedback({
+        ...feedback,
+        [preguntaIndex]: "Respuesta incorrecta. ¡Inténtalo de nuevo!",
+      });
+    }
   };
 
   // Filtrar los proféticos con el tipo "Llamamiento"
@@ -56,10 +85,52 @@ export default function Llamamiento() {
                     ></iframe>
                   </div>
                 )}
-                {profetico.Taller && (
+                {profetico.contenido && (
                   <div className="mt-4">
-                    <h3 className="font-bold text-lg">Taller:</h3>
-                    <div dangerouslySetInnerHTML={{ __html: profetico.Taller }} />
+                    <h3 className="font-bold text-lg">Contenido:</h3>
+                    <div dangerouslySetInnerHTML={{ __html: profetico.contenidor }} />
+                  </div>
+                )}
+                {profetico.preguntas && (
+                  <div className="mt-4">
+                    <h3 className="font-bold text-lg">Preguntas:</h3>
+                    {profetico.preguntas.map((pregunta, preguntaIndex) => (
+                      <div key={preguntaIndex}>
+                        <p>{pregunta.pregunta}</p>
+                        <ul>
+                          {pregunta.opciones.map((opcion, opcionIndex) => (
+                            <li key={opcionIndex}>
+                              <label>
+                                <input
+                                  type="radio"
+                                  name={`pregunta${preguntaIndex}`}
+                                  value={opcion}
+                                  checked={
+                                    selectedOption[preguntaIndex] === opcion
+                                  }
+                                  onChange={() =>
+                                    handleOptionSelect(preguntaIndex, opcion)
+                                  }
+                                />
+                                {String.fromCharCode(65 + opcionIndex)}.{" "}
+                                {opcion}
+                              </label>
+                            </li>
+                          ))}
+                        </ul>
+                        {feedback[preguntaIndex] && (
+                          <p>{feedback[preguntaIndex]}</p>
+                        )}
+                        <button
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+                          onClick={() =>
+                            handleSubmitAnswer(profetico, preguntaIndex)
+                          }
+                        >
+                          Enviar respuesta
+                        </button>
+                      </div>
+                    ))}
                   </div>
                 )}
               </>

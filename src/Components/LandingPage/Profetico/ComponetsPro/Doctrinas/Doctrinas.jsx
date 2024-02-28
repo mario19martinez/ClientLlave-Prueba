@@ -5,6 +5,8 @@ import axios from "axios";
 export default function Doctrinas() {
   const [profeticos, setProfeticos] = useState([]);
   const [expandedCard, setExpandedCard] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [feedback, setFeedback] = useState(null);
 
   useEffect(() => {
     async function fetchProfeticos() {
@@ -21,10 +23,39 @@ export default function Doctrinas() {
 
   const toggleExpand = (index) => {
     setExpandedCard(expandedCard === index ? null : index);
+    setFeedback({});
+    setSelectedOption({});
+  };
+
+  const handleOptionSelect = (preguntaIndex, opcion) => {
+    setSelectedOption({ ...selectedOption, [preguntaIndex]: opcion });
+  };
+
+  const handleSubmitAnswer = (profetico, preguntaIndex) => {
+    const respuestaCorrecta =
+      profetico.preguntas[preguntaIndex].respuestaCorrecta;
+    const opcionSeleccionada = selectedOption[preguntaIndex];
+
+    // Convertir la respuesta seleccionada al formato de letra ('a', 'b', 'c', 'd')
+    const opcionSeleccionadaLetra = String.fromCharCode(
+      97 +
+        profetico.preguntas[preguntaIndex].opciones.indexOf(opcionSeleccionada)
+    );
+
+    if (opcionSeleccionadaLetra === respuestaCorrecta) {
+      setFeedback({ ...feedback, [preguntaIndex]: "¡Respuesta correcta!" });
+    } else {
+      setFeedback({
+        ...feedback,
+        [preguntaIndex]: "Respuesta incorrecta. ¡Inténtalo de nuevo!",
+      });
+    }
   };
 
   // Filtrar los proféticos con el tipo "Doctrina"
-  const doctrinaProfeticos = profeticos.filter(profetico => profetico.tipo === "Doctrina");
+  const doctrinaProfeticos = profeticos.filter(
+    (profetico) => profetico.tipo === "Doctrina"
+  );
 
   return (
     <div className="container mx-auto mt-10 pb-5 pt-5 justify-center">
@@ -40,7 +71,12 @@ export default function Doctrinas() {
           >
             <div className="cursor-pointer" onClick={() => toggleExpand(index)}>
               <h2 className="text-lg font-bold mb-2">{profetico.titulo}</h2>
-              <p className="text-gray-700 mb-4 overflow-hidden" style={{ maxHeight: expandedCard === index ? "none" : "3rem" }}>{profetico.descripcion}</p>
+              <p
+                className="text-gray-700 mb-4 overflow-hidden"
+                style={{ maxHeight: expandedCard === index ? "none" : "3rem" }}
+              >
+                {profetico.descripcion}
+              </p>
             </div>
             {expandedCard === index && (
               <>
@@ -56,10 +92,54 @@ export default function Doctrinas() {
                     ></iframe>
                   </div>
                 )}
-                {profetico.Taller && (
+                {profetico.contenido && (
                   <div className="mt-4">
-                    <h3 className="font-bold text-lg">Taller:</h3>
-                    <div dangerouslySetInnerHTML={{ __html: profetico.Taller }} />
+                    <h3 className="font-bold text-lg">Contenido:</h3>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: profetico.contenido }}
+                    />
+                  </div>
+                )}
+                {profetico.preguntas && (
+                  <div className="mt-4">
+                    <h3 className="font-bold text-lg">Preguntas:</h3>
+                    {profetico.preguntas.map((pregunta, preguntaIndex) => (
+                      <div key={preguntaIndex}>
+                        <p>{pregunta.pregunta}</p>
+                        <ul>
+                          {pregunta.opciones.map((opcion, opcionIndex) => (
+                            <li key={opcionIndex}>
+                              <label>
+                                <input
+                                  type="radio"
+                                  name={`pregunta${preguntaIndex}`}
+                                  value={opcion}
+                                  checked={
+                                    selectedOption[preguntaIndex] === opcion
+                                  }
+                                  onChange={() =>
+                                    handleOptionSelect(preguntaIndex, opcion)
+                                  }
+                                />
+                                {String.fromCharCode(65 + opcionIndex)}.{" "}
+                                {opcion}
+                              </label>
+                            </li>
+                          ))}
+                        </ul>
+                        {feedback[preguntaIndex] && (
+                          <p>{feedback[preguntaIndex]}</p>
+                        )}
+                        <button
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+                          onClick={() =>
+                            handleSubmitAnswer(profetico, preguntaIndex)
+                          }
+                        >
+                          Enviar respuesta
+                        </button>
+                      </div>
+                    ))}
                   </div>
                 )}
               </>
