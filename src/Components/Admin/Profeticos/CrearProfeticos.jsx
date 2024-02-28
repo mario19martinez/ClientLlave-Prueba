@@ -232,19 +232,25 @@ const CrearProfeticos = () => {
             </select>
           </div>
         ))}
-        <button
-          type="button"
-          onClick={agregarPregunta}
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mb-4"
-        >
-          Agregar Pregunta
-        </button>
-        <button
-          type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
-        >
-          Crear
-        </button>
+        <div className="flex">
+          <div className="pr-2 pl-2">
+            <button
+              type="button"
+              onClick={agregarPregunta}
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mb-4"
+            >
+              Agregar Pregunta
+            </button>
+          </div>
+          <div className="pr-2 pl-2">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
+            >
+              Crear
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   );
