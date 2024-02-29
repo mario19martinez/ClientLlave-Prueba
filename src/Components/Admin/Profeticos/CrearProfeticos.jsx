@@ -197,7 +197,6 @@ const CrearProfeticos = () => {
               className="border-2 border-gray-300 rounded-md p-2 w-full mb-2"
               value={pregunta.pregunta}
               onChange={(e) => handleChangePregunta(index, e)}
-              required
             />
             {pregunta.opciones.map((opcion, idx) => (
               <input
@@ -207,7 +206,6 @@ const CrearProfeticos = () => {
                 value={opcion}
                 onChange={(e) => handleChangeOpcion(index, idx, e)}
                 placeholder={`Opción ${String.fromCharCode(97 + idx)}`}
-                required
               />
             ))}
             <label
@@ -221,7 +219,6 @@ const CrearProfeticos = () => {
               className="border-2 border-gray-300 rounded-md p-2 w-full"
               value={pregunta.respuestaCorrecta}
               onChange={(e) => handleChangeRespuesta(index, e)}
-              required
             >
               <option value="">Seleccione una respuesta</option>
               {pregunta.opciones.map((opcion, idx) => (

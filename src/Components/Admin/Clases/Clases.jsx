@@ -24,9 +24,11 @@ function Clases() {
       try {
         const response = await axios.get(`/cursos/${id}/clases`);
         console.log("response", response);
+        const sortedClases = response.data.sort((a, b) => a.id - b.id);
         if (response.status === 200) {
           const data = await response.data;
           setClases(data);
+          setClases(sortedClases);
         } else {
           throw new Error("Curso no encontrado");
         }
