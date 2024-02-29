@@ -10,7 +10,7 @@ function AgregarClases({ onAgregarClase }) {
     descripcion: "",
     url: "",
     platform: "",
-    pdfURL: "", // Agregamos un campo pdfURL para el enlace del taller PDF
+    pdfURL: "",
   });
   const [selectedPlatform, setSelectedPlatform] = useState("");
   const { id } = useParams();
@@ -119,9 +119,12 @@ function AgregarClases({ onAgregarClase }) {
           </select>
         </div>
 
-        {selectedPlatform === "pdf" && ( // Mostrar el campo para el enlace del taller solo si se selecciona PDF
+        {(selectedPlatform === "pdf" || selectedPlatform === "") && ( // Mostrar el campo para el enlace del taller solo si se selecciona PDF o no se selecciona ninguna plataforma
           <div className="mb-4">
-            <label htmlFor="" className="block text-sm font-medium text-white">
+            <label
+              htmlFor=""
+              className="block text-sm font-medium text-white"
+            >
               Enlace del Taller (PDF)
             </label>
             <input
@@ -130,24 +133,29 @@ function AgregarClases({ onAgregarClase }) {
               value={claseData.pdfURL}
               onChange={handleInputChange}
               className="mt-1 p-2 border border-gray-300 rounded w-full"
-              required
+              required={selectedPlatform === "pdf"} // Requerido solo si se selecciona PDF
             />
           </div>
         )}
 
-        <div className="mb-4">
-          <label htmlFor="" className="block text-sm font-medium text-white">
-            URL de la Clase (Vimeo o Youtube)
-          </label>
-          <input
-            type="text"
-            name="url"
-            value={claseData.url}
-            onChange={handleInputChange}
-            className="mt-1 p-2 border border-gray-300 rounded w-full"
-
-          />
-        </div>
+        {(selectedPlatform === "vimeo" || selectedPlatform === "youtube" || selectedPlatform === "") && ( // Mostrar el campo para la URL del video solo si se selecciona Vimeo, Youtube o no se selecciona ninguna plataforma
+          <div className="mb-4">
+            <label
+              htmlFor=""
+              className="block text-sm font-medium text-white"
+            >
+              URL de la Clase (Vimeo o Youtube)
+            </label>
+            <input
+              type="text"
+              name="url"
+              value={claseData.url}
+              onChange={handleInputChange}
+              className="mt-1 p-2 border border-gray-300 rounded w-full"
+              required={selectedPlatform === "vimeo" || selectedPlatform === "youtube"} // Requerido solo si se selecciona Vimeo o Youtube
+            />
+          </div>
+        )}
 
         <button
           type="submit"
