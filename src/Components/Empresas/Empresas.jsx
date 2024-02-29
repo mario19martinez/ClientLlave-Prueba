@@ -3,7 +3,7 @@ import React from 'react';
 
 const Empresas = () => {
   return (
-    <div className="py-8 bg-gray-200">
+    <div className="py-8 bg-gray-200 w-screen">
       <div className="container mx-auto">
         <h1 className="text-3xl font-bold text-center mb-6">Empresas que nos respaldan:</h1>
         <div className="flex flex-col items-center justify-center md:flex-row md:justify-center md:items-center">
