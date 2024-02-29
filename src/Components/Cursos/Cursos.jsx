@@ -13,7 +13,8 @@ function CursoClases() {
     const fetchClases = async () => {
       try {
         const response = await axios.get(`/cursos/${id}/clases`);
-        setClases(response.data);
+        const sortedClases = response.data.sort((a, b) => a.id - b.id); // Orden ascendente por id
+        setClases(sortedClases);
       } catch (error) {
         console.error("Error al obtener las clases:", error);
       }
