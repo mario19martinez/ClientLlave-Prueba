@@ -82,7 +82,7 @@ export default function VerEgresados() {
         {combinedEgresados.map((egresado) => (
           <div
             key={egresado.id}
-            className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row mb-4 md:hover:shadow-xl md:transition-shadow duration-300"
+            className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row md:hover:shadow-xl md:transition-shadow duration-300 mb-10 md:mb-20"
           >
             {/*Card Template 1 */}
             {egresado.template === "1" ? (

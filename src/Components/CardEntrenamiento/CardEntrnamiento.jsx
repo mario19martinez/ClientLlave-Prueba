@@ -36,7 +36,7 @@ const CardEntrenamiento = () => {
                   {info.titulo}
                 </div>
                 <p className="text-gray-700 text-base">
-                  {recortarTexto(info.content, 280)} 
+                  {recortarTexto(info.content, 380)} 
                 </p>
                 <div className="text-right mt-2 pt-3">
                   <Link
