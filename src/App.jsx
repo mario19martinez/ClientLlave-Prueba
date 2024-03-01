@@ -147,7 +147,7 @@ function App() {
         <Route path="/Egresados" element={<ViewEgresados />} />
         <Route path="/admin/crearEgresado" element={<ViewCreateEgresados />} />
         <Route path="/AdminPage" element={<ViewAdminPage/>} />
-      </Routes>
+      </Routes> 
     </Router>
   );
 }
