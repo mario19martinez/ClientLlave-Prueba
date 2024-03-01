@@ -1,45 +1,27 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Typography, Grid } from "@mui/material";
+import { motion } from "framer-motion";
 import BackupIcon from "@mui/icons-material/Backup";
 import LanguageIcon from "@mui/icons-material/Language";
 import DiamondIcon from "@mui/icons-material/Diamond";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { motion } from "framer-motion";
 
-export default function ComponentesProfeticos() {
-
+const ComponentesProfeticos = () => {
   const navigate = useNavigate();
-
-  const h1Styles = {
-    textAlign: "center",
-    fontSize: "2.5rem",
-    fontWeight: "bold",
-    color: "#012677",
-    marginTop: "20px",
-    marginBottom: "40px",
-  };
 
   const cardStyles = {
     borderRadius: "12px",
     boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
-    height: "100%",
+    minHeight: "300px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-  };
-
-  const cardStylesBlue = {
-    ...cardStyles,
-    backgroundColor: "#00b4fc",
-    color: "white",
-  };
-
-  const cardStylesDarkBlue = {
-    ...cardStyles,
-    backgroundColor: "#005bc5",
-    color: "white",
+    cursor: "pointer",
+    paddingBottom: "20px", // Añadir espacio debajo de cada tarjeta
+    marginLeft: "20px", // Añadir espacio a la izquierda
+    marginRight: "20px", // Añadir espacio a la derecha
   };
 
   const iconStyles = {
@@ -47,115 +29,105 @@ export default function ComponentesProfeticos() {
     marginBottom: "16px",
   };
 
-  const containerStyles = {
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+  const cardData = [
+    {
+      title: "Caracter probado y aprobado",
+      icon: <BackupIcon sx={iconStyles} />,
+      description: [
+        "El caracter del profeta",
+        "Detonantes del alma que gobierna",
+      ],
+      color: "#00b4fc",
+      route: "/Caracter",
+    },
+    {
+      title: "Doctrina de demonios",
+      icon: <LanguageIcon sx={iconStyles} />,
+      description: [
+        "La verdadera Iglesia Apóstata",
+        "¿Los profetas llegaron hasta Juan?",
+        "¿Fue Pablo el último Apostol?",
+        "¿A solas con el Espíritu Santo?",
+        "¿Son Mentoreados los Profetas?",
+      ],
+      color: "#005bc5",
+      route: "/Doctrina",
+    },
+    {
+      title: "Llamamiento y asignación",
+      icon: <DiamondIcon sx={iconStyles} />,
+      description: [
+        "Llamado y Enviados por Dios",
+        "Enfocados en la asignación",
+      ],
+      color: "#00b4fc",
+      route: "/Llamamiento",
+    },
+    {
+      title: "Historia Profética",
+      icon: <SettingsIcon sx={iconStyles} />,
+      description: [
+        "Escuela de Profetas en la Biblia",
+        "Terminología Bíblica",
+        "Hijos de los Profetas",
+        "Profetas que mentoraron y entrenaron a Profetas",
+      ],
+      color: "#005bc5",
+      route: "/Historia",
+    },
+  ];
+
+  const handleCardClick = (route) => {
+    navigate(route);
   };
 
   return (
-    <div style={containerStyles}>
-      <h1 style={h1Styles}>Entrenando Tus Sentidos Espirituales</h1>
-      <div className="grid grid-cols-2 gap-8">
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Card style={cardStylesBlue} onClick={() => navigate("/Caracter")}>
-            <CardContent className="flex flex-col items-center justify-center">
-              <BackupIcon sx={iconStyles} />
-              <Typography
-                variant="h6"
-                className="font-semibold text-center"
+    <div style={{ padding: "20px 20px" }}> {/* Añadir padding a la izquierda y a la derecha */}
+      <Typography
+        variant="h1"
+        align="center"
+        style={{
+          fontSize: "2.5rem",
+          fontWeight: "bold",
+          color: "#012677",
+          marginTop: "20px",
+          marginBottom: "40px",
+        }}
+      >
+        Entrenando Tus Sentidos Espirituales
+      </Typography>
+      <Grid container spacing={4}>
+        {cardData.map((item, index) => (
+          <Grid item xs={12} sm={6} key={index}>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Card
+                style={{
+                  ...cardStyles,
+                  backgroundColor: item.color,
+                  color: "white",
+                }}
+                onClick={() => handleCardClick(item.route)}
               >
-                Caracter probado y aprobado
-              </Typography>
-              <Typography
-                variant="body2"
-                className="mt-2 text-center"
-              >
-                <ul>
-                  <li>- El caracter del profeta</li>
-                  <li>- Detonantes del alma que gobierna</li>
-                </ul>
-              </Typography>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Card style={cardStylesDarkBlue} onClick={() => navigate("/Doctrina")}>
-            <CardContent className="flex flex-col items-center justify-center">
-              <LanguageIcon sx={iconStyles} />
-              <Typography
-                variant="h6"
-                className="font-semibold text-center"
-              >
-                Doctrina de demonios
-              </Typography>
-              <Typography
-                variant="body2"
-                className="mt-2 text-center"
-              >
-                 <ul>
-                  <li>- La verdadera Iglesia Apóstata</li>
-                  <li>- ¿Los profetas llegaron hasta Juan?</li>
-                  <li>- ¿Fue Pablo el último Apostol?</li>
-                  <li>- ¿A solas con el Espíritu Santo?</li>
-                  <li>- ¿Son Mentoreados los Profetas?</li>
-                </ul>
-              </Typography>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Card style={cardStylesBlue} onClick={() => navigate("/Llamamiento")}>
-            <CardContent className="flex flex-col items-center justify-center">
-              <DiamondIcon sx={iconStyles} />
-              <Typography
-                variant="h6"
-                className="font-semibold text-center"
-              >
-                Llamamiento y asiganción
-              </Typography>
-              <Typography
-                variant="body2"
-                className="mt-2 text-center"
-              >
-                <ul>
-                  <li>- Llamado y Enviados por Dios</li>
-                  <li>- Enfocados en la asiganción</li>
-                </ul>
-              </Typography>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Card style={cardStylesDarkBlue} onClick={() => navigate("/Historia")}>
-            <CardContent className="flex flex-col items-center justify-center">
-              <SettingsIcon sx={iconStyles} />
-              <Typography
-                variant="h6"
-                className="font-semibold text-center"
-              >
-                Historia Profética
-              </Typography>
-              <Typography
-                variant="body2"
-                className="mt-2 text-center"
-              >
-                <ul>
-                  <li>- Escuela de Profetas en la Biblia</li>
-                  <li>- Terminologia Biblica</li>
-                  <li>- Hijos de los Profetas</li>
-                  <li>- Profetas que mentorearon y entrenaron a Profetas</li>
-                </ul>
-              </Typography>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
+                <CardContent style={{ textAlign: "center", flex: 1 }}>
+                  {item.icon}
+                  <Typography variant="h6" className="font-semibold">
+                    {item.title}
+                  </Typography>
+                  <Typography variant="body1" style={{ marginTop: "10px" }}>
+                    {item.description.map((desc, i) => (
+                      <Typography key={i} component="div">
+                        &bull; {desc}
+                      </Typography>
+                    ))}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </Grid>
+        ))}
+      </Grid>
     </div>
   );
-}
+};
+
+export default ComponentesProfeticos;

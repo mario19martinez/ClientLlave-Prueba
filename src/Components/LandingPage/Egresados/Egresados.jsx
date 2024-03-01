@@ -6,10 +6,10 @@ const Egresados = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex justify-center items-center w-full h-full">
-      <div className="max-w-6xl w-full p-8 bg-white rounded-lg shadow-xl" onClick={() => navigate("/Egresados")}>
+    <div className="flex justify-center items-center w-screen h-screen bg-gray-100">
+      <div className="max-w-6xl w-full p-8 bg-white rounded-lg shadow-xl cursor-pointer" onClick={() => navigate("/Egresados")}>
         <h2 className="text-4xl font-bold mb-6 text-center text-gray-800">Egresados</h2>
-        <div className="flex flex-col md:flex-row items-center justify-center h-full">
+        <div className="flex flex-col md:flex-row items-center justify-center">
           <div className="w-full md:w-1/2 pr-4 md:pr-8">
             <p className="text-gray-800 text-lg md:text-xl text-center leading-relaxed">¡Descubre cómo nuestros egresados han triunfado en el mundo real después de graduarse!</p>
           </div>
