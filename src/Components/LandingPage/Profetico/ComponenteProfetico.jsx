@@ -18,8 +18,7 @@ const ComponentesProfeticos = () => {
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    cursor: "pointer",
-    paddingBottom: "20px", 
+    cursor: "pointer", 
     marginLeft: "20px", 
     marginRight: "20px",
   };

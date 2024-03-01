@@ -32,9 +32,11 @@ export default function ViewHome() {
         <animated.div style={fadeIn}>
           <Egresados className="mt-8" />
         </animated.div>
-        <animated.div style={fadeIn}>
-          <ComponentesProfeticos className="mt-8" />
-        </animated.div>
+        <div className="pt-20 pb-20">
+          <animated.div style={fadeIn}>
+            <ComponentesProfeticos className="mt-8" />
+          </animated.div>
+        </div>
         <animated.div style={fadeIn}>
           <CardObsequio className="mt-8" />
         </animated.div>
