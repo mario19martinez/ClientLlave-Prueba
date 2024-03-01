@@ -18,10 +18,9 @@ const ComponentesProfeticos = () => {
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    cursor: "pointer",
-    paddingBottom: "20px", // Añadir espacio debajo de cada tarjeta
-    marginLeft: "20px", // Añadir espacio a la izquierda
-    marginRight: "20px", // Añadir espacio a la derecha
+    cursor: "pointer", 
+    marginLeft: "20px", 
+    marginRight: "20px",
   };
 
   const iconStyles = {
