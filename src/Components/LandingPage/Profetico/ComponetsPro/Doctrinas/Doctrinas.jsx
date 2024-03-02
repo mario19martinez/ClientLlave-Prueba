@@ -56,7 +56,9 @@ export default function Caracter() {
         [profeticoId]: {
           ...feedbacks[profeticoId],
           [preguntaIndex]: (
-            <span style={{ color: "green" }}>¡Respuesta correcta!</span>
+            <span style={{ color: "green", fontSize: "1.2rem" }}>
+              ¡Respuesta correcta!
+            </span>
           ),
         },
       });
@@ -69,8 +71,14 @@ export default function Caracter() {
         [profeticoId]: {
           ...feedbacks[profeticoId],
           [preguntaIndex]: (
-            <span style={{ color: "red" }}>
+            <span style={{ color: "red", fontSize: "1.2rem" }}>
               Respuesta incorrecta. ¡Inténtalo de nuevo!
+              <button
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4 transition duration-300"
+                onClick={() => handleTryAgain(profeticoId, preguntaIndex)}
+              >
+                Intentar de Nuevo
+              </button>
             </span>
           ),
         },
@@ -208,36 +216,27 @@ export default function Caracter() {
                                   )}
                                 </ul>
                                 {feedbacks[profetico.id]?.[preguntaIndex] && (
-                                  <p className="text-sm text-red-600">
+                                  <p
+                                    className="text-sm text-red-600"
+                                    style={{ fontSize: "1rem" }}
+                                  >
                                     {feedbacks[profetico.id][preguntaIndex]}
                                   </p>
                                 )}
                                 <div>
-                                  <button
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4 transition duration-300"
-                                    onClick={() =>
-                                      handleSubmitAnswer(
-                                        profetico.id,
-                                        preguntaIndex
-                                      )
-                                    }
-                                    disabled={
-                                      !!feedbacks[profetico.id]?.[preguntaIndex]
-                                    }
-                                  >
-                                    Responder
-                                  </button>
-                                  {feedbacks[profetico.id]?.[preguntaIndex] && (
+                                  {!feedbacks[profetico.id]?.[
+                                    preguntaIndex
+                                  ] && (
                                     <button
-                                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 transition duration-300"
+                                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4 transition duration-300"
                                       onClick={() =>
-                                        handleTryAgain(
+                                        handleSubmitAnswer(
                                           profetico.id,
                                           preguntaIndex
                                         )
                                       }
                                     >
-                                      Intentar de Nuevo
+                                      Responder
                                     </button>
                                   )}
                                 </div>

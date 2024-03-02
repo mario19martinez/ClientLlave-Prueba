@@ -31,8 +31,8 @@ export default function Caracter() {
       ...selectedOptions,
       [profeticoId]: {
         ...selectedOptions[profeticoId],
-        [preguntaIndex]: opcion
-      }
+        [preguntaIndex]: opcion,
+      },
     });
   };
 
@@ -56,9 +56,11 @@ export default function Caracter() {
         [profeticoId]: {
           ...feedbacks[profeticoId],
           [preguntaIndex]: (
-            <span style={{ color: "green" }}>¡Respuesta correcta!</span>
-          )
-        }
+            <span style={{ color: "green", fontSize: "1.2rem" }}>
+              ¡Respuesta correcta!
+            </span>
+          ),
+        },
       });
       if (allQuestionsAnswered(profeticoId)) {
         setCompletedWorkshops([...completedWorkshops, profeticoId]);
@@ -69,11 +71,17 @@ export default function Caracter() {
         [profeticoId]: {
           ...feedbacks[profeticoId],
           [preguntaIndex]: (
-            <span style={{ color: "red" }}>
+            <span style={{ color: "red", fontSize: "1.2rem" }}>
               Respuesta incorrecta. ¡Inténtalo de nuevo!
+              <button
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4 transition duration-300"
+                onClick={() => handleTryAgain(profeticoId, preguntaIndex)}
+              >
+                Intentar de Nuevo
+              </button>
             </span>
-          )
-        }
+          ),
+        },
       });
     }
   };
@@ -83,15 +91,15 @@ export default function Caracter() {
       ...feedbacks,
       [profeticoId]: {
         ...feedbacks[profeticoId],
-        [preguntaIndex]: null
-      }
+        [preguntaIndex]: null,
+      },
     });
     setSelectedOptions({
       ...selectedOptions,
       [profeticoId]: {
         ...selectedOptions[profeticoId],
-        [preguntaIndex]: null
-      }
+        [preguntaIndex]: null,
+      },
     });
     setCompletedWorkshops(
       completedWorkshops.filter((id) => id !== profeticoId)
@@ -123,7 +131,9 @@ export default function Caracter() {
             style={{ maxWidth: "500px", marginBottom: "20px" }}
           >
             <div className="cursor-pointer" onClick={() => toggleExpand(index)}>
-              <h2 className="text-lg font-bold mb-2 text-gray-800">{profetico.titulo}</h2>
+              <h2 className="text-lg font-bold mb-2 text-gray-800">
+                {profetico.titulo}
+              </h2>
               <p
                 className="text-gray-600 mb-4 overflow-hidden"
                 style={{ maxHeight: expandedCard === index ? "none" : "3rem" }}
@@ -146,7 +156,9 @@ export default function Caracter() {
                 )}
                 {profetico.contenido && (
                   <div className="mt-4">
-                    <h3 className="font-bold text-lg text-gray-800">Contenido:</h3>
+                    <h3 className="font-bold text-lg text-gray-800">
+                      Contenido:
+                    </h3>
                     <div
                       className="text-gray-700"
                       dangerouslySetInnerHTML={{ __html: profetico.contenido }}
@@ -165,53 +177,64 @@ export default function Caracter() {
                           <div key={preguntaIndex}>
                             {pregunta.pregunta && (
                               <>
-                                <p className="text-lg font-bold mb-2 text-gray-800">{pregunta.pregunta}</p>
+                                <p className="text-lg font-bold mb-2 text-gray-800">
+                                  {pregunta.pregunta}
+                                </p>
                                 <ul className="list-disc pl-8 mb-4">
-                                  {pregunta.opciones.map((opcion, opcionIndex) => (
-                                    <li key={opcionIndex} className="pl-2 pr-2">
-                                      <label className="inline-flex items-center text-gray-800">
-                                        <input
-                                          type="radio"
-                                          name={`pregunta${preguntaIndex}`}
-                                          value={opcion}
-                                          checked={
-                                            selectedOptions[profetico.id]?.[preguntaIndex] ===
-                                            opcion
-                                          }
-                                          onChange={() =>
-                                            handleOptionSelect(
-                                              profetico.id,
-                                              preguntaIndex,
-                                              opcion
-                                            )
-                                          }
-                                        />
-                                        <span className="ml-2">{opcion.substr(0)}</span>
-                                      </label>
-                                    </li>
-                                  ))}
+                                  {pregunta.opciones.map(
+                                    (opcion, opcionIndex) => (
+                                      <li
+                                        key={opcionIndex}
+                                        className="pl-2 pr-2"
+                                      >
+                                        <label className="inline-flex items-center text-gray-800">
+                                          <input
+                                            type="radio"
+                                            name={`pregunta${preguntaIndex}`}
+                                            value={opcion}
+                                            checked={
+                                              selectedOptions[profetico.id]?.[
+                                                preguntaIndex
+                                              ] === opcion
+                                            }
+                                            onChange={() =>
+                                              handleOptionSelect(
+                                                profetico.id,
+                                                preguntaIndex,
+                                                opcion
+                                              )
+                                            }
+                                          />
+                                          <span className="ml-2">
+                                            {opcion.substr(0)}
+                                          </span>
+                                        </label>
+                                      </li>
+                                    )
+                                  )}
                                 </ul>
                                 {feedbacks[profetico.id]?.[preguntaIndex] && (
-                                  <p className="text-sm text-red-600">{feedbacks[profetico.id][preguntaIndex]}</p>
+                                  <p
+                                    className="text-sm text-red-600"
+                                    style={{ fontSize: "1rem" }}
+                                  >
+                                    {feedbacks[profetico.id][preguntaIndex]}
+                                  </p>
                                 )}
                                 <div>
-                                  <button
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4 transition duration-300"
-                                    onClick={() =>
-                                      handleSubmitAnswer(profetico.id, preguntaIndex)
-                                    }
-                                    disabled={!!feedbacks[profetico.id]?.[preguntaIndex]}
-                                  >
-                                    Responder
-                                  </button>
-                                  {feedbacks[profetico.id]?.[preguntaIndex] && (
+                                  {!feedbacks[profetico.id]?.[
+                                    preguntaIndex
+                                  ] && (
                                     <button
-                                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 transition duration-300"
+                                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4 transition duration-300"
                                       onClick={() =>
-                                        handleTryAgain(profetico.id, preguntaIndex)
+                                        handleSubmitAnswer(
+                                          profetico.id,
+                                          preguntaIndex
+                                        )
                                       }
                                     >
-                                      Intentar de Nuevo
+                                      Responder
                                     </button>
                                   )}
                                 </div>
