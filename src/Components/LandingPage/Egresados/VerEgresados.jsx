@@ -41,7 +41,8 @@ export default function VerEgresados() {
       // Si la media es una imagen
       return (
         <img
-          className="w-full md:w-1/2 h-full object-cover object-center rounded-lg mb-4 md:mb-0 md:mr-4 transition-opacity duration-300 opacity-100 hover:opacity-75"
+          style={{ width: "auto", height: "auto" }} // Establece el tamaño de la imagen automáticamente
+          className="md:w-1/2 object-cover object-center rounded-lg mb-4 md:mb-0 md:mr-4 transition-opacity duration-300 opacity-100 hover:opacity-75"
           src={media}
           alt="Media"
         />
