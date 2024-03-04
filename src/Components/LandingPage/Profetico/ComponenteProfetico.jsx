@@ -93,7 +93,7 @@ const ComponentesProfeticos = () => {
           marginBottom: "40px",
         }}
       >
-        Entrenando Tus Sentidos Espirituales
+        Entrenándote para conquistar
       </Typography>
       <Grid container spacing={4}>
         {cardData.map((item, index) => (
