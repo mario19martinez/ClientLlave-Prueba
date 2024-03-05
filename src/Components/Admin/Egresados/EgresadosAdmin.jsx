@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MdEdit, MdDelete } from "react-icons/md";
-import { FiPlus } from "react-icons/fi"; 
+import { FiPlus } from "react-icons/fi";
 
 export default function Egresados() {
   const [egresados, setEgresados] = useState([]);
@@ -62,7 +62,9 @@ export default function Egresados() {
   const handleDelete = async () => {
     try {
       await axios.delete(`/egresados/${selectedEgresado.id}`);
-      setEgresados(egresados.filter((egresado) => egresado.id !== selectedEgresado.id));
+      setEgresados(
+        egresados.filter((egresado) => egresado.id !== selectedEgresado.id)
+      );
       setShowConfirmation(false);
     } catch (error) {
       console.error("Error deleting egresado:", error);
@@ -81,12 +83,24 @@ export default function Egresados() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="py-8 px-8">
-      <h1 className="text-3xl font-bold text-center mb-8">Nuestros Egresados</h1>
+    <div className="py-8 px-32">
+      <div className="pb-5 justify-start">
+        <button
+          onClick={() => navegate("/AdminPage")}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Atras
+        </button>
+      </div>
+      <h1 className="text-3xl font-bold text-center mb-8">
+        Nuestros Egresados
+      </h1>
       <div className="container mx-auto">
         {/* Botón para crear testimonio de egresado */}
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 flex items-center"
-        onClick={() => navegate("/admin/egresados/crear")}>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 flex items-center"
+          onClick={() => navegate("/admin/egresados/crear")}
+        >
           <FiPlus className="mr-2" />
           Crear testimonio de egresado
         </button>
@@ -112,7 +126,12 @@ export default function Egresados() {
                         className="text-gray-600"
                       ></div>
                       <div className="flex mt-4">
-                        <button className="flex items-center text-blue-500 hover:text-blue-700">
+                        <button
+                          className="flex items-center text-blue-500 hover:text-blue-700"
+                          onClick={() =>
+                            navegate(`/admin/egresados/edit/${egresado.id}`)
+                          }
+                        >
                           <MdEdit className="mr-1" />
                           Editar
                         </button>
@@ -228,7 +247,9 @@ export default function Egresados() {
 
         {/* Paginación */}
         <div className="flex justify-center">
-          {Array.from({ length: Math.ceil(egresados.length / egresadosPerPage) }).map((_, index) => (
+          {Array.from({
+            length: Math.ceil(egresados.length / egresadosPerPage),
+          }).map((_, index) => (
             <button
               key={index}
               onClick={() => paginate(index + 1)}
@@ -247,7 +268,9 @@ export default function Egresados() {
         {showConfirmation && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
             <div className="bg-white p-8 rounded shadow-md">
-              <p className="text-lg font-semibold mb-4">¿Estás seguro de eliminar este egresado?</p>
+              <p className="text-lg font-semibold mb-4">
+                ¿Estás seguro de eliminar este egresado?
+              </p>
               <div className="flex justify-end">
                 <button
                   onClick={() => setShowConfirmation(false)}

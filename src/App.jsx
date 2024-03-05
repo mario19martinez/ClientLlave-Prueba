@@ -81,6 +81,7 @@ import NivelesDetail from "./Components/Niveles/NivelesDetail";
 import ModuloDetail from "./Components/ModulosNivel/ModuloDetail";
 import NivelClasesDetail from "./Components/NivelClases/NivelClasesDetail";
 import ViewEgresadosAdmin from "./views/ViewAdmin/ViewEgresadosAdmin";
+import ViewEgresadosEdit from "./views/ViewAdmin/ViewEditEgresados";
 
 import axios from "axios";
 
@@ -264,6 +265,7 @@ function App() {
           element={<NivelClasesDetail />}
         />
         <Route path="/admin/egresados" element={<ViewEgresadosAdmin />} />
+        <Route path="/admin/egresados/edit/:id" element={<ViewEgresadosEdit />} />
       </Routes>
     </Router>
   );

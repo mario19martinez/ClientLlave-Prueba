@@ -8,9 +8,8 @@ import CampaignIcon from "@mui/icons-material/Campaign";
 import GroupIcon from "@mui/icons-material/Group";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import SourceIcon from "@mui/icons-material/Source";
-import BookIcon from "@mui/icons-material/Book";
-import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
 import VideoFileIcon from "@mui/icons-material/VideoFile";
+import WebIcon from '@mui/icons-material/Web';
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserData } from "../../../Redux/features/Users/usersSlice";
@@ -134,76 +133,12 @@ function SidebarAdmin({ selectedTab }) {
                   ? "bg-blue-400 text-white"
                   : "hover:bg-blue-500 hover:text-white"
               }`}
-              onClick={() => navigate("/Admin/Nosotros")}
-            >
-              <AccessibilityNewIcon
-                className={`${selectedTab === "Nosotros" ? "text-white" : ""}`}
-              />{" "}
-              Nosotros
-            </button>
-          </li>
-          <li className="mb-4">
-            <button
-              href=""
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Nosotros"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
               onClick={() => navigate("/AdminPage")}
             >
-              <AccessibilityNewIcon
+              <WebIcon
                 className={`${selectedTab === "Nosotros" ? "text-white" : ""}`}
               />{" "}
               Pagina
-            </button>
-          </li>
-          <li className="mb-4">
-            <button
-              href=""
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Nosotros"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-              onClick={() => navigate("/admin/crearEgresado")}
-            >
-              <AccessibilityNewIcon
-                className={`${selectedTab === "Nosotros" ? "text-white" : ""}`}
-              />{" "}
-              Egresados
-            </button>
-          </li>
-          <li className="mb-4">
-            <button
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Blogs"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-              onClick={() => navigate("/admin/blogs")}
-            >
-              <BookIcon
-                className={`${selectedTab === "Blogs" ? "text-white" : ""}`}
-              />{" "}
-              Blogs
-            </button>
-          </li>
-          <li className="mb-4">
-            <button
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Testimonios"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-              onClick={() => navigate("/admin/testimonios")}
-            >
-              <SourceIcon
-                className={`${
-                  selectedTab === "Testimonios" ? "text-white" : ""
-                }`}
-              />{" "}
-              Testimonios
             </button>
           </li>
           <li className="mb-4">
@@ -219,23 +154,6 @@ function SidebarAdmin({ selectedTab }) {
                 className={`${selectedTab === "Noticias" ? "text-white" : ""}`}
               />{" "}
               Noticias
-            </button>
-          </li>
-          <li className="mb-4">
-            <button
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Informacion"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-              onClick={() => navigate("/admin/informacion")}
-            >
-              <SourceIcon
-                className={`${
-                  selectedTab === "Informacion" ? "text-white" : ""
-                }`}
-              />{" "}
-              Informacion
             </button>
           </li>
 
