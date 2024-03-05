@@ -19,7 +19,7 @@ import ViewProfile from "./views/ViewMenuStudent/ViewProfile";
 import ViewCursosInscritos from "./views/ViewMenuStudent/ViewCursosInscritos";
 import UserDetail from "./Components/Admin/UserDetail/UserDetail";
 import ViewDashBoardAdmin from "./views/ViewAdmin/ViewDashBoardAdmin";
-import Cursos from "./Components/Admin/Cursos/Cursos";
+//import Cursos from "./Components/Admin/Cursos/Cursos";
 import Error404 from "./Components/Error404/Error404";
 import ViewErrorPaginaConstruccion from "./views/ViewErrores/ViewErrorPaginaConstruccion";
 import AgregarCurso from "./Components/Admin/Cursos/AgregarCurso";
@@ -85,9 +85,9 @@ import ViewEgresadosEdit from "./views/ViewAdmin/ViewEditEgresados";
 
 import axios from "axios";
 
-//axios.defaults.baseURL = "http://localhost:3001";
+axios.defaults.baseURL = "http://localhost:3001";
 //axios.defaults.baseURL = "https://ancient-falls-91374-828594f7d42c.herokuapp.com/";
-axios.defaults.baseURL = "https://morning-falls-53309-9dc95113eb57.herokuapp.com/";
+//axios.defaults.baseURL = "https://morning-falls-53309-9dc95113eb57.herokuapp.com/";
 
 const isLoggedIn = localStorage.getItem("isLoggedIn");
 
@@ -202,7 +202,7 @@ function App() {
           element={isLoggedIn ? <UserDetail /> : <Navigate to="/" />}
         />
         <Route path="/RegistroUser" element={<ViewRegistro />} />
-        <Route path="/cursos" element={<Cursos />} />
+        {/*<Route path="/cursos" element={<Cursos />} />*/}
         <Route path="/Nosotros" element={<ViewAbaut />} />
         <Route path="/blogs" element={<ViewBlogs />} />
         <Route path="/blog/:blogId" element={<ViewBlog />} />
