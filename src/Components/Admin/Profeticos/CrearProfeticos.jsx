@@ -197,7 +197,6 @@ const CrearProfeticos = () => {
               className="border-2 border-gray-300 rounded-md p-2 w-full mb-2"
               value={pregunta.pregunta}
               onChange={(e) => handleChangePregunta(index, e)}
-              required
             />
             {pregunta.opciones.map((opcion, idx) => (
               <input
@@ -207,7 +206,6 @@ const CrearProfeticos = () => {
                 value={opcion}
                 onChange={(e) => handleChangeOpcion(index, idx, e)}
                 placeholder={`Opción ${String.fromCharCode(97 + idx)}`}
-                required
               />
             ))}
             <label
@@ -221,7 +219,6 @@ const CrearProfeticos = () => {
               className="border-2 border-gray-300 rounded-md p-2 w-full"
               value={pregunta.respuestaCorrecta}
               onChange={(e) => handleChangeRespuesta(index, e)}
-              required
             >
               <option value="">Seleccione una respuesta</option>
               {pregunta.opciones.map((opcion, idx) => (
@@ -232,19 +229,25 @@ const CrearProfeticos = () => {
             </select>
           </div>
         ))}
-        <button
-          type="button"
-          onClick={agregarPregunta}
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mb-4"
-        >
-          Agregar Pregunta
-        </button>
-        <button
-          type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
-        >
-          Crear
-        </button>
+        <div className="flex">
+          <div className="pr-2 pl-2">
+            <button
+              type="button"
+              onClick={agregarPregunta}
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mb-4"
+            >
+              Agregar Pregunta
+            </button>
+          </div>
+          <div className="pr-2 pl-2">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
+            >
+              Crear
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   );

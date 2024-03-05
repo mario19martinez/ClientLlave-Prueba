@@ -41,7 +41,8 @@ export default function VerEgresados() {
       // Si la media es una imagen
       return (
         <img
-          className="w-full md:w-1/2 h-full object-cover object-center rounded-lg mb-4 md:mb-0 md:mr-4 transition-opacity duration-300 opacity-100 hover:opacity-75"
+          style={{ width: "auto", height: "auto" }} // Establece el tamaño de la imagen automáticamente
+          className="md:w-1/2 object-cover object-center rounded-lg mb-4 md:mb-0 md:mr-4 transition-opacity duration-300 opacity-100 hover:opacity-75"
           src={media}
           alt="Media"
         />
@@ -82,7 +83,7 @@ export default function VerEgresados() {
         {combinedEgresados.map((egresado) => (
           <div
             key={egresado.id}
-            className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row mb-4 md:hover:shadow-xl md:transition-shadow duration-300"
+            className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row md:hover:shadow-xl md:transition-shadow duration-300 mb-10 md:mb-20"
           >
             {/*Card Template 1 */}
             {egresado.template === "1" ? (

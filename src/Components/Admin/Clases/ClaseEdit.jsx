@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-function ClaseEdit({ id, cursoId, }) {
+function ClaseEdit({ id, cursoId }) {
   const [formData, setFormData] = useState({
     name: "",
     descripcion: "",
     url: "",
+    platform: "",
+    pdfURL: "", // Agregamos el campo pdfURL al estado del formulario
   });
 
   useEffect(() => {
@@ -18,10 +20,11 @@ function ClaseEdit({ id, cursoId, }) {
           name: clase.name,
           descripcion: clase.descripcion,
           url: clase.url,
+          platform: clase.platform,
+          pdfURL: clase.pdfURL || "", // Si pdfURL no está definido en la clase, establecerlo como una cadena vacía
         });
-        //window.location.reload();
       } catch (error) {
-        console.error("Error al obtener el curso:", error);
+        console.error("Error al obtener la clase:", error);
       }
     };
     fetchData();
@@ -35,11 +38,7 @@ function ClaseEdit({ id, cursoId, }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`/cursos/${cursoId}/clases/${id}`, {
-        name: formData.name,
-        descripcion: formData.descripcion,
-        url: formData.url,
-      });
+      await axios.put(`/cursos/${cursoId}/clases/${id}`, formData);
       alert("Clase actualizada con éxito");
     } catch (error) {
       console.log("Error al actualizar la clase:", error);
@@ -47,59 +46,87 @@ function ClaseEdit({ id, cursoId, }) {
   };
 
   return (
-    
-      <div className="max-w-md mx-auto mt-8 p-6 bg-blue-600 rounded shadow-lg w-96">
-        <h2 className="text-2xl font-semibold mb-4 text-white translate-x-2">
-          Editar Clase
-        </h2>
-        <form onSubmit={handleSubmit}>
+    <div className="max-w-md mx-auto mt-8 p-6 bg-blue-600 rounded shadow-lg w-96">
+      <h2 className="text-2xl font-semibold mb-4 text-white translate-x-2">
+        Editar Clase
+      </h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-white">
+            Nombre:
+          </label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            className="mt-1 p-2 w-full border-blue-500 border rounded focus:outline-none focus:border-blue-700 bg-blue-100 font-gabarito"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-white">
+            Descripción:
+          </label>
+          <input
+            type="text"
+            name="descripcion"
+            value={formData.descripcion}
+            onChange={handleInputChange}
+            className="mt-1 p-2 w-full border-blue-500 border rounded focus:outline-none focus:border-blue-700 bg-blue-100 font-gabarito"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-white">
+            Plataforma:
+          </label>
+          <select
+            name="platform"
+            value={formData.platform}
+            onChange={handleInputChange}
+            className="mt-1 p-2 w-full border-blue-500 border rounded focus:outline-none focus:border-blue-700 bg-blue-100 font-gabarito"
+          >
+            <option value="">Plataforma</option>
+            <option value="vimeo">Vimeo</option>
+            <option value="youtube">Youtube</option>
+            <option value="pdf">Taller en PDF</option>
+          </select>
+        </div>
+        {formData.platform === "pdf" && (
           <div className="mb-4">
             <label className="block text-sm font-medium text-white">
-              Nombre:
+              Enlace del Taller (PDF):
             </label>
             <input
               type="text"
-              name="name"
-              value={formData.name}
+              name="pdfURL"
+              value={formData.pdfURL}
               onChange={handleInputChange}
               className="mt-1 p-2 w-full border-blue-500 border rounded focus:outline-none focus:border-blue-700 bg-blue-100 font-gabarito"
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-white">
-              Nombre:
-            </label>
-            <input
-              type="text"
-              name="descripcion"
-              value={formData.descripcion}
-              onChange={handleInputChange}
-              className="mt-1 p-2 w-full border-blue-500 border rounded focus:outline-none focus:border-blue-700 bg-blue-100 font-gabarito"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-white">
-              videoURL:
-            </label>
-            <input
-              type="text"
-              name="text"
-              value={formData.url}
-              onChange={handleInputChange}
-              className="mt-1 p-2 w-full border-blue-500 border rounded focus:outline-none focus:border-blue-700 bg-blue-100 font-gabarito"
-            />
-          </div>
-          <div>
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Guardar Cambios
-            </button>
-          </div>
-        </form>
-      </div>
-    
+        )}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-white">
+            URL del Video:
+          </label>
+          <input
+            type="text"
+            name="url"
+            value={formData.url}
+            onChange={handleInputChange}
+            className="mt-1 p-2 w-full border-blue-500 border rounded focus:outline-none focus:border-blue-700 bg-blue-100 font-gabarito"
+          />
+        </div>
+        <div>
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Guardar Cambios
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
 

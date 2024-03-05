@@ -24,9 +24,11 @@ function Clases() {
       try {
         const response = await axios.get(`/cursos/${id}/clases`);
         console.log("response", response);
+        const sortedClases = response.data.sort((a, b) => a.id - b.id);
         if (response.status === 200) {
           const data = await response.data;
           setClases(data);
+          setClases(sortedClases);
         } else {
           throw new Error("Curso no encontrado");
         }
@@ -73,7 +75,7 @@ function Clases() {
       }
     }
   }, [claseSeleccionada]);
-  
+
   // Calcular el índice de la primera y última clase de la página actual
   const indexOfLastClase = currentPage * clasesPerPage;
   const indexOfFirstClase = indexOfLastClase - clasesPerPage;
@@ -205,12 +207,13 @@ function Clases() {
                       <li key={claseSeleccionada.id}>
                         {claseSeleccionada.id === claseSeleccionada?.id && (
                           <Link
-                            to={`/admin/cursos/${id}/clases/${claseSeleccionada.id}/pdf`} 
+                            to={claseSeleccionada.pdfURL} 
+                            target="_blank"
                             className="flex items-center justify-between bg-blue-500 text-white px-4 py-2 rounded-md"
                           >
                             <span>{claseSeleccionada.name} PDF</span>
                             <button className="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1 rounded-md">
-                              Descargar
+                              Ver Taller
                             </button>
                           </Link>
                         )}

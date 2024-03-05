@@ -10,22 +10,45 @@ import CardObsequio from "../../Components/CardObsequio/CardObsequio";
 import Egresados from "../../Components/LandingPage/Egresados/Egresados";
 import EntrenamientoProfetico from "../../Components/LandingPage/EntrenammientoProfetico/EntrenamientoProfetico";
 import Empresas from "../../Components/Empresas/Empresas";
+import styles from "./animate.module.css";
 
 export default function ViewHome() {
   return (
     <div className="flex flex-col min-h-screen">
       <Nav />
       <LandingPage />
-      <Empresas className="mt-8" />
-      <div className="bg-gradient-to-b from-gray-200 white flex-grow">
-        <Egresados className="mt-8" />
-        <ComponentesProfeticos className="mt-8" />
-        <CardObsequio className="mt-8" />
-        <EntrenamientoProfetico className="mt-8" />
-        <BlogHome className="mt-8" />
-        <Testimonios className="mt-8" />
+
+      <div className={`${styles.component}`}>
+        <Empresas className="mt-8 " />
       </div>
-      <Footer />
+
+      <div className="bg-gradient-to-b from-gray-200 white flex-grow">
+        <div className={`${styles.component}`}>
+          <Egresados className="mt-8" />
+        </div>
+
+        <div className={`pt-20 pb-20 ${styles.component}`}>
+          <ComponentesProfeticos className="mt-8" />
+        </div>
+
+        <div className={`${styles.component}`}>
+          <CardObsequio className="mt-8" />
+        </div>
+
+        <div className={`${styles.component}`}>
+          <EntrenamientoProfetico className="mt-8" />
+        </div>
+
+        <div className={`${styles.component}`}>
+          <BlogHome className="mt-8" />
+        </div>
+        <div className={`${styles.component}`}>
+          <Testimonios className="mt-8" />
+        </div>
+      </div>
+      <div className={`${styles.component}`}>
+        <Footer />
+      </div>
     </div>
   );
 }

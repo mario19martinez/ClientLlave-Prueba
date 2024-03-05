@@ -73,12 +73,6 @@ import ViewDoctrina from "./views/ViewCompProfeticos/ViewDoctrina";
 import ViewLlamamiento from "./views/ViewCompProfeticos/ViewLlamamiento";
 import ViewEgresados from "./views/ViewEgresados/ViewEgresados";
 import ViewCreateEgresados from "./views/ViewEgresados/ViewCreateEgresados";
-import ViewNivelAdmin from "./views/ViewAdmin/ViewNivelAdmin/ViewNivelAdmin";
-import ViewNivelDetailAdmin from "./views/ViewAdmin/ViewNivelAdmin/ViewNivelDetailAdmin";
-import ModuloDetailAdmin from "./Components/Admin/ModuloAdmin/ModuloDetailAdmin";
-import NivelesDetail from "./Components/Niveles/NivelesDetail";
-import ModuloDetail from "./Components/ModulosNivel/ModuloDetail";
-import NivelClasesDetail from "./Components/NivelClases/NivelClasesDetail";
 import axios from "axios";
 
 //axios.defaults.baseURL = "http://localhost:3001";
@@ -244,15 +238,6 @@ function App() {
         <Route path="/CrearProfetico" element={<ViewFormProfetico />} />
         <Route path="/Egresados" element={<ViewEgresados />} />
         <Route path="/admin/crearEgresado" element={<ViewCreateEgresados />} />
-        <Route path="/niveladmin" element={<ViewNivelAdmin />} />
-        <Route path="/nivel/:id" element={<ViewNivelDetailAdmin />} />
-        <Route
-          path="/nivel/:nivelId/modulo/:moduloId"
-          element={<ModuloDetailAdmin />}
-        />
-        <Route path="/niveldetail/:id" element={<NivelesDetail />} />
-        <Route path="/home/nivel/:nivelId/modulo/:moduloId" element={<ModuloDetail />} />
-        <Route path="/modulo/:moduloId/clase/:claseId" element={<NivelClasesDetail />} />
       </Routes>
     </Router>
   );

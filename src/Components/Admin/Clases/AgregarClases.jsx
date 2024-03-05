@@ -10,18 +10,10 @@ function AgregarClases({ onAgregarClase }) {
     descripcion: "",
     url: "",
     platform: "",
-    pdfFile: null,
+    pdfURL: "",
   });
   const [selectedPlatform, setSelectedPlatform] = useState("");
   const { id } = useParams();
-
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setClaseData({
-      ...claseData,
-      pdfFile: selectedFile,
-    });
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -44,6 +36,15 @@ function AgregarClases({ onAgregarClase }) {
         });
         setSelectedPlatform("");
       }
+    } else if (name === "platform" && value === "pdf") {
+      // Si se selecciona "Taller en PDF", limpiar la URL del video
+      setClaseData({
+        ...claseData,
+        url: "", // Limpiar la URL del video
+        platform: value,
+        pdfURL: "", // Limpiar el enlace del taller PDF
+      });
+      setSelectedPlatform(value);
     } else {
       setClaseData({ ...claseData, [name]: value });
       setSelectedPlatform("");
@@ -52,19 +53,9 @@ function AgregarClases({ onAgregarClase }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", claseData.name);
-    formData.append("descripcion", claseData.descripcion);
-    formData.append("url", claseData.url);
-    formData.append("platform", selectedPlatform);
-    formData.append("pdfFile", claseData.pdfFile);
 
     try {
-      await axios.post(`/cursos/${id}/clases`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axios.post(`/cursos/${id}/clases`, claseData);
 
       onAgregarClase();
       toast.success("Clase agregada con éxito");
@@ -82,11 +73,7 @@ function AgregarClases({ onAgregarClase }) {
       <h2 className="text-2xl font-gabarito mb-4 text-white">
         Agregar Nueva Clase
       </h2>
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-md"
-        encType="multipart/form-data"
-      >
+      <form onSubmit={handleSubmit} className="max-w-md">
         <div className="mb-4">
           <label htmlFor="" className="block text-sm font-medium text-white">
             Nombre de la Clase
@@ -132,31 +119,43 @@ function AgregarClases({ onAgregarClase }) {
           </select>
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="" className="block text-sm font-medium text-white">
-            URL de la Clase (Vimeo)
-          </label>
-          <input
-            type="text"
-            name="url"
-            value={claseData.url}
-            onChange={handleInputChange}
-            className="mt-1 p-2 border border-gray-300 rounded w-full"
-          />
-        </div>
+        {(selectedPlatform === "pdf" || selectedPlatform === "") && ( // Mostrar el campo para el enlace del taller solo si se selecciona PDF o no se selecciona ninguna plataforma
+          <div className="mb-4">
+            <label
+              htmlFor=""
+              className="block text-sm font-medium text-white"
+            >
+              Enlace del Taller (PDF)
+            </label>
+            <input
+              type="text"
+              name="pdfURL"
+              value={claseData.pdfURL}
+              onChange={handleInputChange}
+              className="mt-1 p-2 border border-gray-300 rounded w-full"
+              required={selectedPlatform === "pdf"} // Requerido solo si se selecciona PDF
+            />
+          </div>
+        )}
 
-        <div className="mb-4">
-          <label htmlFor="" className="block text-sm font-medium text-white">
-            Archivo PDF
-          </label>
-          <input
-            type="file"
-            name="pdfFile"
-            onChange={handleFileChange}
-            className="mt-1 p-2 border border-gray-300 rounded w-full"
-            accept=".pdf"
-          />
-        </div>
+        {(selectedPlatform === "vimeo" || selectedPlatform === "youtube" || selectedPlatform === "") && ( // Mostrar el campo para la URL del video solo si se selecciona Vimeo, Youtube o no se selecciona ninguna plataforma
+          <div className="mb-4">
+            <label
+              htmlFor=""
+              className="block text-sm font-medium text-white"
+            >
+              URL de la Clase (Vimeo o Youtube)
+            </label>
+            <input
+              type="text"
+              name="url"
+              value={claseData.url}
+              onChange={handleInputChange}
+              className="mt-1 p-2 border border-gray-300 rounded w-full"
+              required={selectedPlatform === "vimeo" || selectedPlatform === "youtube"} // Requerido solo si se selecciona Vimeo o Youtube
+            />
+          </div>
+        )}
 
         <button
           type="submit"
@@ -171,7 +170,6 @@ function AgregarClases({ onAgregarClase }) {
 }
 
 AgregarClases.propTypes = {
-  //id: PropTypes.number.isRequired,
   onAgregarClase: PropTypes.func.isRequired,
 };
 
