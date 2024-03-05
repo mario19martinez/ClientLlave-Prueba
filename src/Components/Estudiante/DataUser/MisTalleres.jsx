@@ -1,29 +1,34 @@
-import { useState } from "react";
-import Modal from "react-modal";
+// import { useState } from "react";
+// import Modal from "react-modal";
 
 function MisTalleres() {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedTaller, setSelectedTaller] = useState(null);
-  // Supongamos que tenemos una lista de talleres del usuario
-  const talleres = [
-    { id: 1, nombre: "Taller 1", descripcion: "Descripcion del Taller 1" },
-    { id: 2, nombre: "Taller 2", descripcion: "Descripcion del Taller 2" },
-    { id: 3, nombre: "Taller 3", descripcion: "Descripcion del Taller 3" },
-  ];
+  // const [modalIsOpen, setModalIsOpen] = useState(false);
+  // const [selectedTaller, setSelectedTaller] = useState(null);
+  // // Supongamos que tenemos una lista de talleres del usuario
+  // const talleres = [
+  //   { id: 1, nombre: "Taller 1", descripcion: "Descripcion del Taller 1" },
+  //   { id: 2, nombre: "Taller 2", descripcion: "Descripcion del Taller 2" },
+  //   { id: 3, nombre: "Taller 3", descripcion: "Descripcion del Taller 3" },
+  // ];
 
-  const opennModal = (taller) => {
-    setSelectedTaller(taller);
-    setModalIsOpen(true);
-  };
+  // const opennModal = (taller) => {
+  //   setSelectedTaller(taller);
+  //   setModalIsOpen(true);
+  // };
 
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
+  // const closeModal = () => {
+  //   setModalIsOpen(false);
+  // };
 
   return (
     <div className="container mx-auto p-8 w-1/2 h-auto -translate-y-72">
       <h2 className="text-3xl font-bold mb-6">Mis Talleres</h2>
-      <ul className="space-y-4">
+      <p className="text-gray-600 mb-4">
+        Estamos trabajando en la interfaz de los talleres realizados. Por el
+        momento, los talleres están disponibles dentro del curso con el nombre
+        de taller.
+      </p>
+      {/*<ul className="space-y-4">
         {talleres.map((taller) => (
           <li
             key={taller.id}
@@ -64,7 +69,7 @@ function MisTalleres() {
             </button>
           </div>
         )}
-      </Modal>
+        </Modal>*/}
     </div>
   );
 }

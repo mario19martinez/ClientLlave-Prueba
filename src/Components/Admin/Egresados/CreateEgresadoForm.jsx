@@ -1,15 +1,18 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; 
+import "react-quill/dist/quill.snow.css";
 
 const CreateEgresadoForm = () => {
+  const navegate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     content: "",
     media: "",
-    template: "1", 
+    template: "1",
   });
 
   const handleChange = (name, value) => {
@@ -44,6 +47,14 @@ const CreateEgresadoForm = () => {
 
   return (
     <div className="max-w-md mx-auto mt-8 p-8 bg-white shadow-lg rounded-lg">
+      <div className="justify-start py-3">
+        <button
+          onClick={() => navegate("/admin/Egresados")}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Atras
+        </button>
+      </div>
       <h2 className="text-2xl font-semibold mb-4">Crear Egresado</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
