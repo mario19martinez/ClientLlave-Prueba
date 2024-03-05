@@ -126,7 +126,7 @@ export default function Nav() {
           </a>
           <a
             href=""
-            onClick={() => navigate("/Error404")}
+            onClick={() => navigate("/entrenamiento")}
             className="hover:text-gray-300 transition-colors"
           >
             Entrenamiento
