@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import NivelClasesDetail from "./NivelClasesDetail";
 
 function NivelClases({ moduloId }) {
-  const [clases, setClases] = useState([true]);
+  const [clases, setClases] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedClassId, setSelectedClassId] = useState(null);
 
   useEffect(() => {
     const fetchClases = async () => {
@@ -13,13 +14,16 @@ function NivelClases({ moduloId }) {
         setClases(response.data);
         setLoading(false);
       } catch (error) {
-        console.log(error);
         console.error("Error al obtener las clases:", error);
         setLoading(false);
       }
     };
     fetchClases();
   }, [moduloId]);
+
+  const handleClassSelect = (claseId) => {
+    setSelectedClassId(claseId);
+  };
 
   if (loading) {
     return (
@@ -45,34 +49,63 @@ function NivelClases({ moduloId }) {
   }
 
   return (
-    <div className="max-w-lg mx-auto">
-      <h2 className="text-3xl font-semibold text-center mb-6">Clases</h2>
-      <ul className="grid gap-4">
-        {clases.map((clase) => (
-          <Link key={clase.id} to={`/modulo/${moduloId}/clase/${clase.id}`}>
-            <li
-              key={clase.id}
-              className="bg-gray-300 rounded-lg shadow-md p-6 flex items-center justify-between transition duration-500 transform hover:scale-105"
-            >
-              <p className="text-lg font-semibold">{clase.name}</p>
-              <svg
-                className="w-8 h-8 text-blue-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+    <div className="bg-gray-100 min-h-screen flex flex-col items-start">
+      {/* Navigation Bar */}
+      <nav className="bg-white w-full p-4 shadow-md border-t-4 border-blue-500">
+        <div className="flex items-center justify-between">
+          <div className="text-xl font-bold">Coaching Ontológico</div>
+          <div className="space-x-4">
+            <a href="#" className="text-blue-500 hover:underline">
+              Etapa 1
+            </a>
+            <a href="#" className="text-blue-500 hover:underline">
+              Etapa 2
+            </a>
+            <a href="#" className="text-blue-500 hover:underline">
+              Mentoring
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      {/* Class Information */}
+      <div className="flex px-5 py-5">
+        <div className=" p-0 mt-8 rounded-lg shadow-md">
+          <h2 className="text-3xl font-semibold mb-6">Clases</h2>
+          <ul className="grid gap-4">
+            {clases.map((clase) => (
+              <li
+                key={clase.id}
+                className={` h-6 shadow-lg shadow-blue-500/50 rounded-lg p-6 border-b-4 border-blue-500 flex items-center justify-between transition duration-500 transform hover:scale-105 ${
+                  selectedClassId === clase.id ? "bg-blue-500 border-gray-500 text-white" : ""
+                }`}
+                onClick={() => handleClassSelect(clase.id)}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </li>
-          </Link>
-        ))}
-      </ul>
+                <p className="text-lg font-semibold">{clase.name}</p>
+                <svg
+                  className="w-8 h-8 text-blue-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="flex-1 px-5 py-8">
+          {selectedClassId && (
+            <NivelClasesDetail moduloId={moduloId} claseId={selectedClassId} />
+          )}
+        </div>
+      </div>
     </div>
   );
 }

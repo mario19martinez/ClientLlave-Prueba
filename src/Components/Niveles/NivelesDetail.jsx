@@ -45,19 +45,19 @@ function NivelesDetail() {
   return (
     <div className="max-w-4xl mx-auto p-8">
       <h2 className="text-3xl font-semibold mb-4">{nivel.name}</h2>
-      <img
+      {/* <img
         src={nivel.image}
         alt="image"
         className="mb-4 rounded-lg shadow-lg"
-      />
+      /> */}
       <p className="text-lg mb-4">{nivel.description}</p>
       <p className="text-lg mb-2">Duracion: {nivel.duracion}</p>
       <p className="text-lg mb-6">Costo: {nivel.costo}</p>
-      <div className="flex justify-center">
+      {/* <div className="flex justify-center">
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Comprar
         </button>
-      </div>
+      </div> */}
       <ModulosNivel nivelId={nivel.id} />
     </div>
   );
