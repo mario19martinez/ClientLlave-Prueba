@@ -57,7 +57,8 @@ export default function Login() {
           isLoggedIn = "true";
           localStorage.setItem("token", token);
           localStorage.setItem("email", values.email);
-          navigate("/estudiante/Escritorio");
+          //navigate("/estudiante/Escritorio");
+          navigate("/estudiante/cursosInscritos");
         }
 
         // Actualizamos el estado de isLoggedIn después de la autenticación
