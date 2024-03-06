@@ -8,27 +8,21 @@ import { useParams } from "react-router-dom";
 
 export default function ProfeticoEdit() {
   const { id } = useParams();
-  const [titulo, setTitulo] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [video, setVideo] = useState("");
-  const [contenido, setContenido] = useState("");
-  const [tipo, setTipo] = useState("");
-  const [preguntas, setPreguntas] = useState([
-    { pregunta: "", opciones: ["a", "b", "c", "d"], respuestaCorrecta: "" },
-  ]);
+  const [profeticoData, setProfeticoData] = useState({
+    titulo: "",
+    descripcion: "",
+    video: "",
+    contenido: "",
+    tipo: "",
+    preguntas: [{ pregunta: "", opciones: ["", "", "", ""], respuestaCorrecta: "" }],
+  });
 
   useEffect(() => {
     async function fetchProfetico() {
       try {
         const response = await axios.get(`/profeticos/${id}`);
         const profetico = response.data;
-
-        setTitulo(profetico.titulo);
-        setDescripcion(profetico.descripcion);
-        setVideo(profetico.video);
-        setContenido(profetico.contenido);
-        setTipo(profetico.tipo);
-        setPreguntas(profetico.preguntas);
+        setProfeticoData(profetico);
       } catch (error) {
         console.error("Error al obtener el profético:", error);
       }
@@ -37,19 +31,56 @@ export default function ProfeticoEdit() {
     fetchProfetico();
   }, [id]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProfeticoData({
+      ...profeticoData,
+      [name]: value,
+    });
+  };
+
+  const handlePreguntaChange = (index, event) => {
+    const newPreguntas = [...profeticoData.preguntas];
+    newPreguntas[index].pregunta = event.target.value;
+    setProfeticoData({
+      ...profeticoData,
+      preguntas: newPreguntas,
+    });
+  };
+
+  const handleOpcionChange = (preguntaIndex, opcionIndex, event) => {
+    const newPreguntas = [...profeticoData.preguntas];
+    newPreguntas[preguntaIndex].opciones[opcionIndex] = event.target.value;
+    setProfeticoData({
+      ...profeticoData,
+      preguntas: newPreguntas,
+    });
+  };
+
+  const handleRespuestaCorrectaChange = (index, event) => {
+    const newPreguntas = [...profeticoData.preguntas];
+    newPreguntas[index].respuestaCorrecta = event.target.value;
+    setProfeticoData({
+      ...profeticoData,
+      preguntas: newPreguntas,
+    });
+  };
+
+  const handleAddPregunta = () => {
+    setProfeticoData({
+      ...profeticoData,
+      preguntas: [
+        ...profeticoData.preguntas,
+        { pregunta: "", opciones: ["", "", "", ""], respuestaCorrecta: "" },
+      ],
+    });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      await axios.put(`/profeticos/${id}`, {
-        titulo,
-        descripcion,
-        video,
-        contenido,
-        tipo,
-        preguntas,
-      });
-
+      await axios.put(`/profeticos/${id}`, profeticoData);
       alert("Profético actualizado exitosamente");
     } catch (error) {
       console.error("Error al actualizar el profético:", error);
@@ -57,77 +88,45 @@ export default function ProfeticoEdit() {
     }
   };
 
-  const handleChangePregunta = (index, event) => {
-    const newPreguntas = [...preguntas];
-    newPreguntas[index].pregunta = event.target.value;
-    setPreguntas(newPreguntas);
-  };
-
-  const handleChangeOpcion = (preguntaIndex, opcionIndex, event) => {
-    const newPreguntas = [...preguntas];
-    newPreguntas[preguntaIndex].opciones[opcionIndex] = event.target.value;
-    setPreguntas(newPreguntas);
-  };
-
-  const handleChangeRespuestaCorrecta = (index, event) => {
-    const newPreguntas = [...preguntas];
-    newPreguntas[index].respuestaCorrecta = event.target.value;
-    setPreguntas(newPreguntas);
-  };
-
-  const handleAddPregunta = () => {
-    setPreguntas([
-      ...preguntas,
-      { pregunta: "", opciones: ["", "", "", ""], respuestaCorrecta: "" },
-    ]);
-  };
-
   return (
-    <div className="container mx-auto mt-10">
+    <div className="py-20 px-52">
       <h1 className="text-3xl font-bold mb-4">Editar Profético</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label
-            className="block text-gray-700 font-bold mb-2"
-            htmlFor="titulo"
-          >
+          <label className="block text-gray-700 font-bold mb-2" htmlFor="titulo">
             Título:
           </label>
           <input
             type="text"
             id="titulo"
+            name="titulo"
             className="border-2 border-gray-300 rounded-md p-2 w-full"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
+            value={profeticoData.titulo}
+            onChange={handleChange}
             required
           />
         </div>
         <div className="mb-4">
-          <label
-            className="block text-gray-700 font-bold mb-2"
-            htmlFor="descripcion"
-          >
+          <label className="block text-gray-700 font-bold mb-2" htmlFor="descripcion">
             Descripción:
           </label>
           <textarea
             id="descripcion"
+            name="descripcion"
             className="border-2 border-gray-300 rounded-md p-2 w-full"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
+            value={profeticoData.descripcion}
+            onChange={handleChange}
             required
           />
         </div>
         <div className="mb-4">
-          <label
-            className="block text-gray-700 font-bold mb-2"
-            htmlFor="taller"
-          >
-            Contenido Teorico:
+          <label className="block text-gray-700 font-bold mb-2" htmlFor="contenido">
+            Contenido Teórico:
           </label>
           <ReactQuill
             id="contenido"
-            value={contenido}
-            onChange={setContenido}
+            value={profeticoData.contenido}
+            onChange={(content) => setProfeticoData({ ...profeticoData, contenido: content })}
             modules={{ toolbar: true }}
           />
         </div>
@@ -138,9 +137,10 @@ export default function ProfeticoEdit() {
           <input
             type="text"
             id="video"
+            name="video"
             className="border-2 border-gray-300 rounded-md p-2 w-full"
-            value={video}
-            onChange={(e) => setVideo(e.target.value)}
+            value={profeticoData.video}
+            onChange={handleChange}
           />
         </div>
         <div className="mb-4">
@@ -149,33 +149,31 @@ export default function ProfeticoEdit() {
           </label>
           <select
             id="tipo"
+            name="tipo"
             className="border-2 border-gray-300 rounded-md p-2 w-full"
-            value={tipo}
-            onChange={(e) => setTipo(e.target.value)}
+            value={profeticoData.tipo}
+            onChange={handleChange}
             required
           >
             <option value="">Seleccionar tipo</option>
-            <option value="Caracter">Caracter probado y aprobado</option>
+            <option value="Caracter">Carácter probado y aprobado</option>
             <option value="Doctrina">Doctrina de demonios</option>
             <option value="Llamamiento">Llamamiento y asignación</option>
             <option value="Historia">Historia Profética</option>
           </select>
         </div>
-        {preguntas.map((pregunta, index) => (
+        {profeticoData.preguntas.map((pregunta, index) => (
           <div key={index} className="mb-4">
-            <label
-              htmlFor={`pregunta-${index}`}
-              className="block text-gray-700 font-bold mb-2"
-            >
+            <label htmlFor={`pregunta-${index}`} className="block text-gray-700 font-bold mb-2">
               Pregunta {index + 1}
             </label>
             <input
               type="text"
               id={`pregunta-${index}`}
-              name="pregunta"
+              name={`pregunta-${index}`}
               className="border-2 border-gray-300 rounded-md p-2 w-full mb-2"
               value={pregunta.pregunta}
-              onChange={(e) => handleChangePregunta(index, e)}
+              onChange={(e) => handlePreguntaChange(index, e)}
             />
             {pregunta.opciones.map((opcion, idx) => (
               <input
@@ -183,7 +181,7 @@ export default function ProfeticoEdit() {
                 type="text"
                 className="border-2 border-gray-300 rounded-md p-2 w-full mb-2"
                 value={opcion}
-                onChange={(e) => handleChangeOpcion(index, idx, e)}
+                onChange={(e) => handleOpcionChange(index, idx, e)}
                 placeholder={`Opción ${String.fromCharCode(97 + idx)}`}
               />
             ))}
@@ -195,9 +193,10 @@ export default function ProfeticoEdit() {
             </label>
             <select
               id={`respuestaCorrecta-${index}`}
+              name={`respuestaCorrecta-${index}`}
               className="border-2 border-gray-300 rounded-md p-2 w-full"
               value={pregunta.respuestaCorrecta}
-              onChange={(e) => handleChangeRespuestaCorrecta(index, e)}
+              onChange={(e) => handleRespuestaCorrectaChange(index, e)}
               required
             >
               <option value="">Seleccionar respuesta correcta</option>

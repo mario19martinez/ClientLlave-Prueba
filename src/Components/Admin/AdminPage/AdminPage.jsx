@@ -27,7 +27,7 @@ export default function AdminPage() {
             <MdSupervisorAccount className="mr-2" /> Egresados
           </button>
           <button
-            onClick={() => navigate("/CrearProfetico")}
+            onClick={() => navigate("/admin/profetico/")}
             className="flex items-center justify-center bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg transition duration-300 ease-in-out"
           >
             <MdLibraryBooks className="mr-2" /> Entrenando tus sentidos
