@@ -56,7 +56,7 @@ function ModuloDetail() {
   }
 
   return (
-    <div className="max-w-lg mx-auto">
+    <div className=" mx-auto w-5/6">
       <h1 className="text-2xl font-semibold mb-4">{modulo.titulo}</h1>
       <p className="text-gray-700">{modulo.descripcion}</p>
       <button
