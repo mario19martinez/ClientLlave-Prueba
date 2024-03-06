@@ -62,7 +62,9 @@ export default function Nav() {
       (isLoggedIn === true && userData && userData.rol === "client") ||
       userData?.rol === "client"
     ) {
-      navigate("/estudiante/Escritorio");
+      //navigate("/estudiante/Escritorio");
+      navigate("/estudiante/cursosInscritos");
+
     } else if (
       (isLoggedIn === true && userData && userData.rol === "admin") ||
       userData?.rol === "admin"
