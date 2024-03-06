@@ -83,6 +83,7 @@ import NivelClasesDetail from "./Components/NivelClases/NivelClasesDetail";
 import ViewEgresadosAdmin from "./views/ViewAdmin/ViewEgresadosAdmin";
 import ViewEgresadosEdit from "./views/ViewAdmin/ViewEditEgresados";
 import ViewProfeticosAdmin from "./views/ViewAdmin/ViewProfeticosAdmin";
+import ViewProfeticoEdit from "./views/ViewAdmin/ViewProfeticoEdit";
 
 import axios from "axios";
 
@@ -268,7 +269,7 @@ function App() {
         <Route path="/admin/egresados" element={<ViewEgresadosAdmin />} />
         <Route path="/admin/egresados/edit/:id" element={<ViewEgresadosEdit />} />
         <Route path="/admin/profetico" element={<ViewProfeticosAdmin />} />
-        <Route path="/admin/profetico/edit/:id" element={<ViewProfeticosAdmin />} />
+        <Route path="/admin/profetico/edit/:id" element={<ViewProfeticoEdit />} />
       </Routes>
     </Router>
   );

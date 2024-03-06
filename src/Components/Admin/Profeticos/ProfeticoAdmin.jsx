@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { FiPlus } from "react-icons/fi";
 import { Modal, Button } from "@mui/material";
 
 export default function ProfeticoAdmin() {
@@ -125,7 +126,9 @@ export default function ProfeticoAdmin() {
   const handleDeleteProfetico = async (profeticoId) => {
     try {
       await axios.delete(`/profeticos/${profeticoId}`);
-      setProfeticos(profeticos.filter((profetico) => profetico.id !== profeticoId));
+      setProfeticos(
+        profeticos.filter((profetico) => profetico.id !== profeticoId)
+      );
       setDeleteModalOpen(false);
       setProfeticoToDelete(null);
     } catch (error) {
@@ -150,11 +153,26 @@ export default function ProfeticoAdmin() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="container mx-auto mt-10 pb-5 pt-5 justify-center">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-blue-900">
+    <div className="container mx-auto mt-10 justify-center">
+      <div className="justify-start py-1">
+        <button
+          onClick={() => navigate("/AdminPage")}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Atras
+        </button>
+      </div>
+      <div className="text-center mb-8 justify-center items-center flex flex-col">
+        <h1 className="text-3xl font-bold text-blue-900 pb-5">
           Entrenándote para conquistar
         </h1>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 flex items-center"
+          onClick={() => navigate("/CrearProfetico")}
+        >
+          <FiPlus className="mr-2" />
+          Crear Clase Profética
+        </button>
       </div>
       <div>
         {currentCards.map((profetico, index) => (
@@ -174,8 +192,12 @@ export default function ProfeticoAdmin() {
                 <h3 className="pb-2">Componete: {profetico.tipo}</h3>
               </div>
               <div className="flex">
-                <button className="mr-2"
-                onClick={() => navigate(`/admin/profetico/edit/${profetico.id}`)}>
+                <button
+                  className="mr-2"
+                  onClick={() =>
+                    navigate(`/admin/profetico/edit/${profetico.id}`)
+                  }
+                >
                   <FaEdit />
                 </button>
                 <button onClick={() => handleOpenDeleteModal(profetico.id)}>
