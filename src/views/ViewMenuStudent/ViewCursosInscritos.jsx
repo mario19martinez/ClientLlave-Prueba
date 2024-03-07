@@ -14,7 +14,7 @@ export default function ViewCursosInscritos () {
       </div>
       <div className="flex">
         <SidebarUser selectedTab={selectedTab} />
-        <div className="pt-8">
+        <div className="pt-8 bg-gray-100">
           <CursosInscritos />
         </div>
       </div>

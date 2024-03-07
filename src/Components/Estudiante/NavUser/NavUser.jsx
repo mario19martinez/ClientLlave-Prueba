@@ -1,133 +1,129 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
-import {
-  Groups2,
-  Home,
-  RateReviewSharp,
-  Menu,
-  School,
-} from "@mui/icons-material";
+import React, { useState } from "react";
+import logo from "../../../assets/logo2.png";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { getUserData } from "../../../Redux/features/Users/usersSlice";
 
 export default function NavUser() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  const dispatch = useDispatch();
-  const userData = useSelector((state) => state.users.userData);
-
-  const storedEmail = localStorage.getItem("email");
-
-  useEffect(() => {
-    if (storedEmail) {
-      dispatch(getUserData(storedEmail));
-    }
-  }, [dispatch, storedEmail]);
-
   return (
-    <div className="p-4 bg-white border-b-2 border-blue-500 md:translate-x-14 md:w-3/4 lg:w-11/12 h-full">
-      <div className="md:flex md:items-center">
-        <div className="relative rounded-full overflow-hidden cursor-pointer w-32 h-32 md:w-20 md:h-20 md:mr-4">
-          <img
-            src={
-              userData?.image ||
-              "https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280.jpg"
-            }
-            alt=""
-            className="w-full h-full object-cover"
-            style={{ imageRendering: "pixelated" }}
-          />
+    <nav className="bg-blue-900 py-2 lg:py-3 px-8 lg:px-12 shadow-md">
+      <div className="flex items-center justify-between max-w-screen-lg mx-auto">
+        <div className="w-1/4 lg:w-2/12">
+          <img src={logo} alt="logo" className="h-auto" />
         </div>
 
-        <div className="text-center md:text-left md:w-1/2 mb-4 md:mb-0 flex justify-start">
-          {userData && (
-            <h2 className="md:text-2xl font-semibold">
-              {userData.name} {userData.last_name}
-            </h2>
-          )}
-        </div>
-        <div className="md:hidden w-full">
-          <button onClick={toggleMenu} className="cursor-pointer">
-            <Menu />
+        {/* Botón de menú para pantallas pequeñas */}
+        <div className="lg:hidden">
+          <button
+            type="button"
+            onClick={toggleMobileMenu}
+            className="focus:outline-none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-8 h-8"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 12h18M3 6h18M3 18h18"
+              />
+            </svg>
           </button>
         </div>
-        <div className="hidden md:flex md:justify-center justify-start md:w-1/2 md:space-x-4 mt-2 w-full md:-translate-x-10 mx-auto">
-          <button
+
+        {/* Menú para pantallas grandes */}
+        <nav className="hidden lg:flex justify-center items-center gap-8 text-white font-medium">
+          <a
+            href=""
             onClick={() => navigate("/")}
-            className="px-2 py-1 rounded md:w-32 hover:bg-blue-500 text-blue-500 hover:text-white font-semibold transition-colors"
+            className="hover:text-gray-300 transition-colors"
           >
-            <div className="flex items-center">
-              <Home /> Inicio
-            </div>
-          </button>
-          <button
-            onClick={() => navigate("/Error404")}
-            className="px-2 py-1 rounded md:w-40 min-w-20 hover:bg-blue-500 text-blue-500 hover:text-white font-semibold transition-colors"
-          >
-            <div className="flex items-center">
-              <School /> Entrenamiento
-            </div>
-          </button>
-          <button
+            Inicio
+          </a>
+          <a
+            href=""
+            className="hover:text-gray-300 transition-colors"
             onClick={() => navigate("/blogs")}
-            className="px-2 py-1 rounded md:w-32 hover:bg-blue-500 text-blue-500 hover:text-white font-semibold transition-colors"
           >
-            <div className="flex items-center">
-              <RateReviewSharp /> Mi Blog
-            </div>
-          </button>
-          <button
+            Blog
+          </a>
+          <a
+            href=""
+            onClick={() => navigate("/Error404")}
+            className="hover:text-gray-300 transition-colors"
+          >
+            Entrenamiento
+          </a>
+          <a
+            href=""
             onClick={() => navigate("/Comunidad")}
-            className="px-2 py-1 rounded md:w-32 hover:bg-blue-500 text-blue-500 hover:text-white font-semibold transition-colors"
+            className="hover:text-gray-300 transition-colors"
           >
-            <div className="flex items-center">
-              <Groups2 /> Comunidad
-            </div>
-          </button>
-        </div>
+            Comunidad
+          </a>
+          <a
+            href=""
+            className="hover:text-gray-300 transition-colors"
+            onClick={() => navigate("/Nosotros")}
+          >
+            Nosotros
+          </a>
+        </nav>
       </div>
-      {isMenuOpen && (
-        <div className="md:hidden">
-          <button
-            onClick={() => navigate("/")}
-            className="block py-2 w-full hover-bg-blue-500 text-blue-500 hover:text-white font-semibold transition-colors"
-          >
-            <div className="flex items-center">
-              <Home /> Inicio
-            </div>
-          </button>
-          <button
-            onClick={() => navigate("/Error404")}
-            className="px-2 py-1 rounded md:w-32 hover-bg-blue-500 text-blue-500 hover:text-white font-semibold transition-colors"
-          >
-            <div className="flex items-center">
-              <School /> Entrenamiento
-            </div>
-          </button>
-          <button
-            className="block py-2 w-full hover-bg-blue-500 text-blue-500 hover:text-white font-semibold transition-colors"
-            onClick={() => navigate("/blogs")}
-          >
-            <div className="flex items-center">
-              <RateReviewSharp /> Mi Blog
-            </div>
-          </button>
-          <button
-            onClick={() => navigate("/Comunidad")}
-            className="block py-2 w-full hover-bg-blue-500 text-blue-500 hover:text-white font-semibold transition-colors"
-          >
-            <div className="flex items-center">
-              <Groups2 /> Comunidad
-            </div>
-          </button>
+
+      {/* Menú desplegable para pantallas pequeñas */}
+      {mobileMenuOpen && (
+        <div className="max-w-screen-lg mx-auto mt-4">
+          <nav className="flex flex-col text-white font-medium">
+            <a
+              href="#"
+              onClick={() => navigate("/")}
+              className="hover:text-gray-300 transition-colors"
+            >
+              Inicio
+            </a>
+            <a
+              href="#"
+              className="hover:text-gray-300 transition-colors"
+              onClick={() => navigate("/blogs")}
+            >
+              Blog
+            </a>
+            <a
+              href="#"
+              onClick={() => navigate("/Error404")}
+              className="hover:text-gray-300 transition-colors"
+            >
+              Entrenamiento
+            </a>
+            <a
+              href=""
+              onClick={() => navigate("/Comunidad")}
+              className="hover:text-gray-300 transition-colors"
+            >
+              Comunidad
+            </a>
+            <a
+              href="#"
+              className="hover:text-gray-300 transition-colors"
+              onClick={() => navigate("/Nosotros")}
+            >
+              Nosotros
+            </a>
+          </nav>
         </div>
       )}
-    </div>
+    </nav>
   );
 }

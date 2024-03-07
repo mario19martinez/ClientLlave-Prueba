@@ -10,7 +10,7 @@ function CursosInscritos() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.users.userData);
   const [cursosInscritos, setCursosInscritos] = useState([]);
-  const navigate = useNavigate(); // Obtener la función de navegación
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
@@ -59,15 +59,20 @@ function CursosInscritos() {
         {cursosInscritos.length > 0 ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {cursosInscritos.map((curso, index) => (
-              <button
-                key={index}
-                onClick={() => handleCursoClick(curso)}
-                className="p-4 bg-blue-200 shadow-md rounded-md hover:shadow-lg focus:outline-none"
-                style={{ minWidth: "200px" }}
-              >
-                <p className="text-lg font-semibold">{curso.name}</p>
-                <p className="text-gray-500">{curso.description}</p>
-              </button>
+              <div key={index} className="bg-white shadow-md rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:scale-105">
+                <img className="w-full h-40 object-cover" src={curso.image} alt={curso.name} />
+                <div className="p-4">
+                  <p className="text-lg font-semibold">{curso.name}</p>
+                  <p className="text-gray-500">{curso.nivel}</p>
+                  <p className="text-gray-500">{curso.duracion}</p>
+                  <button
+                    onClick={() => handleCursoClick(curso)}
+                    className="mt-2 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    Ver clases
+                  </button>
+                </div>
+              </div>
             ))}
           </div>
         ) : (
