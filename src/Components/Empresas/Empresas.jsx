@@ -19,7 +19,7 @@ const Empresas = () => {
               className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mb-4 max-w-xs"
             />
             <img
-              src="https://llaveparalasnaciones.online/wp-content/uploads/2024/03/white_logo_color_background-scaled.jpg"
+              src="https://llaveparalasnaciones.online/wp-content/uploads/2024/03/Diseno-sin-titulo-26.png"
               alt="Logo Transparente"
               className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mb-4 max-w-xs"
             />
@@ -46,7 +46,6 @@ const Empresas = () => {
               style={{
                 marginRight: "80px",
                 marginTop: "60px",
-                "@media (max-width: 768px)": { marginRight: 0, marginTop: 0 },
               }}
             >
               <a
@@ -67,13 +66,7 @@ const Empresas = () => {
               className="w-full md:w-1/2 mb-6 px-2 md:px-4 max-w-72 custom-margin"
               style={{
                 marginLeft: "80px",
-                marginBottom: "60px",
                 marginTop: "60px",
-                "@media (max-width: 768px)": {
-                  marginLeft: 0,
-                  marginBottom: 0,
-                  marginTop: 0,
-                },
               }}
             >
               <a
@@ -82,7 +75,7 @@ const Empresas = () => {
                 rel="noopener noreferrer"
               >
                 <img
-                  src="https://llaveparalasnaciones.online/wp-content/uploads/2024/03/white_logo_color_background-scaled.jpg"
+                  src="https://llaveparalasnaciones.online/wp-content/uploads/2024/03/Diseno-sin-titulo-26.png"
                   alt="Logo Transparente"
                   className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mx-auto"
                 />
