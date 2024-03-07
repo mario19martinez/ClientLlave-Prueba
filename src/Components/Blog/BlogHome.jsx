@@ -72,9 +72,9 @@ const BlogHome = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="max-w-screen-custom mx-auto pt-5" style={{ width: '95%' }}>
+    <div className="max-w-screen-xl mx-auto pt-5" style={{ width: '95%' }}>
       <h1 className="text-center text-3xl font-bold text-blue-900 my-8">Últimos Blogs</h1>
-      <div className="blog-slider" style={{ maxWidth: 'calc(100% - 5px)' }}>
+      <div className="blog-slider" style={{ maxWidth: 'calc(100% - 5px)'}}>
         <Slider {...settings}>
           {blogs.map((blog) => (
             <div
