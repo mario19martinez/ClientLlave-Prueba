@@ -46,7 +46,7 @@ function Testimonios() {
     ));
 
   return (
-    <div className=" w-screen mx-auto my-8 pt-10 pl-2 pr-6 text-center">
+    <div className="mx-auto my-8 pt-10 pl-2 pr-6 text-center" style={{ width: "95%" }}>
       <h1 className="text-3xl font-bold mb-6" style={{ color: "#012677" }}>
         Testimonios
       </h1>
