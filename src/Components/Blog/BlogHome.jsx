@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -21,7 +21,9 @@ const BlogHome = () => {
         setBlogs(latestBlogs);
       } catch (error) {
         console.error("Hubo un error al obtener los blogs:", error);
-        setError("Hubo un error al cargar los blogs. Por favor, inténtalo de nuevo más tarde.");
+        setError(
+          "Hubo un error al cargar los blogs. Por favor, inténtalo de nuevo más tarde."
+        );
       } finally {
         setLoading(false);
       }
@@ -72,9 +74,11 @@ const BlogHome = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="max-w-screen-xl mx-auto pt-5" style={{ width: '95%' }}>
-      <h1 className="text-center text-3xl font-bold text-blue-900 my-8">Últimos Blogs</h1>
-      <div className="blog-slider" style={{ maxWidth: 'calc(100% - 5px)'}}>
+    <div className="max-w-screen-xl mx-auto pt-5" style={{ width: "95%" }}>
+      <h1 className="text-center text-3xl font-bold text-blue-900 my-8">
+        Últimos Blogs
+      </h1>
+      <div className="blog-slider" style={{ maxWidth: "calc(100% - 5px)" }}>
         <Slider {...settings}>
           {blogs.map((blog) => (
             <div
@@ -89,7 +93,9 @@ const BlogHome = () => {
               />
               <div className="p-4">
                 <h2 className="text-xl font-semibold mb-2">
-                  {blog.title.length > 24 ? blog.title.slice(0, 24) + '...' : blog.title}
+                  {blog.title.length > 24
+                    ? blog.title.slice(0, 24) + "..."
+                    : blog.title}
                 </h2>
               </div>
             </div>

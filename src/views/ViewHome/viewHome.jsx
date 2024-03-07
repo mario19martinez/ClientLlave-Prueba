@@ -46,7 +46,7 @@ export default function ViewHome() {
           <Testimonios className="mt-8" />
         </div>
       </div>
-      <div className={`${styles.component}`}>
+      <div>
         <Footer />
       </div>
     </div>

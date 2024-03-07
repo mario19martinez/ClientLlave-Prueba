@@ -1,5 +1,5 @@
 /* Estilos para pantallas grandes */
-.styles.app_container {
+.app_container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,8 +8,7 @@
 
 .footer {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   background-color: #001449; /* Cambia el color de fondo según tu diseño */
   color: #fff; /* Cambia el color de texto según tu diseño */
@@ -18,18 +17,15 @@
 
 .container {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  width: 99%;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .social {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  width: 25%;
-  margin-left: 100px;
 }
 
 .social_icon {
@@ -40,9 +36,8 @@
 
 .contact_box {
   padding: 20px;
-  width: 300px;
-  margin: 0 auto;
-  margin-left: 90px;
+  width: 100%;
+  max-width: 300px;
   text-align: center;
 }
 
@@ -65,24 +60,26 @@
 }
 
 .map {
-  margin-left: 99px;
+  flex: 1;
+  text-align: center;
 }
 
 .llave {
-  bottom: 0;
-  width: 370px; /* Ajusta el ancho de la imagen según tu diseño */
+  width: 100%;
+  max-width: 370px; /* Ajusta el ancho máximo de la imagen según tu diseño */
   height: auto;
 }
 
 .imagen {
   margin-right: 10px;
-  margin-left: 7px;
 }
 
-.styles.copyright {
+.copyright,
+.politicasFinal {
   font-size: 12px; /* Ajusta el tamaño de fuente según tu diseño */
   margin-top: 20px; /* Ajusta el espaciado superior según tu diseño */
   color: #888; /* Cambia el color de texto según tu diseño */
+  padding: 30px;
 }
 
 /* Estilos para pantallas medianas */
@@ -94,13 +91,11 @@
   }
 
   .social {
-    width: 100%;
-    margin-left: 0;
+    margin-top: 20px; /* Añade margen arriba para separar los íconos sociales */
   }
 
   .contact_box {
-    width: 100%;
-    margin: 20px 0; /* Añade margen arriba y abajo para separar el cuadro de contacto */
+    margin-top: 20px; /* Añade margen arriba para separar el cuadro de contacto */
   }
 
   .contact_button {
@@ -108,15 +103,16 @@
   }
 
   .map {
-    margin-left: 0;
+    margin-top: 20px; /* Añade margen arriba para separar el mapa */
   }
 
   .llave {
-    width: 100%;
-    margin: 20px 0; /* Añade margen arriba y abajo para separar la imagen "llave" */
+    margin-top: 20px; /* Añade margen arriba para separar la imagen "llave" */
   }
 
-  .imagen {
-    margin: 10px 0; /* Añade margen arriba y abajo para separar las imágenes */
+  .copyright,
+  .politicasFinal {
+    margin-top: 20px; /* Añade margen arriba para separar los elementos en pantallas pequeñas */
+    padding: 30px;
   }
 }

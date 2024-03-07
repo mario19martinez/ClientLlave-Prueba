@@ -1,7 +1,5 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-//import logos from '../../assets/logos'
-//import whatSapp from '../../assets/logos'
 import whatsapp from "../../../logos/whatsapp.ico";
 import youtube from "../../../logos/youtube.ico";
 import twitter from "../../../logos/twitter.ico";
@@ -83,7 +81,7 @@ function Footer() {
           Políticas de privacidad
         </a>
       </div>
-      <div className="text-xs text-center">
+      <div className={styles.politicasFinal}>
         <p>
           Este sitio no es parte del sitio web de Facebook Inc., Meta Inc.,
           Instagram u otras marcas registradas propiedad de Facebook Inc. y/o
