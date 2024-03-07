@@ -82,6 +82,15 @@ const ComponentesProfeticos = () => {
     },
   ];
 
+  const h1Styles = {
+    textAlign: 'center',
+    fontSize: '2rem',
+    fontWeight: 'bold',
+    color: '#012677',
+    marginTop: '20px',
+    marginBottom: '20px',
+  };
+
   const handleCardClick = (route) => {
     navigate(route);
   };
@@ -89,7 +98,7 @@ const ComponentesProfeticos = () => {
   return (
     <div className="flex justify-center items-center h-full text-center">
       <div>
-        <h1 className="text-2xl font-bold text-blue-900 mb-8">
+        <h1 style={h1Styles}>
           Entrenándote para conquistar
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-x-4 sm:gap-y-6">

@@ -9,6 +9,8 @@ import "slick-carousel/slick/slick-theme.css";
 const BlogHome = () => {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchRecentBlogs = async () => {
@@ -19,6 +21,9 @@ const BlogHome = () => {
         setBlogs(latestBlogs);
       } catch (error) {
         console.error("Hubo un error al obtener los blogs:", error);
+        setError("Hubo un error al cargar los blogs. Por favor, inténtalo de nuevo más tarde.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -33,7 +38,7 @@ const BlogHome = () => {
     dots: true,
     infinite: true,
     speed: 1000,
-    slidesToShow: 4, // Mostrar 4 blogs en lugar de 3
+    slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
@@ -63,40 +68,29 @@ const BlogHome = () => {
     ],
   };
 
-  const h1Styles = {
-    textAlign: 'center',
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    color: '#012677',
-    marginTop: '20px',
-    marginBottom: '20px',
-  };
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
-    <div className="max-w-screen-xl mx-auto pt-5">
-      <div>
-        <h1 style={h1Styles}>Ultimos Blogs</h1>
-      </div>
-      <div className="blog-slider">
+    <div className="max-w-screen-custom mx-auto pt-5" style={{ width: '95%' }}>
+      <h1 className="text-center text-3xl font-bold text-blue-900 my-8">Últimos Blogs</h1>
+      <div className="blog-slider" style={{ maxWidth: 'calc(100% - 5px)' }}>
         <Slider {...settings}>
           {blogs.map((blog) => (
             <div
               key={blog.id}
-              className="w-80 h-96 max-w-md overflow-hidden rounded shadow-lg flex flex-col"
-              onClick={() => handleViewBlog(blog.id)} // Manejador de evento onClick
-              style={{ cursor: 'pointer' }} // Agrega un indicador visual de que es clickeable
+              className="blog-card cursor-pointer rounded overflow-hidden shadow-lg"
+              onClick={() => handleViewBlog(blog.id)}
             >
-              <div className="aspect-w-16 aspect-h-9">
-                <img
-                  className="w-full h-full object-cover object-center rounded-t-lg"
-                  src={blog.imageUrl}
-                  alt={blog.title}
-                />
-              </div>
-              <div className="px-6 py-4 flex-grow">
-                <div className="font-bold text-xl mb-2 h-14 overflow-hidden">
-                  {blog.title}
-                </div>
+              <img
+                className="w-full h-56 object-cover object-center"
+                src={blog.imageUrl}
+                alt={blog.title}
+              />
+              <div className="p-4">
+                <h2 className="text-xl font-semibold mb-2">
+                  {blog.title.length > 24 ? blog.title.slice(0, 24) + '...' : blog.title}
+                </h2>
               </div>
             </div>
           ))}
