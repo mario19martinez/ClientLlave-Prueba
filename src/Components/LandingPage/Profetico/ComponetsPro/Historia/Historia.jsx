@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Caracter() {
@@ -8,6 +9,8 @@ export default function Caracter() {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [feedbacks, setFeedbacks] = useState({});
   const [completedWorkshops, setCompletedWorkshops] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchProfeticos() {
@@ -119,7 +122,16 @@ export default function Caracter() {
   );
 
   return (
-    <div className="container mx-auto mt-10 pb-5 pt-5 justify-center">
+    <div className="flex flex-col">
+      <div className="px-10 py-10 justify-start">
+        <button
+          onClick={() => navigate("/")}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Atras
+        </button>
+      </div>
+      <div className="container mx-auto mt-10 pb-5 pt-5 justify-center">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-blue-900">Historia Profética</h1>
       </div>
@@ -251,6 +263,7 @@ export default function Caracter() {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 }
