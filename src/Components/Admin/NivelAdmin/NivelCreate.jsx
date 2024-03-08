@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function NivelCreate() {
@@ -9,6 +10,7 @@ function NivelCreate() {
     const [costo, setCosto] = useState("");
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState("");
+    const navigate = useNavigate();
   
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -29,6 +31,9 @@ function NivelCreate() {
         setDescription("");
         setCosto("");
         console.log("Nuevo Nivel creado:", response.data);
+        setTimeout(() => {
+          navigate("/niveladmin");
+        }, 1000);
       } catch (error) {
         setError("Se progujo un error al crear el nivel.");
         console.error("Error al crear el nivel:", error);

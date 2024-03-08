@@ -1,13 +1,18 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import DeleteIcon from "@mui/icons-material/Delete";
+import Modal from "react-modal";
+import FolderDeleteIcon from "@mui/icons-material/FolderDelete";
+import CancelIcon from '@mui/icons-material/Cancel';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import NivelEdit from "./NivelEdit";
 import ModuloAdmin from "../ModuloAdmin/ModuloAdmin";
 
 function NivelDetailAdmin() {
   const [nivel, setNivel] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -32,22 +37,31 @@ function NivelDetailAdmin() {
   const handleDeleteNivel = async () => {
     try {
       const confirmar = window.confirm(
-        "¿Estas seguro de querer eliminar este nivel?, no se podra recuperar."
+        "¿Estás seguro de querer eliminar este nivel? No se podrá recuperar."
       );
       if (confirmar) {
         await axios.delete(`/nivel/${id}`);
-        navigate.push("/niveles");
+        setTimeout(() => {
+          navigate("/niveladmin");
+        }, 1000);
       }
     } catch (error) {
-      console.error("Error al elimianr el nivel:", error);
-      alert("Error al eliminar el nivel. Por favor, intentalo de nuevo.");
+      console.error("Error al eliminar el nivel:", error);
+      setError("Error al eliminar el nivel. Por favor, inténtalo de nuevo.");
     }
+  };
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   return (
     <div className="absolute top-0 right-36 mt-28 ml-96 p-4 w-3/5 h-auto -translate-x-20">
       <div className="max-w-xl mx-auto p-8 bg-white shadow rounded-md ">
-        
         {loading && <div className="text-center">Cargando...</div>}
         {error && <div className="text-center text-red-500">{error}</div>}
         {nivel && (
@@ -75,11 +89,14 @@ function NivelDetailAdmin() {
               onClick={handleDeleteNivel}
               className="bg-red-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-600 transition duration-300"
             >
-              <DeleteIcon />
+              <FolderDeleteIcon fontSize="large" />
             </button>
-            {/* <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">
-              Comprar
-            </button> */}
+            <button
+              onClick={handleOpenModal}
+              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 ml-4"
+            >
+              <EditNoteIcon fontSize="large" />
+            </button>
           </div>
         )}
       </div>
@@ -87,6 +104,24 @@ function NivelDetailAdmin() {
         <h2>Modulos Del Nivel</h2>
         <ModuloAdmin nivelId={id} />
       </div>
+      <Modal
+        isOpen={showModal}
+        onRequestClose={handleCloseModal}
+        className="modal"
+        contentLabel="Editar"
+        shouldCloseOnOverlayClick={true}
+        shouldCloseOnEsc={true}
+      >
+        <div className="modal-content p-2 w-2/5 h-screen mx-auto rounded-lg shadow-lg">
+          <NivelEdit id={id} />
+          <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-1 right-1 hover:text-red-400 text-gray-500 rounded-full"
+            >
+              <CancelIcon fontSize="large" />
+            </button>
+        </div>
+      </Modal>
     </div>
   );
 }
