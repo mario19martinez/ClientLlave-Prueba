@@ -84,6 +84,8 @@ import ViewEgresadosAdmin from "./views/ViewAdmin/ViewEgresadosAdmin";
 import ViewEgresadosEdit from "./views/ViewAdmin/ViewEditEgresados";
 import ViewProfeticosAdmin from "./views/ViewAdmin/ViewProfeticosAdmin";
 import ViewProfeticoEdit from "./views/ViewAdmin/ViewProfeticoEdit";
+import ClasesDetailModulo from "./Components/Admin/ClasesModuloAdmin/ClasesDetailModulo";
+import ViewNivelDeleteAdmin from "./views/ViewAdmin/ViewNivelAdmin/ViewNivelDeleteAdmin";
 
 import axios from "axios";
 
@@ -270,6 +272,8 @@ function App() {
         <Route path="/admin/egresados/edit/:id" element={<ViewEgresadosEdit />} />
         <Route path="/admin/profetico" element={<ViewProfeticosAdmin />} />
         <Route path="/admin/profetico/edit/:id" element={<ViewProfeticoEdit />} />
+        <Route path="/admin/modulo/:moduloId/clase/:claseId" element={<ClasesDetailModulo />} />
+        <Route path="/admin/deleted" element={<ViewNivelDeleteAdmin />} />
       </Routes>
     </Router>
   );

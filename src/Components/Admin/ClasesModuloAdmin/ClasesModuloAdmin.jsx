@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import CancelIcon from '@mui/icons-material/Cancel';
 import ClaseModuloCreate from "./ClasesModuloCreate";
@@ -51,9 +52,11 @@ function ClaseModuloAdmin({ moduloId }) {
       {clases.length > 0 ? (
         <ul className="divide-y divide-gray-400">
           {clases.map((clase) => (
+            <Link to={`/admin/modulo/${moduloId}/clase/${clase.id}`} key={clase.id}>
             <li key={clase.id} className="py-4 ">
               <h1 className="ml-0 font-hammersmithOne text-lg border-b-4 border-gray-500 bg-gray-300 rounded-full h-auto py-4">{clase.name}</h1>
             </li>
+            </Link>
           ))}
         </ul>
       ) : (

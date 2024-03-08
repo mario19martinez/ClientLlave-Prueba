@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Modal from 'react-modal'
 import CancelIcon from '@mui/icons-material/Cancel';
+import FolderDeleteIcon from "@mui/icons-material/FolderDelete";
+import PostAddIcon from '@mui/icons-material/PostAdd';
 import NivelCreate from "./NivelCreate";
 
 function NivelAdmin() {
     const [niveles, setNiveles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
   
     useEffect(() => {
       const fetchNiveles = async () => {
@@ -30,9 +33,15 @@ function NivelAdmin() {
           <h2 className="text-2xl font-bold mb-4 text-gray-800">Niveles</h2>
           <button
             onClick={() => setShowModal(true)}
-            className="absolute top-0 right-0 mt-4 mr-4 bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+            className="absolute top-0 right-0 mt-0 mr-8 h-12 bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
           >
-            Agregar Nivel
+            <PostAddIcon fontSize="large" />
+          </button>
+          <button
+            onClick={() => navigate('/admin/deleted')}
+            className="absolute top-0 right-8 mt-0 mr-0 -translate-x-24 h-12 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-300"
+          >
+            <FolderDeleteIcon fontSize="large" />
           </button>
           {loading ? (
             <p>Cargando niveles...</p>
