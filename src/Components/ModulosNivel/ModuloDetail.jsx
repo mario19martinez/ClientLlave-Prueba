@@ -35,7 +35,6 @@ function ModuloDetail() {
     fetchModulo();
   }, [nivelId, moduloId]);
 
-
   const handleAnswerChange = (index, event) => {
     setRespuestas({
       ...respuestas,
@@ -107,10 +106,9 @@ function ModuloDetail() {
                       to={`/home/nivel/${nivelId}/modulo/${
                         modulos[index + 1].id
                       }`}
+                      className="text-blue-500 hover:underline"
                     >
-                      <a className="text-blue-500 hover:underline">
-                        {modulos[index + 1].titulo}
-                      </a>
+                      {modulos[index + 1].titulo}
                     </Link>
                   ) : null}
                 </div>
