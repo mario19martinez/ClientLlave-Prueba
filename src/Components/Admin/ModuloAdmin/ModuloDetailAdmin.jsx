@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import DeleteIcon from "@mui/icons-material/Delete";
 import ClaseModuloAdmin from "../ClasesModuloAdmin/ClasesModuloAdmin";
 //import ClaseModuloCreate from "../ClasesModuloAdmin/ClasesModuloCreate";
 
@@ -9,10 +10,7 @@ function ModuloDetailAdmin() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { nivelId, moduloId } = useParams();
-  // console.log("nivel:", nivelId);
-  // console.log("modulo:", moduloId);
-
-  
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchModulo = async () => {
@@ -21,11 +19,9 @@ function ModuloDetailAdmin() {
           `/nivel/${nivelId}/modulo/${moduloId}`
         );
         const moduloData = response.data;
-        moduloData.preguntas = JSON.parse(moduloData.preguntas);
         setModulo(moduloData);
         setLoading(false);
       } catch (error) {
-        console.error("Error al obtener el detalle del modulo:", error);
         setError("Produjo un error al cargar el detalle del modulo.");
         setLoading(false);
       }
@@ -33,8 +29,24 @@ function ModuloDetailAdmin() {
     fetchModulo();
   }, [nivelId, moduloId]);
 
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/nivel/${nivelId}/modulo/${moduloId}`);
+      navigate(`/nivel/${nivelId}`);
+    } catch (error) {
+      console.error("Error al eliminar el modulo:", error);
+    }
+  };
+
   if (loading) {
-    return <div className="text-center mt-4">Cargando...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-blue-600"></div>
+        <span className="ml-4 text-xl font-semibold text-blue-600">
+          Cargando...
+        </span>
+      </div>
+    );
   }
 
   if (error) {
@@ -50,37 +62,54 @@ function ModuloDetailAdmin() {
   }
 
   return (
-    <div className="bg-gray-100 p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">{modulo.titulo}</h2>
-      <p className="text-gray-600 mb-2">Contenido: {modulo.contenido}</p>
-      <p className="text-gray-600 mb-2">descripcion: {modulo.descripcion}</p>
-      <h3 className="text-xl font-bold text-gray-800 mb-2">Preguntas:</h3>
+    <div className="absolute top-0 left-0 mt-28 ml-96 bg-gray-100 p-6 rounded-lg shadow-md w-1/2">
+      <h2 className="text-3xl font-bold text-gray-800 mb-4">{modulo.titulo}</h2>
+      <p className="text-gray-600 mb-4"><strong>Contenido:</strong> {modulo.contenido}</p>
+      <p className="text-gray-600 mb-4"><strong>Descripción:</strong> {modulo.descripcion}</p>
+      <h3 className="text-xl font-bold text-gray-800 mb-4">Preguntas:</h3>
       {Array.isArray(modulo.preguntas) && modulo.preguntas.length > 0 ? (
-        modulo.preguntas.map((pregunta, index) => (
-          <div key={index} className="mb-4">
-            <p className="text-gray-700 mb-1">
-              Pregunta {index + 1}: {pregunta.pregunta}
-            </p>
-            <p className="text-gray-600 mb-1">Opciones:</p>
-            <ul className="list-disc pl-5">
-              {pregunta.opciones.map((opcion, idx) => (
-                <li key={idx} className="text-gray-700">
-                  {opcion}
-                </li>
-              ))}
-            </ul>
-            <p className="text-gray-600">
-              Respuesta Correcta: {pregunta.respuestaCorrecta}
-            </p>
-          </div>
-        ))
+        <div className="mb-4">
+          {modulo.preguntas.map((pregunta, index) => (
+            <div key={index} className="mb-4">
+              <p className="text-gray-700 mb-1">
+                Pregunta {index + 1}: {pregunta.pregunta}
+              </p>
+              <p className="text-gray-600 mb-1">Opciones:</p>
+              <ul className="list-disc pl-5">
+                {pregunta.opciones.map((opcion, idx) => (
+                  <li key={idx} className="text-gray-700">
+                    {opcion}
+                  </li>
+                ))}
+              </ul>
+              <p className="text-gray-600">
+                Respuesta Correcta: {pregunta.respuestaCorrecta}
+              </p>
+            </div>
+          ))}
+        </div>
       ) : (
-        <div className="text-center mt-4">
+        <div className="text-center mb-4">
           No se encontraron preguntas para este módulo.
         </div>
       )}
+      <div className="flex items-center">
+        <button
+          onClick={handleDelete}
+          className="bg-red-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-600 transition duration-300 mr-4"
+        >
+          <DeleteIcon fontSize="large" className="mr-2" />
+          Eliminar Módulo
+        </button>
+        <button
+          onClick={() => navigate(`/nivel/${nivelId}/modulo/${moduloId}/edit`)}
+          className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+        >
+          Editar Módulo
+        </button>
+      </div>
       <hr className="my-6" />
-      <h3 className="text-xl font-bold text-gray-800 mb-2">Clase:</h3>
+      <h3 className="text-2xl font-bold text-gray-800 mb-4">Clases:</h3>
       <ClaseModuloAdmin moduloId={moduloId} />
     </div>
   );

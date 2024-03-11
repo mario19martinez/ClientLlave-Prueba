@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom'
 import axios from "axios";
 
 function ModuloCreate({ nivelId }) {
@@ -8,6 +9,7 @@ function ModuloCreate({ nivelId }) {
   const [preguntas, setPreguntas] = useState([
     { pregunta: "", opciones: ["a", "b", "c", "d"], respuestaCorrecta: "" },
   ]);
+  const navigate = useNavigate();
 
   const agregarPregunta = () => {
     setPreguntas([
@@ -71,6 +73,7 @@ function ModuloCreate({ nivelId }) {
       ]);
       console.log(response.data);
       alert("Clase profética creada exitosamente");
+      navigate(`/nivel/${nivelId}`);
     } catch (error) {
       console.error("Error al crear el modulo:", error.response.data.error);
       alert("Error al crear el modulo");

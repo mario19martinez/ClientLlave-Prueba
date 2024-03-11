@@ -1,52 +1,67 @@
-import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
-function ClaseModuloCreate({ moduloId }) {
-  const [formData, setFormData] = useState({
+function ClaseEditAdmin({ moduloId, claseId, closeModal }) {
+  //const { moduloId, claseId } = match.params;
+  const [claseData, setClaseData] = useState({
     name: "",
     url: "",
     pdfURL: "",
     texto: "",
     resumen: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  // const navigate = useNavigate();
+  const [successAlert, setSuccessAlert] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  useEffect(() => {
+    const fetchClaseData = async () => {
+      try {
+        const response = await axios.get(
+          `/modulo/${moduloId}/clase/${claseId}`
+        );
+        setClaseData(response.data);
+      } catch (error) {
+        console.error("Error al obtener datos de la clase:", error);
+      }
+    };
+    fetchClaseData();
+  }, [moduloId, claseId]);
+
+  const handleInputChange = (e) => {
+    setClaseData({
+      ...claseData,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleSubmit = async (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+
     try {
-      await axios.post(`/modulo/${moduloId}/clase`, formData);
-      console.log("Clase creada con exito");
-      setFormData({
-        name: "",
-        url: "",
-        pdfURL: "",
-        texto: "",
-        resumen: "",
-      });
-      // navigate('')
+      await axios.put(`/modulo/${moduloId}/clase/${claseId}`, claseData);
+      setSuccessAlert(true);
+
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
+      console.log("Clase modificada exitosamente");
     } catch (error) {
-      console.error("Error al crear la clase:", error);
-      setError("Hubo un error al crear la clase");
-    } finally {
-      setLoading(false);
+      console.error("Error al modificar la clase:", error);
     }
   };
 
   return (
-    <div className="container mx-auto mt-2 ">
-      <h2 className="text-2xl font-bold mb-2 text-white translate-x-4">Agregar Clase</h2>
-      {error && <p className="text-red-500">{error}</p>}
+    <div className="container mx-auto mt-2 bg-blue-500 w-1/2 translate-y-6 rounded-md">
+      {successAlert && (
+        <div className="absolute top-4 right-4 bg-green-500 text-white p-2 rounded-md">
+          ¡Clase modificada exitosamente!
+        </div>
+      )}
+
+      <h1 className="text-2xl font-bold mb-2 text-white translate-x-24 p-4">
+        Modificar Clase
+      </h1>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleFormSubmit}
         className="max-w-lg mx-auto p-4 rounded-lg shadow-lg"
       >
         <div className="mb-2">
@@ -58,14 +73,15 @@ function ClaseModuloCreate({ moduloId }) {
           </label>
           <input
             type="text"
+            id="name"
             name="name"
-            value={formData.name}
-            onChange={handleChange}
+            value={claseData.name}
+            onChange={handleInputChange}
             className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
-            required
           />
         </div>
-        <div className="mb-2" >
+
+        <div className="mb-2">
           <label
             htmlFor="url"
             className="block text-white text-sm font-bold mb-2"
@@ -76,27 +92,29 @@ function ClaseModuloCreate({ moduloId }) {
             type="text"
             id="url"
             name="url"
-            value={formData.url}
-            onChange={handleChange}
+            value={claseData.url}
+            onChange={handleInputChange}
             className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
           />
         </div>
+
         <div className="mb-2">
           <label
             htmlFor="pdfURL"
             className="block text-white text-sm font-bold mb-2"
           >
-            URL del PDF:
+            PDF URL:
           </label>
           <input
             type="text"
             id="pdfURL"
             name="pdfURL"
-            value={formData.pdfURL}
-            onChange={handleChange}
+            value={claseData.pdfURL}
+            onChange={handleInputChange}
             className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
           />
         </div>
+
         <div className="mb-2">
           <label
             htmlFor="texto"
@@ -107,11 +125,12 @@ function ClaseModuloCreate({ moduloId }) {
           <textarea
             id="texto"
             name="texto"
-            value={formData.texto}
-            onChange={handleChange}
+            value={claseData.texto}
+            onChange={handleInputChange}
             className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
-          ></textarea>
+          />
         </div>
+
         <div className="mb-2">
           <label
             htmlFor="resumen"
@@ -119,24 +138,25 @@ function ClaseModuloCreate({ moduloId }) {
           >
             Resumen:
           </label>
-          <textarea
+          <input
+            type="text"
             id="resumen"
             name="resumen"
-            value={formData.resumen}
-            onChange={handleChange}
+            value={claseData.resumen}
+            onChange={handleInputChange}
             className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
-          ></textarea>
+          />
         </div>
+
         <button
           type="submit"
-          disabled={loading}
           className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline border-b-4"
         >
-          {loading ? "Creando..." : "Crear Clase"}
+          Guardar Cambios
         </button>
       </form>
     </div>
   );
 }
 
-export default ClaseModuloCreate;
+export default ClaseEditAdmin;
