@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 import NivelClasesDetail from "./NivelClasesDetail";
 
 function NivelClases({ moduloId }) {
@@ -49,28 +50,10 @@ function NivelClases({ moduloId }) {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-start">
-      {/* Navigation Bar */}
-      <nav className="bg-white w-full p-4 shadow-md border-t-4 border-blue-500">
-        <div className="flex items-center justify-between">
-          <div className="text-xl font-bold">Coaching Ontológico</div>
-          <div className="space-x-4">
-            <a href="#" className="text-blue-500 hover:underline">
-              Etapa 1
-            </a>
-            <a href="#" className="text-blue-500 hover:underline">
-              Etapa 2
-            </a>
-            <a href="#" className="text-blue-500 hover:underline">
-              Mentoring
-            </a>
-          </div>
-        </div>
-      </nav>
-
+    <div className="flex flex-col items-start w-screen">
       {/* Class Information */}
-      <div className="flex px-5 py-5">
-        <div className=" p-0 mt-8 rounded-lg shadow-md">
+      <div className="flex w-screen">
+        <div className=" p-0 mt-8 rounded-lg shadow-md px-2 ">
           <h2 className="text-3xl font-semibold mb-6">Clases</h2>
           <ul className="grid gap-4">
             {clases.map((clase) => (
@@ -100,7 +83,7 @@ function NivelClases({ moduloId }) {
             ))}
           </ul>
         </div>
-        <div className="flex-1 px-5 py-8">
+        <div className="px-2 py-2 w-2/3">
           {selectedClassId && (
             <NivelClasesDetail moduloId={moduloId} claseId={selectedClassId} />
           )}
@@ -109,5 +92,9 @@ function NivelClases({ moduloId }) {
     </div>
   );
 }
+
+NivelClases.propTypes = {
+  moduloId: PropTypes.number.isRequired, 
+};
 
 export default NivelClases;

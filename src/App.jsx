@@ -76,7 +76,7 @@ import ViewCreateEgresados from "./views/ViewEgresados/ViewCreateEgresados";
 import ViewAdminPage from "./views/ViewAdmin/ViewAdminPage";
 import ViewNivelAdmin from "./views/ViewAdmin/ViewNivelAdmin/ViewNivelAdmin";
 import ViewNivelDetailAdmin from "./views/ViewAdmin/ViewNivelAdmin/ViewNivelDetailAdmin";
-//import ModuloDetailAdmin from "./Components/Admin/ModuloAdmin/ModuloDetailAdmin";
+import ModuloDetailAdmin from "./Components/Admin/ModuloAdmin/ModuloDetailAdmin";
 import NivelesDetail from "./Components/Niveles/NivelesDetail";
 import ModuloDetail from "./Components/ModulosNivel/ModuloDetail";
 import NivelClasesDetail from "./Components/NivelClases/NivelClasesDetail";
@@ -84,11 +84,8 @@ import ViewEgresadosAdmin from "./views/ViewAdmin/ViewEgresadosAdmin";
 import ViewEgresadosEdit from "./views/ViewAdmin/ViewEditEgresados";
 import ViewProfeticosAdmin from "./views/ViewAdmin/ViewProfeticosAdmin";
 import ViewProfeticoEdit from "./views/ViewAdmin/ViewProfeticoEdit";
-//import ClasesDetailModulo from "./Components/Admin/ClasesModuloAdmin/ClasesDetailModulo";
+import ClasesDetailModulo from "./Components/Admin/ClasesModuloAdmin/ClasesDetailModulo";
 import ViewNivelDeleteAdmin from "./views/ViewAdmin/ViewNivelAdmin/ViewNivelDeleteAdmin";
-import ModuloEditAdmin from "./Components/Admin/ModuloAdmin/ModuloEditAdmin";
-import ViewModuloDetailAdmin from "./views/ViewAdmin/ViewNivelAdmin/ViewModuloDetailAdmin";
-import ViewClasesModuloAdmin from "./views/ViewAdmin/ViewNivelAdmin/ViewClasesModuloAdmin";
 
 import axios from "axios";
 
@@ -260,7 +257,7 @@ function App() {
         <Route path="/nivel/:id" element={<ViewNivelDetailAdmin />} />
         <Route
           path="/nivel/:nivelId/modulo/:moduloId"
-          element={<ViewModuloDetailAdmin />}
+          element={<ModuloDetailAdmin />}
         />
         <Route path="/niveldetail/:id" element={<NivelesDetail />} />
         <Route
@@ -275,9 +272,8 @@ function App() {
         <Route path="/admin/egresados/edit/:id" element={<ViewEgresadosEdit />} />
         <Route path="/admin/profetico" element={<ViewProfeticosAdmin />} />
         <Route path="/admin/profetico/edit/:id" element={<ViewProfeticoEdit />} />
-        <Route path="/admin/modulo/:moduloId/clase/:claseId" element={<ViewClasesModuloAdmin />} />
+        <Route path="/admin/modulo/:moduloId/clase/:claseId" element={<ClasesDetailModulo />} />
         <Route path="/admin/deleted" element={<ViewNivelDeleteAdmin />} />
-        <Route path="/nivel/:nivelId/modulo/:moduloId/edit" element={<ModuloEditAdmin />} />
       </Routes>
     </Router>
   );
