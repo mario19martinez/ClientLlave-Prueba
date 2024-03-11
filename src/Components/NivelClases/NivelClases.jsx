@@ -94,7 +94,7 @@ function NivelClases({ moduloId }) {
 }
 
 NivelClases.propTypes = {
-  moduloId: PropTypes.number.isRequired, 
+  moduloId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired, 
 };
 
 export default NivelClases;
