@@ -1,19 +1,22 @@
-import { useState, useEffect } from "react";
+// eslint-disable-next-line no-unused-vars
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import ModulosNivel from "../ModulosNivel/ModulosNivel";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 function NivelesDetail() {
   const [nivel, setNivel] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showFullDescription, setShowFullDescription] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
     const fetchNivel = async () => {
       try {
         if (!id) {
-            setLoading(false);
-            return;
+          setLoading(false);
+          return;
         }
         const response = await axios.get(`/nivel/${id}`);
         setNivel(response.data);
@@ -26,41 +29,84 @@ function NivelesDetail() {
     fetchNivel();
   }, [id]);
 
+  const toggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
+
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        Cargando...
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   if (!nivel) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        No se encontro el nivel.
-      </div>
-    );
+    return <NotFoundScreen />;
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-8">
-      <h2 className="text-3xl font-semibold mb-4">{nivel.name}</h2>
-      {/* <img
-        src={nivel.image}
-        alt="image"
-        className="mb-4 rounded-lg shadow-lg"
-      /> */}
-      <p className="text-lg mb-4">{nivel.description}</p>
-      <p className="text-lg mb-2">Duracion: {nivel.duracion}</p>
-      <p className="text-lg mb-6">Costo: {nivel.costo}</p>
-      {/* <div className="flex justify-center">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Comprar
-        </button>
-      </div> */}
+    <div className="container mx-auto p-8">
+      <div className="px-5 py-5">
+        <div className="text-center">
+          <h2 className="text-4xl font-bold mb-8">{nivel.name}</h2>
+        </div>
+        <div className="flex flex-col md:flex-row items-center justify-center md:gap-16">
+          <div className="w-full md:w-1/2">
+            <img
+              src={nivel.image}
+              alt="Imagen del nivel"
+              className="mx-auto mb-8 rounded-lg shadow-lg"
+            />
+          </div>
+          <div className="w-full px-3 md:w-1/2">
+            <p className="text-lg font-semibold">Descripción:</p>
+            {showFullDescription ? (
+              <p className="text-lg mb-2">{nivel.description}</p>
+            ) : (
+              <p className="text-lg mb-2">
+                {nivel.description.slice(0, 150)}
+                {nivel.description.length > 150 && (
+                  <span>
+                    ...{" "}
+                    <button
+                      className="text-blue-500"
+                      onClick={toggleDescription}
+                    >
+                      Ver más
+                    </button>
+                  </span>
+                )}
+              </p>
+            )}
+            <p className="text-lg font-semibold">Duración:</p>
+            <p className="text-lg mb-2">{nivel.duracion}</p>
+            <p className="text-lg font-semibold">Costo:</p>
+            <p className="text-lg mb-2">{nivel.costo}</p>
+            <div className="pb-4">
+              <button className="w-full flex items-center justify-center px-4 py-2 bg-green-600 hover:bg-green-400 text-white font-semibold rounded-lg focus:outline-none focus:shadow-outline-blue">
+                <WhatsAppIcon className="mr-2" />
+                Contacto Administración
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <ModulosNivel nivelId={nivel.id} />
     </div>
   );
 }
+
+const LoadingScreen = () => {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <p className="text-xl font-semibold">Cargando...</p>
+    </div>
+  );
+};
+
+const NotFoundScreen = () => {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <p className="text-xl font-semibold">No se encontró el nivel.</p>
+    </div>
+  );
+};
 
 export default NivelesDetail;
