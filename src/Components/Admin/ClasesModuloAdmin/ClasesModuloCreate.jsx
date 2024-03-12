@@ -2,7 +2,7 @@ import { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function ClaseModuloCreate({ moduloId }) {
+function ClaseModuloCreate({ moduloId, updateClassList }) {
   const [formData, setFormData] = useState({
     name: "",
     url: "",
@@ -32,6 +32,7 @@ function ClaseModuloCreate({ moduloId }) {
         texto: "",
         resumen: "",
       });
+      updateClassList();
       // navigate('')
     } catch (error) {
       console.error("Error al crear la clase:", error);
@@ -130,7 +131,7 @@ function ClaseModuloCreate({ moduloId }) {
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline border-b-4"
+          className="bg-blue-900 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           {loading ? "Creando..." : "Crear Clase"}
         </button>

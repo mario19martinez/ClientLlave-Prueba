@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ClaseModuloAdmin from "../ClasesModuloAdmin/ClasesModuloAdmin";
+import EditNoteIcon from '@mui/icons-material/EditNote';
 //import ClaseModuloCreate from "../ClasesModuloAdmin/ClasesModuloCreate";
 
 function ModuloDetailAdmin() {
@@ -19,6 +20,7 @@ function ModuloDetailAdmin() {
           `/nivel/${nivelId}/modulo/${moduloId}`
         );
         const moduloData = response.data;
+        console.log(moduloData);
         setModulo(moduloData);
         setLoading(false);
       } catch (error) {
@@ -98,14 +100,13 @@ function ModuloDetailAdmin() {
           onClick={handleDelete}
           className="bg-red-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-600 transition duration-300 mr-4"
         >
-          <DeleteIcon fontSize="large" className="mr-2" />
-          Eliminar Módulo
+          <DeleteIcon fontSize="large" />
         </button>
         <button
           onClick={() => navigate(`/nivel/${nivelId}/modulo/${moduloId}/edit`)}
           className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
         >
-          Editar Módulo
+          <EditNoteIcon fontSize="large" />
         </button>
       </div>
       <hr className="my-6" />

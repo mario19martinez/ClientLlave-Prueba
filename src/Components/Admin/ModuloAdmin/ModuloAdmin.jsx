@@ -38,7 +38,7 @@ function ModuloAdmin({ nivelId }) {
       </button>
       {showModal && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded-md shadow-md max-w-lg h-full">
+          <div className="bg-blue-500 p-4 rounded-md shadow-md max-w-lg h-full">
             <button className="absolute top-2 right-2 text-red-500" onClick={toggleModal}>
               <CancelIcon fontSize="large" />
             </button>

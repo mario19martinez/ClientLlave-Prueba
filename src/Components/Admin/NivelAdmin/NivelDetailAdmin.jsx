@@ -3,20 +3,26 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Modal from "react-modal";
 import FolderDeleteIcon from "@mui/icons-material/FolderDelete";
-import CancelIcon from '@mui/icons-material/Cancel';
-import EditNoteIcon from '@mui/icons-material/EditNote';
+import CancelIcon from "@mui/icons-material/Cancel";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import GroupIcon from '@mui/icons-material/Group';
 import NivelEdit from "./NivelEdit";
 import ModuloAdmin from "../ModuloAdmin/ModuloAdmin";
+import AddUserNivel from "./AddUserNivel/AddUserNivel";
+import UserNivelList from "./AddUserNivel/UserNivelList";
 
 function NivelDetailAdmin() {
   const [nivel, setNivel] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showUserModal, setShowUserModal] = useState(false);
+  const [showUserList, setShowUserList] = useState(false);
   const navigate = useNavigate();
 
   const { id } = useParams();
-  console.log("id:", id);
+  //console.log("id:", id);
 
   useEffect(() => {
     const fetchNivelDetail = async () => {
@@ -59,6 +65,18 @@ function NivelDetailAdmin() {
     setShowModal(false);
   };
 
+  const handleOpenUserModal = () => {
+    setShowUserModal(true);
+  };
+
+  const handleCloseUserModal = () => {
+    setShowUserModal(false);
+  };
+
+  const handleViewUserList = () => {
+    setShowUserList(!showUserList);
+  };
+
   return (
     <div className="absolute top-0 right-36 mt-28 ml-96 p-4 w-3/5 h-auto -translate-x-20">
       <div className="max-w-xl mx-auto p-8 bg-white shadow rounded-md ">
@@ -76,13 +94,13 @@ function NivelDetailAdmin() {
                 className="w-full h-auto rounded-lg"
               />
             </div>
-            <p className="text-lg mb-2 text-gray-900">
+            <p className="text-lg mb-2 text-gray-800">
               <strong>Duración:</strong> {nivel.duracion}
             </p>
-            <p className="text-lg mb-2 text-gray-900">
+            <p className="text-lg mb-2 text-gray-800">
               <strong>Descripción:</strong> {nivel.description}
             </p>
-            <p className="text-lg mb-2 text-gray-900">
+            <p className="text-lg mb-2 text-gray-800">
               <strong>Costo:</strong> ${nivel.costo}
             </p>
             <button
@@ -93,13 +111,32 @@ function NivelDetailAdmin() {
             </button>
             <button
               onClick={handleOpenModal}
-              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 ml-4"
+              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 ml-4"
             >
               <EditNoteIcon fontSize="large" />
+            </button>
+            <button
+              onClick={handleOpenUserModal}
+              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 ml-4"
+            >
+              <PersonAddIcon fontSize="large" />
+            </button>
+
+            <button
+              onClick={handleViewUserList}
+              className="bg-green-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-green-600 transition duration-300 ml-4"
+            >
+              <GroupIcon fontSize="large" />
             </button>
           </div>
         )}
       </div>
+      {showUserList && (
+        <div>
+          <h2>Usuarios Inscritos al Nivel</h2>
+          <UserNivelList nivelId={id} />
+        </div>
+      )}
       <div>
         <h2>Modulos Del Nivel</h2>
         <ModuloAdmin nivelId={id} />
@@ -115,11 +152,29 @@ function NivelDetailAdmin() {
         <div className="modal-content p-2 w-2/5 h-screen mx-auto rounded-lg shadow-lg">
           <NivelEdit id={id} />
           <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-1 right-1 hover:text-red-400 text-gray-500 rounded-full"
-            >
-              <CancelIcon fontSize="large" />
-            </button>
+            onClick={() => setShowModal(false)}
+            className="absolute top-1 right-1 hover:text-red-400 text-gray-500 rounded-full"
+          >
+            <CancelIcon fontSize="large" />
+          </button>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={showUserModal}
+        onRequestClose={handleCloseUserModal}
+        className="modal"
+        contentLabel="Agregar Usuario al Nivel"
+        shouldCloseOnOverlayClick={true}
+        shouldCloseOnEsc={true}
+      >
+        <div className="modal-content p-2 w-2/5 h-screen mx-auto rounded-lg shadow-lg">
+          <AddUserNivel nivelId={id} onUserAdded={handleCloseUserModal} />
+          <button
+            onClick={handleCloseUserModal}
+            className="absolute top-1 right-1 hover:text-red-400 text-gray-500 rounded-full"
+          >
+            <CancelIcon fontSize="large" />
+          </button>
         </div>
       </Modal>
     </div>
