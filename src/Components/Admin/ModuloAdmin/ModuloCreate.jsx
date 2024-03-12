@@ -81,11 +81,11 @@ function ModuloCreate({ nivelId }) {
   };
 
   return (
-    <div className="container mx-auto mt-10 ">
-      <h2 className="text-3xl font-bold mb-4 text-gray-800">Agregar Modulo</h2>
-      <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg">
-        <div className="mb-4">
-          <label htmlFor="" className="block text-gray-700 font-bold mb-2">
+    <div className="bg-blue-500 p-2 rounded-md shadow-md max-w-lg h-full overflow-y-auto">
+      <h2 className="text-2xl font-bold mb-4 text-gray-100 ms-4">Agregar Modulo</h2>
+      <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-4 rounded-lg shadow-lg h-full">
+        <div className="mb-2">
+          <label htmlFor="" className="block text-gray-100 font-semibold mb-2">
             Titulo:
           </label>
           <input
@@ -98,8 +98,8 @@ function ModuloCreate({ nivelId }) {
             required
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="" className="block text-gray-700 font-bold mb-2">
+        <div className="mb-2">
+          <label htmlFor="" className="block text-gray-100 font-semibold mb-2">
             Contenido:
           </label>
           <textarea
@@ -110,8 +110,8 @@ function ModuloCreate({ nivelId }) {
             onChange={(e) => setContenido(e.target.value)}
           ></textarea>
         </div>
-        <div className="mb-4">
-          <label htmlFor="">Descripción:</label>
+        <div className="mb-2">
+          <label htmlFor="" className="font-semibold text-gray-100">Descripción:</label>
           <input
             type="text"
             value={descripcion}
@@ -121,10 +121,10 @@ function ModuloCreate({ nivelId }) {
           />
         </div>
         {preguntas.map((pregunta, index) => (
-          <div key={index} className="mb-6">
+          <div key={index} className="mb-2">
             <label
               htmlFor={`pregunta-${index}`}
-              className="block text-gray-700 font-bold mb-2"
+              className="block text-gray-100 font-semibold mb-2"
             >
               Pregunta {index + 1}
             </label>
@@ -150,7 +150,7 @@ function ModuloCreate({ nivelId }) {
               />
             ))}
             <label
-              className="block text-gray-700 font-bold  mb-2"
+              className="block text-gray-100 font-semibold  mb-2"
               htmlFor={`respuesta-${index}`}
             >
               Respuesta Correcta:
@@ -174,13 +174,13 @@ function ModuloCreate({ nivelId }) {
         <button
           type="button"
           onClick={agregarPregunta}
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mb-4"
+          className="bg-blue-900 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mb-4 font-semibold"
         >
           Agregar Pregunta
         </button>
         <button
           type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mr-4"
+          className="bg-blue-900 text-white py-2 px-4 ms-8 rounded hover:bg-blue-600 transition duration-300 mr-4 font-semibold"
         >
           Crear
         </button>

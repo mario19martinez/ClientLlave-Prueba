@@ -14,6 +14,15 @@ function ClaseModuloAdmin({ moduloId }) {
     setShowModal(!showModal);
   };
 
+  const updateClassList = async () => {
+    try {
+      const response = await axios.get(`/modulo/${moduloId}/clases`);
+      setClases(response.data);
+    } catch (error) {
+      console.error("Error al actualizar las clases:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchClases = async () => {
       try {
@@ -68,11 +77,11 @@ function ClaseModuloAdmin({ moduloId }) {
           <div className="bg-blue-500 p-4 rounded-md shadow-md max-w-lg h-full w-3/4">
             <button
               className="absolute top-2 right-2 text-gray-200"
-              onClick={toggleModal}
+              onClick={() => { toggleModal(); updateClassList();}}
             >
               <CancelIcon fontSize="large" />
             </button>
-            <ClaseModuloCreate moduloId={moduloId} />
+            <ClaseModuloCreate moduloId={moduloId} updateClassList={updateClassList} />
           </div>
         </div>
       )}
