@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import NavUser from "../../Components/Estudiante/NavUser/NavUser";
 import SidebarUser from "../../Components/Estudiante/SidebarUser/SidebarUser";
 import MiPerfil from "../../Components/Estudiante/DataUser/MiPerfil";
-import Footer from "../../Components/Footer/Footer";
 
 export default function ViewProfile() {
   const [selectedTab /*setSelectedTab*/] = useState("Mi Perfil");
@@ -18,7 +17,6 @@ export default function ViewProfile() {
           <MiPerfil />
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

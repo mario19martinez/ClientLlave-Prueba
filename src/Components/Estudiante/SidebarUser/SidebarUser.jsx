@@ -36,8 +36,8 @@ function SidebarUser({ selectedTab }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-200">
-      <div className="sidebar min-h-screen w-[3.35rem] overflow-hidden border-r hover:w-56 hover:bg-gray-200 hover:shadow-lg">
+    <div className="min-h-screen bg-blue-700">
+      <div className="sidebar min-h-screen w-[3.35rem] overflow-hidden border-r hover:w-56 hover:bg-blue-700 hover:shadow-lg">
         <div className="flex h-screen flex-col justify-between pt-2 pb-6">
           <div>
             <div className="w-max p-2.5 flex">
@@ -52,7 +52,7 @@ function SidebarUser({ selectedTab }) {
               />
               <div className="px-2">
                 {userData && (
-                  <h2 className="font-semibold text-gray-700">
+                  <h2 className="font-semibold text-white">
                     {userData.name} <br />
                     {userData.last_name}
                   </h2>
@@ -64,13 +64,13 @@ function SidebarUser({ selectedTab }) {
                 <button
                   className={`relative flex items-center space-x-4 ${
                     selectedTab === "Escritorio"
-                      ? "bg-gradient-to-r from-sky-600 to-cyan-400 px-4 py-3 text-white"
-                      : "group bg px-4 py-3 text-gray-600 hover:text-cyan-300"
+                      ? "bg-gradient-to-r from-sky-500 to-cyan-300 px-4 py-3 text-white"
+                      : "group bg px-4 py-3 text-white hover:text-cyan-300"
                   }`}
                   onClick={() => navigate("/estudiante/Escritorio")}
                 >
-                  <ComputerIcon className="h-5 w-5 fill-current text-gray-600 group-hover:text-cyan-300" />
-                  <span className="-mr-1 font-medium">Escritorio</span>
+                  <ComputerIcon className="h-5 w-5 fill-current text-white group-hover:text-cyan-200" />
+                  <span className="group-hover:text-cyan-200">Escritorio</span>
                 </button>
               </li>
 
@@ -78,13 +78,13 @@ function SidebarUser({ selectedTab }) {
                 <button
                   className={`flex items-center space-x-4 ${
                     selectedTab === "Mi Perfil"
-                      ? "bg-gradient-to-r from-sky-600 to-cyan-400 px-4 py-3 text-white"
-                      : "group bg px-4 py-3 text-gray-600 hover:text-cyan-300"
+                      ? "bg-gradient-to-r from-sky-500 to-cyan-300 px-4 py-3 text-white"
+                      : "group bg px-4 py-3 text-white hover:text-cyan-300"
                   }`}
                   onClick={() => navigate("/estudiante/profile")}
                 >
-                  <PersonIcon className="h-5 w-5 fill-current text-gray-600 group-hover:text-cyan-300" />
-                  <span className="group-hover:text-gray-700">Mi Perfil</span>
+                  <PersonIcon className="h-5 w-5 fill-current text-white group-hover:text-cyan-200" />
+                  <span className="group-hover:text-cyan-200">Mi Perfil</span>
                 </button>
               </li>
 
@@ -92,13 +92,13 @@ function SidebarUser({ selectedTab }) {
                 <button
                   className={`flex items-center space-x-4 ${
                     selectedTab === "Cursos Inscritos"
-                      ? "bg-gradient-to-r from-sky-600 to-cyan-400 px-4 py-3 text-white"
-                      : "group bg px-4 py-3 text-gray-600 hover:text-cyan-300"
+                      ? "bg-gradient-to-r from-sky-500 to-cyan-300 px-4 py-3 text-white"
+                      : "group bg px-4 py-3 text-white hover:text-cyan-300"
                   }`}
                   onClick={() => navigate("/estudiante/cursosInscritos")}
                 >
-                  <SchoolIcon className="h-5 w-5 fill-current text-gray-600 group-hover:text-cyan-300" />
-                  <span className="group-hover:text-gray-700">
+                  <SchoolIcon className="h-5 w-5 fill-current text-white group-hover:text-cyan-200" />
+                  <span className="group-hover:text-cyan-200">
                     Cursos Inscritos
                   </span>
                 </button>
@@ -108,13 +108,13 @@ function SidebarUser({ selectedTab }) {
                 <button
                   className={`flex items-center space-x-4 ${
                     selectedTab === "Mis Talleres"
-                      ? "bg-gradient-to-r from-sky-600 to-cyan-400 px-4 py-3 text-white"
-                      : "group bg px-4 py-3 text-gray-600 hover:text-cyan-300"
+                      ? "bg-gradient-to-r from-sky-500 to-cyan-300 px-4 py-3 text-white"
+                      : "group bg px-4 py-3 text-white hover:text-cyan-300"
                   }`}
                   onClick={() => navigate("/estudiante/MisTalleres")}
                 >
-                  <CategoryIcon className="h-5 w-5 fill-current text-gray-600 group-hover:text-cyan-300" />
-                  <span className="group-hover:text-gray-700">
+                  <CategoryIcon className="h-5 w-5 fill-current text-white group-hover:text-cyan-200" />
+                  <span className="group-hover:text-cyan-200">
                     Mis Talleres
                   </span>
                 </button>
@@ -124,13 +124,13 @@ function SidebarUser({ selectedTab }) {
                 <button
                   className={`flex items-center space-x-4 ${
                     selectedTab === "Publicaciones"
-                      ? "bg-gradient-to-r from-sky-600 to-cyan-400 px-4 py-3 text-white"
-                      : "group bg px-4 py-3 text-gray-600 hover:text-cyan-300"
+                      ? "bg-gradient-to-r from-sky-500 to-cyan-300 px-4 py-3 text-white"
+                      : "group bg px-4 py-3 text-white hover:text-cyan-300"
                   }`}
                   onClick={() => navigate("/my-posts")}
                 >
-                  <RateReviewIcon className="h-5 w-5 fill-current text-gray-600 group-hover:text-cyan-300" />
-                  <span className="group-hover:text-gray-700">
+                  <RateReviewIcon className="h-5 w-5 fill-current text-white group-hover:text-cyan-200" />
+                  <span className="group-hover:text-cyan-200">
                     Publicaciones
                   </span>
                 </button>
@@ -143,26 +143,26 @@ function SidebarUser({ selectedTab }) {
                 <button
                   className={`flex items-center space-x-4 ${
                     selectedTab === "Ajustes"
-                      ? "bg-gradient-to-r from-sky-600 to-cyan-400 px-4 py-3 text-white"
-                      : "group bg px-4 py-3 text-gray-600 hover:text-cyan-300"
+                      ? "bg-gradient-to-r from-sky-500 to-cyan-300 px-4 py-3 text-white"
+                      : "group bg px-4 py-3 text-white hover:text-cyan-300"
                   }`}
                   onClick={() => navigate("/estudiante/Ajustes")}
                 >
-                  <SettingsIcon className="h-5 w-5 fill-current text-gray-600 group-hover:text-cyan-300" />
-                  <span className="group-hover:text-gray-700">Ajustes</span>
+                  <SettingsIcon className="h-5 w-5 fill-current text-white group-hover:text-cyan-200" />
+                  <span className="group-hover:text-cyan-200">Ajustes</span>
                 </button>
               </li>
               <li className="min-w-max">
                 <button
                   className={`flex items-center space-x-4 ${
                     selectedTab === "Salir"
-                      ? "bg-gradient-to-r from-sky-600 to-cyan-400 px-4 py-3 text-white"
-                      : "group bg px-4 py-3 text-gray-600 hover:text-cyan-300"
+                      ? "bg-gradient-to-r from-sky-500 to-cyan-300 px-4 py-3 text-white"
+                      : "group bg px-4 py-3 text-white hover:text-cyan-300"
                   }`}
                   onClick={handleLogout}
                 >
-                  <LogoutIcon className="h-5 w-5 fill-current text-gray-600 group-hover:text-cyan-300" />
-                  <span className="group-hover:text-gray-700">Salir</span>
+                  <LogoutIcon className="h-5 w-5 fill-current text-white group-hover:text-cyan-200" />
+                  <span className="group-hover:text-cyan-200">Salir</span>
                 </button>
               </li>
             </ul>
