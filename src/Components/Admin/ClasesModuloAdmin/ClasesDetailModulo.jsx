@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Modal from 'react-modal'
+import Modal from "react-modal";
 import axios from "axios";
-import CancelIcon from '@mui/icons-material/Cancel';
-import EditNoteIcon from '@mui/icons-material/EditNote';
+import CancelIcon from "@mui/icons-material/Cancel";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 import ClaseEditAdmin from "./ClasesEditAdmin";
 
 function ClasesDetailModulo() {
@@ -11,7 +11,7 @@ function ClasesDetailModulo() {
   const [clase, setClase] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchClase = async () => {
@@ -22,7 +22,7 @@ function ClasesDetailModulo() {
         setClase(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Error en el funcionamiento:', error)
+        console.error("Error en el funcionamiento:", error);
         setError(
           "Error al obtener la clase. Por favor, intentalo de nuevo mas tarde."
         );
@@ -37,11 +37,11 @@ function ClasesDetailModulo() {
 
   const openModal = () => {
     setModalIsOpen(true);
-  }
+  };
 
   const closeModal = () => {
     setModalIsOpen(false);
-  }
+  };
 
   const extractYoutubeVideoId = (url) => {
     const regex =
@@ -72,12 +72,17 @@ function ClasesDetailModulo() {
   return (
     <div className="absolute top-0 left-0 mt-28 ml-96 bg-gray-100 min-h-screen flex justify-center items-center w-1/2">
       <div className="max-w-3xl w-full p-8 bg-white rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Detalle de la clase</h2>
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">
+          Detalle de la clase
+        </h2>
 
-        <button onClick={openModal} className="bg-blue-500 text-white p-2 rounded-md mb-4">
+        <button
+          onClick={openModal}
+          className="bg-blue-500 text-white p-2 rounded-md mb-4"
+        >
           <EditNoteIcon fontSize="large" />
-          </button>
-          <Modal
+        </button>
+        <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
           contentLabel="Editar Clase"
@@ -87,7 +92,10 @@ function ClasesDetailModulo() {
         >
           <ClaseEditAdmin moduloId={moduloId} claseId={claseId} />
 
-          <button onClick={closeModal} className=" text-red-500 p-2 rounded-md absolute top-4 right-4">
+          <button
+            onClick={closeModal}
+            className=" text-red-500 p-2 rounded-md absolute top-4 right-4"
+          >
             <CancelIcon fontSize="large" />
           </button>
         </Modal>
@@ -106,7 +114,7 @@ function ClasesDetailModulo() {
         </div>
         {clase.name && (
           <div className="mb-4">
-          <p className="font-bold text-gray-800 text-xl">{clase.name}</p>
+            <p className="font-bold text-gray-800 text-xl">{clase.name}</p>
           </div>
         )}
         {clase.texto && (
@@ -117,8 +125,11 @@ function ClasesDetailModulo() {
         )}
         {clase.resumen && (
           <div>
-            <h3 className="text-xl font-bold mb-2 text-gray-800">Resumen:</h3>
-            <p className=" font-gabarito">{clase.resumen}</p>
+            <h3 className="text-xl font-bold mb-2">Resumen:</h3>
+            <div
+              className="text-gray-700"
+              dangerouslySetInnerHTML={{ __html: clase.resumen }}
+            />
           </div>
         )}
       </div>
