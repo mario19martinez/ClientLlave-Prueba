@@ -12,7 +12,7 @@ export default function NavUser() {
   };
 
   return (
-    <nav className="bg-blue-900 py-2 lg:py-3 px-8 lg:px-12 shadow-md">
+    <nav className="bg-blue-700 py-2 lg:py-3 px-8 lg:px-12 shadow-md">
       <div className="flex items-center justify-between max-w-screen-lg mx-auto">
         <div className="w-1/4 lg:w-2/12">
           <img src={logo} alt="logo" className="h-auto" />
