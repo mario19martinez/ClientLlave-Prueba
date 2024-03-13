@@ -323,40 +323,44 @@ function AllUsersAdmin() {
         </table>
       )}
       {isModalOpen && (
-        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75 z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg">
-            <button
-              onClick={handleCloseModal}
-              className="absolute top-2 right-2 text-blue-600 hover:text-blue-700 focus:outline-none"
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={handleCloseModal}
+          contentLabel="Detalles del usuario"
+          className="Modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-8 shadow-lg z-50"
+          overlayClassName="Overlay fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center z-50"
+        >
+          <button
+            onClick={handleCloseModal}
+            className="absolute top-4 right-4 text-blue-600 hover:text-blue-700 focus:outline-none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="w-6 h-6"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                ></path>
-              </svg>
-            </button>
-            <p className="text-center text-lg font-semibold mb-4">
-              Detalles del usuario
-            </p>
-            <div>
-              <p>Nombre: {selectedUser.name}</p>
-              <p>Apellido: {selectedUser.last_name}</p>
-              <p>Correo: {selectedUser.email}</p>
-              <p>ID: {selectedUser.identificacion}</p>
-              <p>País: {selectedUser.pais}</p>
-              <p>Teléfono: {selectedUser.telefono}</p>
-            </div>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+          <p className="text-center text-lg font-semibold mb-4">
+            Detalles del usuario
+          </p>
+          <div>
+            <p>Nombre: {selectedUser.name}</p>
+            <p>Apellido: {selectedUser.last_name}</p>
+            <p>Correo: {selectedUser.email}</p>
+            <p>ID: {selectedUser.identificacion}</p>
+            <p>País: {selectedUser.pais}</p>
+            <p>Teléfono: {selectedUser.telefono}</p>
           </div>
-        </div>
+        </Modal>
       )}
 
       {/* Pagination */}
