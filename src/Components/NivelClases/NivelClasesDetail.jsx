@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import PropTypes from "prop-types"; 
+import PropTypes from "prop-types";
 import axios from "axios";
 
 function NivelClasesDetail({ moduloId, claseId }) {
@@ -84,7 +84,10 @@ function NivelClasesDetail({ moduloId, claseId }) {
       {clase.resumen && (
         <div>
           <h3 className="text-xl font-bold mb-2">Resumen:</h3>
-          <p className="text-gray-700">{clase.resumen}</p>
+          <div
+            className="text-gray-700"
+            dangerouslySetInnerHTML={{ __html: clase.resumen }}
+          />
         </div>
       )}
     </div>
@@ -94,7 +97,7 @@ function NivelClasesDetail({ moduloId, claseId }) {
 // Definir propTypes para validar las props
 NivelClasesDetail.propTypes = {
   moduloId: PropTypes.string.isRequired,
-  claseId: PropTypes.string.isRequired
+  claseId: PropTypes.string.isRequired,
 };
 
 export default NivelClasesDetail;

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom'
+import PropTypes from "prop-types";
 import axios from "axios";
 import ModuloCreate from "./ModuloCreate";
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -71,5 +72,9 @@ function ModuloAdmin({ nivelId }) {
     </div>
   );
 }
+
+ModuloAdmin.propTypes = {
+  nivelId: PropTypes.string.isRequired,
+};
 
 export default ModuloAdmin;

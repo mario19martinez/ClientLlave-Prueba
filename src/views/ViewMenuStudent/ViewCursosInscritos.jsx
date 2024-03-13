@@ -1,14 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
-import NavUser from '../../Components/Estudiante/NavUser/NavUser';
+import NavUser from "../../Components/Estudiante/NavUser/NavUser";
 import SidebarUser from "../../Components/Estudiante/SidebarUser/SidebarUser";
 import CursosInscritos from "../../Components/Estudiante/DataUser/CursosInscritos";
-import Footer from "../../Components/Footer/Footer";
 
-export default function ViewCursosInscritos () {
-    const [selectedTab, /*setSelectedTab*/] = useState("Cursos Inscritos")
-    return (
-        <div className="flex flex-col">
+export default function ViewCursosInscritos() {
+  const [selectedTab /*setSelectedTab*/] = useState("Cursos Inscritos");
+  return (
+    <div className="flex flex-col">
       <div>
         <NavUser />
       </div>
@@ -18,7 +17,6 @@ export default function ViewCursosInscritos () {
           <CursosInscritos />
         </div>
       </div>
-      <Footer />
     </div>
-    );
+  );
 }

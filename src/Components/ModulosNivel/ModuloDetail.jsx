@@ -192,7 +192,7 @@ function ModuloDetail() {
                     Object.keys(respuestas).length !== modulo.preguntas.length
                   } // Deshabilitar el botón si no se han respondido todas las preguntas
                 >
-                  Enviar Respuestas
+                  responder
                 </button>
               </>
             ) : (
