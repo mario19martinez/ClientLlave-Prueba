@@ -65,12 +65,12 @@ function ModuloDetailAdmin() {
     );
   }
 
-  return (
+  return ( 
     <div>
       <NavAdmin />
       <div className="flex">
         <SidebarAdmin />
-        <div className="absolute top-0 left-0 mt-28 ml-96 bg-gray-100 p-6 rounded-lg shadow-md w-1/2">
+        <div className="bg-gray-100 p-6 rounded-lg shadow-md w-1/2">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
             {modulo.titulo}
           </h2>

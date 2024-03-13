@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom'
+import PropTypes from "prop-types";
 import axios from "axios";
 
 function ModuloCreate({ nivelId }) {
@@ -188,5 +189,9 @@ function ModuloCreate({ nivelId }) {
     </div>
   );
 }
+
+ModuloCreate.propTypes = {
+  nivelId: PropTypes.string.isRequired,
+};
 
 export default ModuloCreate;
