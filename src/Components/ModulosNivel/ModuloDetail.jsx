@@ -13,6 +13,26 @@ function ModuloDetail() {
   const [completedModules, setCompletedModules] = useState([]);
   const [feedbacks, setFeedbacks] = useState({});
   const [modulos, setModulos] = useState([]);
+  const [userSub, setUserSub] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("/usuario/sub", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUserSub(response.data.userSub);
+        console.log("response:", response);
+      } catch (error) {
+        console.error("Error al obtener el sub del usuario:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     const fetchModulo = async () => {
@@ -21,8 +41,10 @@ function ModuloDetail() {
           axios.get(`/nivel/${nivelId}/modulo/${moduloId}`),
           axios.get(`/niveles/${nivelId}/modulos`),
         ]);
+        console.log("Respuesta del servidor (modulo):", moduloResponse.data);
+        console.log("Respuesta del servidor (modulos):", modulosResponse.data);
         const moduloData = moduloResponse.data;
-        moduloData.preguntas = JSON.parse(moduloData.preguntas);
+        // moduloData.preguntas = JSON.parse(moduloData.preguntas);
         setModulo(moduloData);
         setModulos(modulosResponse.data);
         setLoading(false);
@@ -36,39 +58,46 @@ function ModuloDetail() {
   }, [nivelId, moduloId]);
 
   const handleAnswerChange = (index, event) => {
+    const opcionSeleccionada = event.target.value;
     setRespuestas({
       ...respuestas,
-      [index]: event.target.value,
+      [index]: opcionSeleccionada,
     });
   };
 
-  const handleSubmitAnswers = () => {
-    const correctAnswers = modulo.preguntas.map(
-      (pregunta) => pregunta.respuestaCorrecta
-    );
-    const userAnswers = Object.values(respuestas);
-    const feedback = {};
-    userAnswers.forEach((answer, index) => {
-      if (answer === correctAnswers[index]) {
-        feedback[index] = "¡Respuesta correcta!";
-      } else {
-        feedback[index] = "Respuesta incorrecta. ¡Inténtalo de nuevo!";
-      }
-    });
-    setFeedbacks(feedback);
-    const isModuleCompleted = correctAnswers.every(
-      (answer, index) => userAnswers[index] === answer
-    );
-    if (isModuleCompleted) {
-      setCompletedModules([...completedModules, moduloId]);
+  const handleSubmitAnswers = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const preguntasConRespuestas = modulo.preguntas.map((pregunta, index) => ({
+        pregunta: pregunta.pregunta,
+        respuesta: respuestas[index] || "", // Si el usuario no respondió, dejar la respuesta vacía
+      }));
+      const response = await axios.post(
+        "/modulo/responder",
+        {
+          userSub: userSub, // Reemplazar con el identificador del usuario
+          moduloId,
+          preguntas: preguntasConRespuestas,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Manejar la respuesta del servidor aquí
+      console.log("Respuestas enviadas:", response.data);
+    } catch (error) {
+      console.error("Error al enviar respuestas:", error);
     }
   };
 
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900"></div>
-        <span className="ml-4 text-xl font-semibold text-gray-900">
+        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-blue-600"></div>
+        <span className="ml-4 text-xl font-semibold text-blue-600">
           Cargando...
         </span>
       </div>
@@ -154,22 +183,14 @@ function ModuloDetail() {
                         </div>
                       ))}
                     </div>
-                    {feedbacks[index] && (
-                      <p
-                        className={
-                          feedbacks[index].includes("correcta")
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }
-                      >
-                        {feedbacks[index]}
-                      </p>
-                    )}
                   </div>
                 ))}
                 <button
                   onClick={handleSubmitAnswers}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 transition duration-300"
+                  disabled={
+                    Object.keys(respuestas).length !== modulo.preguntas.length
+                  } // Deshabilitar el botón si no se han respondido todas las preguntas
                 >
                   Enviar Respuestas
                 </button>
