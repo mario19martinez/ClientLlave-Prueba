@@ -86,9 +86,9 @@ import ViewProfeticosAdmin from "./views/ViewAdmin/ViewProfeticosAdmin";
 import ViewProfeticoEdit from "./views/ViewAdmin/ViewProfeticoEdit";
 //import ClasesDetailModulo from "./Components/Admin/ClasesModuloAdmin/ClasesDetailModulo";
 import ViewNivelDeleteAdmin from "./views/ViewAdmin/ViewNivelAdmin/ViewNivelDeleteAdmin";
-import ModuloEditAdmin from "./Components/Admin/ModuloAdmin/ModuloEditAdmin";
+//import ModuloEditAdmin from "./Components/Admin/ModuloAdmin/ModuloEditAdmin";
 import ViewModuloDetailAdmin from "./views/ViewAdmin/ViewNivelAdmin/ViewModuloDetailAdmin";
-import ViewClasesModuloAdmin from "./views/ViewAdmin/ViewNivelAdmin/ViewClasesModuloAdmin";
+// ViewClasesModuloAdmin from "./views/ViewAdmin/ViewNivelAdmin/ViewClasesModuloAdmin";
 import ClaseModuloCreate from "./Components/Admin/ClasesModuloAdmin/ClasesModuloCreate";
 
 import axios from "axios";
@@ -285,19 +285,19 @@ function App() {
           path="/admin/profetico/edit/:id"
           element={<ViewProfeticoEdit />}
         />
-        <Route
+        {/*<Route
           path="/admin/modulo/:moduloId/clase/:claseId"
           element={<ClasesDetailModulo />}
-        />
+        />*/}
         <Route path="/admin/deleted" element={<ViewNivelDeleteAdmin />} />
         <Route
           path="/admin/modulo/:moduloId/clase/create"
           element={<ClaseModuloCreate />}
         />
-        <Route
+        {/*<Route
           path="/admin/modulo/:moduloId/clase/:claseId/editar"
           element={<ClaseEditAdmin />}
-        />
+      />*/}
       </Routes>
     </Router>
   );
