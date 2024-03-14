@@ -1,18 +1,20 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getUserData, updateUser } from "../../../Redux/features/Users/usersSlice";
+import {
+  getUserData,
+  updateUser,
+} from "../../../Redux/features/Users/usersSlice";
 import UploadWidget from "../../UploadWidget/UploadWidget";
+import PropTypes from "prop-types";
 
-function Ajustes() {
+export default function EditarUsuarioAdmin({ userEmail }) {
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.users.userData);
+
   const [mostrarPerfil, setMostrarPerfil] = useState(true);
   const [mostrarContraseña, setMostrarContraseña] = useState(false);
   const [contrasena, setContrasena] = useState("");
-
-  const dispatch = useDispatch();
-  const userData = useSelector((state) => state.users.userData);
-  const storedEmail = localStorage.getItem("email");
-
   const [usuario, setUsuario] = useState({
     name: "",
     last_name: "",
@@ -32,10 +34,10 @@ function Ajustes() {
   });
 
   useEffect(() => {
-    if (storedEmail) {
-      dispatch(getUserData(storedEmail));
+    if (userEmail) {
+      dispatch(getUserData(userEmail));
     }
-  }, [dispatch, storedEmail]);
+  }, [dispatch, userEmail]);
 
   useEffect(() => {
     if (userData) {
@@ -96,18 +98,12 @@ function Ajustes() {
       errorMessagesCopy.telefono = "";
     }
 
-    if (usuario.email.trim() === "") {
-      errorMessagesCopy.email = "El campo Correo no debe estar vacío";
-      isValid = false;
-    } else {
-      errorMessagesCopy.email = "";
-    }
-
-    // Validación de correo electrónico
     const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     if (!emailPattern.test(usuario.email)) {
       errorMessagesCopy.email = "Correo no válido";
       isValid = false;
+    } else {
+      errorMessagesCopy.email = "";
     }
 
     setErrorMessages(errorMessagesCopy);
@@ -118,39 +114,41 @@ function Ajustes() {
     setContrasena(e.target.value);
   };
 
-  const guardarCambios = async() => {
+  const guardarCambios = async () => {
     const usuarioActualizado = {
       ...usuario,
       contraseña: contrasena,
     };
-    console.log(usuarioActualizado);
 
-    //dispatch(updateUser({ id: userData.identificacion, userData: usuarioActualizado }));
-    //window.location.reload();
-    const response = await dispatch(updateUser({ id: userData.identificacion, userData: usuarioActualizado }));
-    console.log("Respuesta del servidor:", response);
-
-    // Agregamos un retraso de un segundo antes de recargar la pagina
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000)
+    try {
+      const response = await dispatch(
+        updateUser({
+          id: userData.identificacion,
+          userData: usuarioActualizado,
+        })
+      );
+      console.log("Respuesta del servidor:", response);
+      // Muestra un mensaje de éxito o actualiza solo los componentes necesarios
+    } catch (error) {
+      console.error("Error al actualizar usuario:", error);
+      // Muestra un mensaje de error al usuario
+    }
   };
 
   useEffect(() => {
     setMostrarPerfil(true);
   }, []);
-  
 
   return (
-    <div className="h-auto md:w-1/2 mx-auto mt-6 p-4">
+    <div className="py-2 flex flex-col items-center justify-center">
       <div className="flex flex-col lg:flex-row items-center justify-center">
-      <button
+        <button
           className={`mx-2 md:mx-4 px-4 py-2 ${
             mostrarPerfil ? "bg-blue-400 text-white" : "bg-gray-200"
           } text-lg mr-12 border-b-2 border-blue-500 font-medium hover:bg-blue-700 hover:text-white transform hover:scale-105 transition duration-300 ease-in-out`}
           onClick={() => handleBotonClick("perfil")}
         >
-         Perfil
+          Perfil
         </button>
         <button
           className={`mx-2 md:mx-4 px-4 py-2 ${
@@ -163,91 +161,106 @@ function Ajustes() {
       </div>
 
       {mostrarPerfil && (
-        <div className="mt-4 md:translate-x-8">
+        <div className="justify-center items-center">
           <div className="flex flex-col">
             <label htmlFor="imagen" className="font-medium">
               Imagen de Perfil
             </label>
             {userData?.image && (
-              <img src={userData.image} alt="Imagen de perfil" className="mt-2 rounded-full w-20 h-20 object-cover" />
+              <img
+                src={userData.image}
+                alt="Imagen de perfil"
+                className="mt-2 rounded-full w-20 h-20 object-cover"
+              />
             )}
-            <UploadWidget onImageUpload={handleImageUpload} className="p-0 mt-4" />
+            <UploadWidget
+              onImageUpload={handleImageUpload}
+              className="p-0 mt-4"
+            />
 
-            <label htmlFor="nombre" className="font-medium mt-2">
-              Nombre
-            </label>
-            <div
-              id="nombre"
-              className={`mt-2 border border-blue-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-300 w-48`}
-              contentEditable={true}
-              onBlur={(e) => handleEditableChange(e, "name")}
-              dangerouslySetInnerHTML={{ __html: usuario.name }}
-            ></div>
-            <span className="text-red-500">{errorMessages.name}</span>
+            <div className="flex py-2">
+              <div className="flex flex-col px-1">
+                <label htmlFor="nombre" className="font-medium">
+                  Nombre:
+                </label>
+                <input
+                  id="nombre"
+                  className={`border border-blue-600 rounded-md p-2 focus:ring-blue-200 focus:border-blue-300 w-48`}
+                  value={usuario.name}
+                  onChange={(e) => handleEditableChange(e, "name")}
+                />
+                <span className="text-red-500">{errorMessages.name}</span>
+              </div>
 
-            <label htmlFor="apellido" className="mt-4 font-medium">
-              Apellido
-            </label>
-            <div
-              id="apellido"
-              className={`mt-2 border border-blue-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-300 w-48`}
-              contentEditable={true}
-              onBlur={(e) => handleEditableChange(e, "last_name")}
-              dangerouslySetInnerHTML={{ __html: usuario.last_name }}
-            ></div>
-            <span className="text-red-500">{errorMessages.last_name}</span>
+              <div className="flex flex-col px-1">
+                <label htmlFor="apellido" className="font-medium">
+                  Apellido:
+                </label>
+                <input
+                  id="apellido"
+                  className={`border border-blue-600 rounded-md p-2 focus:ring-blue-200 focus:border-blue-300 w-48`}
+                  value={usuario.last_name}
+                  onChange={(e) => handleEditableChange(e, "last_name")}
+                />
+                <span className="text-red-500">{errorMessages.last_name}</span>
+              </div>
+            </div>
 
-            <label htmlFor="nombreUsuario" className="mt-4 font-medium">
-              Pais
-            </label>
-            <div
-              id="nombreUsuario"
-              className={`mt-2 border border-blue-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-300 w-48`}
-              contentEditable={true}
-              onBlur={(e) => handleEditableChange(e, "pais")}
-              dangerouslySetInnerHTML={{ __html: usuario.pais }}
-            ></div>
-            <span className="text-red-500">{errorMessages.pais}</span>
-
-            <label htmlFor="telefono" className="mt-4 font-medium">
-              Telefono
-            </label>
-            <div
-              id="telefono"
-              className={`mt-2 border border-blue-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-300 w-48`}
-              contentEditable={true}
-              onBlur={(e) => handleEditableChange(e, "telefono")}
-              dangerouslySetInnerHTML={{ __html: usuario.telefono }}
-            ></div>
-            <span className="text-red-500">{errorMessages.telefono}</span>
+            <div className="flex py-2">
+              <div className="flex flex-col px-1">
+                <label htmlFor="nombreUsuario" className="mt-4 font-medium">
+                  País:
+                </label>
+                <input
+                  id="nombreUsuario"
+                  className={`border border-blue-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-300 w-48`}
+                  value={usuario.pais}
+                  onChange={(e) => handleEditableChange(e, "pais")}
+                />
+                <span className="text-red-500">{errorMessages.pais}</span>
+              </div>
+              <div className="flex flex-col px-1">
+                <label htmlFor="telefono" className="mt-4 font-medium">
+                  Teléfono:
+                </label>
+                <input
+                  id="telefono"
+                  className={`border border-blue-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-300 w-48`}
+                  value={usuario.telefono}
+                  onChange={(e) => handleEditableChange(e, "telefono")}
+                />
+                <span className="text-red-500">{errorMessages.telefono}</span>
+              </div>
+            </div>
 
             <label htmlFor="habilidad" className="mt-4 font-medium">
-              Correo
+              Correo:
             </label>
-            <div
+            <input
               id="habilidad"
-              className={`mt-2 border border-blue-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-300 w-48`}
-              contentEditable={true}
-              onBlur={(e) => handleEditableChange(e, "email")}
-              dangerouslySetInnerHTML={{ __html: usuario.email }}
-            ></div>
+              className={`mt-2 border border-blue-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-300 w-auto`}
+              value={usuario.email}
+              onChange={(e) => handleEditableChange(e, "email")}
+            />
             <span className="text-red-500">{errorMessages.email}</span>
           </div>
-          <button
-            className="w-24 md:w-32 font-gabarito md:translate-x-6 mt-8 bg-blue-500 hover:bg-blue-800 text-white rounded-md p-2 transform hover:scale-105 transition duration-300 ease-in-out"
-            onClick={() => {
-              if (validarCampos()) {
-                guardarCambios();
-              }
-            }}
-          >
-            Guardar
-          </button>
+          <div className="py-2 justify-center items-center">
+            <button
+              className="w-24 md:w-32 font-gabarito mt-4 bg-blue-500 hover:bg-blue-800 text-white rounded-md p-2 transform hover:scale-105 transition duration-300 ease-in-out"
+              onClick={() => {
+                if (validarCampos()) {
+                  guardarCambios();
+                }
+              }}
+            >
+              Guardar
+            </button>
+          </div>
         </div>
       )}
 
       {mostrarContraseña && (
-        <div className="mt-4 md:translate-x-8">
+        <div className="justify-center items-center">
           <div className="flex flex-col">
             <label htmlFor="nuevaContraseña" className="mt-4 font-medium">
               Nueva Contraseña
@@ -270,7 +283,7 @@ function Ajustes() {
             />
           </div>
           <button
-            className="w-30 md:w-32 font-gabarito md:translate-x-0 mt-4 bg-blue-500 hover-bg-blue-800 text-white rounded-md p-2 transform hover:scale-105 transition duration-300 ease-in-out"
+            className="w-30 md:w-32 font-gabarito mt-4 bg-blue-500 hover:bg-blue-800 text-white rounded-md p-2 transform hover:scale-105 transition duration-300 ease-in-out"
             onClick={guardarCambios}
           >
             Cambiar contraseña
@@ -281,4 +294,6 @@ function Ajustes() {
   );
 }
 
-export default Ajustes;
+EditarUsuarioAdmin.propTypes = {
+  userEmail: PropTypes.string.isRequired,
+};

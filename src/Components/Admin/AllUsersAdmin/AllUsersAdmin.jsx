@@ -16,7 +16,8 @@ import {
   banUser as banUserAction,
   deleteUser as deleteUserAction,
 } from "../../../Redux/features/AdminUsers/AdminUsersSlices";
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import EditarUsuarioAdmin from "./EditarUsuarioAdmin";
 
 function AllUsersAdmin() {
   const dispatch = useDispatch();
@@ -28,6 +29,8 @@ function AllUsersAdmin() {
   const [endDateFilter, setEndDateFilter] = useState("");
   const [userNotFound, setUserNotFound] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedUserEmail, setSelectedUserEmail] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -98,6 +101,12 @@ function AllUsersAdmin() {
     setShowRegistrationModal(false);
   };
 
+  const handleEditUser = (userEmail) => {
+    setIsEditModalOpen(true);
+    setSelectedUserEmail(userEmail);
+    console.log("Este es el email de usuario:", userEmail);
+  };
+
   const resetFilters = () => {
     setSearchTerm("");
     setCountryFilter("");
@@ -159,7 +168,11 @@ function AllUsersAdmin() {
 
   // Array de páginas a mostrar
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filteredAndSortedUsers.length / usersPerPage); i++) {
+  for (
+    let i = 1;
+    i <= Math.ceil(filteredAndSortedUsers.length / usersPerPage);
+    i++
+  ) {
     pageNumbers.push(i);
   }
 
@@ -181,9 +194,10 @@ function AllUsersAdmin() {
             <DeleteIcon className="mr-2" />
             Usuarios eliminados
           </button>
-          <button 
-          onClick={() => navigate("/admin/AnalyticsUser")}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
+          <button
+            onClick={() => navigate("/admin/AnalyticsUser")}
+            className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+          >
             <BarChartIcon className="text-green-400" />
           </button>
         </div>
@@ -327,12 +341,12 @@ function AllUsersAdmin() {
           isOpen={isModalOpen}
           onRequestClose={handleCloseModal}
           contentLabel="Detalles del usuario"
-          className="Modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-8 shadow-lg z-50"
+          className="Modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-8 shadow-lg z-50 max-w-md w-full"
           overlayClassName="Overlay fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center z-50"
         >
           <button
             onClick={handleCloseModal}
-            className="absolute top-4 right-4 text-blue-600 hover:text-blue-700 focus:outline-none"
+            className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -349,17 +363,80 @@ function AllUsersAdmin() {
               ></path>
             </svg>
           </button>
-          <p className="text-center text-lg font-semibold mb-4">
+          <p className="text-center text-lg font-semibold mb-4 text-gray-900">
             Detalles del usuario
           </p>
-          <div>
-            <p>Nombre: {selectedUser.name}</p>
-            <p>Apellido: {selectedUser.last_name}</p>
-            <p>Correo: {selectedUser.email}</p>
-            <p>ID: {selectedUser.identificacion}</p>
-            <p>País: {selectedUser.pais}</p>
-            <p>Teléfono: {selectedUser.telefono}</p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-2 sm:col-span-1">
+              <p className="text-gray-700">Nombre:</p>
+              <p className="font-semibold">{selectedUser.name}</p>
+            </div>
+            <div className="col-span-2 sm:col-span-1">
+              <p className="text-gray-700">Apellido:</p>
+              <p className="font-semibold">{selectedUser.last_name}</p>
+            </div>
+            <div className="col-span-2">
+              <p className="text-gray-700">Correo:</p>
+              <p className="font-semibold">{selectedUser.email}</p>
+            </div>
+            <div className="col-span-2">
+              <p className="text-gray-700">ID:</p>
+              <p className="font-semibold">{selectedUser.identificacion}</p>
+            </div>
+            <div className="col-span-2 sm:col-span-1">
+              <p className="text-gray-700">País:</p>
+              <p className="font-semibold">{selectedUser.pais}</p>
+            </div>
+            <div className="col-span-2 sm:col-span-1">
+              <p className="text-gray-700">Teléfono:</p>
+              <p className="font-semibold">{selectedUser.telefono}</p>
+            </div>
           </div>
+          <div className="flex justify-center mt-6">
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none mr-4"
+              onClick={() => handleEditUser(selectedUser.email)}
+            >
+              Editar
+            </button>
+            <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none">
+              Novedad
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {isEditModalOpen && selectedUserEmail && (
+        <Modal
+          isOpen={isEditModalOpen}
+          onRequestClose={() => setIsEditModalOpen(false)}
+          contentLabel="Editar usuario"
+          className="Modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-8 shadow-lg z-50 max-w-md w-full"
+          overlayClassName="Overlay fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center z-50"
+        >
+          <button
+            onClick={() => setIsEditModalOpen(false)}
+            className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+          {selectedUserEmail && (
+            <EditarUsuarioAdmin userEmail={selectedUserEmail} />
+          )}
+          {console.log("Email de usuario en el modal:", selectedUserEmail)}
         </Modal>
       )}
 
@@ -368,34 +445,50 @@ function AllUsersAdmin() {
         <ul className="flex justify-center">
           <li>
             <button
-              onClick={() => setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)}
+              onClick={() =>
+                setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)
+              }
               disabled={currentPage === 1}
               className={`${
-                currentPage === 1 ? 'bg-gray-200 text-gray-600' : 'bg-white hover:bg-gray-50'
+                currentPage === 1
+                  ? "bg-gray-200 text-gray-600"
+                  : "bg-white hover:bg-gray-50"
               } px-3 py-1 border border-gray-300 rounded-l-md font-medium text-sm focus:outline-none`}
             >
               <ChevronLeftIcon className="w-5 h-5" aria-hidden="true" />
               <span className="sr-only">Previous</span>
             </button>
           </li>
-          {pageNumbers.slice(Math.max(currentPage - 5, 0), currentPage + 5).map((pageNumber) => (
-            <li key={pageNumber}>
-              <button
-                onClick={() => paginate(pageNumber)}
-                className={`${
-                  pageNumber === currentPage ? 'bg-blue-500 text-white' : 'bg-white hover:bg-gray-50'
-                } px-3 py-1 border border-gray-300 font-medium text-sm focus:outline-none`}
-              >
-                {pageNumber}
-              </button>
-            </li>
-          ))}
+          {pageNumbers
+            .slice(Math.max(currentPage - 5, 0), currentPage + 5)
+            .map((pageNumber) => (
+              <li key={pageNumber}>
+                <button
+                  onClick={() => paginate(pageNumber)}
+                  className={`${
+                    pageNumber === currentPage
+                      ? "bg-blue-500 text-white"
+                      : "bg-white hover:bg-gray-50"
+                  } px-3 py-1 border border-gray-300 font-medium text-sm focus:outline-none`}
+                >
+                  {pageNumber}
+                </button>
+              </li>
+            ))}
           <li>
             <button
-              onClick={() => setCurrentPage(currentPage === pageNumbers.length ? pageNumbers.length : currentPage + 1)}
+              onClick={() =>
+                setCurrentPage(
+                  currentPage === pageNumbers.length
+                    ? pageNumbers.length
+                    : currentPage + 1
+                )
+              }
               disabled={currentPage === pageNumbers.length}
               className={`${
-                currentPage === pageNumbers.length ? 'bg-gray-200 text-gray-600' : 'bg-white hover:bg-gray-50'
+                currentPage === pageNumbers.length
+                  ? "bg-gray-200 text-gray-600"
+                  : "bg-white hover:bg-gray-50"
               } px-3 py-1 border border-gray-300 rounded-r-md font-medium text-sm focus:outline-none`}
             >
               <ChevronRightIcon className="w-5 h-5" aria-hidden="true" />
