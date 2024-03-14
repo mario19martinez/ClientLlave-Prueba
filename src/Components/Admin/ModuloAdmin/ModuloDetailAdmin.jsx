@@ -4,9 +4,6 @@ import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ClaseModuloAdmin from "../ClasesModuloAdmin/ClasesModuloAdmin";
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import NavAdmin from "../NavAdmin/NavAdmin";
-import SidebarAdmin from "../SidebarAdmin/SidebarAdmin";
-//import ClaseModuloCreate from "../ClasesModuloAdmin/ClasesModuloCreate";
 
 function ModuloDetailAdmin() {
   const [modulo, setModulo] = useState(null);
@@ -66,11 +63,7 @@ function ModuloDetailAdmin() {
   }
 
   return ( 
-    <div>
-      <NavAdmin />
-      <div className="flex">
-        <SidebarAdmin />
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md w-1/2">
+        <div className="px-10 py-5">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
             {modulo.titulo}
           </h2>
@@ -127,8 +120,6 @@ function ModuloDetailAdmin() {
           <h3 className="text-2xl font-bold text-gray-800 mb-4">Clases:</h3>
           <ClaseModuloAdmin moduloId={moduloId} />
         </div>
-      </div>
-    </div>
   );
 }
 
