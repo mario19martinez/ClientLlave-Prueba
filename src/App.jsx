@@ -89,6 +89,9 @@ import ViewNivelDeleteAdmin from "./views/ViewAdmin/ViewNivelAdmin/ViewNivelDele
 import ClaseModuloCreate from "./Components/Admin/ClasesModuloAdmin/ClasesModuloCreate";
 import ClaseEditAdmin from "./Components/Admin/ClasesModuloAdmin/ClasesEditAdmin";
 import ModuloEditAdmin from "./Components/Admin/ModuloAdmin/ModuloEditAdmin";
+import ViewNivelesInscitos from "./views/ViewMenuStudent/ViewNivelesInscritos";
+import ViewLevelsDetails from "./views/ViewMenuStudent/ViewsLevels/ViewLevelsDetails";
+import ViewHomeNoLogued from "./views/ViewComunidad/HomeNoLoged/ViewHomeNoLogued";
 
 import axios from "axios";
 
@@ -224,7 +227,7 @@ function App() {
         <Route path="/agregarclases" element={<AgregarClases />} />
         <Route
           path="/Comunidad"
-          element={isLoggedIn ? <HomeComunidadView /> : <Navigate to="/" />}
+          element={isLoggedIn ? <HomeComunidadView /> : <Navigate to="/Comunidad/NoLoged" />}
         />
         <Route
           path="/Comunidad/users"
@@ -298,6 +301,9 @@ function App() {
           element={<ClaseEditAdmin />}
         />
         <Route path="/nivel/:nivelId/modulo/:moduloId/edit" element={<ModuloEditAdmin />} />
+        <Route path="/estudiante/NivelInscrito" element={<ViewNivelesInscitos />} />
+        <Route path="/estudiante/NivelesDetails/:id" element={<ViewLevelsDetails />} />
+        <Route path="/Comunidad/NoLoged" element={<ViewHomeNoLogued />} />
       </Routes>
     </Router>
   );
