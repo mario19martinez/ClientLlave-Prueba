@@ -21,7 +21,6 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ShareIcon from "@mui/icons-material/Share";
 import PropTypes from "prop-types";
 import Comments from "../Comments/Comments";
-import axios from "axios";
 
 const PostNoLoged = ({
   username,
@@ -29,34 +28,13 @@ const PostNoLoged = ({
   date,
   content,
   imageSrc,
-  initialLikes,
   postId,
 }) => {
-  const [likes, setLikes] = useState(initialLikes || 0);
   const [hasLiked] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [commentClicked, setCommentClicked] = useState(false);
   const [shareClicked, setShareClicked] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Obtener la cantidad de likes al montar el componente
-    getLikesCount();
-  }, []);
-
-  const getLikesCount = async () => {
-    try {
-      const authToken = localStorage.getItem("token");
-      const response = await axios.get(`/likesCount/${postId}`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-      setLikes(response.data.likesCount);
-    } catch (error) {
-      console.error("Error al obtener la cantidad de likes:", error);
-    }
-  };
 
   const handleDialogOpen = () => {
     setOpenDialog(true);
@@ -119,9 +97,6 @@ const PostNoLoged = ({
             style={{ color: hasLiked ? "red" : "inherit" }}
           >
             <FavoriteIcon />
-            <Typography variant="caption" className="ml-2">
-              {likes}
-            </Typography>
           </IconButton>
           <div className="flex gap-2">
             <IconButton aria-label="comment" onClick={handleCommentClick}>
