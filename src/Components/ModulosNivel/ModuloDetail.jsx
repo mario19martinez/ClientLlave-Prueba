@@ -10,8 +10,6 @@ function ModuloDetail() {
   const [loading, setLoading] = useState(true);
   const [mostrarPreguntas, setMostrarPreguntas] = useState(false);
   const [respuestas, setRespuestas] = useState({});
-  const [completedModules, setCompletedModules] = useState([]);
-  const [feedbacks, setFeedbacks] = useState({});
   const [modulos, setModulos] = useState([]);
   const [userSub, setUserSub] = useState(null);
 
