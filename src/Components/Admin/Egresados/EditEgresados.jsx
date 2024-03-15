@@ -4,7 +4,6 @@ import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useParams, useNavigate } from "react-router-dom";
-import { Button, TextField, Typography, Snackbar } from "@mui/material";
 
 export default function EditEgresados() {
   const [name, setName] = useState("");
@@ -42,13 +41,8 @@ export default function EditEgresados() {
     }
   };
 
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
-    navigate("/admin/Egresados");
-  };
-
   return (
-    <div className="px-20 py-10">
+    <div className="max-w-4xl mx-auto mt-8 p-8 bg-white shadow-lg rounded-lg">
       <div className="pb-5 justify-start">
         <button
           onClick={() => navigate("/admin/Egresados")}
@@ -57,59 +51,86 @@ export default function EditEgresados() {
           Atras
         </button>
       </div>
-      <Typography variant="h4" gutterBottom>
-        Editar Egresado
-      </Typography>
-      <form onSubmit={handleUpdate} className="space-y-4">
-        <TextField
-          id="name"
-          label="Nombre"
-          variant="outlined"
-          fullWidth
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <div className="border border-gray-200 rounded-md">
-          <ReactQuill theme="snow" value={content} onChange={setContent} />
+      <h4 className="text-xl font-semibold mb-4">Editar Egresado</h4>
+      <form onSubmit={handleUpdate} className="space-y-6">
+        <div>
+          <label htmlFor="name" className="block text-gray-700">
+            Nombre:
+          </label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+          />
         </div>
-        <TextField
-          id="media"
-          label="Media"
-          variant="outlined"
-          fullWidth
-          value={media}
-          onChange={(e) => setMedia(e.target.value)}
-        />
-        <TextField
-          id="template"
-          label="Template"
-          variant="outlined"
-          select
-          fullWidth
-          value={template}
-          onChange={(e) => setTemplate(e.target.value)}
-          SelectProps={{
-            native: false, // Asegura que el componente actúe como un selector
-          }}
+        <div>
+          <label htmlFor="content" className="block text-gray-700">
+            Contenido:
+          </label>
+          <div className="border border-gray-200 rounded-md">
+            <ReactQuill
+              theme="snow"
+              value={content}
+              onChange={setContent}
+              modules={{
+                toolbar: [
+                  [{ 'header': '1'}, {'header': '2'}, {'font': []}],
+                  [{size: []}],
+                  ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                  [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+                  ['link', 'image', 'video'],
+                  ['clean'],
+                  [{ 'align': [] }],
+                  [{ 'color': [] }, { 'background': [] }],
+                ],
+              }}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+              style={{ minHeight: '200px' }}
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="media" className="block text-gray-700">
+            Media:
+          </label>
+          <input
+            type="text"
+            id="media"
+            value={media}
+            onChange={(e) => setMedia(e.target.value)}
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+          />
+        </div>
+        <div>
+          <label htmlFor="template" className="block text-gray-700">
+            Template:
+          </label>
+          <select
+            id="template"
+            value={template}
+            onChange={(e) => setTemplate(e.target.value)}
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+          >
+            <option value="1">Template 1</option>
+            <option value="2">Template 2</option>
+          </select>
+        </div>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
         >
-          <option value="1">Template 1</option>
-          <option value="2">Template 2</option>
-        </TextField>
-        <Button variant="contained" type="submit" color="primary">
           Guardar cambios
-        </Button>
+        </button>
       </form>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        message="El egresado ha sido actualizado con éxito"
-        action={
-          <Button color="inherit" size="small" onClick={handleCloseSnackbar}>
-            Aceptar
-          </Button>
-        }
-      />
+      {openSnackbar && (
+        <div className="absolute top-0 right-0 mt-16 mr-4">
+          <div className="bg-green-500 text-white font-bold px-4 py-2 rounded">
+            El egresado ha sido actualizado con éxito
+          </div>
+        </div>
+      )}
     </div>
   );
 }

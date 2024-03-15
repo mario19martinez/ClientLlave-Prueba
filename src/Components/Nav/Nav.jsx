@@ -4,8 +4,8 @@ import logo from "../../assets/logo2.png";
 import LoginForm from "../InicioSesion/InicioSesion.jsx";
 import { getUserData } from "../../Redux/features/Users/usersSlice.js";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
- 
+import { useNavigate, useLocation } from "react-router-dom";
+
 export default function Nav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
@@ -13,6 +13,7 @@ export default function Nav() {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true"
   );
+  const location = useLocation();
 
   const navigate = useNavigate();
 
@@ -64,7 +65,6 @@ export default function Nav() {
     ) {
       //navigate("/estudiante/Escritorio");
       navigate("/estudiante/cursosInscritos");
-
     } else if (
       (isLoggedIn === true && userData && userData.rol === "admin") ||
       userData?.rol === "admin"
@@ -115,13 +115,17 @@ export default function Nav() {
           <a
             href=""
             onClick={() => navigate("/")}
-            className="hover:text-gray-300 transition-colors"
+            className={`hover:text-gray-300 transition-colors ${
+              location.pathname === "/" ? "border-b-2 border-white" : ""
+            }`}
           >
             Inicio
           </a>
           <a
             href=""
-            className="hover:text-gray-300 transition-colors"
+            className={`hover:text-gray-300 transition-colors ${
+              location.pathname === "/blogs" ? "border-b-2 border-white" : ""
+            }`}
             onClick={() => navigate("/blogs")}
           >
             Blog
@@ -129,23 +133,28 @@ export default function Nav() {
           <a
             href=""
             onClick={() => navigate("/Error404")}
-            className="hover:text-gray-300 transition-colors"
+            className={`hover:text-gray-300 transition-colors ${
+              location.pathname === "/Error404" ? "border-b-2 border-white" : ""
+            }`}
           >
             Entrenamiento
           </a>
-          {/*<a href="#" className="hover:text-gray-300 transition-colors">
-            Miembros
-  </a>*/}
           <a
             href=""
             onClick={() => navigate("/Comunidad")}
-            className="hover:text-gray-300 transition-colors"
+            className={`hover:text-gray-300 transition-colors ${
+              location.pathname === "/Comunidad"
+                ? "border-b-2 border-white"
+                : ""
+            }`}
           >
             Comunidad
           </a>
           <a
             href=""
-            className="hover:text-gray-300 transition-colors"
+            className={`hover:text-gray-300 transition-colors ${
+              location.pathname === "/Nosotros" ? "border-b-2 border-white" : ""
+            }`}
             onClick={() => navigate("/Nosotros")}
           >
             Nosotros
@@ -188,13 +197,17 @@ export default function Nav() {
             <a
               href="#"
               onClick={() => navigate("/")}
-              className="hover:text-gray-300 transition-colors"
+              className={`hover:text-gray-300 transition-colors ${
+                location.pathname === "/" ? "border-b-2 border-white" : ""
+              }`}
             >
               Inicio
             </a>
             <a
               href="#"
-              className="hover:text-gray-300 transition-colors"
+              className={`hover:text-gray-300 transition-colors ${
+                location.pathname === "/blogs" ? "border-b-2 border-white" : ""
+              }`}
               onClick={() => navigate("/blogs")}
             >
               Blog
@@ -202,20 +215,32 @@ export default function Nav() {
             <a
               href="#"
               onClick={() => navigate("/Error404")}
-              className="hover:text-gray-300 transition-colors"
+              className={`hover:text-gray-300 transition-colors ${
+                location.pathname === "/Error404"
+                  ? "border-b-2 border-white"
+                  : ""
+              }`}
             >
               Entrenamiento
             </a>
             <a
               href=""
               onClick={() => navigate("/Comunidad")}
-              className="hover:text-gray-300 transition-colors"
+              className={`hover:text-gray-300 transition-colors ${
+                location.pathname === "/Comunidad"
+                  ? "border-b-2 border-white"
+                  : ""
+              }`}
             >
               Comunidad
             </a>
             <a
               href="#"
-              className="hover:text-gray-300 transition-colors"
+              className={`hover:text-gray-300 transition-colors ${
+                location.pathname === "/Nosotros"
+                  ? "border-b-2 border-white"
+                  : ""
+              }`}
               onClick={() => navigate("/Nosotros")}
             >
               Nosotros

@@ -6,7 +6,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 const CreateEgresadoForm = () => {
-  const navegate = useNavigate();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -46,17 +46,17 @@ const CreateEgresadoForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-8 bg-white shadow-lg rounded-lg">
-      <div className="justify-start py-3">
+    <div className="max-w-4xl mx-auto mt-8 p-8 bg-white shadow-lg rounded-lg">
+      <div className="flex justify-start py-3">
         <button
-          onClick={() => navegate("/admin/Egresados")}
+          onClick={() => navigate("/admin/Egresados")}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
-          Atras
+          Atrás
         </button>
       </div>
       <h2 className="text-2xl font-semibold mb-4">Crear Egresado</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label htmlFor="name" className="block text-gray-700">
             Nombre:
@@ -78,7 +78,20 @@ const CreateEgresadoForm = () => {
             theme="snow"
             value={formData.content}
             onChange={handleContentChange}
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+            modules={{
+              toolbar: [
+                [{ 'header': '1'}, {'header': '2'}, {'font': []}],
+                [{size: []}],
+                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+                ['link', 'image', 'video'],
+                ['clean'],
+                [{ 'align': [] }],
+                [{ 'color': [] }, { 'background': [] }], // Cambio de color de texto y fondo
+              ],
+            }}
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+            style={{ minHeight: '200px' }} // Ajuste de altura mínima
           />
         </div>
         <div>
