@@ -45,7 +45,7 @@ const NavSocialNoLogued = () => {
         <Link to="/Comunidad" className="text-white text-xl font-bold">
           Llave Social
         </Link>
-        <HomeOutlinedIcon onClick={handleDialogOpen} className="text-white" />
+        <HomeOutlinedIcon onClick={() => navigate('/')} className="text-white" />
         <GridViewOutlinedIcon
           onClick={handleDialogOpen}
           className="text-white"
