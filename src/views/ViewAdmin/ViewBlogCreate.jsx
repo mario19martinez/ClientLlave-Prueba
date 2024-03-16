@@ -9,9 +9,7 @@ export default function ViewBlogCreate() {
     <div>
       <NavAdmin />
       <div className="flex">
-        <div>
-          <SidebarAdmin selectedTab={selectedTab} />
-        </div>
+        <SidebarAdmin selectedTab={selectedTab} />
         <CrearBlog />
       </div>
     </div>

@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
+import styles from "./EgresadosAnimate.module.css";
 import axios from "axios";
 
 export default function VerEgresados() {
@@ -50,60 +51,41 @@ export default function VerEgresados() {
     }
   };
 
-  // Filtrar egresados por template
-  const egresadosTemplate1 = egresados.filter(
-    (egresado) => egresado.template === "1"
-  );
-  const egresadosTemplate2 = egresados.filter(
-    (egresado) => egresado.template === "2"
-  );
-
-  // Alternar egresados de template 1 y template 2
-  const combinedEgresados = [];
-  let index1 = 0;
-  let index2 = 0;
-  while (
-    index1 < egresadosTemplate1.length ||
-    index2 < egresadosTemplate2.length
-  ) {
-    if (index1 < egresadosTemplate1.length) {
-      combinedEgresados.push(egresadosTemplate1[index1]);
-      index1++;
-    }
-    if (index2 < egresadosTemplate2.length) {
-      combinedEgresados.push(egresadosTemplate2[index2]);
-      index2++;
-    }
-  }
-
   return (
     <div className="pt-5 pb-5">
       <h1 className="text-3xl font-bold text-center mb-8">Nuestros Egresados</h1>
-      <div className="container mx-auto">
-        {combinedEgresados.map((egresado) => (
+      <div className="px-16">
+        {egresados.map((egresado) => (
           <div
             key={egresado.id}
-            className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row md:hover:shadow-xl md:transition-shadow duration-300 mb-10 md:mb-20"
+            className={`bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row md:hover:shadow-xl md:transition-shadow duration-300 mb-10 md:mb-20 ${styles.Template}`}
           >
-            {/*Card Template 1 */}
-            {egresado.template === "1" ? (
+            {/* Card Template 1 */}
+            {egresado.template === "1" && (
               <>
                 {egresado.media && renderMedia(egresado.media)}
                 <div className="flex-grow p-4 md:w-1/2">
                   <h2 className="text-xl font-semibold mb-2">
                     {egresado.name}
                   </h2>
-                  <div dangerouslySetInnerHTML={{ __html: egresado.content }} className="text-gray-600"></div>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: egresado.content }}
+                    className="text-gray-600"
+                  ></div>
                 </div>
               </>
-            ) : (
+            )}
+            {/* Card Template 2 */}
+            {egresado.template === "2" && (
               <>
-              {/*Card Template 2 */}
                 <div className="flex-grow p-4 md:w-1/2">
                   <h2 className="text-xl font-semibold mb-2">
                     {egresado.name}
                   </h2>
-                  <div dangerouslySetInnerHTML={{ __html: egresado.content }} className="text-gray-600"></div>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: egresado.content }}
+                    className="text-gray-600"
+                  ></div>
                 </div>
                 {egresado.media && renderMedia(egresado.media)}
               </>
