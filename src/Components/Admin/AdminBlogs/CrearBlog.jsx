@@ -63,7 +63,7 @@ const CrearBlog = () => {
         Crear nuevo blog
       </h2>
       <div className="mb-4"></div>
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit}>
         <div>
           <label className="block text-gray-800 mb-1">Título:</label>
           <input
@@ -80,7 +80,20 @@ const CrearBlog = () => {
           <ReactQuill
             value={formData.content}
             onChange={(value) => handleChange("content", value)}
-            className="bg-white text-gray-800 border rounded-md focus:outline-none focus:border-blue-400 p-4"
+            modules={{
+              toolbar: [
+                [{ 'header': '1'}, {'header': '2'}, {'font': []}],
+                [{size: []}],
+                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+                ['link', 'image', 'video'],
+                ['clean'],
+                [{ 'align': [] }],
+                [{ 'color': [] }, { 'background': [] }], // Cambio de color de texto y fondo
+              ],
+            }}
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500 bg-white"
+            style={{ minHeight: '200px' }}
             required
           />
         </div>
