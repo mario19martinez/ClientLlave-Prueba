@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import ModulosNivel from "../../ModulosNivel/ModulosNivel";
+import ModulosNivelStudent from "./ModulosNivelStudent";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 function LevelDetailsStudent() {
@@ -84,7 +84,7 @@ function LevelDetailsStudent() {
           </div>
         </div>
       </div>
-      <ModulosNivel nivelId={nivel.id} />
+      <ModulosNivelStudent nivelId={nivel.id} />
     </div>
   );
 }

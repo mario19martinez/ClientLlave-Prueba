@@ -71,6 +71,7 @@ export default function VerEgresados() {
                   <div
                     dangerouslySetInnerHTML={{ __html: egresado.content }}
                     className="text-gray-600"
+                    style={{ textAlign: "justify" }}
                   ></div>
                 </div>
               </>
@@ -85,6 +86,7 @@ export default function VerEgresados() {
                   <div
                     dangerouslySetInnerHTML={{ __html: egresado.content }}
                     className="text-gray-600"
+                    style={{ textAlign: "justify" }} // Añade estilos de alineación
                   ></div>
                 </div>
                 {egresado.media && renderMedia(egresado.media)}

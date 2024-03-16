@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import PropTypes from "prop-types";
 
-function ModulosNivel({ nivelId }) {
+function ModulosNivelStudent ({ nivelId }) {
   const [modulos, setModulos] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -65,7 +65,7 @@ function ModulosNivel({ nivelId }) {
             key={modulo.id}
             className={`bg-white hover:bg-gray-300 shadow-lg shadow-blue-800/50 p-4 rounded-lg border-t-4 border-blue-500 hover:border-gray-200 transition-transform transform hover:-translate-y-1 last:mr-0 mb-4`}
           >
-            <Link to={`/home/nivel/${nivelId}/modulo/${modulo.id}`}>
+            <Link to={`/estudiante/nivel/${nivelId}/modulo/${modulo.id}`}>
               <h2 className="text-lg font-semibold mb-2">{modulo.titulo}</h2>
               <p className="text-gray-600">{truncateDescription(modulo.descripcion)}</p>
               {/* Asegurarse de que modulo.clasesCount esté definido antes de intentar mostrarlo */}
@@ -78,8 +78,8 @@ function ModulosNivel({ nivelId }) {
   );
 }
 
-ModulosNivel.propTypes = {
+ModulosNivelStudent.propTypes = {
   nivelId: PropTypes.string.isRequired,
 };
 
-export default ModulosNivel;
+export default ModulosNivelStudent;

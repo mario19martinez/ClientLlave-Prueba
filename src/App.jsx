@@ -92,6 +92,7 @@ import ModuloEditAdmin from "./Components/Admin/ModuloAdmin/ModuloEditAdmin";
 import ViewNivelesInscitos from "./views/ViewMenuStudent/ViewNivelesInscritos";
 import ViewLevelsDetails from "./views/ViewMenuStudent/ViewsLevels/ViewLevelsDetails";
 import ViewHomeNoLogued from "./views/ViewComunidad/HomeNoLoged/ViewHomeNoLogued";
+import ViewModuloDetailsUser from "./views/ViewMenuStudent/ViewsLevels/ViewModuloDetailsUser";
 
 import axios from "axios";
 
@@ -304,6 +305,7 @@ function App() {
         <Route path="/estudiante/NivelInscrito" element={<ViewNivelesInscitos />} />
         <Route path="/estudiante/NivelesDetails/:id" element={<ViewLevelsDetails />} />
         <Route path="/Comunidad/NoLoged" element={<ViewHomeNoLogued />} />
+        <Route path="/estudiante/nivel/:nivelId/modulo/:moduloId" element={<ViewModuloDetailsUser />} />
       </Routes>
     </Router>
   );
