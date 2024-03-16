@@ -68,7 +68,7 @@ function NivelAdmin() {
           shouldCloseOnOverlayClick={true}
           shouldCloseOnEsc={true}
         >
-          <div className="modal-content p-2 w-2/5 h-screen mx-auto rounded-lg shadow-lg">
+          <div className="modal-content p-0 w-2/5 h-screen mx-auto rounded-lg shadow-lg">
             <NivelCreate />
             <button
               onClick={() => setShowModal(false)}
