@@ -9,6 +9,7 @@ function NivelCreate() {
   const [description, setDescription] = useState("");
   const [costo, setCosto] = useState("");
   const [grupoWhatsApp, setGrupoWhatsApp] = useState("");
+  const [numero, setNumero] = useState("");
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ function NivelCreate() {
         description,
         costo,
         grupoWhatsApp,
+        numero,
       });
 
       setSuccessMessage("El Nivel se creo exitosamente.");
@@ -33,6 +35,7 @@ function NivelCreate() {
       setDescription("");
       setCosto("");
       setGrupoWhatsApp("");
+      setNumero("");
       console.log("Nuevo Nivel creado:", response.data);
       setTimeout(() => {
         navigate("/niveladmin");
@@ -45,15 +48,15 @@ function NivelCreate() {
 
   return (
     <div className=" min-h-screen flex items-center justify-center">
-      <div className="p-8 bg-blue-600 shadow rounded-md w-full">
-        <h2 className="text-lg font-bold mb-2 text-gray-100">
+      <div className="p-4 bg-blue-600 shadow rounded-md w-full max-w-lg overflow-hidden">
+        <h2 className="text-lg font-bold mb-0 text-gray-100">
           Crear Nuevo Nivel
         </h2>
         {error && <div className="text-red-500 mb-4">{error}</div>}
         {successMessage && (
           <div className="text-green-500 mb-4">{successMessage}</div>
         )}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{ maxHeight: "80vh" }} className="overflow-y-auto">
           <div className="mb-2">
             <label
               htmlFor="name"
@@ -140,6 +143,21 @@ function NivelCreate() {
               id="grupoWhatsApp"
               value={grupoWhatsApp}
               onChange={(e) => setCosto(e.target.value)}
+              className="border border-gray-500 focus:border-blue-800 rounded-md bg-gray-100 p-2 w-full"
+            />
+          </div>
+          <div className="mb-2">
+            <label
+              htmlFor="grupoWhatsApp"
+              className="block font-semibold mb-0 text-gray-100"
+            >
+              Nivel:
+            </label>
+            <input
+              type="number"
+              id="numero"
+              value={numero}
+              onChange={(e) => setNumero(e.target.value)}
               className="border border-gray-500 focus:border-blue-800 rounded-md bg-gray-100 p-2 w-full"
             />
           </div>
