@@ -63,6 +63,7 @@ export default function Nav() {
       (isLoggedIn === true && userData && userData.rol === "client") ||
       userData?.rol === "client"
     ) {
+      //navigate("/estudiante/Escritorio");
       navigate("/estudiante/cursosInscritos");
     } else if (
       (isLoggedIn === true && userData && userData.rol === "admin") ||
@@ -188,24 +189,27 @@ export default function Nav() {
       {mobileMenuOpen && (
         <div className="max-w-screen-lg mx-auto mt-4">
           <nav className="flex flex-col text-white font-medium">
-            <Link
-              to="/"
+            <a
+              href="#"
+              onClick={() => navigate("/")}
               className={`hover:text-gray-300 transition-colors ${
                 location.pathname === "/" ? "border-b-2 border-white" : ""
               }`}
             >
               Inicio
-            </Link>
-            <Link
-              to="/blogs"
+            </a>
+            <a
+              href="#"
               className={`hover:text-gray-300 transition-colors ${
                 location.pathname === "/blogs" ? "border-b-2 border-white" : ""
               }`}
+              onClick={() => navigate("/blogs")}
             >
               Blog
-            </Link>
-            <Link
-              to="/Error404"
+            </a>
+            <a
+              href="#"
+              onClick={() => navigate("/Error404")}
               className={`hover:text-gray-300 transition-colors ${
                 location.pathname === "/Error404"
                   ? "border-b-2 border-white"
@@ -213,9 +217,10 @@ export default function Nav() {
               }`}
             >
               Entrenamiento
-            </Link>
-            <Link
-              to="/Comunidad"
+            </a>
+            <a
+              href=""
+              onClick={() => navigate("/Comunidad")}
               className={`hover:text-gray-300 transition-colors ${
                 location.pathname === "/Comunidad"
                   ? "border-b-2 border-white"
@@ -223,25 +228,26 @@ export default function Nav() {
               }`}
             >
               Comunidad
-            </Link>
-            <Link
-              to="/Nosotros"
+            </a>
+            <a
+              href="#"
               className={`hover:text-gray-300 transition-colors ${
                 location.pathname === "/Nosotros"
                   ? "border-b-2 border-white"
                   : ""
               }`}
+              onClick={() => navigate("/Nosotros")}
             >
               Nosotros
-            </Link>
+            </a>
           </nav>
 
-          <div className="mt-4">
+          <div className="flex flex-col justify-center items-center gap-4 mt-4">
             {isLoggedIn ? (
               <button
                 type="button"
                 onClick={redirect}
-                className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 hover:text-white transition-colors rounded-md w-full"
+                className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 hover:text-white transition-colors rounded-md"
               >
                 Mi cuenta
               </button>
@@ -249,14 +255,14 @@ export default function Nav() {
               <>
                 <button
                   type="button"
-                  className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 hover:text-white transition-colors rounded-md w-full"
+                  className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 hover:text-white transition-colors rounded-md"
                   onClick={toggleLoginForm}
                 >
                   Iniciar Sesión
                 </button>
                 <button
                   type="button"
-                  className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 hover:text-white transition-colors mx-2 rounded-md w-full"
+                  className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 hover:text-white transition-colors rounded-md"
                   onClick={toggleRegistrationModal}
                 >
                   Crear cuenta
@@ -267,7 +273,13 @@ export default function Nav() {
         </div>
       )}
 
-      {isLoginFormOpen && <LoginForm closeModal={toggleLoginForm} />}
+      {isLoginFormOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="rounded-lg p-8 w-full max-w-md">
+            <LoginForm onClose={toggleLoginForm} />
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
