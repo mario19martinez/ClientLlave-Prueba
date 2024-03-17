@@ -10,6 +10,7 @@ function ModulosNivel({ nivelId }) {
   const [modulos, setModulos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openAlert, setOpenAlert] = useState(false);
+  const [openInsufficientAccessAlert, setOpenInsufficientAccessAlert] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -62,12 +63,26 @@ function ModulosNivel({ nivelId }) {
   };
 
   // Función para manejar el clic en un módulo
-  const handleClickModulo = (moduloId) => {
+  const handleClickModulo = async (moduloId) => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
+    const storedEmail = localStorage.getItem("email");
+
     if (isLoggedIn === null || isLoggedIn === "false") {
       setOpenAlert(true); // Mostrar mensaje emergente
     } else {
-      navigate(`/home/nivel/${nivelId}/modulo/${moduloId}`);
+      try {
+        const response = await axios.get(`/nivel/${nivelId}/usuarios`);
+        const usuariosInscritos = response.data.map(user => user.email);
+
+        if (usuariosInscritos.includes(storedEmail)) {
+          navigate(`/home/nivel/${nivelId}/modulo/${moduloId}`);
+        } else {
+          setOpenInsufficientAccessAlert(true);
+        }
+      } catch (error) {
+        console.error("Error al obtener los usuarios inscritos en el nivel:", error);
+        setOpenInsufficientAccessAlert(true);
+      }
     }
   };
 
@@ -77,6 +92,14 @@ function ModulosNivel({ nivelId }) {
       return;
     }
     setOpenAlert(false);
+  };
+
+  // Función para cerrar el mensaje emergente de acceso insuficiente
+  const handleCloseInsufficientAccessAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenInsufficientAccessAlert(false);
   };
 
   return (
@@ -107,6 +130,16 @@ function ModulosNivel({ nivelId }) {
       >
         <MuiAlert onClose={handleCloseAlert} severity="warning" sx={{ width: "100%", borderRadius: 0, fontSize: "1.5rem", padding: "1.5rem" }}>
           Debe iniciar sesión para poder ver los módulos.
+        </MuiAlert>
+      </Snackbar>
+      <Snackbar
+        open={openInsufficientAccessAlert}
+        autoHideDuration={6000}
+        onClose={handleCloseInsufficientAccessAlert}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }} // Alineación del mensaje emergente
+      >
+        <MuiAlert onClose={handleCloseInsufficientAccessAlert} severity="error" sx={{ width: "100%", borderRadius: 0, fontSize: "1.5rem", padding: "1.5rem" }}>
+          No tiene acceso a este módulo. Debes estar registrado en el nivel.
         </MuiAlert>
       </Snackbar>
     </div>
