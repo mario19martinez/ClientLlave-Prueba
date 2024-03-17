@@ -17,6 +17,6 @@
     animation-timeline: --components;
     animation-name: show;
 
-    animation-range: entry 20% cover 35%;
+    animation-range: entry 25% cover 35%;
     animation-fill-mode: both;
 }
