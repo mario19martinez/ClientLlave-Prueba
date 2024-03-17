@@ -3,10 +3,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 function ModulosNivel({ nivelId }) {
   const [modulos, setModulos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openAlert, setOpenAlert] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +36,7 @@ function ModulosNivel({ nivelId }) {
         return 0; // Retorna 0 si hay error
       }
     };
-
+    
     const updateModulosWithClasesCount = async () => {
       const updatedModulos = await Promise.all(
         modulos.map(async (modulo) => {
@@ -41,10 +44,10 @@ function ModulosNivel({ nivelId }) {
           return { ...modulo, clasesCount };
         })
       );
-      setModulos(updatedModulos);
+      setModulos(updatedModulos); // Actualiza los módulos después de obtener los conteos de clases
     };
 
-    // Agregar verificación para evitar actualización en cada render
+    // Actualiza los conteos de clases solo si hay módulos y se está cargando
     if (modulos.length > 0 && loading) {
       updateModulosWithClasesCount();
     }
@@ -62,10 +65,18 @@ function ModulosNivel({ nivelId }) {
   const handleClickModulo = (moduloId) => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
     if (isLoggedIn === null || isLoggedIn === "false") {
-      alert("Debe iniciar sesión para poder ver los módulos.");
+      setOpenAlert(true); // Mostrar mensaje emergente
     } else {
       navigate(`/home/nivel/${nivelId}/modulo/${moduloId}`);
     }
+  };
+
+  // Función para cerrar el mensaje emergente
+  const handleCloseAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenAlert(false);
   };
 
   return (
@@ -82,12 +93,22 @@ function ModulosNivel({ nivelId }) {
             <div>
               <h2 className="text-lg font-semibold mb-2">{modulo.titulo}</h2>
               <p className="text-gray-600">{truncateDescription(modulo.descripcion)}</p>
-              {/* Asegurarse de que modulo.clasesCount esté definido antes de intentar mostrarlo */}
-              <p className="text-gray-600">{modulo.clasesCount !== undefined ? modulo.clasesCount : "Cargando..."} Clases</p>
+              {/* Mostrar el número de clases si está disponible */}
+              <p className="text-gray-600">{modulo.clasesCount !== undefined ? `${modulo.clasesCount} Clases` : "Cargando..."} </p>
             </div>
           </div>
         ))}
       </div>
+      <Snackbar
+        open={openAlert}
+        autoHideDuration={6000}
+        onClose={handleCloseAlert}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }} // Alineación del mensaje emergente
+      >
+        <MuiAlert onClose={handleCloseAlert} severity="warning" sx={{ width: "100%", borderRadius: 0, fontSize: "1.5rem", padding: "1.5rem" }}>
+          Debe iniciar sesión para poder ver los módulos.
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 }
