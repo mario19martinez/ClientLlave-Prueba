@@ -17,7 +17,7 @@ export default function VerEgresados() {
         const sortedEgresados = response.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
-        setEgresados(sortedEgresados);
+        setEgresados([...sortedEgresados]); 
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
