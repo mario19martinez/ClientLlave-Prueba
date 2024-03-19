@@ -10,7 +10,50 @@ function NivelesDetail() {
   const [nivel, setNivel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [userSub, setUserSub] = useState(null);
+  const [userActivityInfo, setUserActivityInfo] = useState(null);
+  // const [inicio, setInicio] = useState(null); // Agregamos estado para 'inicio'
+  // const [fin, setFin] = useState(null);
   const { id } = useParams();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("/usuario/sub", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUserSub(response.data.userSub);
+        if (id && response.data.userSub) {
+          const inicio = new Date(); // Establecer 'inicio'
+          setUserActivityInfo({
+            userSub: response.data.userSub,
+            nivelId: id,
+            inicio: inicio, // Asignar 'inicio' al objeto userActivityInfo
+          });
+        }
+        console.log("response:", response);
+      } catch (error) {
+        console.error("Error al obtener el sub del usuario:", error);
+      }
+    };
+  
+    fetchUserData();
+  }, [id]);
+
+  useEffect(() => {
+    const handleUnmount = () => {
+      const fin = new Date(); // Establecer 'fin' al desmontar el componente
+      setUserActivityInfo((prevInfo) => ({
+        ...prevInfo,
+        fin: fin, // Asignar 'fin' al objeto userActivityInfo
+      }));
+    };
+  
+    return handleUnmount; // Establecer 'fin' cuando el componente se desmonte
+  }, []);
 
   useEffect(() => {
     const fetchNivel = async () => {
@@ -29,6 +72,28 @@ function NivelesDetail() {
     };
     fetchNivel();
   }, [id]);
+
+  // Este useEffect es el que va a enviar los datos del usuario a la db
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token')
+  //   if (userActivityInfo) {
+  //     axios
+  //       .post("/movimiento-usuario", userActivityInfo, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`
+  //         }
+  //       })
+  //       .then((response) => {
+  //         console.log(
+  //           "Informacion del usuario enviada con exito:",
+  //           response.data
+  //         );
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error al enviar la informacion del usuario:", error);
+  //       });
+  //   }
+  // }, [userActivityInfo]);
 
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
