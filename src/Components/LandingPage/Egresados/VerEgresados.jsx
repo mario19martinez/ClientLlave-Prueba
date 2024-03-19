@@ -15,7 +15,7 @@ export default function VerEgresados() {
       .get("/egresados")
       .then((response) => {
         const sortedEgresados = response.data.sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
         );
         setEgresados([...sortedEgresados]); 
       })

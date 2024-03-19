@@ -18,9 +18,10 @@ const Egresados = () => {
     axios
       .get("/egresados")
       .then((response) => {
-        // Ordenar los egresados por fecha de creación descendente
-        const sortedEgresados = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setEgresados(sortedEgresados);
+        const sortedEgresados = response.data.sort(
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        );
+        setEgresados([...sortedEgresados]); 
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
