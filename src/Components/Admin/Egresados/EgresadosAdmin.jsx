@@ -18,13 +18,14 @@ const Egresados = () => {
     axios
       .get("/egresados")
       .then((response) => {
-        setEgresados(response.data);
+        // Ordenar los egresados por fecha de creación descendente
+        const sortedEgresados = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setEgresados(sortedEgresados);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
   }, []);
-
   const renderMedia = (media) => {
     if (media.includes("youtube.com")) {
       const videoId = new URL(media).searchParams.get("v");
@@ -81,7 +82,18 @@ const Egresados = () => {
     >
       {egresado.media && renderMedia(egresado.media)}
       <div className="flex-grow p-4 md:w-1/2">
-        <h2 className="text-xl font-semibold mb-2">{egresado.name}</h2>
+        <div className="flex">
+          <h2 className="text-xl font-semibold mb-2">
+            {egresado.name}{" "}
+            {egresado.flag && (
+              <img
+                src={egresado.flag}
+                alt="bandera"
+                className="h-6 w-auto inline-block"
+              />
+            )}
+          </h2>
+        </div>
         <div
           dangerouslySetInnerHTML={{ __html: egresado.content }}
           className="text-gray-600"
@@ -113,7 +125,18 @@ const Egresados = () => {
       className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row md:hover:shadow-xl md:transition-shadow duration-300 mb-10 md:mb-20"
     >
       <div className="flex-grow p-4 md:w-1/2">
-        <h2 className="text-xl font-semibold mb-2">{egresado.name}</h2>
+        <div className="flex">
+          <h2 className="text-xl font-semibold mb-2">
+            {egresado.name}{" "}
+            {egresado.flag && (
+              <img
+                src={egresado.flag}
+                alt="bandera"
+                className="h-6 w-auto inline-block"
+              />
+            )}
+          </h2>
+        </div>
         <div
           dangerouslySetInnerHTML={{ __html: egresado.content }}
           className="text-gray-600"

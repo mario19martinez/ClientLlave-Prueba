@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import paisesBanderas from './banderas.json'
 
 const CreateEgresadoForm = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const CreateEgresadoForm = () => {
     name: "",
     content: "",
     media: "",
+    flag: "",
     template: "1",
   });
 
@@ -36,6 +38,7 @@ const CreateEgresadoForm = () => {
         name: "",
         content: "",
         media: "",
+        flag: "", // Agregar este campo también
         template: "1",
       });
       // Mostrar alerta de éxito
@@ -70,6 +73,28 @@ const CreateEgresadoForm = () => {
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
           />
         </div>
+
+        <div>
+          <label htmlFor="flag" className="block text-gray-700">
+            Pais:
+          </label>
+          <select
+            id="flag"
+            name="flag"
+            value={formData.flag}
+            onChange={(e) => handleChange("flag", e.target.value)}
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+          >
+            <option value="">Seleccione un país</option>
+            {paisesBanderas.banderasPaises.map((paisBandera, index) => (
+              <option key={index} value={paisBandera.bandera}>
+                <img src={paisBandera.bandera} alt={paisBandera.pais} className="w-6 h-4 mr-2 inline-block" />
+                {paisBandera.pais}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div>
           <label htmlFor="content" className="block text-gray-700">
             Contenido:
@@ -84,7 +109,7 @@ const CreateEgresadoForm = () => {
                 [{size: []}],
                 ['bold', 'italic', 'underline', 'strike', 'blockquote'],
                 [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-                ['link', 'image', 'video'],
+                ['link'],
                 ['clean'],
                 [{ 'align': [] }],
                 [{ 'color': [] }, { 'background': [] }], // Cambio de color de texto y fondo

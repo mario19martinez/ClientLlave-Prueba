@@ -142,8 +142,8 @@ function NivelCreate() {
               type="text"
               id="grupoWhatsApp"
               value={grupoWhatsApp}
-              onChange={(e) => setCosto(e.target.value)}
-              className="border border-gray-500 focus:border-blue-800 rounded-md bg-gray-100 p-2 w-full"
+              onChange={(e) => setGrupoWhatsApp(e.target.value)}
+              className="border border-gray-300 rounded-md bg-gray-100 p-2 w-full"
             />
           </div>
           <div className="mb-2">
