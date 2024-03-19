@@ -26,7 +26,7 @@ function NivelCreate() {
         grupoWhatsApp,
       });
 
-      setSuccessMessage("El Nivel se creo exitosamente.");
+      setSuccessMessage("El Nivel se creó exitosamente.");
       setName("");
       setImage("");
       setDuracion("");
@@ -38,13 +38,13 @@ function NivelCreate() {
         navigate("/niveladmin");
       }, 1000);
     } catch (error) {
-      setError("Se progujo un error al crear el nivel.");
+      setError("Se produjo un error al crear el nivel.");
       console.error("Error al crear el nivel:", error);
     }
   };
 
   return (
-    <div className=" min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="p-8 bg-blue-600 shadow rounded-md w-full">
         <h2 className="text-lg font-bold mb-2 text-gray-100">
           Crear Nuevo Nivel
@@ -125,7 +125,7 @@ function NivelCreate() {
               id="costo"
               value={costo}
               onChange={(e) => setCosto(e.target.value)}
-              className="border border-gray-500 focus:border-blue-800 rounded-md bg-gray-100 p-2 w-full"
+              className="border border-gray-300 rounded-md bg-gray-100 p-2 w-full"
             />
           </div>
           <div className="mb-2">
@@ -139,8 +139,8 @@ function NivelCreate() {
               type="text"
               id="grupoWhatsApp"
               value={grupoWhatsApp}
-              onChange={(e) => setCosto(e.target.value)}
-              className="border border-gray-500 focus:border-blue-800 rounded-md bg-gray-100 p-2 w-full"
+              onChange={(e) => setGrupoWhatsApp(e.target.value)}
+              className="border border-gray-300 rounded-md bg-gray-100 p-2 w-full"
             />
           </div>
           <button

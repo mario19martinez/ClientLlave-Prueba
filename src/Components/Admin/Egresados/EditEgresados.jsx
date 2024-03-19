@@ -4,12 +4,14 @@ import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useParams, useNavigate } from "react-router-dom";
+import paisesBanderas from './banderas.json';
 
 export default function EditEgresados() {
   const [name, setName] = useState("");
   const [content, setContent] = useState("");
   const [media, setMedia] = useState("");
   const [template, setTemplate] = useState("");
+  const [flag, setFlag] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -23,6 +25,7 @@ export default function EditEgresados() {
         setContent(egresado.content);
         setMedia(egresado.media);
         setTemplate(egresado.template);
+        setFlag(egresado.flag);
       } catch (error) {
         console.error("Error fetching egresado:", error);
       }
@@ -33,7 +36,7 @@ export default function EditEgresados() {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`/egresados/${id}`, { name, content, media, template });
+      await axios.put(`/egresados/${id}`, { name, content, media, template, flag });
       setOpenSnackbar(true);
       navigate("/admin/Egresados");
     } catch (error) {
@@ -80,7 +83,7 @@ export default function EditEgresados() {
                   [{size: []}],
                   ['bold', 'italic', 'underline', 'strike', 'blockquote'],
                   [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-                  ['link', 'image', 'video'],
+                  ['link'],
                   ['clean'],
                   [{ 'align': [] }],
                   [{ 'color': [] }, { 'background': [] }],
@@ -102,6 +105,24 @@ export default function EditEgresados() {
             onChange={(e) => setMedia(e.target.value)}
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
           />
+        </div>
+        <div>
+          <label htmlFor="flag" className="block text-gray-700">
+            Bandera:
+          </label>
+          <select
+            id="flag"
+            value={flag}
+            onChange={(e) => setFlag(e.target.value)}
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+          >
+            <option value="">Seleccione una bandera</option>
+            {paisesBanderas.banderasPaises.map((paisBandera, index) => (
+              <option key={index} value={paisBandera.bandera}>
+                {paisBandera.pais}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label htmlFor="template" className="block text-gray-700">

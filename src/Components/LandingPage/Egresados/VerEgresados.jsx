@@ -14,8 +14,10 @@ export default function VerEgresados() {
     axios
       .get("/egresados")
       .then((response) => {
-        setEgresados(response.data);
-        console.log("Egresados:", response.data);
+        const sortedEgresados = response.data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setEgresados(sortedEgresados);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -85,9 +87,18 @@ export default function VerEgresados() {
               <div className="flex flex-col items-center">
                 {egresado.media && renderMedia(egresado.media)}
                 <div className="flex-grow p-4 w-full">
-                  <h2 className="text-xl font-semibold mb-2">
-                    {egresado.name}
-                  </h2>
+                  <div className="flex">
+                    <h2 className="text-xl font-semibold mb-2">
+                      {egresado.name}{" "}
+                      {egresado.flag && (
+                        <img
+                          src={egresado.flag}
+                          alt="bandera"
+                          className="h-6 w-auto inline-block"
+                        />
+                      )}
+                    </h2>
+                  </div>
                   <div
                     dangerouslySetInnerHTML={{
                       __html: truncateContent(egresado.content),
@@ -117,9 +128,18 @@ export default function VerEgresados() {
                   <>
                     {egresado.media && renderMedia(egresado.media)}
                     <div className="flex-grow p-4 md:w-1/2">
-                      <h2 className="text-xl font-semibold mb-2">
-                        {egresado.name}
-                      </h2>
+                      <div className="flex">
+                        <h2 className="text-xl font-semibold mb-2">
+                          {egresado.name}{" "}
+                          {egresado.flag && (
+                            <img
+                              src={egresado.flag}
+                              alt="bandera"
+                              className="h-6 w-auto inline-block"
+                            />
+                          )}
+                        </h2>
+                      </div>
                       <div
                         dangerouslySetInnerHTML={{
                           __html: truncateContent(egresado.content),
@@ -145,9 +165,18 @@ export default function VerEgresados() {
                 {egresado.template === "2" && (
                   <>
                     <div className="flex-grow p-4 md:w-1/2">
-                      <h2 className="text-xl font-semibold mb-2">
-                        {egresado.name}
-                      </h2>
+                      <div className="flex">
+                        <h2 className="text-xl font-semibold mb-2">
+                          {egresado.name}{" "}
+                          {egresado.flag && (
+                            <img
+                              src={egresado.flag}
+                              alt="bandera"
+                              className="h-6 w-auto inline-block"
+                            />
+                          )}
+                        </h2>
+                      </div>
                       <div
                         dangerouslySetInnerHTML={{
                           __html: truncateContent(egresado.content),
@@ -178,7 +207,18 @@ export default function VerEgresados() {
         <div className="fixed inset-0 overflow-y-auto flex items-center justify-center z-50">
           <div className="relative mx-auto max-w-3xl w-full p-8 bg-white rounded-lg shadow-lg">
             <Typography variant="h5" component="div" className="mb-4">
-              {selectedEgresado && selectedEgresado.name}
+              {selectedEgresado && (
+                <>
+                  {selectedEgresado.name}{" "}
+                  {selectedEgresado.flag && (
+                    <img
+                      src={selectedEgresado.flag}
+                      alt="bandera"
+                      className="h-6 w-auto inline-block"
+                    />
+                  )}
+                </>
+              )}
             </Typography>
             <Typography
               variant="body1"
