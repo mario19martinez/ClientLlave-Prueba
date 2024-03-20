@@ -96,7 +96,8 @@ function SidebarAdmin({ selectedTab }) {
           </li>
           <li className="mb-4">
             <a
-              href="https://www.registrodedatos.info/"
+              href=""
+              onClick={() => navigate('/admin/campain')}
               className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
                 selectedTab === "Campañas"
                   ? "bg-blue-400 text-white"

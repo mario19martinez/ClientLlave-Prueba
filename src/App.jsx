@@ -94,6 +94,7 @@ import ViewLevelsDetails from "./views/ViewMenuStudent/ViewsLevels/ViewLevelsDet
 import ViewHomeNoLogued from "./views/ViewComunidad/HomeNoLoged/ViewHomeNoLogued";
 import ViewModuloDetailsUser from "./views/ViewMenuStudent/ViewsLevels/ViewModuloDetailsUser";
 import ViewCampainAdmin from "./views/ViewAdmin/ViewCampain&Landings/ViewCampainAdmin";
+import ViewAllUsersCampain from "./views/ViewAdmin/ViewCampain&Landings/ViewAllUsersCampain";
 
 import axios from "axios";
 
@@ -307,6 +308,7 @@ function App() {
         <Route path="/Comunidad/NoLoged" element={<ViewHomeNoLogued />} />
         <Route path="/estudiante/nivel/:nivelId/modulo/:moduloId" element={<ViewModuloDetailsUser />} />
         <Route path="/admin/campain" element={<ViewCampainAdmin />} />
+        <Route path="/admin/campain/AllUserCampain" element={<ViewAllUsersCampain />} />
       </Routes>
     </Router>
   );
