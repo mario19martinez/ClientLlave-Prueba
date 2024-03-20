@@ -68,7 +68,7 @@ function ClasesDetailModulo() {
       <NavAdmin />
       <div className="flex">
         <SidebarAdmin />
-        <div className="bg-gray-100 min-h-screen flex justify-center items-center w-1/2">
+        <div className="bg-gray-100 min-h-screen flex justify-center items-center w-1/2 translate-x-32">
           <div className="max-w-3xl w-full p-8 bg-white rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold mb-6 text-gray-800">
               Detalle de la clase

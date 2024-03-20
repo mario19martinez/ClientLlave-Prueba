@@ -13,6 +13,7 @@ function Clases() {
   const [claseSeleccionada, setClaseSeleccionada] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalAgregarClaseIsOpen, setModalAgregarClaseIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1); // Estado para la página actual
   const navigate = useNavigate();
 
@@ -38,6 +39,20 @@ function Clases() {
     };
     fetchClases();
   }, [id]);
+
+  const closeModalAndReload = async () => {
+    setModalAgregarClaseIsOpen(false);
+    setModalIsOpen(false);
+    setLoading(true);
+    try {
+      const response = await axios.get(`/cursos/${id}/clases`);
+      setClases(response.data);
+    } catch (error) {
+      console.error("Error al obtener las clases:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleClaseClick = (clase) => {
     if (clase) {
@@ -120,6 +135,7 @@ function Clases() {
             cursoId={parseInt(id)}
             isOpen={modalIsOpen}
             closeModal={() => setModalIsOpen(false)}
+            closeModalAndReload={closeModalAndReload}
           />
         )}
       </Modal>
@@ -134,9 +150,11 @@ function Clases() {
       >
         <AgregarClases
           id={id}
-          onAgregarClase={() => {
-            setModalAgregarClaseIsOpen(false);
-          }}
+          // onAgregarClase={() => {
+          //   setModalAgregarClaseIsOpen(false);
+          //   fetchClases();
+          // }}
+          closeModalAndReload={closeModalAndReload}
         />
       </Modal>
 
@@ -207,7 +225,7 @@ function Clases() {
                       <li key={claseSeleccionada.id}>
                         {claseSeleccionada.id === claseSeleccionada?.id && (
                           <Link
-                            to={claseSeleccionada.pdfURL} 
+                            to={claseSeleccionada.pdfURL}
                             target="_blank"
                             className="flex items-center justify-between bg-blue-500 text-white px-4 py-2 rounded-md"
                           >
@@ -251,7 +269,9 @@ function Clases() {
               <li key={startPage + i}>
                 <button
                   className={`px-3 py-1 rounded-full ${
-                    startPage + i === currentPage ? "bg-blue-500 text-white" : "bg-gray-200"
+                    startPage + i === currentPage
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200"
                   }`}
                   onClick={() => setCurrentPage(startPage + i)}
                 >

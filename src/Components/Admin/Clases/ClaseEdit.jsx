@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import PropTypes from "prop-types";
 import axios from "axios";
 
@@ -39,7 +40,18 @@ function ClaseEdit({ id, cursoId }) {
     e.preventDefault();
     try {
       await axios.put(`/cursos/${cursoId}/clases/${id}`, formData);
-      alert("Clase actualizada con éxito");
+     // alert("Clase actualizada con éxito");
+     toast.success("Clase editada con éxito", {
+      position: "top-center",
+      autoClose: 1500,
+      closeOnClick: true,
+      theme: "colored",
+    });
+
+    setTimeout(() => {
+      //closeModalAndReload();
+      window.location.reload();
+    }, 1800);
     } catch (error) {
       console.log("Error al actualizar la clase:", error);
     }
@@ -126,6 +138,7 @@ function ClaseEdit({ id, cursoId }) {
           </button>
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 }
