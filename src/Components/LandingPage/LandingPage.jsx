@@ -1,12 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import paisesData from "../FormResgistro/Paises.json";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  registerUser,
-  clearRegistrationStatus,
-} from "../../Redux/features/Users/usersSlice.js";
+import axios from "axios"; 
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import backgroundImage from "../../assets/fondo.png";
@@ -23,12 +19,11 @@ const initialValues = {
   last_name: "",
   identificacion: "",
   email: "",
-  contraseña: "",
-  confirmPassword: "",
   telefono: "",
   pais: "",
   privacyPolicy: false,
   dataTreatmentPolicy: false,
+  campaña: "Pagina Inicio", // Valor de la campaña hardcodeado
 };
 
 const validationSchema = Yup.object().shape({
@@ -37,12 +32,6 @@ const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Ingresa un email válido")
     .required("El email es requerido"),
-  contraseña: Yup.string()
-    .required("La contraseña es requerida")
-    .min(6, "La contraseña debe tener al menos 6 caracteres"),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("contraseña"), null], "Las contraseñas no coinciden")
-    .required("Confirma la contraseña"),
   telefono: Yup.string().required("El teléfono es requerido"),
   pais: Yup.string().required("El país es requerido"),
   privacyPolicy: Yup.boolean().oneOf(
@@ -56,7 +45,6 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function LandingPage() {
-  const dispatch = useDispatch();
   const [fullPhoneNumber, setFullPhoneNumber] = useState("");
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
@@ -72,8 +60,8 @@ export default function LandingPage() {
         return;
       }
       try {
-        const response = await dispatch(registerUser(values));
-        const { token, message } = response.payload;
+        const response = await axios.post("/useriniciado", values); // Enviar los datos con Axios
+        const { token, message } = response.data;
 
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("email", values.email);
@@ -100,19 +88,6 @@ export default function LandingPage() {
       }
     },
   });
-
-  const registrationStatus = useSelector(
-    (state) => state.users.registrationStatus
-  );
-  const error = useSelector((state) => state.users.error);
-
-  useEffect(() => {
-    if (registrationStatus === "succeeded") {
-      dispatch(clearRegistrationStatus());
-    } else if (registrationStatus === "failed") {
-      console.error("Error al registrar al usuario:", error);
-    }
-  }, [registrationStatus, error, dispatch]);
 
   return (
     <div
@@ -265,47 +240,6 @@ export default function LandingPage() {
                     {formik.errors.email}
                   </p>
                 )}
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label htmlFor="contraseña" className="block text-white">
-                    Contraseña:
-                  </label>
-                  <input
-                    type="password"
-                    id="contraseña"
-                    name="contraseña"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.contraseña}
-                    className="form-input mt-1 block w-full border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500"
-                  />
-                  {formik.touched.contraseña && formik.errors.contraseña && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {formik.errors.contraseña}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label htmlFor="confirmPassword" className="block text-white">
-                    Confirmar Contraseña:
-                  </label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.confirmPassword}
-                    className="form-input mt-1 block w-full border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500"
-                  />
-                  {formik.touched.confirmPassword &&
-                    formik.errors.confirmPassword && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {formik.errors.confirmPassword}
-                      </p>
-                    )}
-                </div>
               </div>
               <div className="mb-4">
                 <div className="flex items-center text-white">
