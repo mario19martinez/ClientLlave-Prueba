@@ -2,7 +2,7 @@ import { useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import paisesData from "../FormResgistro/Paises.json";
-import axios from "axios"; 
+import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import backgroundImage from "../../assets/fondo.png";
@@ -242,32 +242,43 @@ export default function LandingPage() {
                 )}
               </div>
               <div className="mb-4">
-                <div className="flex items-center text-white">
-                  <input
-                    type="checkbox"
-                    name="privacyPolicy"
-                    checked={formik.values.privacyPolicy}
-                    onChange={(e) =>
-                      formik.setFieldValue("privacyPolicy", e.target.checked)
-                    }
-                    onBlur={formik.handleBlur}
-                    className="mr-2"
-                  />
-                  <span className="pr-1">He leído y acepto las </span>
-                  <a
-                    href=""
-                    onClick={() => navigate("/PoliticasPrivacidad")}
-                    className="text-blue-500"
-                  >
-                    políticas de privacidad
-                  </a>
-                </div>
                 {formik.touched.privacyPolicy &&
                   !formik.values.privacyPolicy && (
                     <p className="text-red-500 text-sm mt-1">
                       Debes aceptar las políticas de privacidad
                     </p>
                   )}
+                <div className="mb-4">
+                  <div className="flex items-center text-white">
+                    <input
+                      type="checkbox"
+                      name="privacyPolicy"
+                      checked={formik.values.privacyPolicy}
+                      onChange={(e) =>
+                        formik.setFieldValue("privacyPolicy", e.target.checked)
+                      }
+                      onBlur={formik.handleBlur}
+                      className="mr-2"
+                    />
+                    <span className="pr-1">
+                      He leído y acepto las{" "}
+                      <a
+                        href="/PoliticasPrivacidad"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500"
+                      >
+                        políticas de privacidad
+                      </a>
+                    </span>
+                  </div>
+                  {formik.touched.privacyPolicy &&
+                    !formik.values.privacyPolicy && (
+                      <p className="text-red-500 text-sm mt-1">
+                        Debes aceptar las políticas de privacidad
+                      </p>
+                    )}
+                </div>
                 <div className="flex items-center text-white mt-2">
                   <input
                     type="checkbox"
@@ -284,14 +295,15 @@ export default function LandingPage() {
                   />
                   <span className="pr-1">
                     He leído y acepto las políticas de{" "}
+                    <a
+                      href="/TratamientoDeDatos"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500"
+                    >
+                      tratamiento de datos
+                    </a>
                   </span>
-                  <a
-                    href=""
-                    onClick={() => navigate("/TratamientoDeDatos")}
-                    className="text-blue-500"
-                  >
-                    tratamiento de datos
-                  </a>
                 </div>
                 {formik.touched.dataTreatmentPolicy &&
                   !formik.values.dataTreatmentPolicy && (
