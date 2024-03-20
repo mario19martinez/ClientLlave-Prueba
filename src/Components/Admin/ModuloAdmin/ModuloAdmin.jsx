@@ -29,6 +29,19 @@ function ModuloAdmin({ nivelId }) {
     fetchModulos();
   }, [nivelId]);
 
+  const closeModalAndReload = async () => {
+    setShowModal(false);
+    setLoading(true);
+    try {
+      const response = await axios.get(`/niveles/${nivelId}/modulos`)
+      setModulos(response.data);
+    } catch (error) {
+      console.error('Error al obtener los modulos:', error)
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="p-4 bg-gray-200 rounded-md shadow-md ">
       <button
@@ -43,7 +56,7 @@ function ModuloAdmin({ nivelId }) {
             <button className="absolute top-2 right-2 text-red-500" onClick={toggleModal}>
               <CancelIcon fontSize="large" />
             </button>
-            <ModuloCreate nivelId={nivelId} />
+            <ModuloCreate nivelId={nivelId} closeModalAndReload={closeModalAndReload} />
           </div>
         </div>
       )}

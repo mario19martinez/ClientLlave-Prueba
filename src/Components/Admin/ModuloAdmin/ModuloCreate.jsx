@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom'
 import PropTypes from "prop-types";
+import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 
-function ModuloCreate({ nivelId }) {
+function ModuloCreate({ nivelId, closeModalAndReload }) {
   const [titulo, setTitulo] = useState("");
   const [contenido, setContenido] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -73,8 +74,16 @@ function ModuloCreate({ nivelId }) {
         { pregunta: "", opciones: ["a", "b", "c", "d"], respuestaCorrecta: "" },
       ]);
       console.log(response.data);
-      alert("Clase profética creada exitosamente");
-      navigate(`/nivel/${nivelId}`);
+      toast.success("Modulo creado exitosamente!", {
+        position: "bottom-center",
+        autoClose: 1500,
+        closeOnClick: true,
+        theme: "colored",
+      });
+
+      setTimeout(() => {
+        closeModalAndReload();
+      }, 1800);
     } catch (error) {
       console.error("Error al crear el modulo:", error.response.data.error);
       alert("Error al crear el modulo");
@@ -186,6 +195,7 @@ function ModuloCreate({ nivelId }) {
           Crear
         </button>
       </form>
+      <ToastContainer />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
@@ -52,8 +53,17 @@ function ClaseEditAdmin() {
       await axios.put(`/modulo/${moduloId}/clase/${claseId}`, claseData);
       setSuccessAlert(true);
 
-      setTimeout(() => {}, 1000);
+      //setTimeout(() => {}, 1000);
       console.log("Clase modificada exitosamente");
+      toast.success("Clase modificada exitosamente!", {
+        position: "top-center",
+        autoClose: 1500,
+        closeOnClick: true,
+        theme: "colored",
+      });
+      setTimeout(() => {
+        window.history.back();
+      }, 1800);
     } catch (error) {
       console.error("Error al modificar la clase:", error);
     }
@@ -188,6 +198,7 @@ function ClaseEditAdmin() {
                 Guardar Cambios
               </button>
             </form>
+            <ToastContainer />
           </div>
         </div>
       </div>

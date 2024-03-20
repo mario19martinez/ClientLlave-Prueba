@@ -2,12 +2,14 @@ import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
-import { useParams } from "react-router-dom"; 
+import { useParams } from "react-router-dom";
 import NavAdmin from "../NavAdmin/NavAdmin";
 import SidebarAdmin from "../SidebarAdmin/SidebarAdmin";
+import { toast, ToastContainer } from "react-toastify";
 
 function ClaseModuloCreate() {
-  const { moduloId } = useParams(); 
+  const { moduloId } = useParams();
+  //const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     url: "",
@@ -18,7 +20,7 @@ function ClaseModuloCreate() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  console.log('Soy el moduloId: ', moduloId);
+  console.log("Soy el moduloId: ", moduloId);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,6 +44,18 @@ function ClaseModuloCreate() {
         texto: "",
         resumen: "",
       });
+      toast.success("Clase creada exitosamente!", {
+        position: "top-center",
+        autoClose: 1500,
+        closeOnClick: true,
+        theme: "colored",
+      });
+      setTimeout(() => {
+        window.history.back();
+      }, 1800);
+      // setTimeout(() => {
+      //   navigate(`/admin/modulo/${moduloId}/clases`)
+      // }, 1500)
     } catch (error) {
       console.error("Error al crear la clase:", error);
       setError("Hubo un error al crear la clase");
@@ -56,7 +70,7 @@ function ClaseModuloCreate() {
       <div className="flex">
         <SidebarAdmin />
         <div className="container mx-auto mt-2">
-          <h2 className="text-2xl font-bold mb-2 text-blue-900">
+          <h2 className="text-2xl font-bold mb-2 text-blue-900 translate-x-80">
             Agregar Clase
           </h2>
           {error && <p className="text-red-500">{error}</p>}
@@ -149,11 +163,11 @@ function ClaseModuloCreate() {
               {loading ? "Creando..." : "Crear Clase"}
             </button>
           </form>
+          <ToastContainer />
         </div>
       </div>
     </div>
   );
 }
-
 
 export default ClaseModuloCreate;

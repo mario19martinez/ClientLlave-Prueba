@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 
-function NivelCreate() {
+function NivelCreate({ closeModalAndReload }) {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [duracion, setDuracion] = useState("");
@@ -12,7 +13,7 @@ function NivelCreate() {
   const [numero, setNumero] = useState("");
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,9 +38,16 @@ function NivelCreate() {
       setGrupoWhatsApp("");
       setNumero("");
       console.log("Nuevo Nivel creado:", response.data);
+      toast.success("Nivel creado exitosamente!", {
+        position: "top-center",
+        autoClose: 1500,
+        closeOnClick: true,
+        theme: "colored",
+      });
+
       setTimeout(() => {
-        navigate("/niveladmin");
-      }, 1000);
+        closeModalAndReload();
+      }, 1800);
     } catch (error) {
       setError("Se progujo un error al crear el nivel.");
       console.error("Error al crear el nivel:", error);
@@ -56,7 +64,11 @@ function NivelCreate() {
         {successMessage && (
           <div className="text-green-500 mb-4">{successMessage}</div>
         )}
-        <form onSubmit={handleSubmit} style={{ maxHeight: "80vh" }} className="overflow-y-auto">
+        <form
+          onSubmit={handleSubmit}
+          style={{ maxHeight: "80vh" }}
+          className="overflow-y-auto"
+        >
           <div className="mb-2">
             <label
               htmlFor="name"
@@ -69,7 +81,7 @@ function NivelCreate() {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="border border-gray-300 rounded-md bg-gray-100 p-2 w-full"
+              className="border border-gray-300 rounded-md bg-gray-200 p-2 w-full"
             />
           </div>
           <div className="mb-2">
@@ -84,7 +96,7 @@ function NivelCreate() {
               id="image"
               value={image}
               onChange={(e) => setImage(e.target.value)}
-              className="border border-gray-300 rounded-md bg-gray-100 p-2 w-full"
+              className="border border-gray-300 rounded-md bg-gray-200 p-2 w-full"
             />
           </div>
           <div className="mb-2">
@@ -99,7 +111,7 @@ function NivelCreate() {
               id="duracion"
               value={duracion}
               onChange={(e) => setDuracion(e.target.value)}
-              className="border border-gray-300 rounded-md bg-gray-100 p-2 w-full"
+              className="border border-gray-300 rounded-md bg-gray-200 p-2 w-full"
             />
           </div>
           <div className="mb-2">
@@ -113,7 +125,7 @@ function NivelCreate() {
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="border border-gray-300 rounded-md bg-gray-100 p-2 w-full"
+              className="border border-gray-300 rounded-md bg-gray-200 p-2 w-full"
             ></textarea>
           </div>
           <div className="mb-2">
@@ -128,7 +140,7 @@ function NivelCreate() {
               id="costo"
               value={costo}
               onChange={(e) => setCosto(e.target.value)}
-              className="border border-gray-500 focus:border-blue-800 rounded-md bg-gray-100 p-2 w-full"
+              className="border border-gray-500 focus:border-blue-800 rounded-md bg-gray-200 p-2 w-full"
             />
           </div>
           <div className="mb-2">
@@ -143,7 +155,7 @@ function NivelCreate() {
               id="grupoWhatsApp"
               value={grupoWhatsApp}
               onChange={(e) => setGrupoWhatsApp(e.target.value)}
-              className="border border-gray-300 rounded-md bg-gray-100 p-2 w-full"
+              className="border border-gray-300 rounded-md bg-gray-200 p-2 w-full"
             />
           </div>
           <div className="mb-2">
@@ -163,11 +175,12 @@ function NivelCreate() {
           </div>
           <button
             type="submit"
-            className="bg-blue-400 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600"
+            className="bg-blue-900 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600"
           >
             Crear Nivel
           </button>
         </form>
+        <ToastContainer />
       </div>
     </div>
   );

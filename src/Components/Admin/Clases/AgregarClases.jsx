@@ -4,7 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 
-function AgregarClases({ onAgregarClase }) {
+function AgregarClases({ closeModalAndReload }) {
   const [claseData, setClaseData] = useState({
     name: "",
     descripcion: "",
@@ -57,9 +57,19 @@ function AgregarClases({ onAgregarClase }) {
     try {
       await axios.post(`/cursos/${id}/clases`, claseData);
 
-      onAgregarClase();
-      toast.success("Clase agregada con éxito");
-      window.location.reload();
+      //onAgregarClase();
+      //toast.success("Clase agregada con éxito");
+      //window.location.reload();
+      toast.success("Clase agregada con éxito", {
+        position: "top-center",
+        autoClose: 1500,
+        closeOnClick: true,
+        theme: "colored",
+      });
+  
+      setTimeout(() => {
+        closeModalAndReload();
+      }, 1800);
     } catch (error) {
       console.error("Error al agregar la clase:", error);
       toast.warning(
@@ -121,10 +131,7 @@ function AgregarClases({ onAgregarClase }) {
 
         {(selectedPlatform === "pdf" || selectedPlatform === "") && ( // Mostrar el campo para el enlace del taller solo si se selecciona PDF o no se selecciona ninguna plataforma
           <div className="mb-4">
-            <label
-              htmlFor=""
-              className="block text-sm font-medium text-white"
-            >
+            <label htmlFor="" className="block text-sm font-medium text-white">
               Enlace del Taller (PDF)
             </label>
             <input
@@ -138,12 +145,11 @@ function AgregarClases({ onAgregarClase }) {
           </div>
         )}
 
-        {(selectedPlatform === "vimeo" || selectedPlatform === "youtube" || selectedPlatform === "") && ( // Mostrar el campo para la URL del video solo si se selecciona Vimeo, Youtube o no se selecciona ninguna plataforma
+        {(selectedPlatform === "vimeo" ||
+          selectedPlatform === "youtube" ||
+          selectedPlatform === "") && ( // Mostrar el campo para la URL del video solo si se selecciona Vimeo, Youtube o no se selecciona ninguna plataforma
           <div className="mb-4">
-            <label
-              htmlFor=""
-              className="block text-sm font-medium text-white"
-            >
+            <label htmlFor="" className="block text-sm font-medium text-white">
               URL de la Clase (Vimeo o Youtube)
             </label>
             <input
@@ -152,7 +158,9 @@ function AgregarClases({ onAgregarClase }) {
               value={claseData.url}
               onChange={handleInputChange}
               className="mt-1 p-2 border border-gray-300 rounded w-full"
-              required={selectedPlatform === "vimeo" || selectedPlatform === "youtube"} // Requerido solo si se selecciona Vimeo o Youtube
+              required={
+                selectedPlatform === "vimeo" || selectedPlatform === "youtube"
+              } // Requerido solo si se selecciona Vimeo o Youtube
             />
           </div>
         )}
@@ -170,7 +178,7 @@ function AgregarClases({ onAgregarClase }) {
 }
 
 AgregarClases.propTypes = {
-  onAgregarClase: PropTypes.func.isRequired,
+  closeModalAndReload: PropTypes.func.isRequired,
 };
 
 export default AgregarClases;

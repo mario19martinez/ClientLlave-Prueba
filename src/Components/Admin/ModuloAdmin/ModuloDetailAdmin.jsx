@@ -63,7 +63,7 @@ function ModuloDetailAdmin() {
   }
 
   return ( 
-        <div className="px-10 py-5">
+        <div className="px-10 py-5 translate-x-32 w-1/2">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
             {modulo.titulo}
           </h2>
