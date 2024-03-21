@@ -3,13 +3,13 @@ import { toast, ToastContainer } from "react-toastify";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-function ClaseEdit({ id, cursoId }) {
+function ClaseEdit({ id, cursoId, closeModalAndReload }) {
   const [formData, setFormData] = useState({
     name: "",
     descripcion: "",
     url: "",
     platform: "",
-    pdfURL: "", // Agregamos el campo pdfURL al estado del formulario
+    pdfURL: "",
   });
 
   useEffect(() => {
@@ -22,7 +22,7 @@ function ClaseEdit({ id, cursoId }) {
           descripcion: clase.descripcion,
           url: clase.url,
           platform: clase.platform,
-          pdfURL: clase.pdfURL || "", // Si pdfURL no está definido en la clase, establecerlo como una cadena vacía
+          pdfURL: clase.pdfURL || "",
         });
       } catch (error) {
         console.error("Error al obtener la clase:", error);
@@ -40,18 +40,13 @@ function ClaseEdit({ id, cursoId }) {
     e.preventDefault();
     try {
       await axios.put(`/cursos/${cursoId}/clases/${id}`, formData);
-     // alert("Clase actualizada con éxito");
-     toast.success("Clase editada con éxito", {
-      position: "top-center",
-      autoClose: 1500,
-      closeOnClick: true,
-      theme: "colored",
-    });
-
-    setTimeout(() => {
-      //closeModalAndReload();
-      window.location.reload();
-    }, 1800);
+      toast.success("Clase editada con éxito", {
+        position: "top-center",
+        autoClose: 1500,
+        closeOnClick: true,
+        theme: "colored",
+      });
+      closeModalAndReload(); // Esto actualiza las clases sin recargar la página
     } catch (error) {
       console.log("Error al actualizar la clase:", error);
     }
@@ -146,6 +141,7 @@ function ClaseEdit({ id, cursoId }) {
 ClaseEdit.propTypes = {
   id: PropTypes.number.isRequired,
   cursoId: PropTypes.number.isRequired,
+  closeModalAndReload: PropTypes.func.isRequired,
 };
 
 export default ClaseEdit;

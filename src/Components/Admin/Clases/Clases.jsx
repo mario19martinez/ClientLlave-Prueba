@@ -14,7 +14,8 @@ function Clases() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalAgregarClaseIsOpen, setModalAgregarClaseIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1); // Estado para la página actual
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPageBeforeEdit, setCurrentPageBeforeEdit] = useState(1); // Almacena la página actual antes de editar una clase
   const navigate = useNavigate();
 
   const clasesPerPage = 10; // Número de clases por página
@@ -28,8 +29,7 @@ function Clases() {
         const sortedClases = response.data.sort((a, b) => a.id - b.id);
         if (response.status === 200) {
           const data = await response.data;
-          setClases(data);
-          setClases(sortedClases);
+          setClases(sortedClases); // Actualizar las clases manteniendo el orden original
         } else {
           throw new Error("Curso no encontrado");
         }
@@ -46,7 +46,9 @@ function Clases() {
     setLoading(true);
     try {
       const response = await axios.get(`/cursos/${id}/clases`);
-      setClases(response.data);
+      const sortedClases = response.data.sort((a, b) => a.id - b.id);
+      setClases(sortedClases); // Actualizar las clases manteniendo el orden original
+      setCurrentPage(currentPageBeforeEdit); // Restaurar la página actual después de editar
     } catch (error) {
       console.error("Error al obtener las clases:", error);
     } finally {
@@ -114,6 +116,12 @@ function Clases() {
     }
   }
 
+  const handleEditClase = (clase) => {
+    setCurrentPageBeforeEdit(currentPage); // Almacenar la página actual antes de editar
+    setClaseSeleccionada(clase);
+    setModalIsOpen(true);
+  };
+
   return (
     <div className="container p-6 w-3/5">
       <div className="bg-gray-300 h-2 w-full"></div>
@@ -150,10 +158,6 @@ function Clases() {
       >
         <AgregarClases
           id={id}
-          // onAgregarClase={() => {
-          //   setModalAgregarClaseIsOpen(false);
-          //   fetchClases();
-          // }}
           closeModalAndReload={closeModalAndReload}
         />
       </Modal>
@@ -243,7 +247,7 @@ function Clases() {
                 )}
                 <div className="mt-4">
                   <button
-                    onClick={() => setModalIsOpen(true)}
+                    onClick={() => handleEditClase(clase)} // Cambiar a esta función para editar
                     className="bg-blue-600 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded mr-2"
                   >
                     Editar Clase
