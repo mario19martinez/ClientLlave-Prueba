@@ -144,7 +144,7 @@ function ModuloDetail() {
           </div>
         </nav>
         <div>
-          <NivelClases moduloId={moduloId} />
+          <NivelClases nivelId={nivelId} moduloId={moduloId} />
         </div>
         <button
           onClick={() => setMostrarPreguntas(!mostrarPreguntas)}

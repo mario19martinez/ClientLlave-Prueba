@@ -291,16 +291,16 @@ function App() {
           element={<ViewProfeticoEdit />}
         />
         <Route
-          path="/admin/modulo/:moduloId/clase/:claseId"
+          path="/admin/nivel/:nivelId/modulo/:moduloId/clase/:claseId"
           element={<ClasesDetailModulo />}
         />
         <Route path="/admin/deleted" element={<ViewNivelDeleteAdmin />} />
         <Route
-          path="/admin/modulo/:moduloId/clase/create"
+          path="/admin/nivel/:nivelId/modulo/:moduloId/clase/create"
           element={<ClaseModuloCreate />}
         />
         <Route
-          path="/admin/modulo/:moduloId/clase/:claseId/editar"
+          path="/admin/nivel/:nivelId/modulo/:moduloId/clase/:claseId/editar"
           element={<ClaseEditAdmin />}
         />
         <Route path="/nivel/:nivelId/modulo/:moduloId/edit" element={<ModuloEditAdmin />} />

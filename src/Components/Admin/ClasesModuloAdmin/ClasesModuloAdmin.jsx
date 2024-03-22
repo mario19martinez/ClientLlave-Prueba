@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 function ClaseModuloAdmin() {
-  const { moduloId } = useParams();
+  const { nivelId, moduloId } = useParams();
   const [clases, setClases] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -11,8 +11,9 @@ function ClaseModuloAdmin() {
   useEffect(() => {
     const fetchClases = async () => {
       try {
-        const response = await axios.get(`/modulo/${moduloId}/clases`);
-        setClases(response.data);
+        const response = await axios.get(`/nivel/${nivelId}/modulo/${moduloId}/clases`);
+        const sortedClases = response.data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        setClases(sortedClases);
       } catch (error) {
         console.error("Error al obtener las clases:", error);
       } finally {
@@ -20,7 +21,7 @@ function ClaseModuloAdmin() {
       }
     };
     fetchClases();
-  }, [moduloId]);
+  }, [nivelId, moduloId]);
 
   const handleDelete = async (claseId) => {
     const confirmDelete = window.confirm(
@@ -29,7 +30,7 @@ function ClaseModuloAdmin() {
 
     if (confirmDelete) {
       try {
-        await axios.delete(`/modulo/${moduloId}/clase/${claseId}`);
+        await axios.delete(`/nivel/${nivelId}/modulo/${moduloId}/clase/${claseId}`);
         setClases((prevClases) =>
           prevClases.filter((clase) => clase.id !== claseId)
         );
@@ -40,7 +41,7 @@ function ClaseModuloAdmin() {
   };
 
   const navigateToClaseDetail = (claseId) => {
-    navigate(`/admin/modulo/${moduloId}/clase/${claseId}`);
+    navigate(`/admin/nivel/${nivelId}/modulo/${moduloId}/clase/${claseId}`);
   };
 
   if (loading) {
@@ -50,7 +51,7 @@ function ClaseModuloAdmin() {
   return (
     <div>
       <button
-        onClick={() => navigate(`/admin/modulo/${moduloId}/clase/create`)}
+        onClick={() => navigate(`/admin/nivel/${nivelId}/modulo/${moduloId}/clase/create`)}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
       >
         Agregar Clase
@@ -64,7 +65,7 @@ function ClaseModuloAdmin() {
             >
               <h1
                 onClick={() => navigateToClaseDetail(clase.id)}
-                className="cursor-pointer"
+                className="cursor-pointer font-semibold"
               >
                 {clase.name}
               </h1>
