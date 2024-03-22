@@ -60,8 +60,10 @@ export default function LandingPage() {
         return;
       }
       try {
-        const response = await axios.post("/useriniciado", values);
-        const { message } = response.data;
+        const response = await axios.post("/useriniciado", values); // Enviar los datos con Axios
+        const { token, message } = response.data;
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("email", values.email);
         toast.success(message, {
           position: "top-center",
           autoClose: 2000,
@@ -69,8 +71,8 @@ export default function LandingPage() {
           pauseOnHover: false,
           theme: "colored",
         });
+        localStorage.setItem("token", token);
         navigate("/curso/2");
-        window.location.reload();
       } catch (error) {
         console.error("Error al registrar al usuario:", error);
         toast.error("Error al registrar el usuario.", {
