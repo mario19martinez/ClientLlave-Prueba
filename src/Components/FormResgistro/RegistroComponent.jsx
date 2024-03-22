@@ -9,7 +9,8 @@ import {
   clearRegistrationStatus,
 } from "../../Redux/features/Users/usersSlice.js";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import HomeIcon from '@mui/icons-material/Home';
 
 const initialValues = {
   name: "",
@@ -44,6 +45,9 @@ const RegistroComponent = () => {
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
   const navigate = useNavigate();
 
+  const NewUser = true;
+  localStorage.setItem("NewUser", NewUser);
+
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -51,10 +55,7 @@ const RegistroComponent = () => {
       values.telefono = `${selectedCountryCode} ${values.telefono}`;
       try {
         const response = await dispatch(registerUser(values));
-        const { token, message } = response.payload;
-
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("email", values.email);
+        const { message } = response.payload;
         toast.success(message, {
           position: "top-center",
           autoClose: 2000,
@@ -62,9 +63,7 @@ const RegistroComponent = () => {
           pauseOnHover: false,
           theme: "colored",
         });
-        localStorage.setItem("token", token);
-        navigate("/estudiante/Escritorio");
-        window.location.reload();
+        navigate("/login");
       } catch (error) {
         console.error("Error al registrar al usuario:", error);
         toast.error("Error al registrar el usuario.", {
@@ -103,13 +102,16 @@ const RegistroComponent = () => {
       }}
     >
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
+      
       <div className="flex flex-col items-center justify-center h-full relative z-10">
-      <button
-          className="absolute top-0 left-0 mt-4 ml-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      <div className="flex justify-start py-3">
+        <button
           onClick={handleGoBack}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
-          Atrás
+         <HomeIcon />
         </button>
+      </div>
         <h1 className="text-3xl font-semibold mb-6 text-center text-blue-100">
           Registro de usuario
         </h1>
