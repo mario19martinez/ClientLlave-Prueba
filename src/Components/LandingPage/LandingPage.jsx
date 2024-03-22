@@ -60,11 +60,8 @@ export default function LandingPage() {
         return;
       }
       try {
-        const response = await axios.post("/useriniciado", values); // Enviar los datos con Axios
-        const { token, message } = response.data;
-
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("email", values.email);
+        const response = await axios.post("/useriniciado", values);
+        const { message } = response.data;
         toast.success(message, {
           position: "top-center",
           autoClose: 2000,
@@ -72,8 +69,6 @@ export default function LandingPage() {
           pauseOnHover: false,
           theme: "colored",
         });
-        localStorage.setItem("token", token);
-        console.log("Este es el token", token);
         navigate("/curso/2");
         window.location.reload();
       } catch (error) {
