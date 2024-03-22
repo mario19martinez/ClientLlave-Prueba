@@ -8,7 +8,7 @@ import SidebarAdmin from "../SidebarAdmin/SidebarAdmin";
 import { toast, ToastContainer } from "react-toastify";
 
 function ClaseModuloCreate() {
-  const { moduloId } = useParams();
+  const { nivelId, moduloId } = useParams();
   //const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -35,7 +35,7 @@ function ClaseModuloCreate() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post(`/modulo/${moduloId}/clase`, formData);
+      await axios.post(`nivel/${nivelId}/modulo/${moduloId}/clase`, formData);
       console.log("Clase creada con éxito");
       setFormData({
         name: "",

@@ -3,7 +3,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import NivelClasesDetail from "./NivelClasesDetail";
 
-function NivelClases({ moduloId }) {
+function NivelClases({ nivelId, moduloId }) {
   const [clases, setClases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedClassId, setSelectedClassId] = useState(null);
@@ -11,7 +11,7 @@ function NivelClases({ moduloId }) {
   useEffect(() => {
     const fetchClases = async () => {
       try {
-        const response = await axios.get(`/modulo/${moduloId}/clases`);
+        const response = await axios.get(`/nivel/${nivelId}/modulo/${moduloId}/clases`);
         setClases(response.data);
         setLoading(false);
       } catch (error) {
@@ -20,7 +20,7 @@ function NivelClases({ moduloId }) {
       }
     };
     fetchClases();
-  }, [moduloId]);
+  }, [nivelId, moduloId]);
 
   const handleClassSelect = (claseId) => {
     setSelectedClassId(claseId);
@@ -85,7 +85,7 @@ function NivelClases({ moduloId }) {
         </div>
         <div className="px-2 py-2 w-2/3">
           {selectedClassId && (
-            <NivelClasesDetail moduloId={moduloId} claseId={selectedClassId} />
+            <NivelClasesDetail nivelId={nivelId} moduloId={moduloId} claseId={selectedClassId} />
           )}
         </div>
       </div>

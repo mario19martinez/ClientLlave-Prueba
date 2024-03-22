@@ -46,15 +46,17 @@ function NivelAdmin() {
         <h2 className="text-2xl font-bold mb-4 text-gray-800">Niveles</h2>
         <button
           onClick={() => setShowModal(true)}
-          className="absolute top-0 right-0 mt-0 mr-8 h-12 bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+          className="absolute top-0 right-0 mt-0 mr-8 h-16 bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
         >
           <PostAddIcon fontSize="large" />
+          <h1 className="text-xs text-white">Agregar</h1>
         </button>
         <button
           onClick={() => navigate("/admin/deleted")}
-          className="absolute top-0 right-8 mt-0 mr-0 -translate-x-24 h-12 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-300"
+          className="absolute top-0 right-8 mt-0 mr-0 -translate-x-24 h-16 bg-red-500 font-semibold text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-300"
         >
           <FolderDeleteIcon fontSize="large" />
+          <h1 className="text-xs text-white">Eliminar</h1>
         </button>
         {loading ? (
           <p>Cargando niveles...</p>
@@ -66,7 +68,7 @@ function NivelAdmin() {
               <Link to={`/nivel/${nivel.id}`} key={nivel.id}>
                 <div
                   key={nivel.id}
-                  className="bg-gray-200 border-b-4 border-blue-500 rounded p-2 mb-4 hover:bg-gray-300 transition duration-300"
+                  className="bg-gray-200 border-b-4 border-blue-500 rounded p-2 mb-4 hover:bg-gray-300 transition duration-300 translate-y-4"
                 >
                   <strong className="block text-lg mb-2 font-bold text-gray-900">
                     {nivel.name}
