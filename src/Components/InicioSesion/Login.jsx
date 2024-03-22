@@ -1,20 +1,37 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { loginUser, clearRegistrationStatus, getUserData } from "../../Redux/features/Users/usersSlice";
+import {
+  loginUser,
+  clearRegistrationStatus,
+  getUserData,
+} from "../../Redux/features/Users/usersSlice";
 import { toast } from "react-toastify";
+import HomeIcon from "@mui/icons-material/Home";
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { VITE_ADMIN_EMAIL, VITE_ADMIN_PASSWORD } = import.meta.env;
 
+  const [showModal, setShowModal] = useState(false); // Estado para controlar la visibilidad del modal
+
   useEffect(() => {
     dispatch(clearRegistrationStatus());
+    const isNewUser = localStorage.getItem("NewUser");
+    console.log("Es nuevo usuario ? ", isNewUser);
+    if (isNewUser === "true") {
+      setShowModal(true); // Mostrar el modal si NewUser es true
+      localStorage.removeItem("NewUser"); // Limpiar el valor de NewUser después de mostrar el modal
+    }
   }, [dispatch]);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -86,20 +103,54 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-cover bg-center relative" style={{ backgroundImage: `url('https://llaveparalasnaciones.online/wp-content/uploads/2023/09/28-2-scaled.jpg')` }}>
+    <div
+      className="min-h-screen bg-cover bg-center relative"
+      style={{
+        backgroundImage: `url('https://llaveparalasnaciones.online/wp-content/uploads/2023/09/28-2-scaled.jpg')`,
+      }}
+    >
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
       <div className="flex flex-col items-center justify-center h-full relative z-10 pt-10">
-        <button
-          onClick={handleGoBack}
-          className="absolute top-0 left-0 mt-4 ml-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          Atrás
-        </button>
+        {showModal && (
+          <div className="fixed top-0 left-0 w-full h-full px-1 flex items-center justify-center">
+            <div className="fixed top-0 left-0 w-full h-full bg-gray-900 opacity-50"></div>
+            <div className="relative bg-white rounded-lg p-8 z-10 max-w-md mx-auto">
+              <p className="text-lg text-center mb-4">
+                Ahora inicia sesión con el correo y la contraseña que
+                proporcionaste durante el registro.
+              </p>
+              <button
+                onClick={handleCloseModal}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 block mx-auto"
+              >
+                Aceptar
+              </button>
+            </div>
+          </div>
+        )}
+        <div className="flex justify-start py-3">
+          <button
+            onClick={handleGoBack}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            <HomeIcon />
+          </button>
+        </div>
 
-        <form onSubmit={formik.handleSubmit} className="max-w-md mx-auto bg-gray-900 bg-opacity-80 p-8 rounded-lg shadow-md">
-          <h2 className="text-4xl font-semibold mb-6 text-center text-white">Iniciar Sesión</h2>
+        <form
+          onSubmit={formik.handleSubmit}
+          className="max-w-md mx-auto bg-gray-900 bg-opacity-80 p-8 rounded-lg shadow-md"
+        >
+          <h2 className="text-4xl font-semibold mb-6 text-center text-white">
+            Iniciar Sesión
+          </h2>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-lg font-medium text-white">Correo electrónico</label>
+            <label
+              htmlFor="email"
+              className="block text-lg font-medium text-white"
+            >
+              Correo electrónico
+            </label>
             <input
               id="email"
               type="email"
@@ -114,7 +165,12 @@ export default function Login() {
             ) : null}
           </div>
           <div className="mb-6">
-            <label htmlFor="password" className="block text-lg font-medium text-white">Contraseña</label>
+            <label
+              htmlFor="password"
+              className="block text-lg font-medium text-white"
+            >
+              Contraseña
+            </label>
             <input
               id="password"
               type="password"
@@ -125,7 +181,9 @@ export default function Login() {
               className="mt-2 block w-full rounded-lg bg-white border-transparent focus:border-blue-500 focus:bg-gray-100 focus:ring-0 text-gray-900 py-3 px-4 text-lg"
             />
             {formik.touched.password && formik.errors.password ? (
-              <p className="text-red-500 text-sm mt-1">{formik.errors.password}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {formik.errors.password}
+              </p>
             ) : null}
           </div>
           <div className="flex justify-between items-center mb-4">

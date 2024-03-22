@@ -101,9 +101,10 @@ export default function AdminCampaign() {
         <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 mr-4">
           <BarChartIcon className="text-green-400" />
         </button>
-        <button 
-        onClick={() => navigate('/admin/campain/AllUserCampain')}
-        className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
+        <button
+          onClick={() => navigate("/admin/campain/AllUserCampain")}
+          className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+        >
           <PeopleAltOutlined className="text-blue-400" />
         </button>
       </div>
@@ -155,7 +156,12 @@ export default function AdminCampaign() {
                   </button>
                 </td>
                 <td className="border border-gray-400 px-4 py-2">
-                  <button className="text-green-500 hover:text-green-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                  <button
+                    className="text-green-500 hover:text-green-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    onClick={() =>
+                      navigate(`/admin/campain/users/${campaign.id}`)
+                    }
+                  >
                     <PeopleAltOutlined fontSize="large" />
                   </button>
                 </td>
