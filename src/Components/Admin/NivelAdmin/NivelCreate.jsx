@@ -11,6 +11,7 @@ function NivelCreate({ closeModalAndReload }) {
   const [costo, setCosto] = useState("");
   const [grupoWhatsApp, setGrupoWhatsApp] = useState("");
   const [numero, setNumero] = useState("");
+  const [premium, setPremium] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   //const navigate = useNavigate();
@@ -27,6 +28,7 @@ function NivelCreate({ closeModalAndReload }) {
         costo,
         grupoWhatsApp,
         numero,
+        premium: premium.toString() === "true",
       });
 
       setSuccessMessage("El Nivel se creo exitosamente.");
@@ -37,6 +39,7 @@ function NivelCreate({ closeModalAndReload }) {
       setCosto("");
       setGrupoWhatsApp("");
       setNumero("");
+      setPremium(false);
       console.log("Nuevo Nivel creado:", response.data);
       toast.success("Nivel creado exitosamente!", {
         position: "top-center",
@@ -172,6 +175,23 @@ function NivelCreate({ closeModalAndReload }) {
               onChange={(e) => setNumero(e.target.value)}
               className="border border-gray-500 focus:border-blue-800 rounded-md bg-gray-100 p-2 w-full"
             />
+          </div>
+          <div className="mb-2">
+            <label
+              htmlFor="premium"
+              className="block font-semibold mb-0 text-gray-100"
+            >
+              Premium:
+            </label>
+            <select
+              id="premium"
+              value={premium.toString()}
+              onChange={(e) => setPremium(e.target.value === "true")}
+              className="border border-gray-300 rounded-md bg-gray-200 p-2 w-full"
+            >
+              <option value="true">Si</option>
+              <option value="false">No</option>
+            </select>
           </div>
           <button
             type="submit"

@@ -8,7 +8,7 @@ import NavAdmin from "../NavAdmin/NavAdmin";
 import SidebarAdmin from "../SidebarAdmin/SidebarAdmin";
 
 function ClaseEditAdmin() {
-  const { moduloId, claseId } = useParams();
+  const { nivelId, moduloId, claseId } = useParams();
   const [claseData, setClaseData] = useState({
     name: "",
     url: "",
@@ -24,7 +24,7 @@ function ClaseEditAdmin() {
     const fetchClaseData = async () => {
       try {
         const response = await axios.get(
-          `/modulo/${moduloId}/clase/${claseId}`
+          `/nivel/${nivelId}/modulo/${moduloId}/clase/${claseId}`
         );
         setClaseData(response.data);
         setLoading(false);
@@ -37,7 +37,7 @@ function ClaseEditAdmin() {
       }
     };
     fetchClaseData();
-  }, [moduloId, claseId]);
+  }, [nivelId, moduloId, claseId]);
 
   const handleInputChange = (e) => {
     setClaseData({
@@ -50,7 +50,7 @@ function ClaseEditAdmin() {
     e.preventDefault();
 
     try {
-      await axios.put(`/modulo/${moduloId}/clase/${claseId}`, claseData);
+      await axios.put(`/nivel/${nivelId}/modulo/${moduloId}/clase/${claseId}`, claseData);
       setSuccessAlert(true);
 
       //setTimeout(() => {}, 1000);

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-function NivelClasesDetail({ moduloId, claseId }) {
+function NivelClasesDetail({ nivelId, moduloId, claseId }) {
   const [clase, setClase] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -11,7 +11,7 @@ function NivelClasesDetail({ moduloId, claseId }) {
     const fetchClase = async () => {
       try {
         const response = await axios.get(
-          `/modulo/${moduloId}/clase/${claseId}`
+          `/nivel/${nivelId}/modulo/${moduloId}/clase/${claseId}`
         );
         setClase(response.data);
         setLoading(false);
@@ -26,7 +26,7 @@ function NivelClasesDetail({ moduloId, claseId }) {
     fetchClase();
 
     return () => {};
-  }, [moduloId, claseId]);
+  }, [nivelId,moduloId, claseId]);
 
   const extractYoutubeVideoId = (url) => {
     const regex =

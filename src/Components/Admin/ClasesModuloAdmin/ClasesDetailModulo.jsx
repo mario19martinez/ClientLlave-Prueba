@@ -6,7 +6,7 @@ import NavAdmin from "../NavAdmin/NavAdmin";
 import SidebarAdmin from "../SidebarAdmin/SidebarAdmin";
 
 function ClasesDetailModulo() {
-  const { moduloId, claseId } = useParams();
+  const { nivelId, moduloId, claseId } = useParams();
   const [clase, setClase] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -15,7 +15,7 @@ function ClasesDetailModulo() {
     const fetchClase = async () => {
       try {
         const response = await axios.get(
-          `/modulo/${moduloId}/clase/${claseId}`
+          `/nivel/${nivelId}/modulo/${moduloId}/clase/${claseId}`
         );
         setClase(response.data);
         setLoading(false);
@@ -31,7 +31,7 @@ function ClasesDetailModulo() {
     fetchClase();
 
     return () => {};
-  }, [moduloId, claseId]);
+  }, [nivelId, moduloId, claseId]);
 
   const extractYoutubeVideoId = (url) => {
     const regex =
@@ -75,7 +75,7 @@ function ClasesDetailModulo() {
             </h2>
 
             <Link
-              to={`/admin/modulo/${moduloId}/clase/${claseId}/editar`}
+              to={`/admin/nivel/${nivelId}/modulo/${moduloId}/clase/${claseId}/editar`}
               className="bg-blue-500 text-white p-2 rounded-md mb-4 flex items-center gap-1"
             >
               <EditNoteIcon />
