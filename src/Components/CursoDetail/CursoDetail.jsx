@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchCursoDetail } from "../../Redux/features/courses/coursesSlice";
 import { getUserData } from "../../Redux/features/Users/usersSlice";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 function CursoDetail() {
   const { id } = useParams();
@@ -64,16 +65,15 @@ function CursoDetail() {
                 <strong>Nivel: </strong>
                 {cursoDetail.nivel}
               </p>
-              {/*<p className="font-gabarito text-gray-900">
-                  <strong>Fecha de Inicio: </strong>
-                  {cursoDetail.fechaInicio}
-                </p>*}
-                {/*<button
-                  onClick={handleRegistrarseClick}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Registrarse al curso
-            </button>*/}
+              <button
+                onClick={() =>
+                  (window.location.href = "https://wa.me/+573126096603")
+                }
+                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center"
+              >
+                <WhatsAppIcon className="mr-2" />
+                Mas información
+              </button>
             </div>
           </div>
         )}
