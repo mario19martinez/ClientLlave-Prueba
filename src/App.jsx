@@ -96,11 +96,13 @@ import ViewModuloDetailsUser from "./views/ViewMenuStudent/ViewsLevels/ViewModul
 import ViewCampainAdmin from "./views/ViewAdmin/ViewCampain&Landings/ViewCampainAdmin";
 import ViewAllUsersCampain from "./views/ViewAdmin/ViewCampain&Landings/ViewAllUsersCampain";
 import ViewUsersCampain from "./views/ViewAdmin/ViewCampain&Landings/ViewUsersCampain";
+import ViewLandingCampain from "./views/ViewAdmin/ViewCampain&Landings/ViewLandingCampain";
+import ViewCrearLanding from "./views/ViewAdmin/ViewCampain&Landings/ViewCrearLanding";
 
 import axios from "axios";
 
-//axios.defaults.baseURL = "http://localhost:3001";
-axios.defaults.baseURL = "https://apillave-ebd57605aa78.herokuapp.com/";  
+axios.defaults.baseURL = "http://localhost:3001";
+//axios.defaults.baseURL = "https://apillave-ebd57605aa78.herokuapp.com/";  
 
 const isLoggedIn = localStorage.getItem("isLoggedIn");
 
@@ -311,7 +313,8 @@ function App() {
         <Route path="/admin/campain" element={<ViewCampainAdmin />} />
         <Route path="/admin/campain/AllUserCampain" element={<ViewAllUsersCampain />} />
         <Route path="/admin/campain/users/:campeinId" element={<ViewUsersCampain />} />
-        <Route path="/admin/campain/landing/:campeinId" />
+        <Route path="/admin/campain/landing/:campeinId" element={<ViewLandingCampain />} />
+        <Route path="/admin/campain/landing/createLanding/:campeinId" element={<ViewCrearLanding />} />
       </Routes>
     </Router>
   );

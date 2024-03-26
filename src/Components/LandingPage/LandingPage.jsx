@@ -94,7 +94,7 @@ export default function LandingPage() {
       <div className="flex flex-col w-full max-w-4xl px-4 md:flex-row pt-5 pb-5">
         <div className="md:w-1/2 md:pr-8">
           <h2
-            className="text-2xl md:text-3xl font-bold text-white text-center md:text-left md:pr-8 mb-8 hover:text-yellow-400 transition duration-300 ease-in-out transform hover:scale-105"
+            className="text-2xl md:text-3xl font-bold text-white text-center md:text-left md:pr-8 mb-8 hover:text-yellow-400 transition duration-300 ease-in-out transform hover:scale-105 shadow-md"
             style={{ textShadow: "0 0 5px black" }}
           >
             No te pierdas esta oportunidad de avanzar
