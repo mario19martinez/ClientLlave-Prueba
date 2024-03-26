@@ -70,6 +70,55 @@ function CursoDetail() {
               <strong>Nivel: </strong>
               {cursoDetail.nivel}
             </p>
+            <div className="flex flex-col space-y-4">
+              <p className="text-gray-700 font-semibold text-sm">
+                ¿Quieres más información sobre cómo ser parte del entrenamiento
+                profético? Comunícate con administración:
+              </p>
+              <button
+                onClick={() =>
+                  window.open("https://wa.me/+573126096603", "_blank")
+                }
+                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center"
+              >
+                <WhatsAppIcon className="mr-2" />
+                Más información
+              </button>
+              <p className="text-gray-700 font-semibold text-sm">
+                ¿Quieres participar en nuestras clases magistrales en vivo con
+                el Apóstol Diego y la Profeta Petra? Únete al grupo de WhatsApp:
+              </p>
+              <button
+                onClick={() =>
+                  window.open(
+                    "https://chat.whatsapp.com/K5QAcc547LF0vlXotYiZat",
+                    "_blank"
+                  )
+                }
+                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center"
+              >
+                <WhatsAppIcon className="mr-2" />
+                <span className="text-sm">
+                  Grupo de WhatsApp para clases en vivo
+                </span>
+              </button>
+
+              <p className="text-gray-700 font-semibold text-sm">
+                ¿Quieres agendar una cita?
+              </p>
+              <button
+                onClick={() =>
+                  window.open(
+                    "https://calendly.com/llaveparalasnaciones/llamada-personal?month=2024-03",
+                    "_blank"
+                  )
+                }
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center"
+              >
+                <EventIcon className="mr-2" />
+                Agendar Cita
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -122,12 +171,18 @@ function CursoDetail() {
               className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center"
             >
               <WhatsAppIcon className="mr-2" />
-              Grupo de WhatsApp de clases en vivo
+              <span className="text-sm">
+                Grupo de WhatsApp para clases en vivo
+              </span>
             </button>
+
             <p className="text-gray-700 font-semibold">Agendar una cita:</p>
             <button
               onClick={() =>
-                window.open("https://calendly.com/llaveparalasnaciones/llamada-personal?month=2024-03", "_blank")
+                window.open(
+                  "https://calendly.com/llaveparalasnaciones/llamada-personal?month=2024-03",
+                  "_blank"
+                )
               }
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center"
             >
