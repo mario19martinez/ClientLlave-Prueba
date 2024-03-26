@@ -54,8 +54,11 @@ function AddUserNivel({ nivelId }) {
         setError("Selecciona un usuario válido.");
         return;
       }
-  
-      await axios.post(`/nivel/${nivelId}/usuario/${usuario.sub}`);
+
+      await axios.post(`/inscribir`, {
+        userSub: usuario.sub,
+        nivelId
+      });
       console.log("Usuario agregado con éxito al nivel.");
       setSuccessMessage("Usuario agregado con éxito al nivel."); // Mostrar el mensaje de éxito
       setUserSelected(null); // Limpiar el usuario seleccionado después de agregarlo

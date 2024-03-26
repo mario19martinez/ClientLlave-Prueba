@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import PropTypes from "prop-types";
 import NivelClasesDetail from "./NivelClasesDetail";
 
-function NivelClases({ nivelId, moduloId }) {
+function NivelClases({ moduloId }) {
   const [clases, setClases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedClassId, setSelectedClassId] = useState(null);
+  const { nivelId } = useParams();
 
   useEffect(() => {
     const fetchClases = async () => {
