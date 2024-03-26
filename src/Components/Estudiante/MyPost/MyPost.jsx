@@ -50,10 +50,10 @@ function MyPost() {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-8 -translate-y-80 w-60 md:w-96">
-      <h2 className="text-2xl font-bold mb-4 text-gray-700">
-        Mis Publicaciones
-      </h2>
+    <div className="px-4 py-10 md:px-20 lg:px-40">
+      <div className="mb-8 flex flex-col items-center justify-center">
+        <h2 className="text-2xl font-bold">Mis Publicaciones</h2>
+      </div>
       <ul>
         {userPosts.map((post) => (
           <li key={post.id} className="bg-white shadow-md mb-4 p-6 rounded-md">
@@ -98,14 +98,25 @@ function MyPost() {
                     <li
                       key={comment.id}
                       className="text-sm bg-gray-200 p-4 rounded-lg border-b-4 border-gray-300 mb-2"
-                    ><div className="flex items-center mt-2">
-                    {comment.user.image ? (
-                      <img src={comment.user.image} alt="Avatar" className="w-8 h-8 rounded-full mr-2" />
-                    ) : (
-                      <img src="https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280.jpg" alt="Default Avatar" className="w-8 h-8 rounded-full mr-2" />
-                    )}
-                    <p className="text-base font-hammersmithOne">{comment.user.name} {comment.user.last_name}</p>
-                  </div>
+                    >
+                      <div className="flex items-center mt-2">
+                        {comment.user.image ? (
+                          <img
+                            src={comment.user.image}
+                            alt="Avatar"
+                            className="w-8 h-8 rounded-full mr-2"
+                          />
+                        ) : (
+                          <img
+                            src="https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280.jpg"
+                            alt="Default Avatar"
+                            className="w-8 h-8 rounded-full mr-2"
+                          />
+                        )}
+                        <p className="text-base font-hammersmithOne">
+                          {comment.user.name} {comment.user.last_name}
+                        </p>
+                      </div>
                       {/* <p className="text-base font-hammersmithOne">{comment.user.name} {comment.user.last_name}</p> */}
                       <p className="text-base">{comment.content}</p>
                     </li>

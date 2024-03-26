@@ -21,8 +21,10 @@ function MisTalleres() {
   // };
 
   return (
-    <div className="container mx-auto p-8 w-1/2 h-auto -translate-y-72">
-      <h2 className="text-3xl font-bold mb-6">Mis Talleres</h2>
+    <div className="px-4 py-10 md:px-20 lg:px-40">
+      <div className="mb-8 flex flex-col items-center justify-center">
+        <h2 className="text-2xl font-bold">Mis Talleres</h2>
+      </div>
       <p className="text-gray-600 mb-4">
         Estamos trabajando en la interfaz de los talleres realizados. Por el
         momento, los talleres están disponibles dentro del curso con el nombre

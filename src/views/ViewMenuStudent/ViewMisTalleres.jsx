@@ -4,12 +4,14 @@ import NavUser from "../../Components/Estudiante/NavUser/NavUser";
 import MisTalleres from "../../Components/Estudiante/DataUser/MisTalleres";
 
 export default function ViewMisTalleres() {
-  const [selectedTab, /*setSelectedTab*/] = useState("Mis Talleres");
+  const [selectedTab /*setSelectedTab*/] = useState("Mis Talleres");
   return (
     <div>
       <NavUser />
-      <SidebarUser selectedTab={selectedTab}/>
-      <MisTalleres />
+      <div className="flex">
+        <SidebarUser selectedTab={selectedTab} />
+        <MisTalleres />
+      </div>
     </div>
   );
 }
