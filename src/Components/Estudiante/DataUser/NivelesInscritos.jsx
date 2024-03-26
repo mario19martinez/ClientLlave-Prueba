@@ -21,7 +21,7 @@ export default function NivelesInscritos() {
     if (userData && userData.sub) {
       const fetchNivelesInscritos = async () => {
         try {
-          const response = await axios.get(`/niveles/${userData.sub}`);
+          const response = await axios.get(`usuario/${userData.sub}/niveles`);
           setNivelesInscritos(response.data);
         } catch (error) {
           console.error('Error al obtener los niveles inscritos del usuario:', error);

@@ -36,14 +36,16 @@ function UserNivelList({ nivelId }) {
             </tr>
           </thead>
           <tbody>
-            {usuarios.map((usuario) => (
-              <tr key={usuario.sub} className="bg-white shadow-md">
-                <td className="px-4 py-2">{usuario.name}</td>
-                <td className="px-4 py-2">{usuario.last_name}</td>
-                <td className="px-4 py-2">{usuario.telefono}</td>
-                <td className="px-4 py-2">{usuario.email}</td>
-                <td className="px-4 py-2">{new Date(usuario.fecha_inscripcion).toLocaleString()}</td>
-              </tr>
+          {usuarios.map((usuario) => (
+              usuario.nivels.map((nivel) => (
+                <tr key={`${usuario.sub}-${nivel.id}`} className="bg-white shadow-md">
+                  <td className="px-4 py-2">{usuario.name}</td>
+                  <td className="px-4 py-2">{usuario.last_name}</td>
+                  <td className="px-4 py-2">{usuario.telefono}</td>
+                  <td className="px-4 py-2">{usuario.email}</td>
+                  <td className="px-4 py-2">{new Date(nivel.registroclases.createdAt).toLocaleDateString()}</td>
+                </tr>
+              ))
             ))}
           </tbody>
         </table>
