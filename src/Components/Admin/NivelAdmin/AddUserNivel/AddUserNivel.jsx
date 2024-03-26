@@ -41,7 +41,10 @@ function AddUserNivel({ nivelId }) {
         return;
       }
 
-      await axios.post(`/nivel/${nivelId}/usuario/${usuario.sub}`);
+      await axios.post(`/inscribir`, {
+        userSub: usuario.sub,
+        nivelId
+      });
       console.log("Usuario agregado con éxito al nivel.");
     } catch (error) {
       console.error("Error al agregar usuario al nivel:", error.message);

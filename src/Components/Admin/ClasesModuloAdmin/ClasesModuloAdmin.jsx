@@ -23,6 +23,29 @@ function ClaseModuloAdmin() {
     fetchClases();
   }, [nivelId, moduloId]);
 
+  const handleClassAccess = (claseId) => {
+    if (checkClassAvailability()) {
+      navigate(`/admin/nivel/${nivelId}/modulo/${moduloId}/clase/${claseId}`)
+    } else {
+      alert ('Debes esperar a que se habilite la clase para acceder a ella.')
+    }
+  }
+
+  const checkClassAvailability = () => {
+    const userKey = `user_${nivelId}_${moduloId}`;
+    const lastClassTime = localStorage.getItem(userKey);
+
+    if (!lastClassTime || (Date.now() - parseInt(lastClassTime)) >= 3600000) {
+      const nextClassIndex = parseInt(localStorage.getItem(`${userKey}_nextClassIndex`) || 0)
+      if (nextClassIndex < clases.length) {
+        localStorage.setItem(userKey, Date.now());
+        localStorage.setItem(`${userKey}_nextClassIndex`, nextClassIndex + 1);
+        return true;
+      }
+    }
+    return false;
+  }
+
   const handleDelete = async (claseId) => {
     const confirmDelete = window.confirm(
       "¿Estás seguro de que deseas eliminar esta clase? Esta acción no se puede deshacer."
@@ -39,6 +62,10 @@ function ClaseModuloAdmin() {
       }
     }
   };
+
+  // Funcion para verificar si ha pasado suficiente tiempo desde la ultima clase vista
+
+
 
   const navigateToClaseDetail = (claseId) => {
     navigate(`/admin/nivel/${nivelId}/modulo/${moduloId}/clase/${claseId}`);
@@ -64,7 +91,8 @@ function ClaseModuloAdmin() {
               className={`${index % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200'} p-4 flex justify-between items-center transition duration-300 ease-in-out transform hover:scale-105`}
             >
               <h1
-                onClick={() => navigateToClaseDetail(clase.id)}
+                onClick={() => handleClassAccess(clase.id)}
+                //onClick={() => navigateToClaseDetail(clase.id)}
                 className="cursor-pointer font-semibold"
               >
                 {clase.name}
