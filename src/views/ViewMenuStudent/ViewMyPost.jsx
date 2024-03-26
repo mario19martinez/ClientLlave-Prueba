@@ -4,14 +4,14 @@ import MyPost from "../../Components/Estudiante/MyPost/MyPost";
 import { useState } from "react";
 
 export default function ViewMyPost() {
-    const [selectedTab] = useState('Publicaciones')
-    return(
-        <div>
-            <div>
-            <NavUser />
-           <SidebarUser selectedTab={selectedTab} />
-           <MyPost />
-           </div>
-        </div>
-    )
+  const [selectedTab] = useState("Publicaciones");
+  return (
+    <div>
+      <NavUser />
+      <div className="flex">
+        <SidebarUser selectedTab={selectedTab} />
+        <MyPost />
+      </div>
+    </div>
+  );
 }
