@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 
@@ -8,29 +8,17 @@ function AddUserNivel({ nivelId }) {
   const [userSelected, setUserSelected] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
-
-  console.log('id del nivel: ', nivelId);
-
-  useEffect(() => {
-    // Función para ocultar el mensaje de éxito después de 5 segundos
-    const timeout = setTimeout(() => {
-      setSuccessMessage(null);
-    }, 5000);
-
-    return () => clearTimeout(timeout);
-  }, [successMessage]);
 
   const handleBuscar = async () => {
     try {
       setLoading(true);
       setError(null);
-
+  
       if (!busqueda.trim()) {
         setResultados([]);
         return;
       }
-
+  
       const response = await axios.get(`/user?name=${busqueda}`);
       setResultados(response.data);
     } catch (error) {
@@ -40,15 +28,13 @@ function AddUserNivel({ nivelId }) {
       setLoading(false);
     }
   };
+  
 
   const handleAgregarUsuario = async (usuario) => {
     try {
       setLoading(true);
       setError(null);
 
-      console.log('Todos los datos de usuario: ', usuario)
-      console.log('id usuario: ', usuario.sub);
-  
       if (!usuario || !usuario.sub) {
         console.error("Error: Usuario no seleccionado o ID no disponible.");
         setError("Selecciona un usuario válido.");
@@ -60,8 +46,6 @@ function AddUserNivel({ nivelId }) {
         nivelId
       });
       console.log("Usuario agregado con éxito al nivel.");
-      setSuccessMessage("Usuario agregado con éxito al nivel."); // Mostrar el mensaje de éxito
-      setUserSelected(null); // Limpiar el usuario seleccionado después de agregarlo
     } catch (error) {
       console.error("Error al agregar usuario al nivel:", error.message);
       setError(
@@ -93,19 +77,12 @@ function AddUserNivel({ nivelId }) {
           </button>
         </div>
 
-        {loading && (
-          <p className="text-center text-gray-500">Cargando Usuarios...</p>
-        )}
+        {loading && <p className="text-center text-gray-500">Cargando Usuarios...</p>}
         {error && <p className="text-center text-red-500">{error}</p>}
-        {successMessage && (
-          <p className="text-center text-green-500">{successMessage}</p>
-        )}
 
         {resultados.length > 0 ? (
           <div className="p-6">
-            <h2 className="text-lg font-semibold mb-2">
-              Resultados de la búsqueda:
-            </h2>
+            <h2 className="text-lg font-semibold mb-2">Resultados de la búsqueda:</h2>
             <table className="w-full border-collapse border border-gray-300">
               <thead>
                 <tr>
@@ -118,15 +95,9 @@ function AddUserNivel({ nivelId }) {
               <tbody>
                 {resultados.map((usuario, index) => (
                   <tr key={`${usuario.id}-${index}`} className="mb-2">
-                    <td className="border border-gray-300 px-4 py-2">
-                      {usuario.name}
-                    </td>
-                    <td className="border border-gray-300 px-4 py-2">
-                      {usuario.last_name}
-                    </td>
-                    <td className="border border-gray-300 px-4 py-2">
-                      {usuario.email}
-                    </td>
+                    <td className="border border-gray-300 px-4 py-2">{usuario.name}</td>
+                    <td className="border border-gray-300 px-4 py-2">{usuario.last_name}</td>
+                    <td className="border border-gray-300 px-4 py-2">{usuario.email}</td>
                     <td className="border border-gray-300 px-4 py-2">
                       <button
                         onClick={() => setUserSelected(usuario)}
@@ -147,9 +118,7 @@ function AddUserNivel({ nivelId }) {
 
         {userSelected && (
           <div className="p-6">
-            <h2 className="text-lg font-semibold mb-2">
-              Usuario Seleccionado:
-            </h2>
+            <h2 className="text-lg font-semibold mb-2">Usuario Seleccionado:</h2>
             <p className="mb-2">{userSelected.name}</p>
             <button
               onClick={() => handleAgregarUsuario(userSelected)}
