@@ -151,7 +151,9 @@ export default function AdminCampaign() {
                   )}
                 </td>
                 <td className="border border-gray-400 px-4 py-2">
-                  <button className="text-blue-500 hover:text-blue-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                  <button className="text-blue-500 hover:text-blue-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  onClick={() => navigate(`/admin/campain/landing/${campaign.id}`)}
+                  >
                     <PageviewOutlined fontSize="large" />
                   </button>
                 </td>
