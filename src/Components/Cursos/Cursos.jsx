@@ -57,9 +57,8 @@ function CursoClases() {
 
   return (
     <div className="container p-6 lg:w-3/5">
-      <h1 className="text-3xl font-bold mb-4">Detalle del Curso</h1>
       <div className="mb-6">{descripcion}</div>
-      <h2 className="text-2xl font-semibold mb-2">Clases del Curso</h2>
+      <h2 className="text-2xl font-semibold mb-2 py-6">Clases del Curso</h2>
       <ul className="space-y-4">
         {clases.map((clase) => (
           <li

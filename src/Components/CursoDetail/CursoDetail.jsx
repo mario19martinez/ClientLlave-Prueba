@@ -48,11 +48,18 @@ function CursoDetail() {
     <>
       <div className="hidden sm:block bg-gray-100 p-8 rounded-lg lg:flex">
         <div className="flex items-start ml-8 lg:w-3/4">
-          <img
-            src={cursoDetail.image || "https://via.placeholder.com/300"}
-            alt="Curso"
+          {/* Reemplazar la imagen con el video */}
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/dZUnrBc9PXc?autoplay=1&controls=0"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
             className="w-full lg:w-3/5 h-96 object-contain rounded"
-          />
+          ></iframe>
 
           <div className="flex flex-col space-y-4 mt-4 lg:ml-4 lg:mt-0 lg:w-2/5">
             <h1 className="text-2xl font-bold mb-2 text-gray-900">
@@ -125,71 +132,26 @@ function CursoDetail() {
 
       <div className="bg-gray-100 p-8 text-gray-800 block sm:hidden">
         <div className="flex flex-col items-center">
-          <img
-            src={cursoDetail.image || "https://via.placeholder.com/300"}
-            alt="Curso"
-            className="w-full h-auto object-contain rounded-lg mb-4"
-          />
+        <iframe
+              width="100%" 
+              height="380"
+              src="https://www.youtube.com/embed/dZUnrBc9PXc?autoplay=1&controls=0"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+              className="w-full h-64 object-contain rounded-lg mb-4" 
+            ></iframe>
           <h1 className="text-xl font-bold mb-2">{cursoDetail.name}</h1>
           <p className="text-base text-gray-700">
             <strong>Duración: </strong>
             {cursoDetail.duracion}
           </p>
           <p className="text-base text-gray-700">
-            <strong>Costo: </strong>
-            {cursoDetail.costo}
-          </p>
-          <p className="text-base text-gray-700">
             <strong>Nivel: </strong>
             {cursoDetail.nivel}
           </p>
-          <div className="flex flex-col space-y-4 py-3">
-            <p className="text-gray-700 font-semibold">
-              ¿Quieres más información sobre cómo ser parte del entrenamiento
-              profético? Comunícate con administración:
-            </p>
-            <button
-              onClick={() =>
-                window.open("https://wa.me/+573126096603", "_blank")
-              }
-              className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center"
-            >
-              <WhatsAppIcon className="mr-2" />
-              Más información
-            </button>
-            <p className="text-gray-700 font-semibold">
-              ¿Quieres participar en nuestras clases magistrales en vivo con el
-              Apóstol Diego y la Profeta Petra? Únete al grupo de WhatsApp:
-            </p>
-            <button
-              onClick={() =>
-                window.open(
-                  "https://chat.whatsapp.com/K5QAcc547LF0vlXotYiZat",
-                  "_blank"
-                )
-              }
-              className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center"
-            >
-              <WhatsAppIcon className="mr-2" />
-              <span className="text-sm">
-                Grupo de WhatsApp para clases en vivo
-              </span>
-            </button>
-
-            <p className="text-gray-700 font-semibold">Agendar una cita:</p>
-            <button
-              onClick={() =>
-                window.open(
-                  "https://calendly.com/llaveparalasnaciones/llamada-personal?month=2024-03",
-                  "_blank"
-                )
-              }
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center"
-            >
-              <EventIcon className="mr-2" />
-              Agendar Cita
-            </button>
-          </div>
         </div>
       </div>
     </>
