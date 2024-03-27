@@ -13,16 +13,29 @@ const Empresas = () => {
         <div className="md:hidden">
           {/* Imágenes en pantallas pequeñas */}
           <div className="flex flex-col items-center">
-            <img
-              src="https://llaveparalasnaciones.online/wp-content/uploads/2024/02/facebook-profile-picture-mp8XDX5WDruxMGPW.jpg"
-              alt="Facebook Logo"
-              className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mb-4 max-w-xs"
-            />
-            <img
-              src="https://llaveparalasnaciones.online/wp-content/uploads/2024/03/Diseno-sin-titulo-26.png"
-              alt="Logo Transparente"
-              className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mb-4 max-w-xs"
-            />
+            <a
+              href="https://institutodeinvestigacioncientificadelaconductahumana.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://llaveparalasnaciones.online/wp-content/uploads/2024/02/facebook-profile-picture-mp8XDX5WDruxMGPW.jpg"
+                alt="Facebook Logo"
+                className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mb-4 max-w-xs"
+              />
+            </a>
+            <a
+              href="https://viviendoenplenitud-aopnb88rqmfa80n9.builder-preview.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://llaveparalasnaciones.online/wp-content/uploads/2024/03/Diseno-sin-titulo-26.png"
+                alt="Logo Transparente"
+                className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mb-4 max-w-xs"
+              />
+            </a>
+
             <img
               src="https://llaveparalasnaciones.online/wp-content/uploads/2023/08/logo-1.png"
               alt="Logo 1"
