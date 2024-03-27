@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import NavUser from "../../Components/Estudiante/NavUser/NavUser";
 import SidebarUser from "../../Components/Estudiante/SidebarUser/SidebarUser";
 //import Cursos from "../../Components/Admin/Cursos/Cursos";
-import CursoDetail from "../../Components/CursoDetail/CursoDetail";
 import Cursos from "../../Components/Cursos/Cursos";
+import CursosDetailStudent from "../../Components/CursoDetail/CursosDetailStudent";
 //import { useNavigate } from "react-router-dom";
 
 export default function ViewClasesUser() {
@@ -17,7 +17,7 @@ export default function ViewClasesUser() {
       <div className="flex">
         <SidebarUser selectedTab={selectedTab} />
         <div className="flex flex-col">
-          <CursoDetail />
+        <CursosDetailStudent />
           <Cursos />
         </div>
       </div>
