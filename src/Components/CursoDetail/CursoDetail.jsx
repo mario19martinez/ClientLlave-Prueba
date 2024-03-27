@@ -149,6 +149,10 @@ function CursoDetail() {
             {cursoDetail.duracion}
           </p>
           <p className="text-base text-gray-700">
+              <strong>Costo: </strong>
+              {cursoDetail.costo}
+            </p>
+          <p className="text-base text-gray-700">
             <strong>Nivel: </strong>
             {cursoDetail.nivel}
           </p>
