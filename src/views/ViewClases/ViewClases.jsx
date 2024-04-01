@@ -21,20 +21,21 @@ export default function ViewClases() {
       </button>
       <div className="flex flex-col">
         <CursoDetail />
-        <div className="max-w-4xl mx-auto px-4 py-8">
+        <Cursos />
+        <div className="max-w-4xl px-4 py-8">
           <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">
             Descripción
           </h3>
-          <p className="text-lg sm:text-xl leading-relaxed text-gray-700">
+          <p className="text-lg  text-gray-700">
             El Entrenamiento Profético es útil cuando las personas desean un
             cambio radical y buscan cambiar de manera definitiva su forma de
             vivir, apuntando siempre a una mejora integral y con resultados
             extraordinarios, más allá de lo común.
           </p>
         </div>
-        <Cursos />
-        <div className="flex flex-col space-y-4 px-10 py-10 lg:hidden">
-          <p className="text-gray-700 font-semibold">
+        <div className="px-2 justify-center items-center">
+        <div className="flex flex-col space-y-4 px-10 py-10">
+          <p className="text-gray-700 font-semibold text-center">
             ¿Quieres más información sobre cómo ser parte del entrenamiento
             profético? Comunícate con administración:
           </p>
@@ -45,7 +46,7 @@ export default function ViewClases() {
             <WhatsAppIcon className="mr-2" />
             Más información
           </button>
-          <p className="text-gray-700 font-semibold">
+          <p className="text-gray-700 font-semibold text-center">
             ¿Quieres participar en nuestras clases magistrales en vivo con el
             Apóstol Diego y la Profeta Petra? Únete al grupo de WhatsApp:
           </p>
@@ -64,7 +65,7 @@ export default function ViewClases() {
             </span>
           </button>
 
-          <p className="text-gray-700 font-semibold">Agendar una cita:</p>
+          <p className="text-gray-700 font-semibold text-center">Agendar una cita:</p>
           <button
             onClick={() =>
               window.open(
@@ -77,6 +78,7 @@ export default function ViewClases() {
             <EventIcon className="mr-2" />
             Agendar Cita
           </button>
+        </div>
         </div>
       </div>
     </div>
