@@ -1,0 +1,196 @@
+{
+    "paises": [
+      {
+        "nombre": "Argentina",
+        "tipo_documento": ["Documento Nacional de Identidad (DNI)", "Libreta de Enrolamiento (LE)", "Libreta Cívica (LC)", "Pasaporte"]
+      },
+      {
+        "nombre": "Bolivia",
+        "tipo_documento": ["Cédula de Identidad", "Pasaporte"]
+      },
+      {
+        "nombre": "Chile",
+        "tipo_documento": ["Rol Único Tributario (RUT)", "Cédula de Identidad", "Pasaporte"]
+      },
+      {
+        "nombre": "Colombia",
+        "tipo_documento": ["Cédula de Ciudadanía (CC)", "Tarjeta de Identidad (TI)", "Cédula de Extranjería (CE)", "Pasaporte"]
+      },
+      {
+        "nombre": "Costa Rica",
+        "tipo_documento": ["Cédula de Identidad", "Pasaporte"]
+      },
+      {
+        "nombre": "Cuba",
+        "tipo_documento": ["Cédula de Identidad", "Pasaporte"]
+      },
+      {
+        "nombre": "Ecuador",
+        "tipo_documento": ["Cédula de Identidad", "Pasaporte"]
+      },
+      {
+        "nombre": "El Salvador",
+        "tipo_documento": ["Documento Único de Identidad (DUI)", "Pasaporte"]
+      },
+      {
+        "nombre": "España",
+        "tipo_documento": ["Documento Nacional de Identidad (DNI)", "Pasaporte"]
+      },
+      {
+        "nombre": "Estados Unidos (EEUU)",
+        "tipo_documento": ["Número de Seguro Social (SSN)", "Pasaporte"]
+      },
+      {
+        "nombre": "Guatemala",
+        "tipo_documento": ["Documento Personal de Identificación (DPI)", "Pasaporte"]
+      },
+      {
+        "nombre": "Honduras",
+        "tipo_documento": ["Tarjeta de Identidad", "Pasaporte"]
+      },
+      {
+        "nombre": "México",
+        "tipo_documento": ["Instituto Nacional Electoral (INE)", "Registro Federal de Contribuyentes (RFC)", "Pasaporte"]
+      },
+      {
+        "nombre": "Nicaragua",
+        "tipo_documento": ["Cédula de Identidad", "Pasaporte"]
+      },
+      {
+        "nombre": "Panamá",
+        "tipo_documento": ["Cédula de Identidad Personal (CIP)", "Pasaporte"]
+      },
+      {
+        "nombre": "Paraguay",
+        "tipo_documento": ["Cédula de Identidad Civil", "Pasaporte"]
+      },
+      {
+        "nombre": "Perú",
+        "tipo_documento": ["Documento Nacional de Identidad (DNI)", "Carné de Extranjería", "Pasaporte"]
+      },
+      {
+        "nombre": "Puerto Rico",
+        "tipo_documento": ["Número de Identificación Personal (NIP)", "Pasaporte"]
+      },
+      {
+        "nombre": "República Dominicana",
+        "tipo_documento": ["Cédula de Identidad y Electoral (CIE)", "Pasaporte"]
+      },
+      {
+        "nombre": "Uruguay",
+        "tipo_documento": ["Cédula de Identidad", "Pasaporte"]
+      },
+      {
+        "nombre": "Venezuela",
+        "tipo_documento": ["Cédula de Identidad", "Pasaporte"]
+      },
+      {
+        "nombre": "Alemania",
+        "tipo_documento": ["Personalausweis (Documento de identidad)", "Reisepass (Pasaporte)"]
+      },
+      {
+        "nombre": "Austria",
+        "tipo_documento": ["Personalausweis (Documento de identidad)", "Reisepass (Pasaporte)"]
+      },
+      {
+        "nombre": "Bélgica",
+        "tipo_documento": ["Carte d'identité (Documento de identidad)", "Pasaporte"]
+      },
+      {
+        "nombre": "Bulgaria",
+        "tipo_documento": ["Лична карта (Documento de identidad)", "Pasaporte"]
+      },
+      {
+        "nombre": "Chipre",
+        "tipo_documento": ["Αστυνομική ταυτότητα (Documento de identidad)", "Διαβατήριο (Pasaporte)"]
+      },
+      {
+        "nombre": "Croacia",
+        "tipo_documento": ["Osobna iskaznica (Documento de identidad)", "Putovnica (Pasaporte)"]
+      },
+      {
+        "nombre": "Dinamarca",
+        "tipo_documento": ["Pas (Documento de identidad)", "Pasaporte"]
+      },
+      {
+        "nombre": "Eslovaquia",
+        "tipo_documento": ["Občiansky preukaz (Documento de identidad)", "Cestovný pas (Pasaporte)"]
+      },
+      {
+        "nombre": "Eslovenia",
+        "tipo_documento": ["Osebna izkaznica (Documento de identidad)", "Potni list (Pasaporte)"]
+      },
+      {
+        "nombre": "Estonia",
+        "tipo_documento": ["Isikutunnistuskaart (Documento de identidad)", "Pass (Pasaporte)"]
+      },
+      {
+        "nombre": "Finlandia",
+        "tipo_documento": ["Henkilökortti (Documento de identidad)", "Passi (Pasaporte)"]
+      },
+      {
+        "nombre": "Francia",
+        "tipo_documento": ["Carte nationale d'identité (Documento de identidad)", "Pasaporte"]
+      },
+      {
+        "nombre": "Grecia",
+        "tipo_documento": ["Δελτίο αστυνομικής ταυτότητας (Documento de identidad)", "Διαβατήριο (Pasaporte)"]
+      },
+      {
+        "nombre": "Hungría",
+        "tipo_documento": ["Személyi igazolvány (Documento de identidad)", "Útlevél (Pasaporte)"]
+      },
+      {
+        "nombre": "Irlanda",
+        "tipo_documento": ["Cárta um Thuarastal (Documento de identidad)", "Pasaporte"]
+      },
+      {
+        "nombre": "Italia",
+        "tipo_documento": ["Carta d'identità (Documento de identidad)", "Passaporto (Pasaporte)"]
+      },
+      {
+        "nombre": "Letonia",
+        "tipo_documento": ["Personas apliecība (Documento de identidad)", "Pasaporte"]
+      },
+      {
+        "nombre": "Lituania",
+        "tipo_documento": ["Asmens tapatybės kortelė (Documento de identidad)", "Pasaporte"]
+      },
+      {
+        "nombre": "Luxemburgo",
+        "tipo_documento": ["Carte d'identité (Documento de identidad)", "Pasaporte"]
+      },
+      {
+        "nombre": "Malta",
+        "tipo_documento": ["Karta tal-identità (Documento de identidad)", "Passaport (Pasaporte)"]
+      },
+      {
+        "nombre": "Países Bajos",
+        "tipo_documento": ["Identiteitskaart (Documento de identidad)", "Pasaporte"]
+      },
+      {
+        "nombre": "Polonia",
+        "tipo_documento": ["Dowód osobisty (Documento de identidad)", "Paszport (Pasaporte)"]
+      },
+      {
+        "nombre": "Portugal",
+        "tipo_documento": ["Cartão de cidadão (Documento de identidad)", "Passaporte (Pasaporte)"]
+      },
+      {
+        "nombre": "Reino Unido",
+        "tipo_documento": ["Identity card (Documento de identidad)", "Passport (Pasaporte)"]
+      },
+      {
+        "nombre": "República Checa",
+        "tipo_documento": ["Občanský průkaz (Documento de identidad)", "Cestovní pas (Pasaporte)"]
+      },
+      {
+        "nombre": "Rumanía",
+        "tipo_documento": ["Carte de identitate (Documento de identidad)", "Pașaport (Pasaporte)"]
+      },
+      {
+        "nombre": "Suecia",
+        "tipo_documento": ["Legitimation (Documento de identidad)", "Pass (Pasaporte)"]
+      }
+    ]
+  }
