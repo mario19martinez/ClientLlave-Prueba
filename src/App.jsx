@@ -98,6 +98,8 @@ import ViewAllUsersCampain from "./views/ViewAdmin/ViewCampain&Landings/ViewAllU
 import ViewUsersCampain from "./views/ViewAdmin/ViewCampain&Landings/ViewUsersCampain";
 import ViewLandingCampain from "./views/ViewAdmin/ViewCampain&Landings/ViewLandingCampain";
 import ViewCrearLanding from "./views/ViewAdmin/ViewCampain&Landings/ViewCrearLanding";
+import ViewCertificacion from "./views/ViewMenuStudent/ViewCertificacion";
+import Certificado from "./Components/Estudiante/Certificado/Certificado";
 
 import axios from "axios";
 
@@ -315,6 +317,8 @@ function App() {
         <Route path="/admin/campain/users/:campeinId" element={<ViewUsersCampain />} />
         <Route path="/admin/campain/landing/:campeinId" element={<ViewLandingCampain />} />
         <Route path="/admin/campain/landing/createLanding/:campeinId" element={<ViewCrearLanding />} />
+        <Route path="/estudiante/datosLegales" element={<ViewCertificacion />} />
+        <Route path="/certificado" element={<Certificado />} />
       </Routes>
     </Router>
   );
