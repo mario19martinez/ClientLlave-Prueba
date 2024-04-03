@@ -10,43 +10,78 @@ export default function Certificado() {
     fontFamily: 'Arial, sans-serif',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    textAlign: 'center'
+  };
+
+  const contentContainerStyle = {
+    padding: '140px', // Padding top and bottom
+    maxWidth: '11000px'
   };
 
   const contentStyle = {
-    textAlign: 'center',
-    padding: '50px',
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderRadius: '10px',
-    maxWidth: '80%',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    border: '2px solid #333',
+    padding: '20px', // Padding left and right
+  };
+
+  const titleStyle = {
+    fontSize: '36px',
+    marginBottom: '20px',
+    textDecoration: 'underline',
+  };
+
+  const textStyle = {
+    fontSize: '20px',
+    marginBottom: '10px',
+    lineHeight: '1.6',
+  };
+
+  const signatureContainerStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: '50px',
+  };
+
+  const signatureStyle = {
+    fontSize: '20px',
+    margin: '5px 0',
+  };
+
+  const dateStyle = {
+    fontSize: '20px',
+    marginTop: '50px',
   };
 
   return (
     <div style={containerStyle}>
-      <div style={contentStyle}>
-        <h1 style={{ fontSize: '36px', marginBottom: '20px' }}>Certificado de Teología</h1>
-        <p style={{ fontSize: '24px', marginBottom: '20px' }}>Este documento certifica que</p>
-        <h2 style={{ fontSize: '28px', marginBottom: '20px' }}>Niria Alvira Rojas</h2>
-        <p style={{ fontSize: '20px', marginBottom: '20px' }}>ha completado satisfactoriamente el Nivel 2 de Teología con orientación Profética</p>
-        <p style={{ fontSize: '20px', marginBottom: '20px' }}>en la Fundación Llave Para Las Naciones</p>
-        <p style={{ fontSize: '20px', marginBottom: '20px' }}>Con una intensidad horaria de Ochenta (80) Horas</p>
-        <p style={{ fontSize: '20px', marginBottom: '20px' }}>Número de Identificación 35473962 de Colombia</p>
-        <p style={{ fontSize: '20px', marginBottom: '20px' }}>Sahagún - Colombia</p>
-        <p style={{ fontSize: '20px', marginBottom: '20px' }}>www.llaveparalasnaciones.com</p>
-        <p style={{ fontSize: '20px', marginBottom: '20px' }}>La autenticidad de este documento puede ser verificada mediante la solicitud al correo admin@llaveparalasnaciones.com</p>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '50px' }}>
-          <div>
-            <p style={{ fontSize: '20px' }}>Apostol Diego Rullier</p>
-            <p style={{ fontSize: '20px' }}>Rector</p>
+      <div style={contentContainerStyle}>
+        <div style={contentStyle}>
+          <h1 style={titleStyle}>Certificado de Teología</h1>
+          <p style={textStyle}>Este documento certifica que</p>
+          <h2 style={titleStyle}>Niria Alvira Rojas</h2>
+          <p style={textStyle}>ha completado satisfactoriamente el Nivel 2 de Teología con orientación Profética</p>
+          <p style={textStyle}>en la Fundación Llave Para Las Naciones</p>
+          <p style={textStyle}>Con una intensidad horaria de Ochenta (80) Horas</p>
+          <p style={textStyle}>Número de Identificación 35473962 de Colombia</p>
+          <p style={textStyle}>Sahagún - Colombia</p>
+          <p style={textStyle}>www.llaveparalasnaciones.com</p>
+          <p style={textStyle}>La autenticidad de este documento puede ser verificada mediante la solicitud al correo admin@llaveparalasnaciones.com</p>
+          <div style={signatureContainerStyle}>
+            <div>
+              <p style={signatureStyle}>Apostol Diego Rullier</p>
+              <p style={signatureStyle}>Rector</p>
+            </div>
+            <div>
+              <p style={signatureStyle}>Profeta Petra Montecino</p>
+              <p style={signatureStyle}>Directora</p>
+            </div>
           </div>
-          <div>
-            <p style={{ fontSize: '20px' }}>Profeta Petra Montecino</p>
-            <p style={{ fontSize: '20px' }}>Directora</p>
-          </div>
+          <p style={dateStyle}>Se expide a los 22 días del mes de Abril del año 2023</p>
+          <p style={dateStyle}>Registrado en el libro de Actas N.02-0</p>
         </div>
-        <p style={{ fontSize: '20px', marginTop: '50px' }}>Se expide a los 22 días del mes de Abril del año 2023</p>
-        <p style={{ fontSize: '20px', marginBottom: '20px' }}>Registrado en el libro de Actas N.02-0</p>
       </div>
     </div>
   );
