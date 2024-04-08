@@ -16,10 +16,11 @@ export default function ViewHome() {
   return (
     <div className="flex flex-col min-h-screen">
       <Nav />
-      <LandingPage />
-
-      <div className={`${styles.component}`}>
-        <Empresas className="mt-8 " />
+      <div className="bg-gray-200">
+        <LandingPage />
+        <div className={`${styles.component}`}>
+          <Empresas className="mt-8 " />
+        </div>
       </div>
 
       <div className="bg-gradient-to-b from-gray-200 white flex-grow">

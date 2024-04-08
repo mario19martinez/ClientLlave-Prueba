@@ -17,7 +17,7 @@ export default function ViewClasesUser() {
       <div className="flex">
         <SidebarUser selectedTab={selectedTab} />
         <div className="flex flex-col">
-        <CursosDetailStudent />
+          <CursosDetailStudent />
           <Cursos />
         </div>
       </div>
