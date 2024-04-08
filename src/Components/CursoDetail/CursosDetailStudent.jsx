@@ -17,6 +17,7 @@ function CursosDetailStudent() {
   const storedEmail = localStorage.getItem("email");
 
   useEffect(() => {
+    // Fetch curso detail
     dispatch(fetchCursoDetail(id))
       .then((response) => {
         setCursoDetail(response.payload);
@@ -29,68 +30,73 @@ function CursosDetailStudent() {
   }, [dispatch, id]);
 
   useEffect(() => {
+    // Fetch user data if stored email exists and user data is not available
     if (storedEmail && !userData) {
       dispatch(getUserData(storedEmail));
     }
   }, [dispatch, storedEmail, userData]);
 
+  // Render loading state
   if (loading) {
     return <div className="text-center">Cargando...</div>;
   }
 
+  // Render error state
   if (error) {
     return <div className="text-center text-red-500">Error: {error}</div>;
   }
 
+  // Render curso detail
   return (
     <>
-      <div className="hidden sm:block bg-gray-100 p-8 rounded-lg lg:flex">
-        <div className="flex items-start ml-8 lg:w-3/4">
-          <img
-            src={cursoDetail.image || "https://via.placeholder.com/300"}
-            alt="Curso"
-            className="w-full lg:w-3/5 h-96 object-contain rounded"
-          />
-
-          <div className="flex flex-col space-y-4 mt-4 lg:ml-4 lg:mt-0 lg:w-2/5">
-            <h1 className="text-2xl font-bold mb-2 text-gray-900">
-              {cursoDetail.name}
+      {/* Desktop view */}
+      <div className="hidden lg:flex bg-gray-100 p-8 rounded-lg">
+        <img
+          src={cursoDetail?.image || "https://via.placeholder.com/300"}
+          alt="Curso"
+          className="w-1/2 h-auto object-contain rounded mr-8"
+        />
+        <div className="w-1/2">
+          <div className="flex flex-col justify-center">
+            <h1 className="text-3xl font-bold mb-4 text-gray-800"> {/* Aumento de tamaño de la fuente */}
+              {cursoDetail?.name}
             </h1>
-            <p className="font-gabarito text-gray-900">
+            <p className="text-lg text-gray-700"> {/* Aumento de tamaño de la fuente */}
               <strong>Duración: </strong>
-              {cursoDetail.duracion}
+              {cursoDetail?.duracion}
             </p>
-            <p className="font-gabarito text-gray-900">
+            <p className="text-lg text-gray-700"> {/* Aumento de tamaño de la fuente */}
               <strong>Costo: </strong>
-              {cursoDetail.costo}
+              {cursoDetail?.costo}
             </p>
-            <p className="font-gabarito text-gray-900">
+            <p className="text-lg text-gray-700"> {/* Aumento de tamaño de la fuente */}
               <strong>Nivel: </strong>
-              {cursoDetail.nivel}
+              {cursoDetail?.nivel}
             </p>
           </div>
         </div>
       </div>
 
-      <div className="bg-gray-100 p-8 text-gray-800 block sm:hidden">
+      {/* Mobile view */}
+      <div className="block lg:hidden bg-gray-100 p-8 text-gray-800">
+        <img
+          src={cursoDetail?.image || "https://via.placeholder.com/300"}
+          alt="Curso"
+          className="w-full h-auto object-contain rounded-lg mb-4"
+        />
         <div className="flex flex-col items-center">
-          <img
-            src={cursoDetail.image || "https://via.placeholder.com/300"}
-            alt="Curso"
-            className="w-full h-auto object-contain rounded-lg mb-4"
-          />
-          <h1 className="text-xl font-bold mb-2">{cursoDetail.name}</h1>
+          <h1 className="text-xl font-bold mb-2">{cursoDetail?.name}</h1>
           <p className="text-base text-gray-700">
             <strong>Duración: </strong>
-            {cursoDetail.duracion}
+            {cursoDetail?.duracion}
           </p>
           <p className="text-base text-gray-700">
             <strong>Costo: </strong>
-            {cursoDetail.costo}
+            {cursoDetail?.costo}
           </p>
           <p className="text-base text-gray-700">
             <strong>Nivel: </strong>
-            {cursoDetail.nivel}
+            {cursoDetail?.nivel}
           </p>
         </div>
       </div>
