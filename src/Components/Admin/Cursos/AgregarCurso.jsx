@@ -17,6 +17,8 @@ function AgregarCurso({ closeModal }) {
     duracion: "",
     nivel: "",
     costo: "",
+    horas_catedra: "",
+    horario_clases: "",
   });
 
   const handleInputChange = (e) => {
@@ -39,6 +41,8 @@ function AgregarCurso({ closeModal }) {
         costo: "",
         fechaInicio: "",
         fechaFinalizacion: "",
+        horas_catedra: "",
+        horario_clases: "",
       });
 
       // Mostrar mensaje de éxito
@@ -66,13 +70,13 @@ function AgregarCurso({ closeModal }) {
   };
 
   return (
-    <div className="fixed top-1/2 left-1/2 w-96 bg-blue-200 transform -translate-x-1/2 -translate-y-1/2 p-4 rounded-lg shadow-md z-50">
-      <h2 className="text-2xl font-bold mb-4">Agregar Nuevo Curso</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-2">
+    <div className="fixed top-1/2 left-1/2 w-2/5 bg-blue-500 p-2 max-w-lg h-full -translate-y-72 -translate-x-64 overflow-auto">
+      <h2 className="text-2xl font-bold mb-4 text-gray-100">Agregar Nuevo Curso</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="mb-0">
           <label
             htmlFor="name"
-            className="block text-sm font-medium text-gray-600"
+            className="block text-sm font-medium text-gray-100"
           >
             Nombre
             <input
@@ -81,15 +85,15 @@ function AgregarCurso({ closeModal }) {
               name="name"
               value={nuevoCurso.name}
               onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full"
+              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
             />
           </label>
         </div>
 
-        <div className="mb-2">
+        <div className="mb-0">
           <label
             htmlFor="image"
-            className="block text-sm font-medium text-gray-600"
+            className="block text-sm font-medium text-gray-100"
           >
             Imagen
             <input
@@ -98,15 +102,15 @@ function AgregarCurso({ closeModal }) {
               name="image"
               value={nuevoCurso.image}
               onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full"
+              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
             />
           </label>
         </div>
 
-        <div className="mb-2">
+        <div className="mb-0">
           <label
             htmlFor="duracion"
-            className="block text-sm font-medium text-gray-600"
+            className="block text-sm font-medium text-gray-100"
           >
             Duración
             <input
@@ -115,15 +119,15 @@ function AgregarCurso({ closeModal }) {
               name="duracion"
               value={nuevoCurso.duracion}
               onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full"
+              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
             />
           </label>
         </div>
 
-        <div className="mb-2">
+        <div className="mb-0">
           <label
             htmlFor="nivel"
-            className="block text-sm font-medium text-gray-600"
+            className="block text-sm font-medium text-gray-100"
           >
             Nivel
             <select
@@ -131,7 +135,7 @@ function AgregarCurso({ closeModal }) {
               name="nivel"
               value={nuevoCurso.nivel}
               onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full"
+              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
             >
               <option value="">Seleccionar</option>
               <option value="1">Nivel I</option>
@@ -143,10 +147,10 @@ function AgregarCurso({ closeModal }) {
           </label>
         </div>
 
-        <div className="mb-2">
+        <div className="mb-0">
           <label
             htmlFor="costo"
-            className="block text-sm font-medium text-gray-600"
+            className="block text-sm font-medium text-gray-100"
           >
             Costo
             <input
@@ -155,14 +159,46 @@ function AgregarCurso({ closeModal }) {
               name="costo"
               value={nuevoCurso.costo}
               onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full"
+              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
             />
           </label>
         </div>
-        <div className="mb-2">
+        <div className="mb-1">
+          <label
+            htmlFor="horas_catedra"
+            className="block text-sm font-medium text-gray-100"
+          >
+            Horas Cátedra
+            <input
+              type="text"
+              id="horas_catedra"
+              name="horas_catedra"
+              value={nuevoCurso.horas_catedra}
+              onChange={handleInputChange}
+              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
+            />
+          </label>
+        </div>
+        <div className="mb-1">
+          <label
+            htmlFor="horario_clases"
+            className="block text-sm font-medium text-gray-100"
+          >
+            Horario Clases
+            <input
+              type="text"
+              id="horario_clases"
+              name="horario_clases"
+              value={nuevoCurso.horario_clases}
+              onChange={handleInputChange}
+              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
+            />
+          </label>
+        </div>
+        <div className="mb-0">
           <label
             htmlFor="fechaInicio"
-            className="block text-sm font-medium text-gray-600"
+            className="block text-sm font-medium text-gray-100"
           >
             Fecha Inicio
             <input
@@ -171,14 +207,14 @@ function AgregarCurso({ closeModal }) {
               name="fechaInicio"
               value={nuevoCurso.fechaInicio}
               onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full"
+              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
             />
           </label>
         </div>
-        <div className="mb-2">
+        <div className="mb-0">
           <label
             htmlFor="fechaFinalizacion"
-            className="block text-sm font-medium text-gray-600"
+            className="block text-sm font-medium text-gray-100"
           >
             Fecha Finalizacion
             <input
@@ -187,14 +223,14 @@ function AgregarCurso({ closeModal }) {
               name="fechaFinalizacion"
               value={nuevoCurso.fechaFinalizacion}
               onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full"
+              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
             />
           </label>
         </div>
 
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-blue-900 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           Agregar Curso
         </button>
