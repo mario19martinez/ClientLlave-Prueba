@@ -40,15 +40,14 @@ function SidebarUser({ selectedTab }) {
       <div className="sidebar min-h-screen w-[3.35rem] overflow-hidden border-r hover:w-56 hover:bg-blue-700 hover:shadow-lg">
         <div className="flex h-screen flex-col justify-between pt-2 pb-6">
           <div>
-            <div className="w-max p-2.5 flex">
+            <div className="w-max p-2.5 flex items-center">
               <img
                 src={
                   userData?.image ||
                   "https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280.jpg"
                 }
                 alt=""
-                className="w-10 min-w-max h-10 fill-current rounded-full"
-                style={{ imageRendering: "pixelated" }}
+                className="w-10 h-10 object-cover rounded-full"
               />
               <div className="px-2">
                 {userData && (
