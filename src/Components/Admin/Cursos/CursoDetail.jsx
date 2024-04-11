@@ -61,7 +61,7 @@ function CursoDetail() {
   console.log("el cursoId es:", id);
 
   return (
-    <div>
+    <div className="w-screen">
       <Link to="/admin/cursos">
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out mt-4 ml-8">
           Atrás
@@ -94,11 +94,21 @@ function CursoDetail() {
                 <strong>Duración:</strong> {curso.duracion}
               </p>
               <p className="text-lg font-gabarito text-gray-900">
+              {" "}
+              <strong>Horas Catedra: </strong>
+              {curso?.horas_catedra}
+            </p>
+              <p className="text-lg font-gabarito text-gray-900">
                 <strong>Costo:</strong> {curso.costo}
               </p>
               <p className="text-lg font-gabarito text-gray-900">
                 <strong>Fecha de Inicio:</strong> {curso.fechaInicio}
               </p>
+              <p className="text-lg font-gabarito text-gray-900">
+              {" "}
+              <strong>Horario: </strong>
+              {curso?.horario_clases}
+            </p>
 
               <div className="flex space-x-4 mt-6">
                 <button

@@ -16,6 +16,8 @@ function CursosDetailStudent() {
   const userData = useSelector((state) => state.users.userData);
   const storedEmail = localStorage.getItem("email");
 
+  console.log("Datos cursos", cursoDetail);
+
   useEffect(() => {
     // Fetch curso detail
     dispatch(fetchCursoDetail(id))
@@ -58,20 +60,34 @@ function CursosDetailStudent() {
         />
         <div className="w-1/2">
           <div className="flex flex-col justify-center">
-            <h1 className="text-3xl font-bold mb-4 text-gray-800"> {/* Aumento de tamaño de la fuente */}
+            <h1 className="text-3xl font-bold mb-4 text-gray-800">
+              {" "}
               {cursoDetail?.name}
             </h1>
-            <p className="text-lg text-gray-700"> {/* Aumento de tamaño de la fuente */}
+            <p className="text-lg text-gray-700">
+              {" "}
               <strong>Duración: </strong>
               {cursoDetail?.duracion}
             </p>
-            <p className="text-lg text-gray-700"> {/* Aumento de tamaño de la fuente */}
+            <p className="text-lg text-gray-700">
+              {" "}
+              <strong>Horas Catedra: </strong>
+              {cursoDetail?.horas_catedra}
+            </p>
+            <p className="text-lg text-gray-700">
+              {" "}
               <strong>Costo: </strong>
               {cursoDetail?.costo}
             </p>
-            <p className="text-lg text-gray-700"> {/* Aumento de tamaño de la fuente */}
+            <p className="text-lg text-gray-700">
+              {" "}
               <strong>Nivel: </strong>
               {cursoDetail?.nivel}
+            </p>
+            <p className="text-lg text-gray-700">
+              {" "}
+              <strong>Horario: </strong>
+              {cursoDetail?.horario_clases}
             </p>
           </div>
         </div>
@@ -90,6 +106,11 @@ function CursosDetailStudent() {
             <strong>Duración: </strong>
             {cursoDetail?.duracion}
           </p>
+          <p className="text-lg text-gray-700">
+            {" "}
+            <strong>Horas Catedra: </strong>
+            {cursoDetail?.horas_catedra}
+          </p>
           <p className="text-base text-gray-700">
             <strong>Costo: </strong>
             {cursoDetail?.costo}
@@ -97,6 +118,13 @@ function CursosDetailStudent() {
           <p className="text-base text-gray-700">
             <strong>Nivel: </strong>
             {cursoDetail?.nivel}
+          </p>
+          <p className="text-lg text-gray-700">
+            {" "}
+            <div className="flex flex-col items-center py-2">
+              <strong>Horario: </strong>
+              {cursoDetail?.horario_clases}
+            </div>
           </p>
         </div>
       </div>
