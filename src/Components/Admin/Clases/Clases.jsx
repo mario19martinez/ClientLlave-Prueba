@@ -156,22 +156,18 @@ function Clases() {
         contentLabel="Agregar Clase"
         overlayClassName="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40"
       >
-        <AgregarClases
-          id={id}
-          closeModalAndReload={closeModalAndReload}
-        />
+        <AgregarClases id={id} closeModalAndReload={closeModalAndReload} />
       </Modal>
 
-      <div>
+      <div className="mb-6 flex space-x-4">
         <button
-          className="bg-blue-600 hover:bg-blue-900 text-white py-2 px-4 rounded mb-4 font-bold"
+          className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg shadow transition ease-in duration-200"
           onClick={() => setModalAgregarClaseIsOpen(true)}
         >
           Agregar Clase
         </button>
-
         <button
-          className="bg-green-600 hover:bg-green-900 text-white py-2 px-4 rounded mb-4 font-bold"
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow transition ease-in duration-200"
           onClick={() => navigate("/admin/cursos/crearTaller")}
         >
           Agregar Taller
@@ -182,16 +178,47 @@ function Clases() {
         {currentClases.map((clase) => (
           <li
             key={clase.id}
-            className={`cursor-pointer bg-gray-300 p-4 rounded-lg ${
+            className={`group bg-gray-300 cursor-pointer p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out ${
               claseSeleccionada && claseSeleccionada.id === clase.id
-                ? "bg-blue-200"
+                ? "bg-gray-300"
                 : ""
             }`}
             onClick={() => handleClaseClick(clase)}
           >
-            <h3 className="text-xl font-semibold mb-2">{clase.name}</h3>
+            <div className="flex justify-between items-center">
+              <h3
+                className={`text-xl font-semibold mb-2 ${
+                  clase.pdfURL ? "text-blue-700" : "" // Aplicar color rojo si es PDF
+                }`}
+              >
+                {clase.name}
+              </h3>
+              <span
+                className={`transition-transform duration-300 ${
+                  claseSeleccionada && claseSeleccionada.id === clase.id
+                    ? "rotate-180"
+                    : ""
+                }`}
+              >
+                {/* Aquí se puede usar un ícono de una librería como Heroicons, por ejemplo, `ChevronDownIcon` */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </span>
+            </div>
             {claseSeleccionada && claseSeleccionada.id === clase.id && (
-              <div className="aspect-w-16 aspect-h-9">
+              <div className="mt-4 aspect-w-16 aspect-h-9 overflow-hidden rounded-lg shadow-inner">
                 {claseSeleccionada &&
                 claseSeleccionada.url &&
                 claseSeleccionada.platform === "vimeo" ? (
@@ -245,16 +272,16 @@ function Clases() {
                 ) : (
                   <p>No hay contenido disponible para esta clase.</p>
                 )}
-                <div className="mt-4">
+                <div className="mt-4 flex space-x-2">
                   <button
-                    onClick={() => handleEditClase(clase)} // Cambiar a esta función para editar
-                    className="bg-blue-600 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded mr-2"
+                    onClick={() => handleEditClase(clase)}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in duration-200"
                   >
                     Editar Clase
                   </button>
                   <button
                     onClick={() => handleEliminarClase(clase.id)}
-                    className="bg-red-600 hover.bg-red-900 text-white font-bold py-2 px-4 rounded mt-4 transition duration-300 ease-in-out"
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in duration-200"
                   >
                     Eliminar Clase
                   </button>
@@ -266,25 +293,23 @@ function Clases() {
       </ul>
 
       {/* Paginación */}
-      <div className="flex justify-center">
-        {clases.length > clasesPerPage && (
-          <ul className="flex list-none space-x-2">
-            {Array.from({ length: endPage - startPage + 1 }, (_, i) => (
-              <li key={startPage + i}>
-                <button
-                  className={`px-3 py-1 rounded-full ${
-                    startPage + i === currentPage
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200"
-                  }`}
-                  onClick={() => setCurrentPage(startPage + i)}
-                >
-                  {startPage + i}
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+      <div className="mt-6 flex justify-center">
+        <ul className="flex list-none space-x-2">
+          {Array.from({ length: endPage - startPage + 1 }, (_, i) => (
+            <li key={startPage + i}>
+              <button
+                className={`px-3 py-1 text-sm rounded-full ${
+                  startPage + i === currentPage
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-300 text-gray-800"
+                } shadow transition ease-in duration-200`}
+                onClick={() => setCurrentPage(startPage + i)}
+              >
+                {startPage + i}
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
