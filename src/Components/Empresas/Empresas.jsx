@@ -1,5 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
+import llve from "./Logos/llve.png"; // Asegúrate de que la ruta y el nombre del archivo sean correctos
+import isacar from "./Logos/isacar.jpg";
+import investigacion from "./Logos/investigacion.jpg";
+import viviendo from "./Logos/viviendo.png";
 
 const Empresas = () => {
   return (
@@ -19,8 +23,8 @@ const Empresas = () => {
               rel="noopener noreferrer"
             >
               <img
-                src="https://llaveparalasnaciones.online/wp-content/uploads/2024/02/facebook-profile-picture-mp8XDX5WDruxMGPW.jpg"
-                alt="Facebook Logo"
+                src={investigacion}
+                alt="Instituto"
                 className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mb-4 max-w-xs"
               />
             </a>
@@ -30,20 +34,19 @@ const Empresas = () => {
               rel="noopener noreferrer"
             >
               <img
-                src="https://llaveparalasnaciones.online/wp-content/uploads/2024/03/Diseno-sin-titulo-26.png"
-                alt="Logo Transparente"
+                src={viviendo}
+                alt="Viviendo"
                 className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mb-4 max-w-xs"
               />
             </a>
-
             <img
-              src="https://llaveparalasnaciones.online/wp-content/uploads/2023/08/logo-1.png"
-              alt="Logo 1"
+              src={llve}
+              alt="Llave"
               className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mb-4 max-w-xs"
             />
             <img
-              src="https://llaveparalasnaciones.online/wp-content/uploads/2024/02/Logo-Isacar-Consulting-1.jpg"
-              alt="Logo 2"
+              src={isacar}
+              alt="Isacar"
               className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mb-4 max-w-xs"
             />
           </div>
@@ -53,7 +56,6 @@ const Empresas = () => {
         <div className="hidden md:flex flex-col justify-center">
           {/* Imágenes en pantallas medianas y grandes */}
           <div className="flex flex-wrap justify-center items-center pt-10">
-            {/* Primer elemento */}
             <div
               className="w-full md:w-1/2 mb-6 px-2 md:px-4 max-w-72 custom-margin"
               style={{
@@ -67,14 +69,13 @@ const Empresas = () => {
                 rel="noopener noreferrer"
               >
                 <img
-                  src="https://llaveparalasnaciones.online/wp-content/uploads/2024/02/facebook-profile-picture-mp8XDX5WDruxMGPW.jpg"
-                  alt="Facebook Logo"
+                  src={investigacion}
+                  alt="Instituto"
                   className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mx-auto"
                 />
               </a>
             </div>
 
-            {/* Segundo elemento */}
             <div
               className="w-full md:w-1/2 mb-6 px-2 md:px-4 max-w-72 custom-margin"
               style={{
@@ -88,8 +89,8 @@ const Empresas = () => {
                 rel="noopener noreferrer"
               >
                 <img
-                  src="https://llaveparalasnaciones.online/wp-content/uploads/2024/03/Diseno-sin-titulo-26.png"
-                  alt="Logo Transparente"
+                  src={viviendo}
+                  alt="Viviendo"
                   className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mx-auto"
                 />
               </a>
@@ -97,44 +98,32 @@ const Empresas = () => {
           </div>
 
           <div className="flex flex-wrap justify-center items-center pb-20">
-            {/* Tercer elemento */}
             <div
               className="w-full md:w-1/2 mb-6 px-2 md:px-4 max-w-72 custom-margin"
               style={{
                 marginRight: "80px",
                 marginTop: "60px",
                 marginBottom: "60px",
-                "@media (max-width: 768px)": {
-                  marginRight: 0,
-                  marginTop: 0,
-                  marginBottom: 0,
-                },
               }}
             >
-              <a href="#" target="_blank" rel="noopener noreferrer">
-                <img
-                  src="https://llaveparalasnaciones.online/wp-content/uploads/2023/08/logo-1.png"
-                  alt="Logo 1"
-                  className="transition rounded-xl duration-300 ease-in-out transform hover:scale-105 mx-auto"
-                />
-              </a>
+              <img
+                src={llve}
+                alt="Llave"
+                className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mx-auto"
+              />
             </div>
 
-            {/* Cuarto elemento */}
             <div
               className="w-full md:w-1/2 mb-6 px-2 md:px-4 max-w-72 custom-margin"
               style={{
                 marginLeft: "80px",
-                "@media (max-width: 768px)": { marginLeft: 0 },
               }}
             >
-              <a href="#" target="_blank" rel="noopener noreferrer">
-                <img
-                  src="https://llaveparalasnaciones.online/wp-content/uploads/2024/02/Logo-Isacar-Consulting-1.jpg"
-                  alt="Logo 2"
-                  className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mx-auto"
-                />
-              </a>
+              <img
+                src={isacar}
+                alt="Isacar"
+                className="rounded-xl transition duration-300 ease-in-out transform hover:scale-105 mx-auto"
+              />
             </div>
           </div>
         </div>

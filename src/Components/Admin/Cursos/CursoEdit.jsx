@@ -5,6 +5,8 @@ import { updateCurso } from "../../../Redux/features/courses/coursesSlice";
 import Modal from "react-modal";
 import CloseIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 function CursoEdit({ id, isOpen, closeModal }) {
   const dispatch = useDispatch();
@@ -31,6 +33,10 @@ function CursoEdit({ id, isOpen, closeModal }) {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleRichTextChange = (value) => {
+    setFormData({ ...formData, horario_clases: value });
   };
 
   const handleSubmit = () => {
@@ -156,12 +162,21 @@ function CursoEdit({ id, isOpen, closeModal }) {
             <label className="block text-sm font-medium text-gray-800">
               Horario Clases:
             </label>
-            <input
-              type="text"
-              name="horario_clases"
+            <ReactQuill
+              theme="snow"
               value={formData.horario_clases}
-              onChange={handleInputChange}
-              className="border rounded px-3 py-2 w-full"
+              onChange={handleRichTextChange}
+              modules={{
+                toolbar: [
+                  [{ 'header': '1'}, {'header': '2'}, {'font': []}],
+                  [{size: []}],
+                  ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                  [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+                  ['clean'],
+                  [{ 'align': [] }],
+                  [{ 'color': [] }, { 'background': [] }], // Cambio de color de texto y fondo
+                ],
+              }}
             />
           </div>
           <div className="mb-4">
