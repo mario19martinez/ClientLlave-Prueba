@@ -12,7 +12,6 @@ export default function ViewClasesUser() {
     <div>
       <NavUser />
       <div className="flex">
-        {/* Agregar la clase 'sticky' al sidebar */}
         <div className="sticky top-0 h-screen">
           <SidebarUser selectedTab={selectedTab} />
         </div>

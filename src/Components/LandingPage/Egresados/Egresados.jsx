@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import egresados from './egresados.png'; 
 
 const Egresados = () => {
   const navigate = useNavigate();
@@ -11,15 +12,14 @@ const Egresados = () => {
       <div className="flex flex-col md:flex-row items-center justify-center py-8">
         <div className="w-full md:w-3/5 mt-8 md:mt-0 flex justify-center pr-3">
           <img
-            src="https://llaveparalasnaciones.online/wp-content/uploads/2024/02/EGRESADOS.png"
+            src={egresados}
             alt="Egresados"
             className="w-full md:max-w-md h-auto rounded-lg shadow-lg hover:shadow-xl transition duration-500 transform hover:scale-105"
           />
         </div>
         <div className="w-full md:w-2/5 md:pr-8 flex flex-col items-center justify-center">
           <p className="text-gray-800 text-lg md:text-xl leading-relaxed mb-4 text-center">
-            ¡Descubre cómo nuestros egresados han triunfado en el mundo real
-            después de graduarse!
+            ¡Descubre cómo nuestros egresados han triunfado en el mundo real después de graduarse!
           </p>
           <button
             onClick={() => navigate("/Egresados")}
