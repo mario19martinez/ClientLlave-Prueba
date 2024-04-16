@@ -99,7 +99,7 @@ export default function FormObsequioCampain() {
         style={{ position: "relative", zIndex: 2 }}
       >
         <h1 className="text-xl font-bold text-center mb-6">
-          Regístrate Ahora para obtener 10 Clases de Obsequio
+          Regístrate ahora para obtener 10 Clases de Obsequio
         </h1>
 
         <form onSubmit={formik.handleSubmit} className="space-y-4">
