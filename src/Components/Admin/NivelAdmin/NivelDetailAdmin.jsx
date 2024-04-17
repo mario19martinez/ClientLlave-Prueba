@@ -77,6 +77,10 @@ function NivelDetailAdmin() {
     setShowUserList(!showUserList);
   };
 
+  const handleNavigateToGrupos = () => {
+    navigate(`/niveles/${id}/grupos`);
+  };
+
   return (
     <div className="absolute top-0 right-36 mt-28 ml-96 p-4 w-3/5 h-auto -translate-x-20">
       <div className="max-w-xl mx-auto p-8 bg-white shadow rounded-md ">
@@ -105,28 +109,38 @@ function NivelDetailAdmin() {
             </p>
             <button
               onClick={handleDeleteNivel}
-              className="bg-red-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-600 transition duration-300"
+              className="bg-red-500 text-white font-semibold py-2 px-2 rounded-md hover:bg-red-600 transition duration-300"
             >
               <FolderDeleteIcon fontSize="large" />
+              <h1 className="text-xs text-white">Eliminar</h1>
             </button>
             <button
               onClick={handleOpenModal}
-              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 ml-4"
+              className="bg-blue-500 text-white font-semibold py-2 px-3 rounded-md hover:bg-blue-700 transition duration-300 ml-4"
             >
               <EditNoteIcon fontSize="large" />
+              <h1 className="text-xs text-white">Editar</h1>
             </button>
             <button
               onClick={handleOpenUserModal}
-              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 ml-4"
+              className="bg-blue-500 text-white font-semibold py-2 px-2 rounded-md hover:bg-blue-700 transition duration-300 ml-4"
             >
               <PersonAddIcon fontSize="large" />
+              <h1 className="text-xs text-white">Agregar</h1>
             </button>
 
             <button
               onClick={handleViewUserList}
-              className="bg-green-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-green-600 transition duration-300 ml-4"
+              className="bg-green-500 text-white font-semibold py-2 px-2 rounded-md hover:bg-green-600 transition duration-300 ml-4"
             >
               <GroupIcon fontSize="large" />
+              <h1 className="text-xs text-white">Usuarios</h1>
+            </button>
+            <button
+              onClick={() => handleNavigateToGrupos(nivel.id)}
+              className="bg-yellow-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-yellow-600 transition duration-300 ml-4"
+            >
+              Ver Grupos
             </button>
           </div>
         )}
