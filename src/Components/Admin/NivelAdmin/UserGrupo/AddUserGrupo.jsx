@@ -48,7 +48,7 @@ function AddUserGrupo({ nivelId, grupoId }) {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-md shadow-md">
+    <div className="max-w-md mx-auto p-4 bg-white rounded-md shadow-md">
       <h2 className="text-lg font-semibold mb-4">Agregar Usuario</h2>
       <div className="mb-4">
         <label
