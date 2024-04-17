@@ -10,9 +10,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #001449; /* Cambia el color de fondo según tu diseño */
-  color: #fff; /* Cambia el color de texto según tu diseño */
-  padding: 20px; /* Ajusta el espaciado según tu diseño */
+  background-color: #001449; /* Color de fondo */
+  color: #fff; /* Color de texto */
+  padding: 20px; /* Ajusta si es necesario */
+  width: 100%; /* Asegura que ocupa todo el ancho */
 }
 
 .container {

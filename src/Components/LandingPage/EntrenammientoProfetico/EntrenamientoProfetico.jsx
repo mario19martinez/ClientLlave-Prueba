@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import CardEntrenamiento from "../../CardEntrenamiento/CardEntrnamiento";
+import apostol_profeta from './apostol_profeta.jpg'
 
 export default function EntrenamientoProfetico() {
   return (
@@ -12,7 +13,7 @@ export default function EntrenamientoProfetico() {
         </div>
         <div className="w-full md:w-1/2 pl-4 transition duration-300 ease-in-out transform hover:scale-105">
           <img
-            src="https://llaveparalasnaciones.online/wp-content/uploads/2023/09/28-scaled.jpg"
+            src={apostol_profeta} 
             alt="Entrenamiento"
             className="w-full h-auto object-cover rounded-lg shadow-lg"
           />

@@ -1,5 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import PropTypes from "prop-types";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -71,7 +73,9 @@ function AgregarCurso({ closeModal }) {
 
   return (
     <div className="fixed top-1/2 left-1/2 w-2/5 bg-blue-500 p-2 max-w-lg h-full -translate-y-72 -translate-x-64 overflow-auto">
-      <h2 className="text-2xl font-bold mb-4 text-gray-100">Agregar Nuevo Curso</h2>
+      <h2 className="text-2xl font-bold mb-4 text-gray-100">
+        Agregar Nuevo Curso
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="mb-0">
           <label
@@ -185,13 +189,29 @@ function AgregarCurso({ closeModal }) {
             className="block text-sm font-medium text-gray-100"
           >
             Horario Clases
-            <input
-              type="text"
-              id="horario_clases"
-              name="horario_clases"
+            <ReactQuill
+              theme="snow"
               value={nuevoCurso.horario_clases}
-              onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
+              onChange={(value) =>
+                setNuevoCurso({ ...nuevoCurso, horario_clases: value })
+              }
+              modules={{
+                toolbar: [
+                  [{ header: "1" }, { header: "2" }, { font: [] }],
+                  [{ size: [] }],
+                  ["bold", "italic", "underline", "strike", "blockquote"],
+                  [
+                    { list: "ordered" },
+                    { list: "bullet" },
+                    { indent: "-1" },
+                    { indent: "+1" },
+                  ],
+                  ["clean"],
+                  [{ align: [] }],
+                  [{ color: [] }, { background: [] }], // Cambio de color de texto y fondo
+                ],
+              }}
+              className="mt-1 bg-white text-gray-800"
             />
           </label>
         </div>

@@ -11,6 +11,7 @@ import {
 } from "../../Redux/features/Users/usersSlice";
 import { toast } from "react-toastify";
 import HomeIcon from "@mui/icons-material/Home";
+import fondo from "../../assets/apostol_profeta.jpg";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -106,7 +107,7 @@ export default function Login() {
     <div
       className="min-h-screen bg-cover bg-center relative"
       style={{
-        backgroundImage: `url('https://llaveparalasnaciones.online/wp-content/uploads/2023/09/28-2-scaled.jpg')`,
+        backgroundImage: `url(${fondo})`, 
       }}
     >
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
