@@ -129,9 +129,9 @@ export default function Nav() {
             Blog
           </Link>
           <Link
-            to="/Error404"
+            to="/entrenamiento"  
             className={`hover:text-gray-300 transition-colors ${
-              location.pathname === "/Error404" ? "border-b-2 border-white" : ""
+              location.pathname === "/entrenamiento" ? "border-b-2 border-white" : ""
             }`}
           >
             Entrenamiento
