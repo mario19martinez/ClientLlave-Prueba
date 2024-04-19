@@ -4,6 +4,7 @@ import NavUser from "../../Components/Estudiante/NavUser/NavUser";
 import SidebarUser from "../../Components/Estudiante/SidebarUser/SidebarUser";
 import Cursos from "../../Components/Cursos/Cursos";
 import CursosDetailStudent from "../../Components/CursoDetail/CursosDetailStudent";
+import ContadorHome from "../../Components/Transmisiones/Contadores/ContadorHome";
 
 export default function ViewClasesUser() {
   const [selectedTab /*setSelectedTab*/] = useState("Cursos Inscritos");
@@ -16,6 +17,7 @@ export default function ViewClasesUser() {
           <SidebarUser selectedTab={selectedTab} />
         </div>
         <div className="flex flex-col">
+          <ContadorHome />
           <CursosDetailStudent />
           <Cursos />
         </div>

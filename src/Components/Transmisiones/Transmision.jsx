@@ -57,9 +57,14 @@ export default function Transmision() {
     return () => clearInterval(interval);
   }, [ultimaTransmision]);
 
-  const videoId = ultimaTransmision
-    ? ultimaTransmision.urltransmision.split("watch?v=")[1]
-    : null;
+  const extractYouTubeId = (url) => {
+    const regExp =
+      /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    const match = url.match(regExp);
+    return match && match[7].length === 11 ? match[7] : null;
+  };
+
+  const videoId = ultimaTransmision ? extractYouTubeId(ultimaTransmision.urltransmision) : null;
   const thumbnailUrl = videoId
     ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
     : "thumbnail.jpg";
