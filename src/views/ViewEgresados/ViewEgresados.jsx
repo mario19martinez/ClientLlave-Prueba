@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import Nav from "../../Components/Nav/Nav";
 import VerEgresados from "../../Components/LandingPage/Egresados/VerEgresados";
 import Footer from "../../Components/Footer/Footer";
+import ContadorHome from "../../Components/Transmisiones/Contadores/ContadorHome";
 
 export default function ViewEgresados () {
     useEffect(() => {
@@ -11,6 +12,7 @@ export default function ViewEgresados () {
     }, []);
     return (
         <div>
+            <ContadorHome />
             <Nav />
             <VerEgresados />
             <Footer />            

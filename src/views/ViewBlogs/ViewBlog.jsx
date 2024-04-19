@@ -4,6 +4,7 @@ import Nav from "../../Components/Nav/Nav";
 import Blog from "../../Components/Blog/Blog";
 import Footer from "../../Components/Footer/Footer";
 import { useParams, useNavigate } from "react-router-dom";
+import ContadorHome from "../../Components/Transmisiones/Contadores/ContadorHome";
 
 export default function ViewBlog() {
   const { blogId } = useParams();
@@ -20,6 +21,7 @@ export default function ViewBlog() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <ContadorHome />
       <Nav />
       <div className="ml-4 mt-4">
         <button
