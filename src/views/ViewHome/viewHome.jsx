@@ -11,10 +11,12 @@ import Egresados from "../../Components/LandingPage/Egresados/Egresados";
 import EntrenamientoProfetico from "../../Components/LandingPage/EntrenammientoProfetico/EntrenamientoProfetico";
 import Empresas from "../../Components/Empresas/Empresas";
 import styles from "./animate.module.css";
+import ContadorHome from "../../Components/Transmisiones/Contadores/ContadorHome";
 
 export default function ViewHome() {
   return (
     <div className="flex flex-col min-h-screen">
+      <ContadorHome />
       <Nav />
       <div className="bg-gray-200">
         <LandingPage />
