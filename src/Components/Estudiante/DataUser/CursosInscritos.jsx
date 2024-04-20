@@ -50,7 +50,7 @@ function CursosInscritos() {
   };
 
   return (
-    <div className="px-4 md:px-20 lg:px-40">
+    <div className="py-4 px-4 md:px-20 lg:px-40">
       <div className="mb-8 flex flex-col items-center justify-center">
         <h2 className="text-2xl font-bold">Mis cursos inscritos</h2>
       </div>
