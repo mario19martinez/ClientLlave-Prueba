@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import axios from "axios";
 
 function AddUserGrupo({ nivelId, grupoId }) {
+  console.log("nivelId:", nivelId);
+  console.log("grupoId:", grupoId);
   const [userSub, setUserSub] = useState("");
   const [error, setError] = useState(null);
   const [message, setMessage] = useState("");
   const [busqueda, setBusqueda] = useState("");
   const [resultados, setResultados] = useState([]);
-  const [userSelected, setUserSelected] = useState(null);
+  //const [userSelected, setUserSelected] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleBuscar = async () => {
@@ -21,7 +23,12 @@ function AddUserGrupo({ nivelId, grupoId }) {
       }
 
       const response = await axios.get(`/user?name=${busqueda}`);
-      setResultados(response.data);
+      const usuariosSub = response.data.map(usuario => ({
+        ...usuario,
+        userSub: usuario.id
+      }))
+      console.log('user:', usuariosSub)
+      setResultados(usuariosSub);
     } catch (error) {
       console.error("Error al buscar usuarios:", error.message);
       setError("Error al buscar usuarios. por favor, intentalo de nuevo.");
@@ -30,14 +37,22 @@ function AddUserGrupo({ nivelId, grupoId }) {
     }
   };
 
+  const memoizedResultados = useMemo(() => resultados, [resultados]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, userSub) => {
     e.preventDefault();
     try {
+      // if (!user || !user.userSub) {
+      //   setError("Usuario inválido.");
+      //   return;
+      // }
+
+      //console.log("URL de la solicitud POST:", `/nivel/${nivelId}/grupo/${grupoId}/usuario`);
+    //console.log("Datos enviados en el cuerpo de la solicitud:", { userSub: user.userSub });
       const response = await axios.post(
         `/nivel/${nivelId}/grupo/${grupoId}/usuario`,
         {
-          userSub,
+          userSub: userSub,
         }
       );
       setMessage(response.data.message);
@@ -77,16 +92,16 @@ function AddUserGrupo({ nivelId, grupoId }) {
           <p className="text-gray-500 mt-2">Buscando usuarios...</p>
         )}
         {error && <p className="text-red-600 mt-2">Error: {error}</p>}
-        {resultados.length > 0 && (
+        {memoizedResultados.length > 0 && (
           <ul className="mt-1 border border-gray-200 rounded-md divide-y divide-gray-200">
-            {resultados.map((user) => (
+            {memoizedResultados.map((user, index) => (
               <li
-                key={user.id}
+                key={index}
                 className="flex items-center justify-between px-4 py-2 hover:bg-gray-100"
               >
                 <span>{user.name}</span>
                 <button
-                  onClick={handleSubmit}
+                  onClick={(e) => handleSubmit(e, user.sub)}
                   className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                 >
                   Agregar

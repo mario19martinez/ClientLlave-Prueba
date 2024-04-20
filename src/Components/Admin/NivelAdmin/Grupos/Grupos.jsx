@@ -52,9 +52,9 @@ function Grupos() {
       </Modal>
       <ul>
         {grupos.map((grupo) => (
-          <li key={grupo.id} className="mb-4">
+          <li key={grupo.id} className="mb-4 bg-blue-500 translate-y-4">
             <Link to={`/niveles/${id}/grupos/${grupo.id}`}>
-            <p className="text-gray-800">
+            <p className="text-gray-100 font-hammersmithOne ml-2">
               {grupo.name}
             </p>
             </Link>
