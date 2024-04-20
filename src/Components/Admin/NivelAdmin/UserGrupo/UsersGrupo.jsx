@@ -37,9 +37,9 @@ function UsersGrupo({ nivelId, grupoId }) {
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto translate-y-4">
       <button
-        className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mb-4"
+        className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mb-4 font-bold"
         onClick={openModal}
       >
         Agregar Usuario
@@ -61,9 +61,9 @@ function UsersGrupo({ nivelId, grupoId }) {
           Aún no hay usuarios agregados al grupo.
         </div>
       ) : (
-        <table className="min-w-full bg-white shadow-md rounded">
+        <table className="w-3/4 bg-white shadow-md rounded">
           <thead>
-            <tr className="text-left bg-gray-800 text-white">
+            <tr className="text-left bg-blue-800 text-white">
               <th className="py-2 px-3">Nombre</th>
               <th className="py-2 px-3">Apellido</th>
               <th className="py-2 px-3">Email</th>
