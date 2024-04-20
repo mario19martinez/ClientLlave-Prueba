@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import NavUser from "../../Components/Estudiante/NavUser/NavUser";
 import SidebarUser from "../../Components/Estudiante/SidebarUser/SidebarUser";
 import CursosInscritos from "../../Components/Estudiante/DataUser/CursosInscritos";
+import ContadorHome from "../../Components/Transmisiones/Contadores/ContadorHome";
 
 export default function ViewCursosInscritos() {
   const [selectedTab /*setSelectedTab*/] = useState("Cursos Inscritos");
@@ -12,8 +13,11 @@ export default function ViewCursosInscritos() {
         <NavUser />
       </div>
       <div className="flex">
-        <SidebarUser selectedTab={selectedTab} />
-        <div className="pt-8 bg-gray-100">
+        <div className="sticky top-0 h-screen">
+          <SidebarUser selectedTab={selectedTab} />
+        </div>
+        <div className=" bg-gray-100">
+          <ContadorHome />
           <CursosInscritos />
         </div>
       </div>
