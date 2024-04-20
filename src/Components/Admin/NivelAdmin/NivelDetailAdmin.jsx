@@ -5,8 +5,9 @@ import Modal from "react-modal";
 import FolderDeleteIcon from "@mui/icons-material/FolderDelete";
 import CancelIcon from "@mui/icons-material/Cancel";
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import GroupIcon from '@mui/icons-material/Group';
+import GroupsIcon from '@mui/icons-material/Groups';
+// import PersonAddIcon from "@mui/icons-material/PersonAdd";
+// import GroupIcon from '@mui/icons-material/Group';
 import NivelEdit from "./NivelEdit";
 import ModuloAdmin from "../ModuloAdmin/ModuloAdmin";
 import AddUserNivel from "./AddUserNivel/AddUserNivel";
@@ -65,17 +66,17 @@ function NivelDetailAdmin() {
     setShowModal(false);
   };
 
-  const handleOpenUserModal = () => {
-    setShowUserModal(true);
-  };
+  // const handleOpenUserModal = () => {
+  //   setShowUserModal(true);
+  // };
 
   const handleCloseUserModal = () => {
     setShowUserModal(false);
   };
 
-  const handleViewUserList = () => {
-    setShowUserList(!showUserList);
-  };
+  // const handleViewUserList = () => {
+  //   setShowUserList(!showUserList);
+  // };
 
   const handleNavigateToGrupos = () => {
     navigate(`/niveles/${id}/grupos`);
@@ -121,26 +122,27 @@ function NivelDetailAdmin() {
               <EditNoteIcon fontSize="large" />
               <h1 className="text-xs text-white">Editar</h1>
             </button>
-            <button
+            {/* <button
               onClick={handleOpenUserModal}
               className="bg-blue-500 text-white font-semibold py-2 px-2 rounded-md hover:bg-blue-700 transition duration-300 ml-4"
             >
               <PersonAddIcon fontSize="large" />
               <h1 className="text-xs text-white">Agregar</h1>
-            </button>
+            </button> */}
 
-            <button
+            {/* <button
               onClick={handleViewUserList}
               className="bg-green-500 text-white font-semibold py-2 px-2 rounded-md hover:bg-green-600 transition duration-300 ml-4"
             >
               <GroupIcon fontSize="large" />
               <h1 className="text-xs text-white">Usuarios</h1>
-            </button>
+            </button> */}
             <button
               onClick={() => handleNavigateToGrupos(nivel.id)}
-              className="bg-yellow-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-yellow-600 transition duration-300 ml-4"
+              className="bg-green-500 text-white font-semibold py-2 px-2 rounded-md hover:bg-green-600 transition duration-300 ml-4"
             >
-              Ver Grupos
+              <GroupsIcon fontSize="large" />
+              <h1 className="text-xs text-white">Grupos</h1>
             </button>
           </div>
         )}
