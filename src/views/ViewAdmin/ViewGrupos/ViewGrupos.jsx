@@ -1,11 +1,16 @@
-import GrupoDetail from "../../../Components/Admin/NivelAdmin/Grupos/GrupoDetail";
-import ModulosDelGrupo from "../../../Components/Admin/NivelAdmin/AddModulo/ModulosDelGrupo";
+import Grupos from "../../../Components/Admin/NivelAdmin/Grupos/Grupos"
+import NavAdmin from "../../../Components/Admin/NavAdmin/NavAdmin"
+import SidebarAdmin from "../../../Components/Admin/SidebarAdmin/SidebarAdmin"
+
 
 export default function ViewGrupos() {
     return (
         <div>
-            <GrupoDetail />
-            <ModulosDelGrupo />
+            <NavAdmin />
+            <SidebarAdmin />
+            <div className="">
+            <Grupos />
+            </div>
         </div>
     )
 }

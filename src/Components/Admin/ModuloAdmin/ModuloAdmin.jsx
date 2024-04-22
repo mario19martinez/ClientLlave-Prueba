@@ -43,7 +43,7 @@ function ModuloAdmin({ nivelId }) {
   }
 
   return (
-    <div className="p-4 bg-gray-200 rounded-md shadow-md ">
+    <div className="p-4 bg-gray-200 rounded-md shadow-md w-3/4 translate-x-24 ">
       <button
         onClick={toggleModal}
         className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md mb-4 hover:bg-blue-600 transition duration-300"
@@ -68,7 +68,7 @@ function ModuloAdmin({ nivelId }) {
           {modulos.map((modulo) => (
             <li
               key={modulo.id}
-              className="my-4 p-4 bg-white rounded-md shadow-md"
+              className="my-4 p-4 bg-white rounded-md shadow-md transition-transform ease-in-out duration-300 hover:translate-y-2"
             >
               <Link to={`/nivel/${nivelId}/modulo/${modulo.id}`}>
               <h3 className="text-xl font-bold text-gray-800">

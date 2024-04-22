@@ -50,8 +50,8 @@ function GrupoDetail() {
   }
 
   return (
-    <div className="flex">
-    <div className=" mx-auto my-8 p-8 bg-gray-200 w-2/3 rounded shadow-lg">
+    <div className="absolute top-0 right-36 mt-28 ml-96 p-4 w-2/3 h-auto bg-gray-200 rounded translate-x-0 translate-y-14">
+    {/* <div className=" mx-auto my-8 p-8 bg-gray-200 w-2/3 rounded shadow-lg"> */}
       <h2 className="text-xl font-bold mb-4 text-gray-900">Detalle del Grupo</h2>
       <p className="mb-4 font-gabarito">
         <strong className="text-gray-900">Nombre:</strong> {grupo.name}
@@ -76,10 +76,10 @@ function GrupoDetail() {
         </button>
       </Modal>
       <UsersGrupo nivelId={grupo.nivelId} grupoId={grupoId} />
-      </div>
-      <div className="-translate-x-96">
+      {/* </div> */}
+      {/* <div className="-translate-x-96">
       <ModulosDelGrupo grupoId={grupoId} />
-      </div>
+      </div> */}
     </div>
   );
 }

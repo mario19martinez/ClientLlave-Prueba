@@ -154,7 +154,7 @@ function NivelDetailAdmin() {
         </div>
       )}
       <div>
-        <h2>Modulos Del Nivel</h2>
+        {/* <h2>Modulos Del Nivel</h2> */}
         <ModuloAdmin nivelId={id} />
       </div>
       <Modal
