@@ -63,7 +63,7 @@ function UsersGrupo({ nivelId, grupoId }) {
       ) : (
         <table className="w-3/4 bg-white shadow-md rounded">
           <thead>
-            <tr className="text-left bg-blue-800 text-white">
+            <tr className="text-left bg-blue-600 text-white">
               <th className="py-2 px-3">Nombre</th>
               <th className="py-2 px-3">Apellido</th>
               <th className="py-2 px-3">Email</th>
