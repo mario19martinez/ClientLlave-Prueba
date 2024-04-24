@@ -232,7 +232,9 @@ export default function ContadorTransmision() {
                 ¡Síguenos en nuestras redes sociales para más actualizaciones!
               </p>
               <div className="mb-10 text-center md:mb-16 lg:mb-20">
-                <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">
+                <button 
+                onClick={() => navigate("/transmisiones")}
+                className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">
                   Ver transmisiones
                 </button>
               </div>
