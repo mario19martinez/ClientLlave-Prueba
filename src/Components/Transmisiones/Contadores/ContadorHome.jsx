@@ -1,12 +1,14 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FiRadio } from "react-icons/fi"; // Importa el icono desde react-icons
+import { FiRadio } from "react-icons/fi";
 
 export default function ContadorHome() {
   const [transmision, setTransmision] = useState(null);
   const [tiempoRestante, setTiempoRestante] = useState({});
   const [eventoActivo, setEventoActivo] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function cargarTransmisiones() {
@@ -75,7 +77,6 @@ export default function ContadorHome() {
         </div>
         {!eventoActivo && (
           <div className="flex flex-wrap justify-center sm:justify-start gap-4 mt-2 sm:mt-0">
-
             <div className="flex flex-col justify-center items-center">
               <div className="text-blue-600">
                 <span className="text-lg sm:text-2xl font-semibold">
@@ -96,28 +97,31 @@ export default function ContadorHome() {
 
             <div className="flex flex-col justify-center items-center">
               <div className="text-blue-600">
-              <span className="text-lg sm:text-2xl font-semibold">
-                {tiempoRestante.minutos}
-              </span>
+                <span className="text-lg sm:text-2xl font-semibold">
+                  {tiempoRestante.minutos}
+                </span>
               </div>
-              <span className="text-xs font-semibold text-gray-700">Minutos</span>
+              <span className="text-xs font-semibold text-gray-700">
+                Minutos
+              </span>
             </div>
 
             <div className="flex flex-col justify-center items-center">
               <div className="text-blue-600">
-              <span className="text-lg sm:text-2xl font-semibold">
-                {tiempoRestante.segundos}
-              </span>
+                <span className="text-lg sm:text-2xl font-semibold">
+                  {tiempoRestante.segundos}
+                </span>
               </div>
-              <span className="text-xs font-semibold text-gray-700">Segundos</span>
+              <span className="text-xs font-semibold text-gray-700">
+                Segundos
+              </span>
             </div>
           </div>
         )}
         {eventoActivo && (
           <a
-            href={`https://www.youtube.com/watch?v=${
-              transmision.urltransmision.split("watch?v=")[1]
-            }`}
+            href=""
+            onClick={() => navigate("/transmision")}
             className="bg-blue-400 text-white font-medium px-4 py-2 rounded hover:bg-blue-500 transition duration-300 mt-2 sm:mt-0 flex items-center"
           >
             <FiRadio style={iconStyle} className="mr-2" /> Ver en vivo

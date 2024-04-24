@@ -100,6 +100,14 @@ import ViewLandingCampain from "./views/ViewAdmin/ViewCampain&Landings/ViewLandi
 import ViewCrearLanding from "./views/ViewAdmin/ViewCampain&Landings/ViewCrearLanding";
 import ViewCertificacion from "./views/ViewMenuStudent/ViewCertificacion";
 import ViewTransmisionAdmin from "./views/ViewAdmin/ViewTransmision/ViewTransmisionAdmin";
+<<<<<<< HEAD
+import Grupos from './Components/Admin/NivelAdmin/Grupos/Grupos'
+import GrupoDetail from "./Components/Admin/NivelAdmin/Grupos/GrupoDetail";
+import ViewFormObsequioCampain from "./views/ViewCampainObsequio/ViewFormObsequioCampain";
+import ViewTransmision from "./views/ViewTransmisiones/ViewTransmision";
+import ViewTransmisiones from "./views/ViewTransmisiones/ViewTransmisiones";
+import ViewTransmisionDetails from "./views/ViewTransmisiones/ViewTransmisionDetails";
+=======
 //import Grupos from './Components/Admin/NivelAdmin/Grupos/Grupos'
 //import GrupoDetail from "./Components/Admin/NivelAdmin/Grupos/GrupoDetail";
 //import ViewTransmisionAdmin from "./views/ViewAdmin/ViewTransmision/ViewTransmisionAdmin";
@@ -108,6 +116,7 @@ import ViewTransmision from "./views/ViewTransmisiones/ViewTransmision";
 import ViewGrupos from "./views/ViewAdmin/ViewGrupos/ViewGrupos";
 import ViewDetailGrupo from "./views/ViewAdmin/ViewGrupos/ViewDetailGrupo";
 
+>>>>>>> main
 
 import axios from "axios";
 
@@ -331,7 +340,9 @@ function App() {
         <Route path="/niveles/:id/grupos/:grupoId" element={<ViewDetailGrupo />} />
         <Route path="/admin/transmisiones" element={<ViewTransmisionAdmin />} />
         <Route path="/Registro/Obsequio" element={<ViewFormObsequioCampain />} /> 
-        <Route path="/trasmision" element={<ViewTransmision/>} />
+        <Route path="/transmision" element={<ViewTransmision/>} />
+        <Route path="/transmisiones" element={<ViewTransmisiones />} />
+        <Route path="/transmisionDetails/:id" element={<ViewTransmisionDetails/>} />
       </Routes>
     </Router>
   );
