@@ -12,6 +12,7 @@ import EntrenamientoProfetico from "../../Components/LandingPage/EntrenammientoP
 import Empresas from "../../Components/Empresas/Empresas";
 import styles from "./animate.module.css";
 import ContadorHome from "../../Components/Transmisiones/Contadores/ContadorHome";
+import ContadorTransmision from "../../Components/Transmisiones/Contadores/ContadorTransmision";
 
 export default function ViewHome() {
   return (
@@ -24,8 +25,11 @@ export default function ViewHome() {
           <Empresas className="mt-8 " />
         </div>
       </div>
-
       <div className="bg-gradient-to-b from-gray-200 white flex-grow">
+        <div className={`${styles.component}`}>
+          <ContadorTransmision className="mt-8" />
+        </div>
+
         <div className={`${styles.component}`}>
           <Egresados className="mt-8" />
         </div>
