@@ -4,12 +4,14 @@ import Roles from "../../Components/Admin/Roles/Roles";
 import { useState } from "react";
 
 export default function ViewRoles() {
-    const [selectedTab] = useState("Roles")
-    return(
-        <div>
-            <NavAdmin />
-            <SidebarAdmin selectedTab={selectedTab}/>
-            <Roles />
-        </div>
-    )
+  const [selectedTab] = useState("Roles");
+  return (
+    <div>
+      <NavAdmin /> 
+      <div className="flex">
+        <SidebarAdmin selectedTab={selectedTab} />
+        <Roles />
+      </div>
+    </div>
+  );
 }
