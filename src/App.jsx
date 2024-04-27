@@ -109,7 +109,14 @@ import ViewTransmisionDetails from "./views/ViewTransmisiones/ViewTransmisionDet
 //import ViewTransmisionAdmin from "./views/ViewAdmin/ViewTransmision/ViewTransmisionAdmin";
 import ViewGrupos from "./views/ViewAdmin/ViewGrupos/ViewGrupos";
 import ViewDetailGrupo from "./views/ViewAdmin/ViewGrupos/ViewDetailGrupo";
-
+import ViewEscritorioEditor from "./views/ViewEditor/ViewEscritorioEditor";
+import ViewBlogEditor from "./views/ViewEditor/ViewBlogsEditor";
+import ViewCrearBlogEditor from "./views/ViewEditor/ViewCrearBlogEditor";
+import ViewEditarBlogEditor from "./views/ViewEditor/ViewEditarBlogEditor";
+import ViewVerBlogEditor from "./views/ViewEditor/ViewVerBlogEditor";
+import ViewCursosEditor from "./views/ViewEditor/ViewCursosEditor";
+import ViewCursosDetailsEditor from "./views/ViewEditor/ViewCursosDetailsEditor";
+import ViewTransmisionEditor from "./views/ViewEditor/ViewTransmisionEditor";
 
 import axios from "axios";
 
@@ -336,6 +343,14 @@ function App() {
         <Route path="/transmision" element={<ViewTransmision/>} />
         <Route path="/transmisiones" element={<ViewTransmisiones />} />
         <Route path="/transmisionDetails/:id" element={<ViewTransmisionDetails/>} />
+        <Route path="/Editor" element={<ViewEscritorioEditor />} />
+        <Route path="/Editor/Blogs" element={<ViewBlogEditor />} />
+        <Route path="/Editor/Blogs/CrearBlog" element={<ViewCrearBlogEditor />} />
+        <Route path="/Editor/Blogs/EditarBlog/:id" element={<ViewEditarBlogEditor />} />
+        <Route path="/Editor/Blogs/VerBlog/:id" element={<ViewVerBlogEditor />} />
+        <Route path="/Editor/Cursos" element={<ViewCursosEditor />}/>
+        <Route path="/Editor/Cursos/CursoDetails/:id" element={<ViewCursosDetailsEditor />} />
+        <Route path="/Editor/Transmision" element={<ViewTransmisionEditor />} />
       </Routes>
     </Router>
   );

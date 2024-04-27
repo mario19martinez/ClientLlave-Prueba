@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import Modal from "react-modal";
-import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditarBlog from "./EditarBlog";
 import axios from "axios";
 import {
   Button,
@@ -15,10 +10,12 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const CardAdminBlogs = ({ imageUrl, title, blogId }) => {
   const navigate = useNavigate();
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const handleDeleteBlog = async () => {
@@ -36,11 +33,11 @@ const CardAdminBlogs = ({ imageUrl, title, blogId }) => {
   };
 
   const handleViewBlog = (blogId) => {
-    navigate(`/admin/blogDetails/${blogId}`);
+    navigate(`/Editor/Blogs/VerBlog/${blogId}`);
   };
 
-  const handleCardClick = () => {
-    handleViewBlog(blogId);
+  const handleEditBlog = () => {
+    navigate(`/Editor/Blogs/EditarBlog/${blogId}`);
   };
 
   const truncatedTitle = title.length > 25 ? title.substring(0, 25) + "..." : title;
@@ -53,15 +50,15 @@ const CardAdminBlogs = ({ imageUrl, title, blogId }) => {
         <div className="flex mt-2 space-x-2">
           <button
             className="text-blue-500 px-3 py-1 rounded-full flex items-center transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
-            onClick={() => setModalIsOpen(true)}
+            onClick={() => handleViewBlog(blogId)}
           >
-            <EditIcon />
+            <VisibilityIcon />
           </button>
           <button
             className="text-green-500 px-3 py-1 rounded-full flex items-center transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
-            onClick={handleCardClick}
+            onClick={handleEditBlog}
           >
-            <VisibilityIcon />
+            <EditIcon />
           </button>
           <button
             className="text-red-500 px-3 py-1 rounded-full flex items-center transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
@@ -70,15 +67,6 @@ const CardAdminBlogs = ({ imageUrl, title, blogId }) => {
             <DeleteIcon />
           </button>
         </div>
-        {/* Modal para el formulario EditarBlog */}
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={() => setModalIsOpen(false)}
-          className="rounded-lg mx-auto max-w-lg p-6"
-          overlayClassName="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center"
-        >
-          <EditarBlog blogId={blogId} />
-        </Modal>
         {/* Diálogo de confirmación para eliminar */}
         <Dialog open={deleteDialogOpen} onClose={handleCloseDialog}>
           <DialogTitle>Confirmación</DialogTitle>
