@@ -107,7 +107,7 @@ function SidebarEditor({ selectedTab }) {
 
           <li className="mb-4">
             <button
-              onClick={() => navigate("/admin/ajustes")}
+              onClick={() => navigate("/Editor/Ajustes")}
               className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
                 selectedTab === "Ajustes"
                   ? "bg-blue-400 text-white"
