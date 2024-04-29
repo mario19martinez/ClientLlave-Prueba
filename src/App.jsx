@@ -117,6 +117,8 @@ import ViewVerBlogEditor from "./views/ViewEditor/ViewVerBlogEditor";
 import ViewCursosEditor from "./views/ViewEditor/ViewCursosEditor";
 import ViewCursosDetailsEditor from "./views/ViewEditor/ViewCursosDetailsEditor";
 import ViewTransmisionEditor from "./views/ViewEditor/ViewTransmisionEditor";
+import ViewEditorAjustes from "./views/ViewEditor/ViewEditorAjustes";
+import ViewBlogEdit from "./views/ViewAdmin/ViewBlogsEdit";
 
 import axios from "axios";
 
@@ -351,6 +353,8 @@ function App() {
         <Route path="/Editor/Cursos" element={<ViewCursosEditor />}/>
         <Route path="/Editor/Cursos/CursoDetails/:id" element={<ViewCursosDetailsEditor />} />
         <Route path="/Editor/Transmision" element={<ViewTransmisionEditor />} />
+        <Route path="/Editor/Ajustes" element={<ViewEditorAjustes />}/>
+        <Route path="/Admin/Blog/Editar/:id" element={<ViewBlogEdit />} />
       </Routes>
     </Router>
   );

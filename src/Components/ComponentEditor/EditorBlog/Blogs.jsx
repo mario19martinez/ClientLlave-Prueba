@@ -45,6 +45,7 @@ const Blogs = () => {
             imageUrl={blog.imageUrl}
             title={blog.title}
             blogId={blog.id}
+            estado={blog.estado}
           />
         ))}
       </div>

@@ -9,9 +9,7 @@ export default function ViewAdminBlogs() {
     <div>
       <NavAdmin />
       <div className="flex">
-        <div>
-          <SidebarAdmin />
-        </div>
+        <SidebarAdmin />
         <AdminBlogs selectedTab={selectedTab} />
       </div>
     </div>
