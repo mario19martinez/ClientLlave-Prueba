@@ -109,6 +109,9 @@ import ViewTransmisionDetails from "./views/ViewTransmisiones/ViewTransmisionDet
 //import ViewTransmisionAdmin from "./views/ViewAdmin/ViewTransmision/ViewTransmisionAdmin";
 import ViewGrupos from "./views/ViewAdmin/ViewGrupos/ViewGrupos";
 import ViewDetailGrupo from "./views/ViewAdmin/ViewGrupos/ViewDetailGrupo";
+import ViewGrupoDetailUser from "./views/ViewMenuStudent/ViewsLevels/ViewGrupoDetailUser";
+import ModuloDetailUser from "./Components/Estudiante/EstudianteNiveles/ModuloDetailUser";
+import ViewModuloClases from "./views/ViewMenuStudent/ViewsLevels/ViewModuloClases";
 import ViewEscritorioEditor from "./views/ViewEditor/ViewEscritorioEditor";
 import ViewBlogEditor from "./views/ViewEditor/ViewBlogsEditor";
 import ViewCrearBlogEditor from "./views/ViewEditor/ViewCrearBlogEditor";
@@ -343,6 +346,8 @@ function App() {
         <Route path="/admin/transmisiones" element={<ViewTransmisionAdmin />} />
         <Route path="/Registro/Obsequio" element={<ViewFormObsequioCampain />} /> 
         <Route path="/transmision" element={<ViewTransmision/>} />
+        <Route path="/grupo/:grupoId/detalles" element={<ViewGrupoDetailUser/>} />
+        <Route path="/grupo/:grupoId/modulo/:moduloId/detalles" element={<ViewModuloClases/>} />
         <Route path="/transmisiones" element={<ViewTransmisiones />} />
         <Route path="/transmisionDetails/:id" element={<ViewTransmisionDetails/>} />
         <Route path="/Editor" element={<ViewEscritorioEditor />} />

@@ -1,85 +1,51 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+//import { Link } from "react-router-dom";
 import axios from "axios";
-import PropTypes from "prop-types";
+//import PropTypes from "prop-types";
 
-function ModulosNivelStudent ({ nivelId }) {
-  const [modulos, setModulos] = useState([]);
+function ModulosNivelStudent({ userSub }) {
+  const [grupos, setGrupos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchModulos = async () => {
+    const fetchUserGroups = async () => {
       try {
-        const response = await axios.get(`/niveles/${nivelId}/modulos`);
-        setModulos(response.data);
+        const response = await axios.get(`/usuario/${userSub}/grupost-nivel`);
+        setGrupos(response.data.grupo);
+        setLoading(false);
       } catch (error) {
-        console.error("Error al obtener los módulos:", error);
-      }
-    };
-    fetchModulos();
-  }, [nivelId]);
-
-  useEffect(() => {
-    const fetchClases = async (moduloId) => {
-      try {
-        const response = await axios.get(`/modulo/${moduloId}/clases`);
-        return response.data.length; // Retorna el número de clases
-      } catch (error) {
-        console.error("Error al obtener las clases:", error);
-        return 0; // Retorna 0 si hay error
+        setError(error.message);
+        setLoading(false);
       }
     };
 
-    const updateModulosWithClasesCount = async () => {
-      const updatedModulos = await Promise.all(
-        modulos.map(async (modulo) => {
-          const clasesCount = await fetchClases(modulo.id);
-          return { ...modulo, clasesCount };
-        })
-      );
-      setModulos(updatedModulos);
-      setLoading(false);
-    };
+    fetchUserGroups();
+  }, [userSub]);
 
-    // Agregar verificación para evitar actualización en cada render
-    if (modulos.length > 0 && loading) {
-      updateModulosWithClasesCount();
-    }
-  }, [modulos, loading]);
+  if (loading) {
+    return <div className="p-4 bg-white rounded shadow">Cargando...</div>;
+  }
 
-  // Función para truncar la descripción a 150 caracteres
-  const truncateDescription = (description) => {
-    if (description.length > 150) {
-      return description.slice(0, 150) + "...";
-    }
-    return description;
-  };
+  if (error) {
+    return <div className="p-4 bg-white rounded shadow">Error: {error}</div>;
+  }
 
   return (
-    <div className="">
-      <h1 className="text-3xl font-semibold mb-4">Modulos</h1>
-      <div>
-        {modulos.map((modulo) => (
-          <div
-            key={modulo.id}
-            className={`bg-white hover:bg-gray-300 shadow-lg shadow-blue-800/50 p-4 rounded-lg border-t-4 border-blue-500 hover:border-gray-200 transition-transform transform hover:-translate-y-1 last:mr-0 mb-4`}
-          >
-            <Link to={`/estudiante/nivel/${nivelId}/modulo/${modulo.id}`}>
-              <h2 className="text-lg font-semibold mb-2">{modulo.titulo}</h2>
-              <p className="text-gray-600">{truncateDescription(modulo.descripcion)}</p>
-              {/* Asegurarse de que modulo.clasesCount esté definido antes de intentar mostrarlo */}
-              <p className="text-gray-600">{modulo.clasesCount !== undefined ? modulo.clasesCount : "Cargando..."} Clases</p>
-            </Link>
-          </div>
+    <div className="p-4 bg-white rounded shadow">
+      <h2 className="text-xl font-semibold mb-4">Mis Niveles</h2>
+      <ul>
+        {grupos.map((grupo) => (
+          <li key={grupo.id} className="mb-2">
+            <div className="bg-gray-100 rounded p-4">
+              <h3 className="text-lg font-semibold mb-2">{grupo.name}</h3>
+            </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
-
-ModulosNivelStudent.propTypes = {
-  nivelId: PropTypes.string.isRequired,
-};
 
 export default ModulosNivelStudent;
