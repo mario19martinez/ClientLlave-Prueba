@@ -121,6 +121,18 @@ export default function TransmisionAdmin() {
     paginas.push(i);
   }
 
+  const convertirHoraColombia = (horaUTC) => {
+    const serverTimeUTC = new Date(horaUTC);
+    const colombiaTime = new Date(serverTimeUTC.getTime() - (5 * 60 * 60 * 1000));
+    return colombiaTime.toLocaleString();
+  };
+
+  // Renderizar la hora ajustada en la tarjeta de transmisión
+  const renderizarHoraColombia = (fechaUTC) => {
+    const horaColombia = convertirHoraColombia(fechaUTC);
+    return <p><strong>Fecha de Transmisión (Hora Colombia):</strong> {horaColombia}</p>;
+  };
+
   return (
     <div>
       <div className="py-3 justify-start">
@@ -164,18 +176,7 @@ export default function TransmisionAdmin() {
               </p>
               <p>
                 <strong>Fecha de Transmisión:</strong>{" "}
-                {new Date(transmision.fechaTransmision).toLocaleString(
-                  "es-CO",
-                  {
-                    timeZone: "America/Bogota",
-                    day: "numeric",
-                    month: "numeric",
-                    year: "numeric",
-                    hour: "numeric",
-                    minute: "numeric",
-                    hour12: true,
-                  }
-                )}
+                {renderizarHoraColombia(transmision.fechaTransmision)}
               </p>
               <div className="flex justify-end space-x-2">
                 <button
