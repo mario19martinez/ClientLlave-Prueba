@@ -107,6 +107,9 @@ import ViewFormObsequioCampain from "./views/ViewCampainObsequio/ViewFormObsequi
 import ViewTransmision from "./views/ViewTransmisiones/ViewTransmision";
 import ViewGrupos from "./views/ViewAdmin/ViewGrupos/ViewGrupos";
 import ViewDetailGrupo from "./views/ViewAdmin/ViewGrupos/ViewDetailGrupo";
+import ViewGrupoDetailUser from "./views/ViewMenuStudent/ViewsLevels/ViewGrupoDetailUser";
+import ModuloDetailUser from "./Components/Estudiante/EstudianteNiveles/ModuloDetailUser";
+import ViewModuloClases from "./views/ViewMenuStudent/ViewsLevels/ViewModuloClases";
 
 
 import axios from "axios";
@@ -332,6 +335,8 @@ function App() {
         <Route path="/admin/transmisiones" element={<ViewTransmisionAdmin />} />
         <Route path="/Registro/Obsequio" element={<ViewFormObsequioCampain />} /> 
         <Route path="/trasmision" element={<ViewTransmision/>} />
+        <Route path="/grupo/:grupoId/detalles" element={<ViewGrupoDetailUser/>} />
+        <Route path="/grupo/:grupoId/modulo/:moduloId/detalles" element={<ViewModuloClases/>} />
       </Routes>
     </Router>
   );

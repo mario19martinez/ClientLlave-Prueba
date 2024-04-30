@@ -21,8 +21,10 @@ export default function NivelesInscritos() {
     if (userData && userData.sub) {
       const fetchNivelesInscritos = async () => {
         try {
-          const response = await axios.get(`usuario/${userData.sub}/niveles`);
-          setNivelesInscritos(response.data);
+          const response = await axios.get(`usuario/${userData.sub}/grupos-nivel`);
+          console.log('response:', response)
+          console.log('data:', response.data);
+          setNivelesInscritos([response.data.grupo]);
         } catch (error) {
           console.error('Error al obtener los niveles inscritos del usuario:', error);
         }
@@ -41,16 +43,16 @@ export default function NivelesInscritos() {
       <div className="font-normal text-center md:text-left">
         {nivelesInscritos.length > 0 ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {nivelesInscritos.map((nivel, index) => (
-              <div key={index} className="bg-white shadow-md rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:scale-105">
-                <img className="w-full h-40 object-cover" src={nivel.image} alt={nivel.name} />
-                <div className="flex flex-col justify-between h-64 p-4">
+            {nivelesInscritos.map((grupo, index) => (
+              <div key={index} className="bg-white border-2 border-blue-500 shadow-md rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:scale-105">
+                {/* <img className="w-full h-40 object-cover" src={nivel.image} alt={nivel.name} /> */}
+                <div className="flex flex-col justify-between h-40 p-4">
                   <div>
-                    <p className="text-lg font-semibold mb-2">{nivel.name}</p>
-                    <p className="text-gray-500 mb-2">{nivel.description}</p>
+                    <p className="text-lg font-semibold mb-2">{grupo.name}</p>
+                    <p className="text-gray-500 mb-2">{grupo.descripcion}</p>
                   </div>
                   {/* Enlace al detalle del nivel con su respectivo id */}
-                  <Link to={`/estudiante/NivelesDetails/${nivel.id}`}>
+                  <Link to={`/grupo/${grupo.id}/detalles`}>
                     <button
                       className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
