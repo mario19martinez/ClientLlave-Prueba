@@ -123,11 +123,11 @@ export default function TransmisionAdmin() {
 
   const convertirHoraColombia = (horaUTC) => {
     const serverTimeUTC = new Date(horaUTC);
-    const colombiaTime = new Date(serverTimeUTC.getTime() - (5 * 60 * 60 * 1000));
+    const colombiaTime = new Date(serverTimeUTC.getTime() - (5 * 60 * 60 * 1000)); 
     return colombiaTime.toLocaleString();
   };
-
-  // Renderizar la hora ajustada en la tarjeta de transmisión
+  
+  // Función para renderizar la hora ajustada en la tarjeta de transmisión
   const renderizarHoraColombia = (fechaUTC) => {
     const horaColombia = convertirHoraColombia(fechaUTC);
     return <p><strong>Fecha de Transmisión (Hora Colombia):</strong> {horaColombia}</p>;
