@@ -1,31 +1,23 @@
 import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+//import { useParams } from "react-router-dom";
 import axios from "axios";
 
-function NivelClasesDetail({ claseId }) {
+function ClaseDetailUser({ claseId }) {
   const [clase, setClase] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  //const { claseId } = useParams();
 
   useEffect(() => {
-    const fetchClase = async () => {
+    const fetchClaseDetail = async () => {
       try {
-        const response = await axios.get(
-          `/clase/${claseId}/detalles`
-        );
-        setClase(response.data);
-        setLoading(false);
+        const response = await axios.get(`/clase/${claseId}/detalles`);
+        const { clase } = response.data;
+        setClase(clase);
       } catch (error) {
-        setError(
-          "Error al obtener la clase. Por favor, inténtalo de nuevo más tarde."
-        );
-        setLoading(false);
+        console.error("Error al obtener los detalles de la clase:", error);
       }
     };
 
-    fetchClase();
-
-    return () => {};
+    fetchClaseDetail();
   }, [claseId]);
 
   const extractYoutubeVideoId = (url) => {
@@ -35,7 +27,7 @@ function NivelClasesDetail({ claseId }) {
     return match ? match[1] : null;
   };
 
-  if (loading) {
+  if (!clase) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900"></div>
@@ -45,18 +37,11 @@ function NivelClasesDetail({ claseId }) {
       </div>
     );
   }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!clase) {
-    return <div>No se encontró la clase.</div>;
-  }
+  //className=" p-8 bg-white w-1/2 rounded-lg shadow-lg translate-y-48 -translate-x-36"
 
   return (
-    <div className="mx-auto p-8 bg-white rounded-lg shadow-lg">
-      <h2 className="text-3xl font-bold mb-6">Detalle de la clase</h2>
+    <div className="px-4 translate-y-10 translate-x-24" style={{ width: "700px" }}>
+      <h2>{clase.name}</h2>
       <div className="aspect-w-16 aspect-h-9 mb-6">
         {clase.url && (
           <iframe
@@ -70,11 +55,6 @@ function NivelClasesDetail({ claseId }) {
           ></iframe>
         )}
       </div>
-      {clase.name && (
-        <p className="text-lg mb-4">
-          <span className="font-semibold">Nombre:</span> {clase.name}
-        </p>
-      )}
       {clase.texto && (
         <div className="mb-4">
           <h3 className="text-xl font-bold mb-2">Texto:</h3>
@@ -94,10 +74,4 @@ function NivelClasesDetail({ claseId }) {
   );
 }
 
-// Definir propTypes para validar las props
-NivelClasesDetail.propTypes = {
-  moduloId: PropTypes.string.isRequired,
-  claseId: PropTypes.string.isRequired,
-};
-
-export default NivelClasesDetail;
+export default ClaseDetailUser;

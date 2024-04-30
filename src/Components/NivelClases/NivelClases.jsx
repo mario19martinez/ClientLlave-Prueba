@@ -2,18 +2,19 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import PropTypes from "prop-types";
-import NivelClasesDetail from "./NivelClasesDetail";
+import ClaseDetailUser from "../Estudiante/EstudianteNiveles/ClasesDetailUser";
+//import NivelClasesDetail from "./NivelClasesDetail";
 
-function NivelClases({ moduloId }) {
+function NivelClases() {
   const [clases, setClases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedClassId, setSelectedClassId] = useState(null);
-  const { nivelId } = useParams();
+  const { moduloId } = useParams();
 
   useEffect(() => {
     const fetchClases = async () => {
       try {
-        const response = await axios.get(`/nivel/${nivelId}/modulo/${moduloId}/clases`);
+        const response = await axios.get(`/modulo/${moduloId}/clases`);
         setClases(response.data);
         setLoading(false);
       } catch (error) {
@@ -22,7 +23,7 @@ function NivelClases({ moduloId }) {
       }
     };
     fetchClases();
-  }, [nivelId, moduloId]);
+  }, [moduloId]);
 
   const handleClassSelect = (claseId) => {
     setSelectedClassId(claseId);
@@ -52,7 +53,7 @@ function NivelClases({ moduloId }) {
   }
 
   return (
-    <div className="flex flex-col items-start w-screen">
+    <div className="flex flex-col items-start w-screen translate-x-28">
       {/* Class Information */}
       <div className="flex w-screen">
         <div className=" p-0 mt-8 rounded-lg shadow-md px-2 ">
@@ -87,7 +88,7 @@ function NivelClases({ moduloId }) {
         </div>
         <div className="px-2 py-2 w-2/3">
           {selectedClassId && (
-            <NivelClasesDetail nivelId={nivelId} moduloId={moduloId} claseId={selectedClassId} />
+            <ClaseDetailUser moduloId={moduloId} claseId={selectedClassId} />
           )}
         </div>
       </div>
