@@ -13,6 +13,7 @@ const EditarBlogEditor = ({ blogId }) => {
     content: "",
     imageUrl: "",
     embeddedElement: "",
+    estado: "borrador", 
   });
 
   useEffect(() => {
@@ -27,6 +28,11 @@ const EditarBlogEditor = ({ blogId }) => {
 
     fetchBlog();
   }, [blogId]);
+
+  const handleImageBlur = async (e) => {
+    const imageUrl = e.target.value;
+    setBlog({ ...blog, imageUrl });
+  };
 
   const handleInputChange = (name, value) => {
     setBlog({ ...blog, [name]: value });
@@ -59,22 +65,36 @@ const EditarBlogEditor = ({ blogId }) => {
         />
       </div>
       <div className="mb-4">
-        <label className="block mb-1">Contenido:</label>
-        <ReactQuill
-          value={blog.content}
-          onChange={(value) => handleInputChange("content", value)}
-          className="rounded-md bg-white text-black"
-          required
-        />
-      </div>
-      <div className="mb-4">
         <label className="block mb-1">URL de la imagen:</label>
         <input
           type="text"
           name="imageUrl"
           value={blog.imageUrl}
           onChange={(e) => handleInputChange("imageUrl", e.target.value)}
+          onBlur={handleImageBlur}
           className="w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
+        />
+        {blog.imageUrl && (
+          <div className="mt-2">
+            <p className="block mb-1">Miniatura de la imagen:</p>
+            <img
+              src={blog.imageUrl}
+              alt="Miniatura de la imagen"
+              className="w-32 h-32 object-cover border border-gray-300"
+            />
+          </div>
+        )}
+        {!blog.imageUrl && (
+          <p className="text-gray-500">No hay imagen disponible</p>
+        )}
+      </div>
+      <div className="mb-4">
+        <label className="block mb-1">Contenido:</label>
+        <ReactQuill
+          value={blog.content}
+          onChange={(value) => handleInputChange("content", value)}
+          className="rounded-md bg-white text-black"
+          required
         />
       </div>
       <div className="mb-4">

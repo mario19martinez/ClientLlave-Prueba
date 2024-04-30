@@ -164,7 +164,18 @@ export default function TransmisionAdmin() {
               </p>
               <p>
                 <strong>Fecha de Transmisión:</strong>{" "}
-                {new Date(transmision.fechaTransmision).toLocaleString()}
+                {new Date(transmision.fechaTransmision).toLocaleString(
+                  "es-CO",
+                  {
+                    timeZone: "America/Bogota",
+                    day: "numeric",
+                    month: "numeric",
+                    year: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                    hour12: true,
+                  }
+                )}
               </p>
               <div className="flex justify-end space-x-2">
                 <button
@@ -230,24 +241,22 @@ export default function TransmisionAdmin() {
         </div>
       )}
 
-{showCountdownModal && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center px-4">
-    <div className="bg-gray-300  p-5 rounded-lg shadow-lg flex flex-col items-center">
-      
-      {/* Componente Contador */}
-      <ContadorTransmision fechaTransmision={selectedTransmisionDate} />
+      {showCountdownModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center px-4">
+          <div className="bg-gray-300  p-5 rounded-lg shadow-lg flex flex-col items-center">
+            {/* Componente Contador */}
+            <ContadorTransmision fechaTransmision={selectedTransmisionDate} />
 
-      {/* Botón Aceptar */}
-      <button
-        onClick={handleCloseCountdownModal}
-        className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
-      >
-        Aceptar
-      </button>
-      
-    </div>
-  </div>
-)}
+            {/* Botón Aceptar */}
+            <button
+              onClick={handleCloseCountdownModal}
+              className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
+            >
+              Aceptar
+            </button>
+          </div>
+        </div>
+      )}
 
       {showEditModal && (
         <EditarTransmision
