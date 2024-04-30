@@ -3,8 +3,10 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { useNavigate } from "react-router-dom";
 
 const EditarBlog = ({ blogId }) => {
+  const navigate = useNavigate();
   const [blog, setBlog] = useState({
     title: "",
     content: "",
@@ -12,6 +14,7 @@ const EditarBlog = ({ blogId }) => {
     embeddedElement: "",
     estado: "",
   });
+  const [modalState, setModalState] = useState("");
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -31,35 +34,36 @@ const EditarBlog = ({ blogId }) => {
   };
 
   const handleRechazar = () => {
-    setBlog(prevBlog => ({ ...prevBlog, estado: "rechazado" }));
+    setBlog((prevBlog) => ({ ...prevBlog, estado: "rechazado" }));
+    handleUpdateBlog("rechazado");
   };
-  
+
   const handleGuardarBorrador = () => {
-    setBlog(prevBlog => ({ ...prevBlog, estado: "borrador" }));
+    setBlog((prevBlog) => ({ ...prevBlog, estado: "borrador" }));
+    handleUpdateBlog("borrador");
   };
-  
+
   const handlePublicarBlog = () => {
-    setBlog(prevBlog => ({ ...prevBlog, estado: "publicado" }));
+    setBlog((prevBlog) => ({ ...prevBlog, estado: "publicado" }));
+    handleUpdateBlog("publicado");
   };
-  
-  useEffect(() => {
-    const handleUpdateBlog = async () => {
-      try {
-        await axios.put(`/blogs/${blogId}`, blog);
-        alert("El blog se ha actualizado correctamente");
-      } catch (error) {
-        console.error("Hubo un error al actualizar el blog:", error);
-      }
-    };
-  
-    if (blog.estado !== "") {
-      handleUpdateBlog();
+
+  const handleUpdateBlog = async (estado) => {
+    try {
+      await axios.put(`/blogs/${blogId}`, { ...blog, estado });
+      setModalState(estado.charAt(0).toUpperCase() + estado.slice(1));
+    } catch (error) {
+      console.error("Hubo un error al actualizar el blog:", error);
     }
-  }, [blog.estado, blogId, blog]);
+  };  
 
   const handleImageBlur = async (e) => {
     const imageUrl = e.target.value;
     setBlog({ ...blog, imageUrl });
+  };
+
+  const handleModalClose = () => {
+    setModalState("");
   };
 
   return (
@@ -120,7 +124,7 @@ const EditarBlog = ({ blogId }) => {
               ["link", "image", "video"],
               ["clean"],
               [{ align: [] }],
-              [{ color: [] }, { background: [] }], // Cambio de color de texto y fondo
+              [{ color: [] }, { background: [] }],
             ],
           }}
           className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500 bg-white"
@@ -133,7 +137,9 @@ const EditarBlog = ({ blogId }) => {
         <textarea
           name="embeddedElement"
           value={blog.embeddedElement}
-          onChange={(e) => handleInputChange("embeddedElement", e.target.value)}
+          onChange={(e) =>
+            handleInputChange("embeddedElement", e.target.value)
+          }
           className="w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
           rows="3"
         />
@@ -166,6 +172,35 @@ const EditarBlog = ({ blogId }) => {
           Publicar Blog
         </button>
       </div>
+
+      {modalState && (
+        <div className="fixed z-10 inset-0 flex items-center justify-center overflow-y-auto">
+          <div className="fixed inset-0 transition-opacity">
+            <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+          </div>
+          <div className="relative bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+            <div className="px-10 py-10">
+              <h1 className="text-lg font-bold mb-4 text-center">
+                El blog ha sido {modalState} con éxito
+              </h1>
+              <div className="flex justify-center">
+                <button
+                  onClick={() => navigate("/admin/blogs")}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 focus:outline-none focus:shadow-outline"
+                >
+                  Regresar a Blogs
+                </button>
+                <button
+                  onClick={handleModalClose}
+                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Seguir Editando
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
