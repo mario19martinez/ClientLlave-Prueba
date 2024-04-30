@@ -1,0 +1,8 @@
+.contador span {
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .contador:hover span {
+    transform: scale(1.1);
+  }
+  

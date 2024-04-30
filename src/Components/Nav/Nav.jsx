@@ -78,6 +78,11 @@ export default function Nav() {
       // Si no se detecta ningún rol específico pero el usuario es superAdmin,
       // se redirige a la ruta de administrador
       navigate("/admin");
+    } else if (
+      (isLoggedIn === true && userData && userData.rol === "editor") ||
+      userData?.rol === "admin"
+    ) {
+      navigate("/Editor");
     }
   };
 
@@ -89,26 +94,59 @@ export default function Nav() {
         </div>
 
         <div className="w-1/4 lg:hidden flex justify-end">
-          <button
-            type="button"
-            onClick={toggleMobileMenu}
-            className="focus:outline-none"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-8 h-8"
+          <div className="flex space-x-2">
+            <div className="flex flex-col justify-center items-center gap-4">
+              {isLoggedIn ? (
+                <button
+                  type="button"
+                  onClick={redirect}
+                  className="py-2 px-4 w-28 bg-blue-600 text-white hover:bg-blue-800 hover:text-white transition-colors rounded-md"
+                >
+                  Mi cuenta
+                </button>
+              ) : (
+                <>
+                  <div className="flex space-x-2">
+  <button
+    type="button"
+    className="py-2 px-4 bg-blue-600 text-sm text-white hover:bg-blue-800 hover:text-white transition-colors rounded-md"
+    onClick={toggleLoginForm}
+  >
+    Iniciar Sesión
+  </button>
+  <button
+    type="button"
+    className="py-2 px-4 bg-blue-600 text-sm text-white hover:bg-blue-800 hover:text-white transition-colors rounded-md"
+    onClick={toggleRegistrationModal}
+  >
+    Crear cuenta
+  </button>
+</div>
+
+                </>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={toggleMobileMenu}
+              className="focus:outline-none"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 12h18M3 6h18M3 18h18"
-              />
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-8 h-8"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 12h18M3 6h18M3 18h18"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <nav className="hidden lg:flex justify-center items-center gap-8 text-white font-medium">
@@ -129,9 +167,11 @@ export default function Nav() {
             Blog
           </Link>
           <Link
-            to="/entrenamiento"  
+            to="/entrenamiento"
             className={`hover:text-gray-300 transition-colors ${
-              location.pathname === "/entrenamiento" ? "border-b-2 border-white" : ""
+              location.pathname === "/entrenamiento"
+                ? "border-b-2 border-white"
+                : ""
             }`}
           >
             Entrenamiento
@@ -241,35 +281,6 @@ export default function Nav() {
               Nosotros
             </a>
           </nav>
-
-          <div className="flex flex-col justify-center items-center gap-4 mt-4">
-            {isLoggedIn ? (
-              <button
-                type="button"
-                onClick={redirect}
-                className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 hover:text-white transition-colors rounded-md"
-              >
-                Mi cuenta
-              </button>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 hover:text-white transition-colors rounded-md"
-                  onClick={toggleLoginForm}
-                >
-                  Iniciar Sesión
-                </button>
-                <button
-                  type="button"
-                  className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 hover:text-white transition-colors rounded-md"
-                  onClick={toggleRegistrationModal}
-                >
-                  Crear cuenta
-                </button>
-              </>
-            )}
-          </div>
         </div>
       )}
 

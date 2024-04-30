@@ -53,6 +53,7 @@ export default function LoginForm({ onClose }) {
           isLoggedIn = "true";
           localStorage.setItem("SuperAdmin", "true");
           navigate("/admin");
+
         } else if (userRole === "admin") {
           // Iniciar sesión para el rol de administrador
           const token = await dispatch(loginUser(values)).unwrap();
@@ -60,6 +61,15 @@ export default function LoginForm({ onClose }) {
           localStorage.setItem("token", token);
           localStorage.setItem("email", values.email);
           navigate("/admin");
+
+        } else if (userRole === "editor") {
+          // Iniciar sesión para el rol de administrador
+          const token = await dispatch(loginUser(values)).unwrap();
+          isLoggedIn = "true";
+          localStorage.setItem("token", token);
+          localStorage.setItem("email", values.email);
+          navigate("/Editor");
+
         } else {
           // Iniciar sesión para otros roles (asumiendo "client")
           const token = await dispatch(loginUser(values)).unwrap();

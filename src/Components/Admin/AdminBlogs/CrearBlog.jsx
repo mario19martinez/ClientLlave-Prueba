@@ -12,6 +12,7 @@ const CrearBlog = () => {
     content: "",
     imageUrl: "",
     embeddedElement: "",
+    estado: "",
   });
 
   const handleChange = (name, value) => {
@@ -38,7 +39,7 @@ const CrearBlog = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-blue-300 to-blue-200 p-8 rounded-lg shadow-md max-w-3xl mx-auto">
+    <div className="bg-gradient-to-br from-green-100 to-blue-200 p-8 rounded-lg shadow-md max-w-3xl mx-auto w-screen">
       <button
         onClick={goBack}
         className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center focus:outline-none"
@@ -82,18 +83,23 @@ const CrearBlog = () => {
             onChange={(value) => handleChange("content", value)}
             modules={{
               toolbar: [
-                [{ 'header': '1'}, {'header': '2'}, {'font': []}],
-                [{size: []}],
-                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-                ['link', 'image', 'video'],
-                ['clean'],
-                [{ 'align': [] }],
-                [{ 'color': [] }, { 'background': [] }], // Cambio de color de texto y fondo
+                [{ header: "1" }, { header: "2" }, { font: [] }],
+                [{ size: [] }],
+                ["bold", "italic", "underline", "strike", "blockquote"],
+                [
+                  { list: "ordered" },
+                  { list: "bullet" },
+                  { indent: "-1" },
+                  { indent: "+1" },
+                ],
+                ["link", "image", "video"],
+                ["clean"],
+                [{ align: [] }],
+                [{ color: [] }, { background: [] }], // Cambio de color de texto y fondo
               ],
             }}
             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500 bg-white"
-            style={{ minHeight: '200px' }}
+            style={{ minHeight: "200px" }}
             required
           />
         </div>
@@ -119,12 +125,30 @@ const CrearBlog = () => {
             rows="4"
           />
         </div>
-        <button
-          type="submit"
-          className="bg-blue-500 text-white py-3 px-6 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-        >
-          Crear Blog
-        </button>
+        <div className="flex">
+          <button
+            type="button"
+            className="bg-gray-500 text-white py-3 px-6 rounded-md mr-4 hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
+            onClick={(e) => {
+              e.preventDefault(); 
+              setFormData({ ...formData, estado: "borrador" });
+              handleSubmit(e); 
+            }}
+          >
+            Guardar Borrador
+          </button>
+          <button
+            type="button"
+            className="bg-blue-500 text-white py-3 px-6 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+            onClick={(e) => {
+              e.preventDefault(); 
+              setFormData({ ...formData, estado: "publicado" });
+              handleSubmit(e); 
+            }}
+          >
+            Publicar Blog
+          </button>
+        </div>
       </form>
     </div>
   );

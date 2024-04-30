@@ -100,17 +100,28 @@ import ViewLandingCampain from "./views/ViewAdmin/ViewCampain&Landings/ViewLandi
 import ViewCrearLanding from "./views/ViewAdmin/ViewCampain&Landings/ViewCrearLanding";
 import ViewCertificacion from "./views/ViewMenuStudent/ViewCertificacion";
 import ViewTransmisionAdmin from "./views/ViewAdmin/ViewTransmision/ViewTransmisionAdmin";
+import ViewFormObsequioCampain from "./views/ViewCampainObsequio/ViewFormObsequioCampain";
+import ViewTransmision from "./views/ViewTransmisiones/ViewTransmision";
+import ViewTransmisiones from "./views/ViewTransmisiones/ViewTransmisiones";
+import ViewTransmisionDetails from "./views/ViewTransmisiones/ViewTransmisionDetails";
 //import Grupos from './Components/Admin/NivelAdmin/Grupos/Grupos'
 //import GrupoDetail from "./Components/Admin/NivelAdmin/Grupos/GrupoDetail";
 //import ViewTransmisionAdmin from "./views/ViewAdmin/ViewTransmision/ViewTransmisionAdmin";
-import ViewFormObsequioCampain from "./views/ViewCampainObsequio/ViewFormObsequioCampain";
-import ViewTransmision from "./views/ViewTransmisiones/ViewTransmision";
 import ViewGrupos from "./views/ViewAdmin/ViewGrupos/ViewGrupos";
 import ViewDetailGrupo from "./views/ViewAdmin/ViewGrupos/ViewDetailGrupo";
 import ViewGrupoDetailUser from "./views/ViewMenuStudent/ViewsLevels/ViewGrupoDetailUser";
 import ModuloDetailUser from "./Components/Estudiante/EstudianteNiveles/ModuloDetailUser";
 import ViewModuloClases from "./views/ViewMenuStudent/ViewsLevels/ViewModuloClases";
-
+import ViewEscritorioEditor from "./views/ViewEditor/ViewEscritorioEditor";
+import ViewBlogEditor from "./views/ViewEditor/ViewBlogsEditor";
+import ViewCrearBlogEditor from "./views/ViewEditor/ViewCrearBlogEditor";
+import ViewEditarBlogEditor from "./views/ViewEditor/ViewEditarBlogEditor";
+import ViewVerBlogEditor from "./views/ViewEditor/ViewVerBlogEditor";
+import ViewCursosEditor from "./views/ViewEditor/ViewCursosEditor";
+import ViewCursosDetailsEditor from "./views/ViewEditor/ViewCursosDetailsEditor";
+import ViewTransmisionEditor from "./views/ViewEditor/ViewTransmisionEditor";
+import ViewEditorAjustes from "./views/ViewEditor/ViewEditorAjustes";
+import ViewBlogEdit from "./views/ViewAdmin/ViewBlogsEdit";
 
 import axios from "axios";
 
@@ -334,9 +345,21 @@ function App() {
         <Route path="/niveles/:id/grupos/:grupoId" element={<ViewDetailGrupo />} />
         <Route path="/admin/transmisiones" element={<ViewTransmisionAdmin />} />
         <Route path="/Registro/Obsequio" element={<ViewFormObsequioCampain />} /> 
-        <Route path="/trasmision" element={<ViewTransmision/>} />
+        <Route path="/transmision" element={<ViewTransmision/>} />
         <Route path="/grupo/:grupoId/detalles" element={<ViewGrupoDetailUser/>} />
         <Route path="/grupo/:grupoId/modulo/:moduloId/detalles" element={<ViewModuloClases/>} />
+        <Route path="/transmisiones" element={<ViewTransmisiones />} />
+        <Route path="/transmisionDetails/:id" element={<ViewTransmisionDetails/>} />
+        <Route path="/Editor" element={<ViewEscritorioEditor />} />
+        <Route path="/Editor/Blogs" element={<ViewBlogEditor />} />
+        <Route path="/Editor/Blogs/CrearBlog" element={<ViewCrearBlogEditor />} />
+        <Route path="/Editor/Blogs/EditarBlog/:id" element={<ViewEditarBlogEditor />} />
+        <Route path="/Editor/Blogs/VerBlog/:id" element={<ViewVerBlogEditor />} />
+        <Route path="/Editor/Cursos" element={<ViewCursosEditor />}/>
+        <Route path="/Editor/Cursos/CursoDetails/:id" element={<ViewCursosDetailsEditor />} />
+        <Route path="/Editor/Transmision" element={<ViewTransmisionEditor />} />
+        <Route path="/Editor/Ajustes" element={<ViewEditorAjustes />}/>
+        <Route path="/Admin/Blog/Editar/:id" element={<ViewBlogEdit />} />
       </Routes>
     </Router>
   );

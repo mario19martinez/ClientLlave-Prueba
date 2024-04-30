@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import Modal from "react-modal";
@@ -7,7 +6,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditarBlog from "./EditarBlog";
-//import VerBlog from "./VerBlog";
 import axios from "axios";
 import {
   Button,
@@ -17,11 +15,11 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
+import img from "../../../assets/cardBlog.png";
 
-const CardAdminBlogs = ({ imageUrl, title, blogId }) => {
+const CardAdminBlogs = ({ imageUrl, title, blogId, estado }) => {
   const navigate = useNavigate();
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  //const [viewModalIsOpen, setViewModalIsOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const handleDeleteBlog = async () => {
@@ -46,26 +44,55 @@ const CardAdminBlogs = ({ imageUrl, title, blogId }) => {
     handleViewBlog(blogId);
   };
 
+  const handleEditBlog = () => {
+    navigate(`/Admin/Blog/Editar/${blogId}`);
+  };
+
+  const truncatedTitle =
+    title.length > 25 ? title.substring(0, 25) + "..." : title;
+
+  const estadoColorClass = () => {
+    switch (estado) {
+      case "rechazado":
+        return "text-red-500";
+      case "borrador":
+        return "text-yellow-500";
+      case "publicado":
+        return "text-green-500";
+      default:
+        return "text-gray-500";
+    }
+  };
+
+  const estadoText = estado ? estado : "Estado no definido";
+
   return (
-    <div className="border bg-cyan-50 rounded-lg p-4 m-2 flex items-center hover:shadow-lg transition duration-300">
-      <img src={imageUrl} alt="Blog" className="w-24 h-24 object-cover mr-4" />
+    <div className="border bg-gray-100 rounded-lg p-4 m-2 flex items-center hover:shadow-lg transition duration-300">
+      <img
+        src={imageUrl || img}
+        alt="Blog"
+        className="w-24 h-24 object-cover mr-4"
+      />
       <div className="flex flex-col flex-grow">
-        <h3 className="text-lg font-semibold">{title}</h3>
-        <div className="flex mt-2">
+        <h3 className="text-lg font-semibold">{truncatedTitle}</h3>
+        <div>
+          <p className={`font-semibold ${estadoColorClass()}`}>{estadoText}</p>
+        </div>
+        <div className="flex mt-2 space-x-2">
           <button
-            className="bg-blue-500 text-white px-2 py-1 rounded-md flex items-center mr-2 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
-            onClick={() => setModalIsOpen(true)}
+            className="text-blue-500 px-3 py-1 rounded-full flex items-center transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+            onClick={handleEditBlog}
           >
             <EditIcon />
           </button>
           <button
-            className="bg-green-500 text-white px-2 py-1 rounded-md flex items-center mr-2 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+            className="text-green-500 px-3 py-1 rounded-full flex items-center transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
             onClick={handleCardClick}
           >
             <VisibilityIcon />
           </button>
           <button
-            className="bg-red-500 text-white px-2 py-1 rounded-md flex items-center transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+            className="text-red-500 px-3 py-1 rounded-full flex items-center transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
             onClick={() => setDeleteDialogOpen(true)} // Abrir el diálogo de confirmación
           >
             <DeleteIcon />
@@ -106,6 +133,7 @@ CardAdminBlogs.propTypes = {
   imageUrl: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   blogId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  estado: PropTypes.string.isRequired,
 };
 
 export default CardAdminBlogs;

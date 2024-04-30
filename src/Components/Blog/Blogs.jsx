@@ -1,11 +1,10 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import CardBlog from "./CardBlog";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true); // Estado para controlar la carga
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const blogsPerPage = 6;
 
@@ -15,7 +14,7 @@ const Blogs = () => {
         const response = await axios.get("/blogs");
         const reversedBlogs = response.data.reverse();
         setBlogs(reversedBlogs);
-        setLoading(false); // Cambia el estado de carga a falso cuando se completan los blogs
+        setLoading(false);
       } catch (error) {
         console.error("Hubo un error al obtener los blogs:", error);
       }
@@ -24,15 +23,18 @@ const Blogs = () => {
     fetchBlogs();
   }, []);
 
+  // Filtrar los blogs para mostrar solo los blogs con estado "publicado" o estado vacío, null o indefinido
+  const filteredBlogs = blogs.filter(blog => blog.estado === "publicado" || !blog.estado);
+
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
-  const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog);
+  const currentBlogs = filteredBlogs.slice(indexOfFirstBlog, indexOfLastBlog);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {loading ? ( // Muestra el mensaje de carga y la animación si loading es verdadero
+      {loading ? (
         <div className="flex justify-center items-center h-48">
           <p className="text-lg font-bold">Cargando blogs...</p>
           <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
@@ -46,7 +48,7 @@ const Blogs = () => {
           </div>
           <div className="flex justify-center mt-4">
             {Array.from(
-              { length: Math.ceil(blogs.length / blogsPerPage) },
+              { length: Math.ceil(filteredBlogs.length / blogsPerPage) },
               (_, i) => (
                 <button
                   key={i}

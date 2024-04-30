@@ -1,10 +1,9 @@
-// eslint-disable-next-line no-unused-vars
 import { useState, useEffect } from "react";
-import CardAdminBlogs from "./CardAdminBlogs";
+import CardEditorBlogs from "./CardEditorBlogs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const AdminBlogs = () => {
+const Blogs = () => {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -41,7 +40,7 @@ const AdminBlogs = () => {
       </button>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {currentBlogs.map((blog) => (
-          <CardAdminBlogs
+          <CardEditorBlogs
             key={blog.id}
             imageUrl={blog.imageUrl}
             title={blog.title}
@@ -71,4 +70,4 @@ const AdminBlogs = () => {
   );
 };
 
-export default AdminBlogs;
+export default Blogs;
