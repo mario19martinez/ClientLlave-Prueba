@@ -127,6 +127,7 @@ export default function TransmisionAdmin() {
       hour: "numeric",
       minute: "numeric",
       hour12: true,
+      timeZone: "America/New_York"
     };
     return dateTime.toLocaleDateString("es-ES", options);
   };
