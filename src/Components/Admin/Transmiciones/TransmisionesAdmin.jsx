@@ -124,6 +124,9 @@ export default function TransmisionAdmin() {
     return dateTime.toLocaleDateString('es-ES', options);
   };
 
+  const fechaHoraActual = new Date();
+console.log(fechaHoraActual);
+
   return (
     <div>
       <div className="py-3 justify-start">
