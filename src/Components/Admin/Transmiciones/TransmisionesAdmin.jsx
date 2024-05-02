@@ -127,6 +127,7 @@ export default function TransmisionAdmin() {
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
+      timeZone: "UTC",
     };
     return dateTime.toLocaleString("es-ES", options);
   };
