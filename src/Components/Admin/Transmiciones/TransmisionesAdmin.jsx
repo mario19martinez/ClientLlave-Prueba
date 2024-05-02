@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import EditarTransmision from "./EditarTransmision";
@@ -33,10 +32,7 @@ export default function TransmisionAdmin() {
     axios
       .get("/transmisiones")
       .then((response) => {
-        const sortedData = response.data.sort(
-          (a, b) => new Date(b.fechaTransmision) - new Date(a.fechaTransmision)
-        );
-        setTransmisiones(sortedData);
+        setTransmisiones(response.data);
       })
       .catch((error) => {
         console.error("Error al obtener las transmisiones", error);
@@ -121,16 +117,11 @@ export default function TransmisionAdmin() {
     paginas.push(i);
   }
 
-  const convertirHoraColombia = (horaUTC) => {
-    const serverTimeUTC = new Date(horaUTC);
-    const colombiaTime = new Date(serverTimeUTC.getTime() - (5 * 60 * 60 * 1000)); 
-    return colombiaTime.toLocaleString();
-  };
-  
-  // Función para renderizar la hora ajustada en la tarjeta de transmisión
-  const renderizarHoraColombia = (fechaUTC) => {
-    const horaColombia = convertirHoraColombia(fechaUTC);
-    return <p><strong>Fecha de Transmisión (Hora Colombia):</strong> {horaColombia}</p>;
+  // Función para formatear la fecha y hora en formato legible para el usuario
+  const formatDateTime = (dateTimeString) => {
+    const dateTime = new Date(dateTimeString);
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true };
+    return dateTime.toLocaleDateString('es-ES', options);
   };
 
   return (
@@ -174,10 +165,7 @@ export default function TransmisionAdmin() {
               >
                 Estado: {transmision.estado ? "Activo" : "Inactivo"}
               </p>
-              <p>
-                <strong>Fecha de Transmisión:</strong>{" "}
-                {renderizarHoraColombia(transmision.fechaTransmision)}
-              </p>
+              <p><strong>Fecha de Transmisión:</strong> {formatDateTime(transmision.fechaTransmision)}</p>
               <div className="flex justify-end space-x-2">
                 <button
                   onClick={() =>
