@@ -124,12 +124,12 @@ export default function TransmisionAdmin() {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
-      hour: "numeric",
-      minute: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
       hour12: true,
-      timeZone: "local",
     };
-    return dateTime.toLocaleDateString("es-ES", options);
+    const formatter = new Intl.DateTimeFormat("es-ES", options);
+    return formatter.format(dateTime);
   };
 
   const fechaHoraActual = new Date();
