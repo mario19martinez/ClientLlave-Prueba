@@ -120,12 +120,21 @@ export default function TransmisionAdmin() {
   // Función para formatear la fecha y hora en formato legible para el usuario
   const formatDateTime = (dateTimeString) => {
     const dateTime = new Date(dateTimeString);
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true };
-    return dateTime.toLocaleDateString('es-ES', options);
+    const options = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+    return dateTime.toLocaleDateString("es-ES", options);
   };
 
   const fechaHoraActual = new Date();
-console.log(fechaHoraActual);
+  console.log(fechaHoraActual);
+
+  console.log(transmisiones);
 
   return (
     <div>
@@ -168,7 +177,10 @@ console.log(fechaHoraActual);
               >
                 Estado: {transmision.estado ? "Activo" : "Inactivo"}
               </p>
-              <p><strong>Fecha de Transmisión:</strong> {formatDateTime(transmision.fechaTransmision)}</p>
+              <p>
+                <strong>Fecha de Transmisión:</strong>{" "}
+                {formatDateTime(transmision.fechaTransmision)}
+              </p>
               <div className="flex justify-end space-x-2">
                 <button
                   onClick={() =>
