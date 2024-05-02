@@ -128,9 +128,9 @@ export default function TransmisionAdmin() {
       minute: "2-digit",
       hour12: true,
     };
-    const formatter = new Intl.DateTimeFormat("es-ES", options);
-    return formatter.format(dateTime);
+    return dateTime.toLocaleString("es-ES", options);
   };
+  
 
   const fechaHoraActual = new Date();
   console.log(fechaHoraActual);
