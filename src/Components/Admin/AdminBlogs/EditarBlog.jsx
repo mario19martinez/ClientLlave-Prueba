@@ -29,6 +29,27 @@ const EditarBlog = ({ blogId }) => {
     fetchBlog();
   }, [blogId]);
 
+   // Función para observar cambios en el DOM
+   useEffect(() => {
+    const observer = new MutationObserver((mutationsList) => {
+      for (let mutation of mutationsList) {
+        if (mutation.type === 'childList') {
+          // Manejar cambios en el DOM aquí si es necesario
+        }
+      }
+    });
+
+    // Observar cambios en el nodo específico
+    observer.observe(document.getElementById('editor-container'), {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   const handleInputChange = (name, value) => {
     setBlog({ ...blog, [name]: value });
   };
@@ -55,7 +76,7 @@ const EditarBlog = ({ blogId }) => {
     } catch (error) {
       console.error("Hubo un error al actualizar el blog:", error);
     }
-  };  
+  };
 
   const handleImageBlur = async (e) => {
     const imageUrl = e.target.value;
@@ -67,7 +88,7 @@ const EditarBlog = ({ blogId }) => {
   };
 
   return (
-    <div className="container mx-auto p-6 bg-white text-gray-800 rounded-lg shadow-lg">
+    <div  id="editor-container" className="container mx-auto p-6 bg-white text-gray-800 rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold mb-4 text-center">Editar Blog</h2>
       <div className="mb-4">
         <label className="block mb-1">Título:</label>

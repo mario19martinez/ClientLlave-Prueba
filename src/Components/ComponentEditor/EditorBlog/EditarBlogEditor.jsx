@@ -29,6 +29,27 @@ const EditarBlogEditor = ({ blogId }) => {
     fetchBlog();
   }, [blogId]);
 
+  // Función para observar cambios en el DOM
+  useEffect(() => {
+    const observer = new MutationObserver((mutationsList) => {
+      for (let mutation of mutationsList) {
+        if (mutation.type === 'childList') {
+          // Manejar cambios en el DOM aquí si es necesario
+        }
+      }
+    });
+
+    // Observar cambios en el nodo específico
+    observer.observe(document.getElementById('editor-container'), {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   const handleImageBlur = async (e) => {
     const imageUrl = e.target.value;
     setBlog({ ...blog, imageUrl });
@@ -52,7 +73,7 @@ const EditarBlogEditor = ({ blogId }) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-gray-100 text-black rounded-lg shadow-lg">
+    <div id="editor-container" className="max-w-2xl mx-auto p-6 bg-gray-100 text-black rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold mb-4">Editar Blog</h2>
       <div className="mb-4">
         <label className="block mb-1">Título:</label>
@@ -94,6 +115,24 @@ const EditarBlogEditor = ({ blogId }) => {
           value={blog.content}
           onChange={(value) => handleInputChange("content", value)}
           className="rounded-md bg-white text-black"
+          modules={{
+            toolbar: [
+              [{ header: "1" }, { header: "2" }, { font: [] }],
+              [{ size: [] }],
+              [
+                "bold",
+                "italic",
+                "underline",
+                "strike",
+                "blockquote",
+              ],
+              [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+              ["link", "image", "video"],
+              ["clean"],
+              [{ align: [] }],
+              [{ color: [] }, { background: [] }],
+            ],
+          }}
           required
         />
       </div>
