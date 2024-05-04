@@ -104,14 +104,9 @@ import ViewFormObsequioCampain from "./views/ViewCampainObsequio/ViewFormObsequi
 import ViewTransmision from "./views/ViewTransmisiones/ViewTransmision";
 import ViewTransmisiones from "./views/ViewTransmisiones/ViewTransmisiones";
 import ViewTransmisionDetails from "./views/ViewTransmisiones/ViewTransmisionDetails";
-//import Grupos from './Components/Admin/NivelAdmin/Grupos/Grupos'
-//import GrupoDetail from "./Components/Admin/NivelAdmin/Grupos/GrupoDetail";
-//import ViewTransmisionAdmin from "./views/ViewAdmin/ViewTransmision/ViewTransmisionAdmin";
 import ViewGrupos from "./views/ViewAdmin/ViewGrupos/ViewGrupos";
 import ViewDetailGrupo from "./views/ViewAdmin/ViewGrupos/ViewDetailGrupo";
 import ViewGrupoDetailUser from "./views/ViewMenuStudent/ViewsLevels/ViewGrupoDetailUser";
-//import ModuloDetailUser from "./Components/Estudiante/EstudianteNiveles/ModuloDetailUser";
-//import ViewModuloClases from "./views/ViewMenuStudent/ViewsLevels/ViewModuloClases";
 import ViewEscritorioEditor from "./views/ViewEditor/ViewEscritorioEditor";
 import ViewBlogEditor from "./views/ViewEditor/ViewBlogsEditor";
 import ViewCrearBlogEditor from "./views/ViewEditor/ViewCrearBlogEditor";
@@ -122,7 +117,6 @@ import ViewCursosDetailsEditor from "./views/ViewEditor/ViewCursosDetailsEditor"
 import ViewTransmisionEditor from "./views/ViewEditor/ViewTransmisionEditor";
 import ViewEditorAjustes from "./views/ViewEditor/ViewEditorAjustes";
 import ViewBlogEdit from "./views/ViewAdmin/ViewBlogsEdit";
-import ModuloDetailsStudent from "./Components/Estudiante/EstudianteNiveles/ModuloDetailsStudent";
 import ViewModuloClases from "./views/ViewMenuStudent/ViewsLevels/ViewModuloClases";
 
 import axios from "axios";
