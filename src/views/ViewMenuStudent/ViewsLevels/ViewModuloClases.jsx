@@ -1,15 +1,16 @@
-// import SidebarUser from "../../../Components/Estudiante/SidebarUser/SidebarUser";
-// import NavUser from "../../../Components/Estudiante/NavUser/NavUser";
-import ModuloDetailUser from "../../../Components/Estudiante/EstudianteNiveles/ModuloDetailUser";
-import NivelClases from "../../../Components/NivelClases/NivelClases";
+import SidebarUser from "../../../Components/Estudiante/SidebarUser/SidebarUser";
+import NavUser from "../../../Components/Estudiante/NavUser/NavUser";
+import ModuloDetailsStudent from "../../../Components/Estudiante/EstudianteNiveles/ModuloDetailsStudent";
 
 export default function ViewModuloClases() {
   return (
     <div>
-      {/* <NavUser />
-      <SidebarUser /> */}
-      <ModuloDetailUser />
-      <NivelClases />
+      <NavUser />
+      <div className="flex">
+      <SidebarUser />
+      <ModuloDetailsStudent />
+      </div>
+      {/* <NivelClases /> */}
     </div>
   );
 }

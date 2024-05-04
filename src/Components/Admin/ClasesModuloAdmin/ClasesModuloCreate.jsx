@@ -53,9 +53,6 @@ function ClaseModuloCreate() {
       setTimeout(() => {
         window.history.back();
       }, 1800);
-      // setTimeout(() => {
-      //   navigate(`/admin/modulo/${moduloId}/clases`)
-      // }, 1500)
     } catch (error) {
       console.error("Error al crear la clase:", error);
       setError("Hubo un error al crear la clase");
@@ -69,8 +66,8 @@ function ClaseModuloCreate() {
       <NavAdmin />
       <div className="flex">
         <SidebarAdmin />
-        <div className="container mx-auto mt-2">
-          <h2 className="text-2xl font-bold mb-2 text-blue-900 translate-x-80">
+        <div className="container mx-auto mt-2 p-4  w-1/2">
+          <h2 className="text-2xl font-bold mb-2 text-gray-700 translate-x-20">
             Agregar Clase
           </h2>
           {error && <p className="text-red-500">{error}</p>}
@@ -90,7 +87,7 @@ function ClaseModuloCreate() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
+                className="border-2 border-blue-600 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
                 required
               />
             </div>
@@ -107,7 +104,7 @@ function ClaseModuloCreate() {
                 name="url"
                 value={formData.url}
                 onChange={handleChange}
-                className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
+                className="border-2 border-blue-600 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
               />
             </div>
             <div className="mb-4">
@@ -123,7 +120,7 @@ function ClaseModuloCreate() {
                 name="pdfURL"
                 value={formData.pdfURL}
                 onChange={handleChange}
-                className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
+                className="border-2 border-blue-600 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
               />
             </div>
             <div className="mb-4">
@@ -138,7 +135,7 @@ function ClaseModuloCreate() {
                 name="texto"
                 value={formData.texto}
                 onChange={handleChange}
-                className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
+                className="border-2 border-blue-600 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
               ></textarea>
             </div>
             <div className="mb-4">
@@ -152,7 +149,7 @@ function ClaseModuloCreate() {
                 id="resumen"
                 value={formData.resumen}
                 onChange={handleResumenChange}
-                className="border-2 border-gray-400 rounded-md focus:border-blue-500"
+                className="border-2 border-blue-600 rounded-md focus:border-blue-500"
               />
             </div>
             <button

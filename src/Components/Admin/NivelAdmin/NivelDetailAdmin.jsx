@@ -12,6 +12,7 @@ import NivelEdit from "./NivelEdit";
 import ModuloAdmin from "../ModuloAdmin/ModuloAdmin";
 import AddUserNivel from "./AddUserNivel/AddUserNivel";
 import UserNivelList from "./AddUserNivel/UserNivelList";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 function NivelDetailAdmin() {
   const [nivel, setNivel] = useState(null);
@@ -19,7 +20,7 @@ function NivelDetailAdmin() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [showUserModal, setShowUserModal] = useState(false);
-  const [showUserList, setShowUserList] = useState(false);
+  const [showUserList] = useState(false);
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -82,14 +83,24 @@ function NivelDetailAdmin() {
     navigate(`/niveles/${id}/grupos`);
   };
 
+  const goBack = () => {
+    navigate(-1)
+  }
+
   return (
     <div className="absolute top-0 right-36 mt-28 ml-96 p-4 w-3/5 h-auto -translate-x-20">
-      <div className="max-w-xl mx-auto p-8 bg-white shadow rounded-md ">
+      <div className="max-w-xl mx-auto p-4 bg-white shadow rounded-md ">
+      <button
+        onClick={goBack}
+        className="bg-blue-500 text-white w-20 h-10 mb-8 font-semibold py-0 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-2"
+      >
+        <KeyboardBackspaceIcon fontSize="large" />
+      </button>
         {loading && <div className="text-center">Cargando...</div>}
         {error && <div className="text-center text-red-500">{error}</div>}
         {nivel && (
           <div>
-            <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+            <h2 className="text-2xl font-bold mb-4 text-gray-800">
               {nivel.name}
             </h2>
             <div className="mb-4">

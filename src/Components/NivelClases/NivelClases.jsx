@@ -53,11 +53,11 @@ function NivelClases() {
   }
 
   return (
-    <div className="flex flex-col items-start w-screen translate-x-28">
+    <div className="flex flex-col items-start w-screen translate-x-0">
       {/* Class Information */}
       <div className="flex w-screen">
         <div className=" p-0 mt-8 rounded-lg shadow-md px-2 ">
-          <h2 className="text-3xl font-semibold mb-6">Clases</h2>
+          <h2 className="text-3xl font-semibold mb-6 text-gray-800">Clases</h2>
           <ul className="grid gap-4">
             {clases.map((clase) => (
               <li
@@ -67,7 +67,7 @@ function NivelClases() {
                 }`}
                 onClick={() => handleClassSelect(clase.id)}
               >
-                <p className="text-lg font-semibold">{clase.name}</p>
+                <p className="text-lg font-semibold">{clase.name.length > 20 ? `${clase.name.substring(0, 20)}...` : clase.name}</p>
                 <svg
                   className="w-8 h-8 text-blue-500"
                   fill="none"

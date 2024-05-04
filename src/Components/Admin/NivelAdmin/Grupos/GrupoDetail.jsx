@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Modal from "react-modal";
 import UsersGrupo from "../UserGrupo/UsersGrupo";
 import AddModulo from "../AddModulo/AddModulo";
-import ModulosDelGrupo from "../AddModulo/ModulosDelGrupo";
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 function GrupoDetail() {
   const [grupo, setGrupo] = useState(null);
   const [error, setError] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const navigate = useNavigate();
   const { id, grupoId } = useParams();
 
   useEffect(() => {
@@ -37,6 +38,10 @@ function GrupoDetail() {
     setModalIsOpen(false);
   }
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   if (error) {
     return <p>Error: {error}</p>;
   }
@@ -50,14 +55,17 @@ function GrupoDetail() {
   }
 
   return (
-    <div className="absolute top-0 right-36 mt-28 ml-96 p-4 w-2/3 h-auto bg-gray-200 rounded translate-x-0 translate-y-14">
+    <div className="absolute top-0 right-36 mt-28 ml-96 p-4 w-3/4 h-auto rounded translate-x-14 translate-y-4">
+      <button onClick={handleGoBack} className="bg-blue-500 text-white w-20 h-10 mb-8 font-semibold py-0 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-2">
+        <KeyboardBackspaceIcon fontSize="large" />
+      </button>
     {/* <div className=" mx-auto my-8 p-8 bg-gray-200 w-2/3 rounded shadow-lg"> */}
-      <h2 className="text-xl font-bold mb-4 text-gray-900">Detalle del Grupo</h2>
-      <p className="mb-4 font-gabarito">
-        <strong className="text-gray-900">Nombre:</strong> {grupo.name}
+      <h2 className="text-xl font-bold mb-4 text-gray-800">Detalle del Grupo</h2>
+      <p className="mb-4 font-gabarito text-gray-700">
+        <strong className="text-gray-800 font-bold">Nombre:</strong> {grupo.name}
       </p>
-      <p className="mb-4 font-gabarito">
-        <strong className="text-gray-900">Descripción:</strong> {grupo.descripcion}
+      <p className="mb-4 font-gabarito text-gray-700">
+        <strong className="text-gray-800 font-bold">Descripción:</strong> {grupo.descripcion}
       </p>
       <button
       onClick={openModal}
@@ -76,10 +84,6 @@ function GrupoDetail() {
         </button>
       </Modal>
       <UsersGrupo nivelId={grupo.nivelId} grupoId={grupoId} />
-      {/* </div> */}
-      {/* <div className="-translate-x-96">
-      <ModulosDelGrupo grupoId={grupoId} />
-      </div> */}
     </div>
   );
 }

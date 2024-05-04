@@ -4,6 +4,7 @@ import axios from "axios";
 import Modal from 'react-modal'
 import GrupoCreate from "./GrupoCreate";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import CancelIcon from '@mui/icons-material/Cancel';
 
 function Grupos() {
   const [grupos, setGrupos] = useState([]);
@@ -57,16 +58,24 @@ function Grupos() {
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
-        className="Modal"
-        overlayClassName="Overlay"
+        className="fixed inset-0 flex justify-center items-center"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
       >
+        <div className=" p-4 rounded-lg shadow-lg max-w-3xl w-full h-full overflow-y-auto flex flex-col justify-center items-center">
+        <button
+          onClick={closeModal}
+          className="absolute top-4 right-4 text-gray-200"
+        >
+          <CancelIcon fontSize="large" />
+        </button>
         <GrupoCreate nivelId={id} closeModal={closeModal} />
+        </div>
       </Modal>
       <ul>
         {grupos.map((grupo) => (
-          <li key={grupo.id} className="mb-4 bg-white translate-y-4 h-10 rounded-md  border-2 border-blue-600 transition-transform ease-in-out duration-300 hover:translate-y-2 ">
+          <li key={grupo.id} className="mb-4 bg-gray-200 translate-y-4 h-12 rounded-md  border-b-4 border-blue-600 transition-transform ease-in-out duration-300 hover:translate-y-2 ">
             <Link to={`/niveles/${id}/grupos/${grupo.id}`}>
-            <p className="text-gray-800 font-hammersmithOne ml-2 p-2">
+            <p className="text-gray-800 font-hammersmithOne ml-2 p-2 translate-y-1">
               {grupo.name}
             </p>
             </Link>

@@ -5,7 +5,7 @@ import axios from "axios";
 import NivelClases from "../../NivelClases/NivelClases";
 
 function ModuloDetailsStudent() {
-  const { nivelId, moduloId } = useParams();
+  const { grupoId, moduloId } = useParams();
   const [modulo, setModulo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mostrarPreguntas, setMostrarPreguntas] = useState(false);
@@ -35,16 +35,12 @@ function ModuloDetailsStudent() {
   useEffect(() => {
     const fetchModulo = async () => {
       try {
-        const [moduloResponse, modulosResponse] = await Promise.all([
-          axios.get(`/nivel/${nivelId}/modulo/${moduloId}`),
-          axios.get(`/niveles/${nivelId}/modulos`),
-        ]);
+        const moduloResponse = await axios.get(
+          `/grupo/${grupoId}/modulo/${moduloId}/detalles`
+        );
         console.log("Respuesta del servidor (modulo):", moduloResponse.data);
-        console.log("Respuesta del servidor (modulos):", modulosResponse.data);
-        const moduloData = moduloResponse.data;
-        // moduloData.preguntas = JSON.parse(moduloData.preguntas);
+        const moduloData = moduloResponse.data.modulo; // Obtener solo el módulo del objeto de respuesta
         setModulo(moduloData);
-        setModulos(modulosResponse.data);
         setLoading(false);
       } catch (error) {
         console.error("Error al obtener el módulo:", error);
@@ -53,7 +49,7 @@ function ModuloDetailsStudent() {
     };
 
     fetchModulo();
-  }, [nivelId, moduloId]);
+  }, [grupoId, moduloId]);
 
   const handleAnswerChange = (index, event) => {
     const opcionSeleccionada = event.target.value;
@@ -66,10 +62,12 @@ function ModuloDetailsStudent() {
   const handleSubmitAnswers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const preguntasConRespuestas = modulo.preguntas.map((pregunta, index) => ({
-        pregunta: pregunta.pregunta,
-        respuesta: respuestas[index] || "", // Si el usuario no respondió, dejar la respuesta vacía
-      }));
+      const preguntasConRespuestas = modulo.preguntas.map(
+        (pregunta, index) => ({
+          pregunta: pregunta.pregunta,
+          respuesta: respuestas[index] || "", // Si el usuario no respondió, dejar la respuesta vacía
+        })
+      );
       const response = await axios.post(
         "/modulo/responder",
         {
@@ -115,31 +113,27 @@ function ModuloDetailsStudent() {
   }
 
   return (
-    <div className="mx-auto w-5/6 py-10">
-      <h1 className="text-2xl font-semibold mb-4">{modulo.titulo}</h1>
-      <p className="text-gray-700 mb-4">{modulo.descripcion}</p>
+    <div className="mx-auto w-4/5 py-10">
+      <h1 className="text-2xl font-semibold mb-4 text-gray-800 ml-2">{modulo.titulo}</h1>
+      <p className="text-gray-800 ml-2 mb-4">{modulo.descripcion}</p>
 
       <div>
-        <nav className="bg-white w-full p-4 shadow-md border-t-4 border-blue-500 mb-2">
+        <nav className="bg-blue-500 w-full p-4 shadow-md border-t-4 border-blue-100 mb-2">
           <div className="flex items-center justify-between">
-            <div className="text-xl font-bold">
-              Módulo actual: {modulo.titulo}
+            <div className="text-xl font-bold text-white">
+              Módulo actual:<span className="text-white font-gabarito"> {modulo.titulo}</span>
             </div>
             <div className="space-x-4 flex">
-              {modulos.map((mod, index) => (
-                <div key={mod.id} className="flex">
-                  {index < modulos.length - 1 ? (
-                    <Link
-                      to={`/home/nivel/${nivelId}/modulo/${
-                        modulos[index + 1].id
-                      }`}
-                      className="text-blue-500 hover:underline"
-                    >
-                      {modulos[index + 1].titulo}
-                    </Link>
-                  ) : null}
+              {modulos.length > 0 && (
+                <div className="flex">
+                  <Link
+                    to={`/home/grupo/${grupoId}/modulo/${modulos[0].id}`}
+                    className="text-blue-500 hover:underline"
+                  >
+                    {modulos[0].titulo}
+                  </Link>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </nav>
