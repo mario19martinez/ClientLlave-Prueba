@@ -37,8 +37,10 @@ const Blog = ({ blogId }) => {
             />
           )}
           <div className="text-base lg:text-lg leading-relaxed text-gray-700">
-            {/* Utilizando dangerouslySetInnerHTML para renderizar contenido HTML */}
-            <div dangerouslySetInnerHTML={{ __html: blogDetails.content }} />
+            <div
+              className="ql-editor" // Agrega una clase específica de React Quill para aplicar estilos
+              dangerouslySetInnerHTML={{ __html: blogDetails.content }}
+            />
           </div>
           {/* Renderizar embeddedElement */}
           {blogDetails.embeddedElement && (
