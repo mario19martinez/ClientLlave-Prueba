@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import EditarTransmision from "./EditarTransmision";
@@ -33,10 +32,7 @@ export default function TransmisionAdmin() {
     axios
       .get("/transmisiones")
       .then((response) => {
-        const sortedData = response.data.sort(
-          (a, b) => new Date(b.fechaTransmision) - new Date(a.fechaTransmision)
-        );
-        setTransmisiones(sortedData);
+        setTransmisiones(response.data);
       })
       .catch((error) => {
         console.error("Error al obtener las transmisiones", error);
@@ -121,6 +117,27 @@ export default function TransmisionAdmin() {
     paginas.push(i);
   }
 
+  // Función para formatear la fecha y hora en formato legible para el usuario
+  const formatDateTime = (dateTimeString) => {
+    const dateTime = new Date(dateTimeString);
+    const options = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: "UTC",
+    };
+    return dateTime.toLocaleString("es-ES", options);
+  };
+  
+
+  const fechaHoraActual = new Date();
+  console.log(fechaHoraActual);
+
+  console.log(transmisiones);
+
   return (
     <div>
       <div className="py-3 justify-start">
@@ -164,7 +181,7 @@ export default function TransmisionAdmin() {
               </p>
               <p>
                 <strong>Fecha de Transmisión:</strong>{" "}
-                {new Date(transmision.fechaTransmision).toLocaleString()}
+                {formatDateTime(transmision.fechaTransmision)}
               </p>
               <div className="flex justify-end space-x-2">
                 <button
@@ -230,24 +247,22 @@ export default function TransmisionAdmin() {
         </div>
       )}
 
-{showCountdownModal && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center px-4">
-    <div className="bg-gray-300  p-5 rounded-lg shadow-lg flex flex-col items-center">
-      
-      {/* Componente Contador */}
-      <ContadorTransmision fechaTransmision={selectedTransmisionDate} />
+      {showCountdownModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center px-4">
+          <div className="bg-gray-300  p-5 rounded-lg shadow-lg flex flex-col items-center">
+            {/* Componente Contador */}
+            <ContadorTransmision fechaTransmision={selectedTransmisionDate} />
 
-      {/* Botón Aceptar */}
-      <button
-        onClick={handleCloseCountdownModal}
-        className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
-      >
-        Aceptar
-      </button>
-      
-    </div>
-  </div>
-)}
+            {/* Botón Aceptar */}
+            <button
+              onClick={handleCloseCountdownModal}
+              className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
+            >
+              Aceptar
+            </button>
+          </div>
+        </div>
+      )}
 
       {showEditModal && (
         <EditarTransmision
