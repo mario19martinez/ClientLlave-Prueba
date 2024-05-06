@@ -57,7 +57,7 @@ function NivelClases() {
       {/* Class Information */}
       <div className="flex w-screen">
         <div className=" p-0 mt-8 rounded-lg shadow-md px-2 ">
-          <h2 className="text-3xl font-semibold mb-6 text-gray-800">Clases</h2>
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">Clases</h2>
           <ul className="grid gap-4">
             {clases.map((clase) => (
               <li

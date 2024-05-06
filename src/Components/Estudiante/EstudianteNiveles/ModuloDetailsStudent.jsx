@@ -114,7 +114,7 @@ function ModuloDetailsStudent() {
 
   return (
     <div className="mx-auto w-4/5 py-10">
-      <h1 className="text-2xl font-semibold mb-4 text-gray-800 ml-2">{modulo.titulo}</h1>
+      <h1 className="text-2xl font-bold mb-4 text-gray-700 ml-2">{modulo.titulo}</h1>
       <p className="text-gray-800 ml-2 mb-4">{modulo.descripcion}</p>
 
       <div>
