@@ -5,6 +5,7 @@ import Modal from "react-modal";
 import UsersGrupo from "../UserGrupo/UsersGrupo";
 import AddModulo from "../AddModulo/AddModulo";
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 function GrupoDetail() {
   const [grupo, setGrupo] = useState(null);
@@ -60,12 +61,12 @@ function GrupoDetail() {
         <KeyboardBackspaceIcon fontSize="large" />
       </button>
     {/* <div className=" mx-auto my-8 p-8 bg-gray-200 w-2/3 rounded shadow-lg"> */}
-      <h2 className="text-xl font-bold mb-4 text-gray-800">Detalle del Grupo</h2>
+      <h2 className="text-xl font-bold mb-4 text-gray-700">Detalle del Grupo</h2>
       <p className="mb-4 font-gabarito text-gray-700">
-        <strong className="text-gray-800 font-bold">Nombre:</strong> {grupo.name}
+        <strong className="text-gray-700 font-bold">Nombre:</strong> {grupo.name}
       </p>
       <p className="mb-4 font-gabarito text-gray-700">
-        <strong className="text-gray-800 font-bold">Descripción:</strong> {grupo.descripcion}
+        <strong className="text-gray-700 font-bold">Descripción:</strong> {grupo.descripcion}
       </p>
       <button
       onClick={openModal}
@@ -80,7 +81,7 @@ function GrupoDetail() {
       >
         <AddModulo nivelId={grupo.nivelId} grupoId={grupoId} />
         <button onClick={closeModal} className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700">
-          X
+          <CancelIcon fontSize="large" />
         </button>
       </Modal>
       <UsersGrupo nivelId={grupo.nivelId} grupoId={grupoId} />
