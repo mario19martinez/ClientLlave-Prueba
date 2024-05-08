@@ -17,7 +17,8 @@ const BlogHome = () => {
       try {
         const response = await axios.get("/blogs");
         const sortedBlogs = response.data.sort((a, b) => b.id - a.id);
-        const latestBlogs = sortedBlogs.slice(0, 5);
+        const publishedBlogs = sortedBlogs.filter(blog => blog.estado === "publicado" || !blog.estado);
+        const latestBlogs = publishedBlogs.slice(0, 5);
         setBlogs(latestBlogs);
       } catch (error) {
         console.error("Hubo un error al obtener los blogs:", error);
