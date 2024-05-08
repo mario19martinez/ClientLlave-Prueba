@@ -6,6 +6,7 @@ function AddModulo({ nivelId, grupoId }) {
   const [moduloId, setModuloId] = useState("");
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [modulosEnGrupo, setModulosEnGrupo] = useState([]);
 
   useEffect(() => {
     const fetchModulos = async () => {
@@ -18,6 +19,19 @@ function AddModulo({ nivelId, grupoId }) {
     };
     fetchModulos();
   }, [nivelId]);
+
+  useEffect(() => {
+    const fetchModulosEnGrupo = async () => {
+      try {
+        const response = await axios.get(`/grupo/${grupoId}/modulos`);
+        console.log('response:', response)
+        setModulosEnGrupo(response.data.modulos);
+      } catch (error) {
+        setError("Error al obtener los modulos del grupo");
+      }
+    };
+    fetchModulosEnGrupo();
+  }, [grupoId]);
 
   const handleModuloChange = (e) => {
     setModuloId(e.target.value);
@@ -43,10 +57,10 @@ function AddModulo({ nivelId, grupoId }) {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
-      <h2 className="text-2xl mb-4">Agregar Modulo a Grupo</h2>
+    <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+      <h2 className="text-3xl mb-6 font-semibold text-center text-gray-700">Agregar Módulo a Grupo</h2>
       <form onSubmit={handleSubmit}>
-      <div className="mb-4">
+        <div className="mb-6">
           <label htmlFor="modulo" className="block text-sm font-medium text-gray-700">
             Seleccionar Módulo:
           </label>
@@ -54,23 +68,27 @@ function AddModulo({ nivelId, grupoId }) {
             id="modulo"
             value={moduloId}
             onChange={handleModuloChange}
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            className="mt-1 block w-full p-2 border-2 border-blue-500 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-600"
           >
             <option value="">Seleccione un módulo</option>
-            {modulos.map((modulo) => (
-              <option key={modulo.id} value={modulo.id}>
-                {modulo.titulo}
-              </option>
-            ))}
+            {modulos
+              .filter((modulo) => !modulosEnGrupo.some((mod) => mod.id === modulo.id))
+              .map((modulo) => (
+                <option key={modulo.id} value={modulo.id}>
+                  {modulo.titulo}
+                </option>
+              ))}
           </select>
         </div>
         <button
-        type="submit"
-        className="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
-        >Agregar Modulo</button>
+          type="submit"
+          className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600 transition duration-300 ease-in-out"
+        >
+          Agregar Módulo
+        </button>
       </form>
-      {error && <p className="text-red-500 mt-2">Error: {error}</p>}
-      {successMessage && <p className="text-green-500 mt-2">{successMessage}</p>}
+      {error && <p className="text-red-500 font-bold mt-4">Error: {error}</p>}
+      {successMessage && <p className="text-green-500 font-bold mt-4">{successMessage}</p>}
     </div>
   );
 }

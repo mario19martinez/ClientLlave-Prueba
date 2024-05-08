@@ -397,7 +397,7 @@ function AllUsersAdmin() {
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2 sm:col-span-1">
                 <p className="text-gray-700">Nombre:</p>
-                <p className="font-semibold">{selectedUser.name}</p>
+                <p className="font-semibold text-gray-700">{selectedUser.name}</p>
               </div>
               <div className="mt-2">
                 <p className="text-gray-700">Apellido:</p>
