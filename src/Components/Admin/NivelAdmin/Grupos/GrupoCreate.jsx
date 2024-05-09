@@ -23,12 +23,12 @@ function GrupoCreate() {
   };
 
   return (
-    <div className="max-w-md mx-auto my-8 p-8 bg-white rounded shadow-lg">
-      <h2 className="text-xl font-bold mb-4">Crear Grupo</h2>
+    <div className="max-w-md mx-auto my-8 p-8 bg-blue-600 rounded shadow-lg">
+      <h2 className="text-xl font-bold mb-4 text-white">Crear Grupo</h2>
       {error && <p className="text-red-500 mb-4">Error: {error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="name" className="block font-medium mb-2">
+          <label htmlFor="name" className="block font-medium mb-2 text-white">
             Nombre:
           </label>
           <input
@@ -40,7 +40,7 @@ function GrupoCreate() {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="descripcion" className="block font-medium mb-2">
+          <label htmlFor="descripcion" className="block font-medium mb-2 text-white">
             Descripcion (Opcional):
           </label>
           <textarea
@@ -51,7 +51,7 @@ function GrupoCreate() {
         </div>
         <button
           type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
+          className="bg-blue-800 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
         >
           Crear Grupo
         </button>

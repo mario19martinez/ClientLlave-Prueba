@@ -35,20 +35,20 @@ export default function NivelesInscritos() {
   }, [userData]);
 
   return (
-    <div className="px-4 md:px-20 lg:px-40">
+    <div className="px-4 md:px-20 lg:px-40 p-8">
       <div className="mb-8 flex flex-col items-center justify-center">
-        <h2 className="text-2xl font-bold">Niveles Inscritos</h2>
+        <h2 className="text-2xl font-bold text-gray-700">Niveles Inscritos</h2>
       </div>
 
       <div className="font-normal text-center md:text-left">
         {nivelesInscritos.length > 0 ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {nivelesInscritos.map((grupo, index) => (
-              <div key={index} className="bg-white border-2 border-blue-500 shadow-md rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:scale-105">
+              <div key={index} className="bg-blue-600 border-2 border-gray-100 shadow-md rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:scale-105">
                 {/* <img className="w-full h-40 object-cover" src={nivel.image} alt={nivel.name} /> */}
                 <div className="flex flex-col justify-between h-40 p-4">
                   <div>
-                    <p className="text-lg font-semibold mb-2">{grupo.name}</p>
+                    <p className="text-2xl font-bold mb-2 text-white">{grupo.name}</p>
                     <p className="text-gray-500 mb-2">{grupo.descripcion}</p>
                   </div>
                   {/* Enlace al detalle del nivel con su respectivo id */}

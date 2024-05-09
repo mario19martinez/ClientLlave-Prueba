@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom'
+import Modal from 'react-modal'
 import PropTypes from "prop-types";
 import axios from "axios";
 import ModuloCreate from "./ModuloCreate";
@@ -50,16 +51,24 @@ function ModuloAdmin({ nivelId }) {
       >
         Agregar Modulo
       </button>
-      {showModal && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-          <div className="bg-blue-500 p-4 rounded-md shadow-md max-w-lg h-full">
-            <button className="absolute top-2 right-2 text-red-500" onClick={toggleModal}>
-              <CancelIcon fontSize="large" />
-            </button>
-            <ModuloCreate nivelId={nivelId} closeModalAndReload={closeModalAndReload} />
-          </div>
+      <Modal
+        isOpen={showModal}
+        onRequestClose={toggleModal}
+        className="fixed inset-0 flex justify-center items-center"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+        contentLabel="Agregar Módulo"
+      >
+        <div className=" bg-opacity-25 p-4 rounded-lg shadow-lg max-w-3xl w-full h-full overflow-y-auto flex flex-col justify-center items-center">
+          {/* Renderiza el componente ModuloCreate dentro del modal */}
+          <ModuloCreate nivelId={nivelId} closeModalAndReload={closeModalAndReload} />
+          <button
+            onClick={toggleModal}
+            className="absolute top-2 right-2 text-red-500"
+          >
+            <CancelIcon fontSize="large" />
+          </button>
         </div>
-      )}
+      </Modal>
 
       {loading && <div className="text-center">Cargando módulos...</div>}
       {error && <div className="text-center text-red-500">Error: {error}</div>}
@@ -74,7 +83,9 @@ function ModuloAdmin({ nivelId }) {
               <h3 className="text-xl font-bold text-gray-800">
                 {modulo.titulo}
               </h3>
-              <p className="text-gray-600">{modulo.descripcion}</p>
+              <p className="text-gray-600">
+              {modulo.descripcion.length > 100 ? `${modulo.descripcion.substring(0, 100)}...` : modulo.descripcion}
+                </p>
               </Link>
             </li>
           ))}

@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import NavAdmin from "../NavAdmin/NavAdmin";
 import SidebarAdmin from "../SidebarAdmin/SidebarAdmin";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 function ClasesDetailModulo() {
   const { nivelId, moduloId, claseId } = useParams();
   const [clase, setClase] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchClase = async () => {
@@ -63,6 +65,10 @@ function ClasesDetailModulo() {
     return <div className="p-4">No se encontró la clase.</div>;
   }
 
+  const goBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div>
       <NavAdmin />
@@ -70,6 +76,12 @@ function ClasesDetailModulo() {
         <SidebarAdmin />
         <div className="bg-gray-100 min-h-screen flex justify-center items-center w-1/2 translate-x-32">
           <div className="max-w-3xl w-full p-8 bg-white rounded-lg shadow-lg">
+          <button
+            onClick={goBack}
+            className="bg-blue-500 text-white w-20 h-10 mb-8 font-semibold py-0 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-2"
+          >
+            <KeyboardBackspaceIcon fontSize="large" />
+          </button>
             <h2 className="text-2xl font-bold mb-6 text-gray-800">
               Detalle de la clase
             </h2>
@@ -105,13 +117,13 @@ function ClasesDetailModulo() {
             {clase.texto && (
               <div className="mb-4">
                 <h3 className="text-xl font-bold mb-2 text-gray-800">Texto:</h3>
-                <p className="font-gabarito">{clase.texto}</p>
+                <p className="font-gabarito text-gray-700">{clase.texto}</p>
               </div>
             )}
 
             {clase.resumen && (
               <div>
-                <h3 className="text-xl font-bold mb-2">Resumen:</h3>
+                <h3 className="text-xl font-bold mb-2 text-gray-800">Resumen:</h3>
                 <div
                   className="text-gray-700"
                   dangerouslySetInnerHTML={{ __html: clase.resumen }}

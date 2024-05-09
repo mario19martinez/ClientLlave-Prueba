@@ -40,7 +40,7 @@ function ClaseDetailUser({ claseId }) {
   //className=" p-8 bg-white w-1/2 rounded-lg shadow-lg translate-y-48 -translate-x-36"
 
   return (
-    <div className="px-4 translate-y-10 translate-x-24" style={{ width: "700px" }}>
+    <div className="px-4 translate-y-10 translate-x-12" style={{ width: "700px" }}>
       <h2>{clase.name}</h2>
       <div className="aspect-w-16 aspect-h-9 mb-6">
         {clase.url && (
@@ -57,13 +57,13 @@ function ClaseDetailUser({ claseId }) {
       </div>
       {clase.texto && (
         <div className="mb-4">
-          <h3 className="text-xl font-bold mb-2">Texto:</h3>
-          <p className="text-gray-700">{clase.texto}</p>
+          <h3 className="text-xl font-bold mb-2 text-gray-800">Texto:</h3>
+          <p className="text-gray-700 font-gabarito">{clase.texto}</p>
         </div>
       )}
       {clase.resumen && (
         <div>
-          <h3 className="text-xl font-bold mb-2">Resumen:</h3>
+          <h3 className="text-xl font-bold mb-2 text-gray-800">Resumen:</h3>
           <div
             className="text-gray-700"
             dangerouslySetInnerHTML={{ __html: clase.resumen }}

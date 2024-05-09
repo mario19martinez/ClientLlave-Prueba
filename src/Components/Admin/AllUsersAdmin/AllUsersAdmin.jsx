@@ -18,6 +18,7 @@ import {
 } from "../../../Redux/features/AdminUsers/AdminUsersSlices";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import EditarUsuarioAdmin from "./EditarUsuarioAdmin";
+import axios from "axios";
 
 function AllUsersAdmin() {
   const dispatch = useDispatch();
@@ -38,6 +39,23 @@ function AllUsersAdmin() {
   const usersPerPage = 10;
 
   const navigate = useNavigate();
+
+  const getUserDetails = async (email) => {
+    try {
+      const response = await axios.get(`/user/email/${email}`);
+      if (!response.data) {
+        throw new Error("Usuario no encontrado");
+      }
+      console.log("response:", response);
+      setSelectedUser(response.data);
+    } catch (error) {
+      console.error(
+        "Error al obtener los detalles del usuario:",
+        error.message
+      );
+      setUserNotFound(true);
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchUsersAction());
@@ -84,9 +102,10 @@ function AllUsersAdmin() {
     setEndDateFilter(event.target.value);
   };
 
-  const handleOpenModal = (user) => {
+  const handleOpenModal = async (user) => {
     setIsModalOpen(true);
     setSelectedUser(user);
+    await getUserDetails(user.email);
   };
 
   const handleCloseModal = () => {
@@ -178,7 +197,7 @@ function AllUsersAdmin() {
 
   return (
     <div className="w-full p-5">
-      <h1 className="text-2xl font-gabarito mb-4 text-gray-700">Usuarios</h1>
+      <h1 className="text-2xl font-bold mb-4 text-gray-700">Usuarios</h1>
       <div className="flex items-center justify-between mb-4">
         <div className="flex space-x-4 items-center">
           <button
@@ -265,83 +284,91 @@ function AllUsersAdmin() {
       {userNotFound ? (
         <p className="text-red-500">El usuario no existe.</p>
       ) : (
-        <table className="w-full border">
-          <thead>
-            <tr className="bg-blue-600 text-white">
-              <th
-                className="border p-2 px-4 cursor-pointer"
-                onClick={() => setSortAsc(!sortAsc)}
-              >
-                Nombre {sortAsc ? "▼" : "▲"}
-              </th>
-              <th className="border p-2 px-6">Apellido</th>
-              <th className="border p-2 px-12">Correo</th>
-              <th className="border p-2 px-8">País</th>
-              <th className="border p-2 px-8">Teléfono</th>
-              <th className="border p-2 px-8">Fecha de registro</th>
-              <th className="border p-2">Detalles</th>
-              <th className="border p-2">Banear</th>
-              <th className="border p-2">Eliminar</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {currentUsers.map((user) => (
-              <tr key={user.identificacion} className="text-center">
-                <td className="border p-2">{user.name}</td>
-                <td className="border p-2">{user.last_name}</td>
-                <td className="border p-2">{user.email}</td>
-                <td className="border p-2">{user.pais}</td>
-                <td className="border p-2">{user.telefono}</td>
-                <td className="border p-2">
-                  {user.registeredAt
-                    ? new Date(user.registeredAt).toLocaleDateString()
-                    : "Sin fecha"}
-                </td>
-                <td className="translate-x-2">
-                  <button
-                    className="text-blue-500 hover:underline"
-                    onClick={() => handleOpenModal(user)}
-                  >
-                    <VisibilityIcon fontSize="large" />
-                  </button>
-                </td>
-                <td className="translate-x-2">
-                  {user.banned ? (
-                    <button
-                      className="text-red-700 font-sans py-2 px-4 mr-2 rounded"
-                      onClick={() => bandUser(user)}
-                    >
-                      <PersonOffIcon fontSize="large" />
-                    </button>
-                  ) : (
-                    <button
-                      className="text-blue-700 font-sans py-2 px-4 mr-2 rounded"
-                      onClick={() => bandUser(user)}
-                    >
-                      <PersonIcon fontSize="large" />
-                    </button>
-                  )}
-                </td>
-                <td>
-                  <button
-                    className="text-gray-700 font-sans py-2 px-4 rounded"
-                    onClick={() => deleteUser(user.identificacion)}
-                  >
-                    <DeleteIcon fontSize="large" />
-                  </button>
-                </td>
+        <div className="overflow-hidden border border-gray-300 rounded-lg shadow-md">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-blue-200 border-b border-gray-300">
+              <tr className="text-xs text-gray-700 uppercase">
+                <th
+                  className="border p-2 px-4 cursor-pointer"
+                  onClick={() => setSortAsc(!sortAsc)}
+                >
+                  <span>Nombre</span>
+                  <span className="ml-1">{sortAsc ? "▼" : "▲"}</span>
+                </th>
+                <th className="py-3 px-6 text-left">Apellido</th>
+                <th className="py-3 px-6 text-left">Correo</th>
+                <th className="py-3 px-6 text-left">País</th>
+                <th className="py-3 px-6 text-left">Teléfono</th>
+                <th className="py-3 px-6 text-left">Fecha de registro</th>
+                <th className="border p-2">Detalles</th>
+                <th className="border p-2">Banear</th>
+                <th className="border p-2">Eliminar</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody className="text-gray-700 text-sm font-mono divide-y divide-gray-200">
+              {currentUsers.map((user) => (
+                <tr
+                  key={user.identificacion}
+                  className="border-b border-gray-200 hover:bg-gray-100"
+                >
+                  <td className="py-3 px-6 text-left whitespace-nowrap">
+                    {user.name}
+                  </td>
+                  <td className="py-3 px-6 text-left">{user.last_name}</td>
+                  <td className="py-3 px-6 text-left">{user.email}</td>
+                  <td className="py-3 px-6 text-left">{user.pais}</td>
+                  <td className="py-3 px-6 text-left">{user.telefono}</td>
+                  <td className="py-3 px-6 text-left">
+                    {user.registeredAt
+                      ? new Date(user.registeredAt).toLocaleDateString()
+                      : "Sin fecha"}
+                  </td>
+                  <td className="translate-x-2">
+                    <button
+                      className="text-blue-500 hover:underline"
+                      onClick={() => handleOpenModal(user)}
+                    >
+                      <VisibilityIcon fontSize="large" />
+                    </button>
+                  </td>
+                  <td className="translate-x-2">
+                    {user.banned ? (
+                      <button
+                        className="text-red-700 font-sans py-2 px-4 mr-2 rounded"
+                        onClick={() => bandUser(user)}
+                      >
+                        <PersonOffIcon fontSize="large" />
+                      </button>
+                    ) : (
+                      <button
+                        className="text-blue-700 font-sans py-2 px-4 mr-2 rounded"
+                        onClick={() => bandUser(user)}
+                      >
+                        <PersonIcon fontSize="large" />
+                      </button>
+                    )}
+                  </td>
+                  <td>
+                    <button
+                      className="text-gray-700 font-sans py-2 px-4 rounded"
+                      onClick={() => deleteUser(user.identificacion)}
+                    >
+                      <DeleteIcon fontSize="large" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
           onRequestClose={handleCloseModal}
           contentLabel="Detalles del usuario"
-          className="Modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-8 shadow-lg z-50 max-w-md w-full"
+          className="Modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 rounded-lg p-8 shadow-lg z-50 w-1/2"
           overlayClassName="Overlay fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center z-50"
         >
           <button
@@ -363,45 +390,61 @@ function AllUsersAdmin() {
               ></path>
             </svg>
           </button>
-          <p className="text-center text-lg font-semibold mb-4 text-gray-900">
-            Detalles del usuario
-          </p>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2 sm:col-span-1">
-              <p className="text-gray-700">Nombre:</p>
-              <p className="font-semibold">{selectedUser.name}</p>
+          <div className=" rounded-lg p-8  ">
+            <p className="text-center text-lg font-bold mb-4 text-gray-700">
+              Detalles del usuario
+            </p>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="col-span-2 sm:col-span-1">
+                <p className="text-gray-700">Nombre:</p>
+                <p className="font-semibold text-gray-700">{selectedUser.name}</p>
+              </div>
+              <div className="mt-2">
+                <p className="text-gray-700">Apellido:</p>
+                <p className="font-semibold text-gray-700">{selectedUser.last_name}</p>
+              </div>
+              <div className="mt-2">
+                <p className="text-gray-700">Correo:</p>
+                <p className="font-semibold text-gray-700">{selectedUser.email}</p>
+              </div>
+              <div className="mt-2">
+                <p className="text-gray-700">ID:</p>
+                <p className="font-semibold text-gray-700">{selectedUser.identificacion}</p>
+              </div>
+              <div className="mt-2">
+                <p className="text-gray-700">País:</p>
+                <p className="font-semibold text-gray-700">{selectedUser.pais}</p>
+              </div>
+              <div className="mt-2">
+                <p className="text-gray-700">Teléfono:</p>
+                <p className="font-semibold text-gray-700">{selectedUser.telefono}</p>
+              </div>
+              {selectedUser.grupo && (
+                <div className="mt-2">
+                  <p className="text-gray-700">Grupo:</p>
+                  <p className="font-semibold text-gray-700">{selectedUser.grupo.name}</p>
+                </div>
+              )}
+              {selectedUser.grupo && selectedUser.grupo.nivel && (
+                <div className="mt-2">
+                  <p className="text-gray-700">Nivel:</p>
+                  <p className="font-semibold text-gray-700">
+                    {selectedUser.grupo.nivel.name}
+                  </p>
+                </div>
+              )}
             </div>
-            <div className="col-span-2 sm:col-span-1">
-              <p className="text-gray-700">Apellido:</p>
-              <p className="font-semibold">{selectedUser.last_name}</p>
+            <div className="flex justify-center mt-6">
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none mr-4"
+                onClick={() => handleEditUser(selectedUser.email)}
+              >
+                Editar
+              </button>
+              <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none">
+                Novedad
+              </button>
             </div>
-            <div className="col-span-2">
-              <p className="text-gray-700">Correo:</p>
-              <p className="font-semibold">{selectedUser.email}</p>
-            </div>
-            <div className="col-span-2">
-              <p className="text-gray-700">ID:</p>
-              <p className="font-semibold">{selectedUser.identificacion}</p>
-            </div>
-            <div className="col-span-2 sm:col-span-1">
-              <p className="text-gray-700">País:</p>
-              <p className="font-semibold">{selectedUser.pais}</p>
-            </div>
-            <div className="col-span-2 sm:col-span-1">
-              <p className="text-gray-700">Teléfono:</p>
-              <p className="font-semibold">{selectedUser.telefono}</p>
-            </div>
-          </div>
-          <div className="flex justify-center mt-6">
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none mr-4"
-              onClick={() => handleEditUser(selectedUser.email)}
-            >
-              Editar
-            </button>
-            <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none">
-              Novedad
-            </button>
           </div>
         </Modal>
       )}
