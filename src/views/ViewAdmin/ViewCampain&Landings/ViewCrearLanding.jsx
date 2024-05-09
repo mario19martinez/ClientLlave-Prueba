@@ -7,13 +7,13 @@ import CreateLanding from "../../../Components/Admin/CampainsAdmin/LandingsCampa
 
 export default function ViewCrearLanding() {
   const [selectedTab] = useState("Campañas");
-  const { campeinId } = useParams();
+  const { campeinId, template } = useParams();
   return (
     <div>
       <NavAdmin />
       <div className="flex">
         <SidebarAdmin selectedTab={selectedTab} />
-        <CreateLanding campeinId={campeinId} />
+        <CreateLanding campeinId={campeinId} templateProp={template} /> 
       </div>
     </div>
   );

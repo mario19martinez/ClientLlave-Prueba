@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import PropTypes from "prop-types";
@@ -8,11 +7,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { createCurso } from "../../../Redux/features/courses/coursesSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 
 function AgregarCurso({ closeModal }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  //const [modalVisible, setModalVisible] = useState(false)
   const [nuevoCurso, setNuevoCurso] = useState({
     name: "",
     image: "",
@@ -21,20 +21,33 @@ function AgregarCurso({ closeModal }) {
     costo: "",
     horas_catedra: "",
     horario_clases: "",
+    gratuito: "",
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNuevoCurso({ ...nuevoCurso, [name]: value });
+
+    if (name === "gratuito") {
+      const costoValue = value === "true" ? "0" : "";
+      setNuevoCurso({
+        ...nuevoCurso,
+        costo: costoValue,
+        [name]: !nuevoCurso.gratuito,
+      });
+    } else {
+      setNuevoCurso({ ...nuevoCurso, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await dispatch(createCurso(nuevoCurso));
+      const costoValue = nuevoCurso.gratuito ? "0" : nuevoCurso.costo;
+      const cursoConCosto = { ...nuevoCurso, costo: costoValue };
 
-      // Limpiar el formulario después de agregar el curso
+      await dispatch(createCurso(cursoConCosto));
+
       setNuevoCurso({
         name: "",
         image: "",
@@ -45,9 +58,9 @@ function AgregarCurso({ closeModal }) {
         fechaFinalizacion: "",
         horas_catedra: "",
         horario_clases: "",
+        gratuito: "",
       });
 
-      // Mostrar mensaje de éxito
       toast.success("Curso agregado exitosamente!", {
         position: "top-center",
         autoClose: 1500,
@@ -59,7 +72,6 @@ function AgregarCurso({ closeModal }) {
         navigate("/admin/cursos");
       }, 2000);
     } catch (error) {
-      // Mostrar mensaje de error si no se pueden agregar los datos
       toast.error("Error al agregar el curso", {
         position: "top-center",
         autoClose: 3500,
@@ -72,105 +84,128 @@ function AgregarCurso({ closeModal }) {
   };
 
   return (
-    <div className="fixed top-1/2 left-1/2 w-2/5 bg-blue-500 p-2 max-w-lg h-full -translate-y-72 -translate-x-64 overflow-auto">
-      <h2 className="text-2xl font-bold mb-4 text-gray-100">
+    <div
+      className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-lg overflow-auto"
+      style={{ maxHeight: "80vh" }}
+    >
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">
         Agregar Nuevo Curso
       </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="mb-0">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-100"
-          >
-            Nombre
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={nuevoCurso.name}
-              onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
-            />
-          </label>
-        </div>
-
-        <div className="mb-0">
-          <label
-            htmlFor="image"
-            className="block text-sm font-medium text-gray-100"
-          >
-            Imagen
-            <input
-              type="text"
-              id="image"
-              name="image"
-              value={nuevoCurso.image}
-              onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
-            />
-          </label>
-        </div>
-
-        <div className="mb-0">
-          <label
-            htmlFor="duracion"
-            className="block text-sm font-medium text-gray-100"
-          >
-            Duración
-            <input
-              type="text"
-              id="duracion"
-              name="duracion"
-              value={nuevoCurso.duracion}
-              onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
-            />
-          </label>
-        </div>
-
-        <div className="mb-0">
-          <label
-            htmlFor="nivel"
-            className="block text-sm font-medium text-gray-100"
-          >
-            Nivel
-            <select
-              id="nivel"
-              name="nivel"
-              value={nuevoCurso.nivel}
-              onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
+        <div className="flex space-x-4">
+          <div className="flex-1 mb-0">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-800"
             >
-              <option value="">Seleccionar</option>
-              <option value="1">Nivel I</option>
-              <option value="2">Nivel II</option>
-              <option value="3">Nivel III</option>
-              <option value="4">Nivel IV</option>
-              <option value="5">Especialización</option>
-            </select>
-          </label>
+              Nombre
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={nuevoCurso.name}
+                onChange={handleInputChange}
+                className="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 w-full text-sm text-gray-800"
+              />
+            </label>
+          </div>
+
+          <div className="flex-1 mb-0">
+            <label
+              htmlFor="duracion"
+              className="block text-sm font-medium text-gray-800"
+            >
+              Duración
+              <input
+                type="text"
+                id="duracion"
+                name="duracion"
+                value={nuevoCurso.duracion}
+                onChange={handleInputChange}
+                className="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 w-full text-sm text-gray-800"
+              />
+            </label>
+          </div>
         </div>
 
-        <div className="mb-0">
-          <label
-            htmlFor="costo"
-            className="block text-sm font-medium text-gray-100"
-          >
-            Costo
-            <input
-              type="text"
-              id="costo"
-              name="costo"
-              value={nuevoCurso.costo}
-              onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
-            />
-          </label>
+        <div className="flex space-x-4">
+          <div className="flex-1 mb-0">
+            <label
+              htmlFor="image"
+              className="block text-sm font-medium text-gray-800"
+            >
+              Imagen
+              <input
+                type="text"
+                id="image"
+                name="image"
+                value={nuevoCurso.image}
+                onChange={handleInputChange}
+                className="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 w-full text-sm text-gray-800"
+              />
+            </label>
+          </div>
+          <div className="flex-1 mb-0">
+            <label
+              htmlFor="nivel"
+              className="block text-sm font-medium text-gray-800"
+            >
+              Nivel
+              <select
+                id="nivel"
+                name="nivel"
+                value={nuevoCurso.nivel}
+                onChange={handleInputChange}
+                className="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 w-full text-sm text-gray-800"
+              >
+                <option value="">Seleccionar</option>
+                <option value="1">Nivel I</option>
+                <option value="2">Nivel II</option>
+                <option value="3">Nivel III</option>
+                <option value="4">Nivel IV</option>
+                <option value="5">Especialización</option>
+              </select>
+            </label>
+          </div>
         </div>
+
+        <div className="flex space-x-4">
+          <div className="flex-1 mb-0">
+            <label
+              htmlFor="costo"
+              className="block text-sm font-medium text-gray-800"
+            >
+              Costo
+              <input
+                type="text"
+                id="costo"
+                name="costo"
+                value={nuevoCurso.costo}
+                onChange={handleInputChange}
+                disabled={nuevoCurso.gratuito}
+                className="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 w-full text-sm text-gray-800"
+              />
+            </label>
+          </div>
+          <div className="flex-1 mb-0">
+            <label
+              htmlFor="gratuito"
+              className="block text-sm font-medium text-gray-800"
+            >
+              Gratuito
+              <FormControlLabel
+                control={<Switch name="gratuito" color="primary" />}
+                onChange={handleInputChange}
+                checked={nuevoCurso.gratuito}
+              />
+            </label>
+          </div>
+        </div>
+
         <div className="mb-1">
           <label
             htmlFor="horas_catedra"
-            className="block text-sm font-medium text-gray-100"
+            className="block text-sm font-medium text-gray-800"
           >
             Horas Cátedra
             <input
@@ -179,14 +214,15 @@ function AgregarCurso({ closeModal }) {
               name="horas_catedra"
               value={nuevoCurso.horas_catedra}
               onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
+              className="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 w-full text-sm text-gray-800"
             />
           </label>
         </div>
+
         <div className="mb-1">
           <label
             htmlFor="horario_clases"
-            className="block text-sm font-medium text-gray-100"
+            className="block text-sm font-medium text-gray-800"
           >
             Horario Clases
             <ReactQuill
@@ -208,44 +244,48 @@ function AgregarCurso({ closeModal }) {
                   ],
                   ["clean"],
                   [{ align: [] }],
-                  [{ color: [] }, { background: [] }], // Cambio de color de texto y fondo
+                  [{ color: [] }, { background: [] }],
                 ],
               }}
-              className="mt-1 bg-white text-gray-800"
+              className="mt-1 bg-white text-sm text-gray-800"
             />
           </label>
         </div>
-        <div className="mb-0">
-          <label
-            htmlFor="fechaInicio"
-            className="block text-sm font-medium text-gray-100"
-          >
-            Fecha Inicio
-            <input
-              type="date"
-              id="fechaInicio"
-              name="fechaInicio"
-              value={nuevoCurso.fechaInicio}
-              onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
-            />
-          </label>
-        </div>
-        <div className="mb-0">
-          <label
-            htmlFor="fechaFinalizacion"
-            className="block text-sm font-medium text-gray-100"
-          >
-            Fecha Finalizacion
-            <input
-              type="date"
-              id="fechaFinalizacion"
-              name="fechaFinalizacion"
-              value={nuevoCurso.fechaFinalizacion}
-              onChange={handleInputChange}
-              className="mt-1 p-2 border rounded focus:outline-none focus:border-blue-500 w-full text-gray-800"
-            />
-          </label>
+
+        <div className="flex space-x-4 ">
+          <div className="flex-1 mb-0">
+            <label
+              htmlFor="fechaInicio"
+              className="block text-sm font-medium text-gray-800"
+            >
+              Fecha Inicio
+              <input
+                type="date"
+                id="fechaInicio"
+                name="fechaInicio"
+                value={nuevoCurso.fechaInicio}
+                onChange={handleInputChange}
+                className="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 w-full text-sm text-gray-800"
+              />
+            </label>
+          </div>
+
+          <div className="flex-1 mb-0">
+            <label
+              htmlFor="fechaFinalizacion"
+              className="block text-sm font-medium text-gray-800"
+            >
+              Fecha Finalización
+              <input
+                type="date"
+                id="fechaFinalizacion"
+                name="fechaFinalizacion"
+                value={nuevoCurso.fechaFinalizacion}
+                onChange={handleInputChange}
+                className="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 w-full text-sm text-gray-800"
+              />
+            </label>
+          </div>
         </div>
 
         <button
