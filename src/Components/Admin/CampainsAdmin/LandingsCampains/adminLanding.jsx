@@ -46,7 +46,7 @@ export default function AdminLanding({ campeinId }) {
         <button
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4 flex items-center"
           onClick={() =>
-            navigate(`/admin/campain/landing/createLanding/${campeinId}`)
+            navigate(`/Admin/campain/landing/SelecForm/${campeinId}`)
           }
         >
           Crear LandigPage <CampaignIcon />
@@ -67,7 +67,7 @@ export default function AdminLanding({ campeinId }) {
             </tr>
           </thead>
           <tbody>
-            {landings.map((landing) => (
+            {landings.map((landing) => ( 
               <tr key={landing.id}>
                 <td className="border px-4 py-2">{landing.titulo}</td>
                 <td className="border px-4 py-2">{landing.contenido}</td>
@@ -82,7 +82,7 @@ export default function AdminLanding({ campeinId }) {
                   <button
                     className="text-green-500 hover:text-green-700"
                     onClick={() =>
-                      navigate(`/admin/campain/landing/${landing.id}`)
+                      navigate(`/campain/${landing.id}/Landing/${campeinId}`)
                     }
                   >
                     <VisibilityIcon />

@@ -38,6 +38,7 @@ export const fetchCursoDetail = createAsyncThunk(
 export const createCurso = createAsyncThunk(
   "courses/createCurso",
   async (cursoData) => {
+    console.log ('datos del curso: ', cursoData);
     const response = await axios.post(
       "/newCurso",
       cursoData
@@ -122,7 +123,7 @@ const coursesSlice = createSlice({
         state.cursos = state.cursos.filter(
           (curso) => curso.id !== action.payload
         );
-      })
+      }) 
       .addMatcher(
         (action) => action.type.endsWith("/rejected"),
         (state, action) => {
