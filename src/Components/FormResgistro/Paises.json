@@ -2,198 +2,241 @@
   "paises": [
     {
       "nombre": "Argentina",
-      "codigo_telefonico": "+54"
+      "codigo_telefonico": "+54",
+      "tipo_documento": ["Documento Nacional de Identidad (DNI)", "Libreta de Enrolamiento (LE)", "Libreta Cívica (LC)", "Pasaporte"]
     },
     {
       "nombre": "Bolivia",
-      "codigo_telefonico": "+591"
+      "codigo_telefonico": "+591",
+      "tipo_documento": ["Cédula de Identidad", "Pasaporte"]
     },
     {
       "nombre": "Chile",
-      "codigo_telefonico": "+56"
+      "codigo_telefonico": "+56",
+      "tipo_documento": ["Rol Único Tributario (RUT)", "Cédula de Identidad", "Pasaporte"]
     },
     {
       "nombre": "Colombia",
-      "codigo_telefonico": "+57"
+      "codigo_telefonico": "+57",
+      "tipo_documento": ["Cédula de Ciudadanía (CC)", "Tarjeta de Identidad (TI)", "Cédula de Extranjería (CE)", "Pasaporte"]
     },
     {
       "nombre": "Costa Rica",
-      "codigo_telefonico": "+506"
+      "codigo_telefonico": "+506",
+      "tipo_documento": ["Cédula de Identidad", "Pasaporte"]
     },
     {
       "nombre": "Cuba",
-      "codigo_telefonico": "+53"
+      "codigo_telefonico": "+53",
+      "tipo_documento": ["Cédula de Identidad", "Pasaporte"]
     },
     {
       "nombre": "Ecuador",
-      "codigo_telefonico": "+593"
+      "codigo_telefonico": "+593",
+      "tipo_documento": ["Cédula de Identidad", "Pasaporte"]
     },
     {
       "nombre": "El Salvador",
-      "codigo_telefonico": "+503"
+      "codigo_telefonico": "+503",
+      "tipo_documento": ["Documento Único de Identidad (DUI)", "Pasaporte"]
     },
     {
       "nombre": "España",
-      "codigo_telefonico": "+34"
+      "codigo_telefonico": "+34",
+      "tipo_documento": ["Documento Nacional de Identidad (DNI)", "Pasaporte", "Tarjeta de Identificación de Extranjeros (TIE)"]
     },
     {
       "nombre": "Estados Unidos (EEUU)",
-      "codigo_telefonico": "+1"
+      "codigo_telefonico": "+1",
+      "tipo_documento": ["Número de Seguro Social (SSN)", "Pasaporte"]
     },
     {
       "nombre": "Guatemala",
-      "codigo_telefonico": "+502"
+      "codigo_telefonico": "+502",
+      "tipo_documento": ["Documento Personal de Identificación (DPI)", "Pasaporte"]
     },
     {
       "nombre": "Honduras",
-      "codigo_telefonico": "+504"
+      "codigo_telefonico": "+504",
+      "tipo_documento": ["Tarjeta de Identidad", "Pasaporte"]
     },
     {
       "nombre": "México",
-      "codigo_telefonico": "+52"
+      "codigo_telefonico": "+52",
+      "tipo_documento": ["Instituto Nacional Electoral (INE)", "Registro Federal de Contribuyentes (RFC)", "Pasaporte"]
     },
     {
       "nombre": "Nicaragua",
-      "codigo_telefonico": "+505"
+      "codigo_telefonico": "+505",
+      "tipo_documento": ["Cédula de Identidad", "Pasaporte"]
     },
     {
       "nombre": "Panamá",
-      "codigo_telefonico": "+507"
+      "codigo_telefonico": "+507",
+      "tipo_documento": ["Cédula de Identidad Personal (CIP)", "Pasaporte"]
     },
     {
       "nombre": "Paraguay",
-      "codigo_telefonico": "+595"
+      "codigo_telefonico": "+595",
+      "tipo_documento": ["Cédula de Identidad Civil", "Pasaporte"]
     },
     {
       "nombre": "Perú",
-      "codigo_telefonico": "+51"
+      "codigo_telefonico": "+51",
+      "tipo_documento": ["Documento Nacional de Identidad (DNI)", "Carné de Extranjería", "Pasaporte"]
     },
     {
       "nombre": "Puerto Rico",
       "codigo_telefonico": "+1-787",
-      "codigo_telefonico2": "+1-939"
+      "codigo_telefonico2": "+1-939",
+      "tipo_documento": ["Número de Identificación Personal (NIP)", "Pasaporte"]
     },
     {
       "nombre": "República Dominicana",
       "codigo_telefonico": "+1-809",
       "codigo_telefonico2": "+1-829",
-      "codigo_telefonico3": "+1-849"
+      "codigo_telefonico3": "+1-849",
+      "tipo_documento": ["Cédula de Identidad y Electoral (CIE)", "Pasaporte"]
     },
     {
       "nombre": "Uruguay",
-      "codigo_telefonico": "+598"
+      "codigo_telefonico": "+598",
+      "tipo_documento": ["Cédula de Identidad", "Pasaporte"]
     },
     {
       "nombre": "Venezuela",
-      "codigo_telefonico": "+58"
+      "codigo_telefonico": "+58",
+      "tipo_documento": ["Cédula de Identidad", "Pasaporte"]
     },
     {
       "nombre": "Alemania",
-      "codigo_telefonico": "+49"
+      "codigo_telefonico": "+49",
+      "tipo_documento": ["Personalausweis (Documento de identidad)", "Reisepass (Pasaporte)"]
     },
     {
       "nombre": "Austria",
-      "codigo_telefonico": "+43"
+      "codigo_telefonico": "+43",
+      "tipo_documento": ["Personalausweis (Documento de identidad)", "Reisepass (Pasaporte)"]
     },
     {
       "nombre": "Bélgica",
-      "codigo_telefonico": "+32"
-    },
-    {
-      "nombre": "Bulgaria",
-      "codigo_telefonico": "+359"
+      "codigo_telefonico": "+32",
+      "tipo_documento": ["Carte d'identité (Documento de identidad)", "Pasaporte"]
     },
     {
       "nombre": "Chipre",
-      "codigo_telefonico": "+357"
+      "codigo_telefonico": "+357",
+      "tipo_documento": ["Αστυνομική ταυτότητα (Documento de identidad)", "Διαβατήριο (Pasaporte)"]
     },
     {
       "nombre": "Croacia",
-      "codigo_telefonico": "+385"
+      "codigo_telefonico": "+385",
+      "tipo_documento": ["Osobna iskaznica (Documento de identidad)", "Putovnica (Pasaporte)"]
     },
     {
       "nombre": "Dinamarca",
-      "codigo_telefonico": "+45"
+      "codigo_telefonico": "+45",
+      "tipo_documento": ["Pas (Documento de identidad)", "Pasaporte"]
     },
     {
       "nombre": "Eslovaquia",
-      "codigo_telefonico": "+421"
+      "codigo_telefonico": "+421",
+      "tipo_documento": ["Občiansky preukaz (Documento de identidad)", "Cestovný pas (Pasaporte)"]
     },
     {
       "nombre": "Eslovenia",
-      "codigo_telefonico": "+386"
+      "codigo_telefonico": "+386",
+      "tipo_documento": ["Osebna izkaznica (Documento de identidad)", "Potni list (Pasaporte)"]
     },
     {
       "nombre": "Estonia",
-      "codigo_telefonico": "+372"
+      "codigo_telefonico": "+372",
+      "tipo_documento": ["Isikutunnistuskaart (Documento de identidad)", "Pass (Pasaporte)"]
     },
     {
       "nombre": "Finlandia",
-      "codigo_telefonico": "+358"
+      "codigo_telefonico": "+358",
+      "tipo_documento": ["Henkilökortti (Documento de identidad)", "Passi (Pasaporte)"]
     },
     {
       "nombre": "Francia",
-      "codigo_telefonico": "+33"
+      "codigo_telefonico": "+33",
+      "tipo_documento": ["Carte nationale d'identité (Documento de identidad)", "Pasaporte"]
     },
     {
       "nombre": "Grecia",
-      "codigo_telefonico": "+30"
+      "codigo_telefonico": "+30",
+      "tipo_documento": ["Δελτίο αστυνομικής ταυτότητας (Documento de identidad)", "Διαβατήριο (Pasaporte)"]
     },
     {
       "nombre": "Hungría",
-      "codigo_telefonico": "+36"
+      "codigo_telefonico": "+36",
+      "tipo_documento": ["Személyi igazolvány (Documento de identidad)", "Útlevél (Pasaporte)"]
     },
     {
       "nombre": "Irlanda",
-      "codigo_telefonico": "+353"
+      "codigo_telefonico": "+353",
+      "tipo_documento": ["Cárta um Thuarastal (Documento de identidad)", "Pasaporte"]
     },
     {
       "nombre": "Italia",
-      "codigo_telefonico": "+39"
+      "codigo_telefonico": "+39",
+      "tipo_documento": ["Carta d'identità (Documento de identidad)", "Passaporto (Pasaporte)"]
     },
     {
       "nombre": "Letonia",
-      "codigo_telefonico": "+371"
+      "codigo_telefonico": "+371",
+      "tipo_documento": ["Personas apliecība (Documento de identidad)", "Pasaporte"]
     },
     {
       "nombre": "Lituania",
-      "codigo_telefonico": "+370"
+      "codigo_telefonico": "+370",
+      "tipo_documento": ["Asmens tapatybės kortelė (Documento de identidad)", "Pasaporte"]
     },
     {
       "nombre": "Luxemburgo",
-      "codigo_telefonico": "+352"
+      "codigo_telefonico": "+352",
+      "tipo_documento": ["Carte d'identité (Documento de identidad)", "Pasaporte"]
     },
     {
       "nombre": "Malta",
-      "codigo_telefonico": "+356"
+      "codigo_telefonico": "+356",
+      "tipo_documento": ["Karta tal-identità (Documento de identidad)", "Passaport (Pasaporte)"]
     },
     {
       "nombre": "Países Bajos",
-      "codigo_telefonico": "+31"
+      "codigo_telefonico": "+31",
+      "tipo_documento": ["Identiteitskaart (Documento de identidad)", "Pasaporte"]
     },
     {
       "nombre": "Polonia",
-      "codigo_telefonico": "+48"
+      "codigo_telefonico": "+48",
+      "tipo_documento": ["Dowód osobisty (Documento de identidad)", "Paszport (Pasaporte)"]
     },
     {
       "nombre": "Portugal",
-      "codigo_telefonico": "+351"
+      "codigo_telefonico": "+351",
+      "tipo_documento": ["Cartão de cidadão (Documento de identidad)", "Passaporte (Pasaporte)"]
     },
     {
       "nombre": "Reino Unido",
-      "codigo_telefonico": "+44"
+      "codigo_telefonico": "+44",
+      "tipo_documento": ["Identity card (Documento de identidad)", "Passport (Pasaporte)"]
     },
     {
       "nombre": "República Checa",
-      "codigo_telefonico": "+420"
+      "codigo_telefonico": "+420",
+      "tipo_documento": ["Občanský průkaz (Documento de identidad)", "Cestovní pas (Pasaporte)"]
     },
     {
       "nombre": "Rumanía",
-      "codigo_telefonico": "+40"
+      "codigo_telefonico": "+40",
+      "tipo_documento": ["Carte de identitate (Documento de identidad)", "Pașaport (Pasaporte)"]
     },
     {
       "nombre": "Suecia",
-      "codigo_telefonico": "+46"
+      "codigo_telefonico": "+46",
+      "tipo_documento": ["Legitimation (Documento de identidad)", "Pass (Pasaporte)"]
     }
   ]
 }

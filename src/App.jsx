@@ -120,6 +120,12 @@ import ViewTransmisionEditor from "./views/ViewEditor/ViewTransmisionEditor";
 import ViewEditorAjustes from "./views/ViewEditor/ViewEditorAjustes";
 import ViewBlogEdit from "./views/ViewAdmin/ViewBlogsEdit";
 //import ViewModuloClases from "./views/ViewMenuStudent/ViewsLevels/ViewModuloClases";
+import TemplateCampain1 from "./Components/Admin/CampainsAdmin/LandingsCampains/TemplatesCampains/TemplateCampain1";
+import ViewLanding from "./views/ViewAdmin/ViewCampain&Landings/ViewLanding";
+import ViewSelectFormLanding from "./views/ViewAdmin/ViewCampain&Landings/ViewSelectFormLanding";
+import ViewPlatillaCurso from "./views/ViewAdmin/ViewCampain&Landings/ViewPlatillaCurso";
+import ViewPlantillaCampain from "./views/ViewAdmin/ViewCampain&Landings/ViewPlantillaCampain";
+import ViewFormRegistroUsersIglesia from "./views/ViewRigistro/ViewFormRegistroUsersIglesia";
 
 import axios from "axios";
 
@@ -336,7 +342,7 @@ function App() {
         <Route path="/admin/campain/AllUserCampain" element={<ViewAllUsersCampain />} />
         <Route path="/admin/campain/users/:campeinId" element={<ViewUsersCampain />} />
         <Route path="/admin/campain/landing/:campeinId" element={<ViewLandingCampain />} />
-        <Route path="/admin/campain/landing/createLanding/:campeinId" element={<ViewCrearLanding />} />
+        <Route path="/admin/campain/landing/createLanding/:campeinId/:template" element={<ViewCrearLanding />} />
         <Route path="/estudiante/datosLegales" element={<ViewCertificacion />} />
         <Route path="/admin/transmisiones" element={<ViewTransmisionAdmin />} />
         <Route path="/niveles/:id/grupos" element={<ViewGrupos />} />
@@ -358,6 +364,12 @@ function App() {
         <Route path="/Editor/Transmision" element={<ViewTransmisionEditor />} />
         <Route path="/Editor/Ajustes" element={<ViewEditorAjustes />}/>
         <Route path="/Admin/Blog/Editar/:id" element={<ViewBlogEdit />} />
+        <Route path="/Template" element={<TemplateCampain1 />} />
+        <Route path="/campain/:landingId/Landing/:campeinId" element={<ViewLanding />} />
+        <Route path="/Admin/campain/landing/SelecForm/:campeinId" element={<ViewSelectFormLanding />} />
+        <Route path="/Admin/campain/landing/selectPlantilla/curso/:campeinId" element={<ViewPlatillaCurso />} />
+        <Route path="/Admin/campain/landing/selectPlantilla/:campeinId" element={<ViewPlantillaCampain />} />
+        <Route path="/RegistroDatos" element={<ViewFormRegistroUsersIglesia />}/>
       </Routes>
     </Router>
   );

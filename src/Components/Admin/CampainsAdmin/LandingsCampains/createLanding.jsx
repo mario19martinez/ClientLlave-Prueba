@@ -1,17 +1,21 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-export default function CreateLanding({ campeinId }) {
+export default function CreateLanding({ campeinId, templateProp }) {
   const [titulo, setTitulo] = useState("");
+  const [subtitulo, setSubtitulo] = useState("");
   const [contenido, setContenido] = useState("");
-  const [template, setTemplate] = useState("");
+  const [template, setTemplate] = useState(""); // Incluir template en el estado local
   const [contenido2, setContenido2] = useState("");
   const [img, setImg] = useState("");
   const [video, setVideo] = useState("");
   const [resumen, setResumen] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    setTemplate(templateProp);
+  }, [templateProp]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,8 +25,9 @@ export default function CreateLanding({ campeinId }) {
         `/campein/${campeinId}/landingcampein`,
         {
           titulo,
+          subtitulo,
           contenido,
-          template,
+          template, // Usar el estado local 'template' en lugar de 'templateProp'
           contenido2,
           img,
           video,
@@ -30,7 +35,6 @@ export default function CreateLanding({ campeinId }) {
         }
       );
       console.log("Landing creada:", response.data);
-      // Aquí podrías redirigir a la página de detalles de la landing recién creada, por ejemplo
     } catch (error) {
       console.error("Error al crear la landing:", error);
       setError("Error al crear la landing. Por favor, inténtalo de nuevo.");
@@ -38,71 +42,78 @@ export default function CreateLanding({ campeinId }) {
   };
 
   return (
-    <div>
-      <h1>Crear Landing Page</h1>
-      {error && <p className="text-red-500">{error}</p>}
-      <form onSubmit={handleSubmit}>
+    <div className="w-full px-20 py-8">
+      <h1 className="text-2xl font-bold mb-4 text-center">Crear Landing Page</h1>
+      {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="titulo">Título:</label>
+          <label htmlFor="titulo" className="block font-semibold">Título:</label>
           <input
             type="text"
             id="titulo"
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
+            className="border border-gray-300 rounded-md w-full py-2 px-3 focus:outline-none focus:border-blue-400"
           />
         </div>
         <div>
-          <label htmlFor="contenido">Contenido:</label>
+          <label htmlFor="subtitulo" className="block font-semibold">Subtítulo:</label>
+          <input
+            type="text"
+            id="subtitulo"
+            value={subtitulo}
+            onChange={(e) => setSubtitulo(e.target.value)}
+            className="border border-gray-300 rounded-md w-full py-2 px-3 focus:outline-none focus:border-blue-400"
+          />
+        </div>
+        <div>
+          <label htmlFor="contenido" className="block font-semibold">Contenido:</label>
           <textarea
             id="contenido"
             value={contenido}
             onChange={(e) => setContenido(e.target.value)}
+            className="border border-gray-300 rounded-md w-full py-2 px-3 focus:outline-none focus:border-blue-400"
           />
         </div>
         <div>
-          <label htmlFor="template">Template:</label>
-          <input
-            type="text"
-            id="template"
-            value={template}
-            onChange={(e) => setTemplate(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="contenido2">Contenido 2:</label>
+          <label htmlFor="contenido2" className="block font-semibold">Contenido 2:</label>
           <textarea
             id="contenido2"
             value={contenido2}
             onChange={(e) => setContenido2(e.target.value)}
+            className="border border-gray-300 rounded-md w-full py-2 px-3 focus:outline-none focus:border-blue-400"
           />
         </div>
         <div>
-          <label htmlFor="img">Imagen:</label>
+          <label htmlFor="img" className="block font-semibold">Imagen:</label>
           <input
             type="text"
             id="img"
             value={img}
             onChange={(e) => setImg(e.target.value)}
+            className="border border-gray-300 rounded-md w-full py-2 px-3 focus:outline-none focus:border-blue-400"
           />
         </div>
         <div>
-          <label htmlFor="video">Video:</label>
+          <label htmlFor="video" className="block font-semibold">Video:</label>
           <input
             type="text"
             id="video"
             value={video}
             onChange={(e) => setVideo(e.target.value)}
+            className="border border-gray-300 rounded-md w-full py-2 px-3 focus:outline-none focus:border-blue-400"
           />
         </div>
         <div>
-          <label htmlFor="resumen">Resumen:</label>
+          <label htmlFor="resumen" className="block font-semibold">Resumen:</label>
           <textarea
             id="resumen"
             value={resumen}
             onChange={(e) => setResumen(e.target.value)}
+            className="border border-gray-300 rounded-md w-full py-2 px-3 focus:outline-none focus:border-blue-400"
           />
         </div>
-        <button type="submit">Crear Landing</button>
+        <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md w-full">Crear Landing</button>
       </form>
     </div>
   );
@@ -110,4 +121,5 @@ export default function CreateLanding({ campeinId }) {
 
 CreateLanding.propTypes = {
   campeinId: PropTypes.string.isRequired,
+  templateProp: PropTypes.string.isRequired, 
 };
