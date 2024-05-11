@@ -126,6 +126,8 @@ import ViewSelectFormLanding from "./views/ViewAdmin/ViewCampain&Landings/ViewSe
 import ViewPlatillaCurso from "./views/ViewAdmin/ViewCampain&Landings/ViewPlatillaCurso";
 import ViewPlantillaCampain from "./views/ViewAdmin/ViewCampain&Landings/ViewPlantillaCampain";
 import ViewFormRegistroUsersIglesia from "./views/ViewRigistro/ViewFormRegistroUsersIglesia";
+import ViewUserDatos from "./views/ViewAdmin/ViewUserDatos/ViewUserDatos";
+import UserDatosDetail from "./Components/Admin/AllUsersAdmin/UsersDatos/UserDatosDetail";
 
 import axios from "axios";
 
@@ -370,6 +372,8 @@ function App() {
         <Route path="/Admin/campain/landing/selectPlantilla/curso/:campeinId" element={<ViewPlatillaCurso />} />
         <Route path="/Admin/campain/landing/selectPlantilla/:campeinId" element={<ViewPlantillaCampain />} />
         <Route path="/RegistroDatos" element={<ViewFormRegistroUsersIglesia />}/>
+        <Route path="/Admin/datos" element={<ViewUserDatos />} />
+        <Route path="/dato/:id" element={<UserDatosDetail />} />
       </Routes>
     </Router>
   );
