@@ -6,7 +6,7 @@ export default function ViewUserDatos () {
     return(
         <div>
             <NavAdmin />
-            <SidebarAdmin />
+            <SidebarAdmin selectedTab="defaultTab" />
             <UsersDatos />
         </div>
     )
