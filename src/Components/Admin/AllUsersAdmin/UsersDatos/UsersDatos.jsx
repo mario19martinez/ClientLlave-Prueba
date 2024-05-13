@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import Modal from 'react-modal'
 import axios from "axios";
+import UserDatosDetail from "./UserDatosDetail";
+import CancelIcon from '@mui/icons-material/Cancel';
 
 function UsersDatos() {
   const [users, setusers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const [selectedUser, setSelectedUser] = useState(null)
+  const [userCount, setUserCount] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("/datos");
         setusers(response.data);
+        setUserCount(response.data.length)
         setLoading(false);
       } catch (error) {
         console.error("Error al obtener los usuarios:", error);
@@ -24,7 +28,11 @@ function UsersDatos() {
   }, []);
 
   const handleUserDetail = (id) => {
-    navigate(`/dato/${id}`)
+    setSelectedUser(id)
+  }
+
+  const closeModal = () => {
+    setSelectedUser(null)
   }
 
   if (loading) {
@@ -38,6 +46,9 @@ function UsersDatos() {
   return (
     <div className="absolute top-0 w-3/4 p-5 mt-28 right-36 ml-96 translate-x-20">
       <h1 className="text-2xl font-bold mb-4 text-gray-700">Datos</h1>
+      <div className="absolute top-0 right-0 mr-10 mt-8">
+        <p className=" font-gabarito text-gray-600">Total de usuarios: {userCount}</p>
+      </div>
       <div className="overflow-hidden border border-gray-300 rounded-lg shadow-md">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-blue-200 border-b border-gray-300">
@@ -79,6 +90,20 @@ function UsersDatos() {
         </tbody>
       </table>
       </div>
+      <Modal
+      isOpen={selectedUser !== null}
+      onRequestClose={closeModal}
+      contentLabel="Detalles del Usuario"
+      className="flex justify-center items-center w-5/6 h-full"
+      overlayClassName="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-75"
+      >
+        <button
+        onClick={closeModal} className="absolute top-4 right-4 text-gray-200 hover:text-gray-900"
+        >
+          <CancelIcon fontSize="large"/>
+        </button>
+        {selectedUser && <UserDatosDetail id={selectedUser} />}
+      </Modal>
     </div>
   );
 }

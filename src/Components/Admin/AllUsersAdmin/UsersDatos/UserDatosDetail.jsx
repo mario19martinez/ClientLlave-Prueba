@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
+import PropTypes from "prop-types";
 
-function UserDatosDetail() {
+function UserDatosDetail({ id }) {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { id } = useParams();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -25,98 +24,120 @@ function UserDatosDetail() {
 
   if (loading) {
     return (
-        <div className="flex justify-center items-center h-screen">
-          <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-blue-600"></div>
-          <span className="ml-4 text-xl font-semibold text-blue-600">
-            Cargando...
-          </span>
-        </div>
-      );
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-blue-600"></div>
+        <span className="ml-4 text-xl font-semibold text-blue-600">
+          Cargando...
+        </span>
+      </div>
+    );
   }
 
   if (error) {
-    return <p>Error al obtener los detalles del usuario: {error}</p>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-red-600 font-semibold">
+          Error al obtener los detalles del usuario: {error}
+        </p>
+      </div>
+    );
   }
 
   if (!userData) {
-    return <p>No se encontro informacion para este usuario.</p>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-gray-700 font-semibold">
+          No se encontro informacion para este usuario.
+        </p>
+      </div>
+    );
   }
 
   return (
-    <div className="w-full p-5">
-      <h1 className="text-2xl font-bold mb-4 text-gray-700">
+    <div className="container mx-auto px-4 py-8 w-4/5 border-2 border-blue-500 rounded translate-y-00 bg-gray-100">
+      <h1 className="text-2xl font-bold mb-8 text-gray-600 translate-x-6">
         Informacion de Usuario
       </h1>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 translate-x-6">
         <div>
           <p className="text-gray-700">Nombre:</p>
-          <p className="font-semibold">{userData.name}</p>
+          <p className="text-gray-800 font-gabarito ">{userData.name}</p>
         </div>
         <div>
           <p className="text-gray-700">Apellido:</p>
-          <p className="font-semibold">{userData.last_name}</p>
+          <p className="text-gray-800 font-gabarito">{userData.last_name}</p>
         </div>
         <div>
           <p className="text-gray-700">Email:</p>
-          <p className="font-semibold">{userData.email}</p>
+          <p className="text-gray-800 font-gabarito">{userData.email}</p>
         </div>
         <div>
           <p className="text-gray-700">WhatsApp:</p>
-          <p className="font-semibold">{userData.whatsApp}</p>
+          <p className="text-gray-800 font-gabarito">{userData.whatsApp}</p>
         </div>
         <div>
           <p className="text-gray-700">Iglesia:</p>
-          <p className="font-semibold">{userData.iglesia}</p>
+          <p className="text-gray-800 font-gabarito">{userData.iglesia}</p>
         </div>
         <div>
           <p className="text-gray-700">Pastor:</p>
-          <p className="font-semibold">{userData.pastor}</p>
+          <p className="text-gray-800 font-gabarito">{userData.pastor}</p>
         </div>
         <div>
           <p className="text-gray-700">Ministerio:</p>
-          <p className="font-semibold">
+          <p className="text-gray-800 font-gabarito">
             {userData.ministerio || "No especificado"}
           </p>
         </div>
         <div>
           <p className="text-gray-700">Pastorea:</p>
-          <p className="font-semibold">{userData.pastorea}</p>
+          <p className="text-gray-800 font-gabarito">{userData.pastorea}</p>
         </div>
         <div>
           <p className="text-gray-700">Autorización del pastor:</p>
-          <p className="font-semibold">{userData.autorizacion_pastor}</p>
+          <p className="text-gray-800 font-gabarito">
+            {userData.autorizacion_pastor}
+          </p>
         </div>
         <div>
           <p className="text-gray-700">Ejerce ministerio:</p>
-          <p className="font-semibold">{userData.ejerce_ministerio}</p>
+          <p className="text-gray-800 font-gabarito">
+            {userData.ejerce_ministerio}
+          </p>
         </div>
         <div>
           <p className="text-gray-700">Miembros:</p>
-          <p className="font-semibold">{userData.miembros}</p>
+          <p className="text-gray-800 font-gabarito">{userData.miembros}</p>
         </div>
         <div>
           <p className="text-gray-700">Tipo de documento:</p>
-          <p className="font-semibold">{userData.tipo_documento}</p>
+          <p className="text-gray-800 font-gabarito">
+            {userData.tipo_documento}
+          </p>
         </div>
         <div>
           <p className="text-gray-700">Identificación:</p>
-          <p className="font-semibold">{userData.identificacion}</p>
+          <p className="text-gray-800 font-gabarito">
+            {userData.identificacion}
+          </p>
         </div>
         <div>
           <p className="text-gray-700">Fecha de nacimiento:</p>
-          <p className="font-semibold">{userData.fecha_nacimiento}</p>
+          <p className="text-gray-800 font-gabarito">
+            {userData.fecha_nacimiento}
+          </p>
         </div>
         <div>
           <p className="text-gray-700">País:</p>
-          <p className="font-semibold">{userData.pais}</p>
+          <p className="text-gray-800 font-gabarito">{userData.pais}</p>
         </div>
         <div>
           <p className="text-gray-700">Dirección:</p>
-          <p className="font-semibold">{userData.direccion}</p>
+          <p className="text-gray-800 font-gabarito">{userData.direccion}</p>
         </div>
         <div>
           <p className="text-gray-700">Registrado el:</p>
-          <p className="font-semibold">
+          <p className="text-gray-800 font-gabarito">
             {new Date(userData.registeredAt).toLocaleString()}
           </p>
         </div>
@@ -124,5 +145,9 @@ function UserDatosDetail() {
     </div>
   );
 }
+
+UserDatosDetail.propTypes = {
+  id: PropTypes.string.isRequired,
+};
 
 export default UserDatosDetail;
