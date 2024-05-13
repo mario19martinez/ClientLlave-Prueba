@@ -25,17 +25,27 @@ function AgregarCurso({ closeModal }) {
   });
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-
+    const { name, value, checked } = e.target;
+  
     if (name === "gratuito") {
-      const costoValue = value === "true" ? "0" : "";
+      const costoValue = checked ? "0.00" : "";
       setNuevoCurso({
         ...nuevoCurso,
         costo: costoValue,
-        [name]: !nuevoCurso.gratuito,
+        gratuito: checked,
       });
     } else {
-      setNuevoCurso({ ...nuevoCurso, [name]: value });
+      // Si el cambio no es para el interruptor gratuito, actualiza el estado normalmente
+      if (name === "costo" && !checked) {
+        // Si el costo se cambia y gratuito está desactivado, asegúrate de que gratuito sea falso
+        setNuevoCurso({
+          ...nuevoCurso,
+          [name]: value,
+          gratuito: false,
+        });
+      } else {
+        setNuevoCurso({ ...nuevoCurso, [name]: value });
+      }
     }
   };
 
@@ -240,7 +250,7 @@ function AgregarCurso({ closeModal }) {
                     { list: "ordered" },
                     { list: "bullet" },
                     { indent: "-1" },
-                    { indent: "+1" },
+                    { indent: "+1" }, 
                   ],
                   ["clean"],
                   [{ align: [] }],
