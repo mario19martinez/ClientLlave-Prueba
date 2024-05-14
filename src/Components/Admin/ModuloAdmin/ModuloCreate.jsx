@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom'
 import PropTypes from "prop-types";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
@@ -11,7 +10,6 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
   const [preguntas, setPreguntas] = useState([
     { pregunta: "", opciones: ["a", "b", "c", "d"], respuestaCorrecta: "" },
   ]);
-  const navigate = useNavigate();
 
   const agregarPregunta = () => {
     setPreguntas([
@@ -92,8 +90,13 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
 
   return (
     <div className="bg-blue-500 p-2 rounded-md shadow-md max-w-lg h-full overflow-y-auto">
-      <h2 className="text-2xl font-bold mb-4 text-gray-100 ms-4">Agregar Modulo</h2>
-      <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-4 rounded-lg shadow-lg h-full">
+      <h2 className="text-2xl font-bold mb-4 text-gray-100 ms-4">
+        Agregar Modulo
+      </h2>
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-lg mx-auto p-4 rounded-lg shadow-lg h-full"
+      >
         <div className="mb-2">
           <label htmlFor="" className="block text-gray-100 font-semibold mb-2">
             Titulo:
@@ -121,7 +124,9 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
           ></textarea>
         </div>
         <div className="mb-2">
-          <label htmlFor="" className="font-semibold text-gray-100">Descripción:</label>
+          <label htmlFor="" className="font-semibold text-gray-100">
+            Descripción:
+          </label>
           <input
             type="text"
             value={descripcion}
@@ -202,6 +207,7 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
 
 ModuloCreate.propTypes = {
   nivelId: PropTypes.string.isRequired,
+  closeModalAndReload: PropTypes.func.isRequired,
 };
 
 export default ModuloCreate;

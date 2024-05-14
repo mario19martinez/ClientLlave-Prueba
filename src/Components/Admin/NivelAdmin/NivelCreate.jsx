@@ -1,5 +1,5 @@
 import { useState } from "react";
-//import { useNavigate } from "react-router-dom";
+import PropTypes from 'prop-types'
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -14,7 +14,6 @@ function NivelCreate({ closeModalAndReload }) {
   const [premium, setPremium] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
-  //const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +30,7 @@ function NivelCreate({ closeModalAndReload }) {
         premium: premium.toString() === "true",
       });
 
-      setSuccessMessage("El Nivel se creo exitosamente.");
+      setSuccessMessage("El Nivel se creo exitosamente.", response.data);
       setName("");
       setImage("");
       setDuracion("");
@@ -40,7 +39,6 @@ function NivelCreate({ closeModalAndReload }) {
       setGrupoWhatsApp("");
       setNumero("");
       setPremium(false);
-      console.log("Nuevo Nivel creado:", response.data);
       toast.success("Nivel creado exitosamente!", {
         position: "top-center",
         autoClose: 1500,
@@ -204,6 +202,10 @@ function NivelCreate({ closeModalAndReload }) {
       </div>
     </div>
   );
+}
+
+NivelCreate.propTypes = {
+  closeModalAndReload: PropTypes.func.isRequired
 }
 
 export default NivelCreate;

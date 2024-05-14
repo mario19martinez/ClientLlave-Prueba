@@ -46,7 +46,6 @@ function AllUsersAdmin() {
       if (!response.data) {
         throw new Error("Usuario no encontrado");
       }
-      console.log("response:", response);
       setSelectedUser(response.data);
     } catch (error) {
       console.error(

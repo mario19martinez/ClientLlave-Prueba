@@ -1,8 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import { useState, useEffect } from "react";
-//import { Link } from "react-router-dom";
 import axios from "axios";
-//import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
 function ModulosNivelStudent({ userSub }) {
   const [grupos, setGrupos] = useState([]);
@@ -47,5 +46,9 @@ function ModulosNivelStudent({ userSub }) {
     </div>
   );
 }
+
+ModulosNivelStudent.propTypes = {
+  userSub: PropTypes.string.isRequired,
+};
 
 export default ModulosNivelStudent;

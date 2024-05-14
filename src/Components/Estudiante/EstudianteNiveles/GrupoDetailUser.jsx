@@ -36,11 +36,20 @@ function GrupoDetailUser() {
       <h3 className="text-xl text-gray-800 font-semibold mb-2">Modulos:</h3>
       <ul>
         {modulos.map((modulo) => (
-          <Link to={`/grupo/${grupoId}/modulo/${modulo.id}/detalles`} key={modulo.id}>
-          <li className="mb-4 bg-gray-100 border-b-4 border-blue-500 rounded-xl h-auto p-2 w-11/12 hover:bg-gray-200 transition-transform ease-in-out duration-300 hover:translate-y-2">
-            <h4 className=" pl-2 text-lg text-gray-800 font-semibold p-0">{modulo.titulo}</h4>
-            <p className="text-gray-700 pl-2">{modulo.descripcion.length > 100 ? `${modulo.descripcion.substring(0, 100)}...` : modulo.descripcion}</p>
-          </li>
+          <Link
+            to={`/grupo/${grupoId}/modulo/${modulo.id}/detalles`}
+            key={modulo.id}
+          >
+            <li className="mb-4 bg-gray-100 border-b-4 border-blue-500 rounded-xl h-auto p-2 w-11/12 hover:bg-gray-200 transition-transform ease-in-out duration-300 hover:translate-y-2">
+              <h4 className=" pl-2 text-lg text-gray-800 font-semibold p-0">
+                {modulo.titulo}
+              </h4>
+              <p className="text-gray-700 pl-2">
+                {modulo.descripcion.length > 100
+                  ? `${modulo.descripcion.substring(0, 100)}...`
+                  : modulo.descripcion}
+              </p>
+            </li>
           </Link>
         ))}
       </ul>

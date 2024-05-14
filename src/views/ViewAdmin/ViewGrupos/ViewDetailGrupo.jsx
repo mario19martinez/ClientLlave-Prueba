@@ -7,12 +7,7 @@ export default function ViewDetailGrupo() {
   return (
     <div>
       <NavAdmin />
-      <SidebarAdmin />
-      {/* <div className="-translate-y-52 translate-x-72">
-      <button className="bg-blue-500 absolute -translate-y-96">
-        Volver
-      </button>
-      </div> */}
+      <SidebarAdmin selectedTab="defaultTab"/>
       <div className="">
       <GrupoDetail />
       </div>

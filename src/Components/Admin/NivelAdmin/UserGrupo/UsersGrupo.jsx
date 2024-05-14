@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from 'react-modal'
+import PropTypes from "prop-types";
 import AddUserGrupo from "./AddUserGrupo";
 
 function UsersGrupo({ nivelId, grupoId }) {
@@ -90,5 +91,10 @@ function UsersGrupo({ nivelId, grupoId }) {
     </div>
   );
 }
+
+UsersGrupo.propTypes = {
+  nivelId: PropTypes.string.isRequired,
+  grupoId: PropTypes.string.isRequired,
+};
 
 export default UsersGrupo;

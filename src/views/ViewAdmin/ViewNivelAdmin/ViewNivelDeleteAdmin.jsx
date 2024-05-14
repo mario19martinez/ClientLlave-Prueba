@@ -8,7 +8,7 @@ export default function ViewNivelDeleteAdmin() {
   return (
     <div>
       <NavAdmin />
-      <SidebarAdmin />
+      <SidebarAdmin selectedTab="defaultTab"/>
       <div>
         <NivelesDeleteAdmin />
       </div>
