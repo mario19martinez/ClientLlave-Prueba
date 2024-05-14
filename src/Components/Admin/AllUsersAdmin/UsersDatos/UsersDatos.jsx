@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Modal from 'react-modal'
 import axios from "axios";
 import UserDatosDetail from "./UserDatosDetail";
 import CancelIcon from '@mui/icons-material/Cancel';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 function UsersDatos() {
   const [users, setusers] = useState([]);
@@ -10,6 +12,7 @@ function UsersDatos() {
   const [error, setError] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null)
   const [userCount, setUserCount] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +38,10 @@ function UsersDatos() {
     setSelectedUser(null)
   }
 
+  const handleGoBack = () => {
+    navigate(-1)
+  }
+
   if (loading) {
     return <p>Cargando...</p>;
   }
@@ -44,9 +51,12 @@ function UsersDatos() {
   }
 
   return (
-    <div className="absolute top-0 w-3/4 p-5 mt-28 right-36 ml-96 translate-x-20">
+    <div className="absolute top-0 w-3/4 p-4 mt-28 right-36 ml-96 translate-x-20">
+      <button onClick={handleGoBack} className="bg-blue-500 text-white w-20 h-10 mb-8 font-semibold py-1 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-1">
+        <KeyboardBackspaceIcon fontSize="large" />
+      </button>
       <h1 className="text-2xl font-bold mb-4 text-gray-700">Datos</h1>
-      <div className="absolute top-0 right-0 mr-10 mt-8">
+      <div className="absolute top-0 right-0 mr-10 mt-10 translate-y-16">
         <p className=" font-gabarito text-gray-600">Total de usuarios: {userCount}</p>
       </div>
       <div className="overflow-hidden border border-gray-300 rounded-lg shadow-md">

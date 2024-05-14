@@ -6,7 +6,7 @@ export default function ViewModuloDetailAdmin() {
     <div>
       <NavAdmin />
       <div className="flex">
-        <SidebarAdmin />
+        <SidebarAdmin selectedTab="defaultTab"/>
         <ModuloDetailAdmin />
       </div>
     </div>

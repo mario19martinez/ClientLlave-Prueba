@@ -10,7 +10,7 @@ function ModuloDetailsStudent() {
   const [loading, setLoading] = useState(true);
   const [mostrarPreguntas, setMostrarPreguntas] = useState(false);
   const [respuestas, setRespuestas] = useState({});
-  const [modulos, setModulos] = useState([]);
+  const [modulos] = useState([]);
   const [userSub, setUserSub] = useState(null);
 
   useEffect(() => {

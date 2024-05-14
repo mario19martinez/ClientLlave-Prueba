@@ -6,7 +6,7 @@ export default function ViewNivelDetailAdmin() {
   return (
     <div>
       <NavAdmin />
-      <SidebarAdmin />
+      <SidebarAdmin selectedTab="defaultTab" />
       <NivelDetailAdmin />
     </div>
   );

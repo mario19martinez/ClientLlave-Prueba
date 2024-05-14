@@ -7,7 +7,7 @@ export default function ViewGrupos() {
     return (
         <div>
             <NavAdmin />
-            <SidebarAdmin />
+            <SidebarAdmin selectedTab="defaultTab"/>
             <div className="">
             <Grupos />
             </div>

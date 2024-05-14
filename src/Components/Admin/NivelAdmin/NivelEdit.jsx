@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from 'prop-types'
 import axios from "axios";
 
 function NivelEdit({ id }) {
@@ -174,5 +175,9 @@ function NivelEdit({ id }) {
     </div>
   );
 }
+
+NivelEdit.propTypes = {
+  id: PropTypes.string.isRequired,
+};
 
 export default NivelEdit;

@@ -6,7 +6,7 @@ export default function ViewClasesModuloAdmin() {
   return (
     <div>
       <NavAdmin />
-      <SidebarAdmin />
+      <SidebarAdmin selectedTab="defaultTab"/>
       <ClasesDetailModulo />
     </div>
   );
