@@ -126,6 +126,8 @@ import ViewSelectFormLanding from "./views/ViewAdmin/ViewCampain&Landings/ViewSe
 import ViewPlatillaCurso from "./views/ViewAdmin/ViewCampain&Landings/ViewPlatillaCurso";
 import ViewPlantillaCampain from "./views/ViewAdmin/ViewCampain&Landings/ViewPlantillaCampain";
 import ViewFormRegistroUsersIglesia from "./views/ViewRigistro/ViewFormRegistroUsersIglesia";
+import ViewCreateLandingCursos from "./views/ViewAdmin/ViewCampain&Landings/ViewCreateLandingCursos";
+import ViewLandingCursos from "./views/ViewAdmin/ViewCampain&Landings/ViewLandingCurso";
 
 import axios from "axios";
 
@@ -365,11 +367,13 @@ function App() {
         <Route path="/Editor/Ajustes" element={<ViewEditorAjustes />}/>
         <Route path="/Admin/Blog/Editar/:id" element={<ViewBlogEdit />} />
         <Route path="/Template" element={<TemplateCampain1 />} />
-        <Route path="/campain/:landingId/Landing/:campeinId" element={<ViewLanding />} />
+        <Route path="/campain/:landingId/Landing/:campeinId/:template" element={<ViewLanding />} />
         <Route path="/Admin/campain/landing/SelecForm/:campeinId" element={<ViewSelectFormLanding />} />
         <Route path="/Admin/campain/landing/selectPlantilla/curso/:campeinId" element={<ViewPlatillaCurso />} />
         <Route path="/Admin/campain/landing/selectPlantilla/:campeinId" element={<ViewPlantillaCampain />} />
         <Route path="/RegistroDatos" element={<ViewFormRegistroUsersIglesia />}/>
+        <Route path="/Admin/campain/createLanding/cursos/:campeinId/:template" element={<ViewCreateLandingCursos />}/>
+        <Route path="/campain/:landingId/Landing/:campeinId/:template/curso/:idcurso" element={<ViewLandingCursos />} />
       </Routes>
     </Router>
   );

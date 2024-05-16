@@ -6,7 +6,7 @@ export default function CreateLanding({ campeinId, templateProp }) {
   const [titulo, setTitulo] = useState("");
   const [subtitulo, setSubtitulo] = useState("");
   const [contenido, setContenido] = useState("");
-  const [template, setTemplate] = useState(""); // Incluir template en el estado local
+  const [template, setTemplate] = useState("");
   const [contenido2, setContenido2] = useState("");
   const [img, setImg] = useState("");
   const [video, setVideo] = useState("");
@@ -27,7 +27,7 @@ export default function CreateLanding({ campeinId, templateProp }) {
           titulo,
           subtitulo,
           contenido,
-          template, // Usar el estado local 'template' en lugar de 'templateProp'
+          template, 
           contenido2,
           img,
           video,
