@@ -126,11 +126,15 @@ import ViewSelectFormLanding from "./views/ViewAdmin/ViewCampain&Landings/ViewSe
 import ViewPlatillaCurso from "./views/ViewAdmin/ViewCampain&Landings/ViewPlatillaCurso";
 import ViewPlantillaCampain from "./views/ViewAdmin/ViewCampain&Landings/ViewPlantillaCampain";
 import ViewFormRegistroUsersIglesia from "./views/ViewRigistro/ViewFormRegistroUsersIglesia";
+import ViewCreateLandingCursos from "./views/ViewAdmin/ViewCampain&Landings/ViewCreateLandingCursos";
+import ViewLandingCursos from "./views/ViewAdmin/ViewCampain&Landings/ViewLandingCurso";
+import ViewUserDatos from "./views/ViewAdmin/ViewUserDatos/ViewUserDatos";
+import UserDatosDetail from "./Components/Admin/AllUsersAdmin/UsersDatos/UserDatosDetail";
 
 import axios from "axios";
 
-//axios.defaults.baseURL = "http://localhost:3001";
-axios.defaults.baseURL = "https://apillave-ebd57605aa78.herokuapp.com/";  
+axios.defaults.baseURL = "http://localhost:3001";
+//axios.defaults.baseURL = "https://apillave-ebd57605aa78.herokuapp.com/";  
 
 const isLoggedIn = localStorage.getItem("isLoggedIn");
 
@@ -370,6 +374,10 @@ function App() {
         <Route path="/Admin/campain/landing/selectPlantilla/curso/:campeinId" element={<ViewPlatillaCurso />} />
         <Route path="/Admin/campain/landing/selectPlantilla/:campeinId" element={<ViewPlantillaCampain />} />
         <Route path="/RegistroDatos" element={<ViewFormRegistroUsersIglesia />}/>
+        <Route path="/Admin/campain/createLanding/cursos/:campeinId/:template" element={<ViewCreateLandingCursos />}/>
+        <Route path="/campain/:landingId/Landing/:campeinId/:template/curso/:idcurso" element={<ViewLandingCursos />} />
+        <Route path="/Admin/datos" element={<ViewUserDatos />} />
+        <Route path="/dato/:id" element={<UserDatosDetail />} />
       </Routes>
     </Router>
   );
