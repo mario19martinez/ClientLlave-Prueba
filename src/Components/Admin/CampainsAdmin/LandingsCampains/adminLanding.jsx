@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -39,6 +38,18 @@ export default function AdminLanding({ campeinId }) {
     }
   };
 
+  const redirectToLanding = (landing) => {
+    if (landing.idcurso) {
+      navigate(
+        `/campain/${landing.id}/Landing/${campeinId}/${landing.template}/curso/${landing.idcurso}`
+      );
+    } else {
+      navigate(
+        `/campain/${landing.id}/Landing/${campeinId}/${landing.template}`
+      );
+    }
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-semibold mb-4">Landings campaña</h1>
@@ -63,15 +74,19 @@ export default function AdminLanding({ campeinId }) {
               <th className="px-4 py-2">Título</th>
               <th className="px-4 py-2">Contenido</th>
               <th className="px-4 py-2">Template</th>
+              <th className="px-4 py-2">idCurso</th>
               <th className="px-4 py-2">Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {landings.map((landing) => ( 
+            {landings.map((landing) => (
               <tr key={landing.id}>
                 <td className="border px-4 py-2">{landing.titulo}</td>
                 <td className="border px-4 py-2">{landing.contenido}</td>
                 <td className="border px-4 py-2">{landing.template}</td>
+                <td className="border px-4 py-2">
+                  {landing.idcurso || "Curso no asociado"}
+                </td>
                 <td className="border px-4 py-2">
                   <button
                     className="mr-2 text-red-500 hover:text-red-700"
@@ -81,9 +96,7 @@ export default function AdminLanding({ campeinId }) {
                   </button>
                   <button
                     className="text-green-500 hover:text-green-700"
-                    onClick={() =>
-                      navigate(`/campain/${landing.id}/Landing/${campeinId}`)
-                    }
+                    onClick={() => redirectToLanding(landing)}
                   >
                     <VisibilityIcon />
                   </button>

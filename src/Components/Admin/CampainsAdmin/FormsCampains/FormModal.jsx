@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import paisesData from "../../../FormResgistro/Paises.json";
@@ -22,7 +23,7 @@ const initialValues = {
   pais: "",
   privacyPolicy: false,
   dataTreatmentPolicy: false,
-  campaña: "Campaña España",
+  campaña: "",
 };
 
 const validationSchema = Yup.object().shape({
@@ -43,14 +44,35 @@ const validationSchema = Yup.object().shape({
   ),
 });
 
-export default function FormModal() {
+export default function FormModal({ idCampain }) {
   const [fullPhoneNumber, setFullPhoneNumber] = useState("");
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
+  const [initialValuesWithCampaign, setInitialValuesWithCampaign] = useState(initialValues);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchCampaign = async () => {
+      try {
+        console.log("ID de la campaña:", idCampain); // Log del ID de la campaña
+        const response = await axios.get(`/campein/${idCampain}`);
+        const campaignName = response.data.name;
+        console.log("Nombre de la campaña:", campaignName); // Log del nombre de la campaña
+        setInitialValuesWithCampaign((prevValues) => ({
+          ...prevValues,
+          campaña: campaignName,
+        }));
+      } catch (error) {
+        console.error("Error al obtener la campaña:", error);
+      }
+    };
+
+    fetchCampaign();
+  }, [idCampain]);
+
   const formik = useFormik({
-    initialValues,
+    initialValues: initialValuesWithCampaign,
+    enableReinitialize: true,
     validationSchema,
     onSubmit: async (values) => {
       values.telefono = `${selectedCountryCode} ${values.telefono}`;
@@ -75,7 +97,7 @@ export default function FormModal() {
 
   return (
     <div
-      className="mx-auto w-full sm:w-4/5 md:w-3/5 lg:w-2/5 p-8 bg-white bg-opacity-80 shadow-md rounded-lg"
+      className=" p-8 bg-white bg-opacity-80 shadow-md rounded-lg"
       style={{ position: "relative", zIndex: 2 }}
     >
       <h1 className="text-xl font-bold text-center mb-6">
@@ -301,3 +323,7 @@ export default function FormModal() {
     </div>
   );
 }
+
+FormModal.propTypes = {
+  idCampain: PropTypes.string.isRequired,
+};

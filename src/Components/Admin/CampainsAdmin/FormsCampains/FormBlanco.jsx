@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import PropTypes from "prop-types";
 import paisesData from "../../../FormResgistro/Paises.json";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -22,7 +23,7 @@ const initialValues = {
   pais: "",
   privacyPolicy: false,
   dataTreatmentPolicy: false,
-  campaña: "Campaña España",
+  campaña: "",
 };
 
 const validationSchema = Yup.object().shape({
@@ -43,14 +44,35 @@ const validationSchema = Yup.object().shape({
   ),
 });
 
-export default function FormBlanco() {
+export default function FormBlanco({ idCampain }) {
   const [fullPhoneNumber, setFullPhoneNumber] = useState("");
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
+  const [initialValuesWithCampaign, setInitialValuesWithCampaign] = useState(initialValues);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchCampaign = async () => {
+      try {
+        console.log("ID de la campaña:", idCampain); // Log del ID de la campaña
+        const response = await axios.get(`/campein/${idCampain}`);
+        const campaignName = response.data.name;
+        console.log("Nombre de la campaña:", campaignName); // Log del nombre de la campaña
+        setInitialValuesWithCampaign((prevValues) => ({
+          ...prevValues,
+          campaña: campaignName,
+        }));
+      } catch (error) {
+        console.error("Error al obtener la campaña:", error);
+      }
+    };
+
+    fetchCampaign();
+  }, [idCampain]);
+
   const formik = useFormik({
-    initialValues,
+    initialValues: initialValuesWithCampaign,
+    enableReinitialize: true, // Allow the form to reinitialize with new initialValues
     validationSchema,
     onSubmit: async (values) => {
       values.telefono = `${selectedCountryCode} ${values.telefono}`;
@@ -298,3 +320,7 @@ export default function FormBlanco() {
     </div>
   );
 }
+
+FormBlanco.propTypes = {
+  idCampain: PropTypes.string.isRequired,
+};

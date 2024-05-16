@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import FormBlanco from "../../FormsCampains/FormBlanco";
+import FormModal from "../../FormsCampains/FormModal";
 
 export default function TemplateCampain1({ campeinId, landingId }) {
   const [landingData, setLandingData] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     // Función para obtener los datos de la landing page
@@ -21,6 +23,14 @@ export default function TemplateCampain1({ campeinId, landingId }) {
 
     fetchLandingData();
   }, [campeinId, landingId]);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div>
@@ -57,12 +67,12 @@ export default function TemplateCampain1({ campeinId, landingId }) {
                   {landingData.contenido || "Aqui va el contenido"}
                 </p>
                 <div className="flex items-center">
-                  <a
-                    href="/registro"
+                  <button
+                    onClick={openModal}
                     className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base leading-6 font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition ease-in-out duration-150"
                   >
                     Registro
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -105,7 +115,7 @@ export default function TemplateCampain1({ campeinId, landingId }) {
                       />
                     </svg>
                     <div className="relative bg-white rounded shadow-2xl p-7 sm:p-10">
-                      <FormBlanco />
+                      <FormBlanco idCampain={campeinId} />
                     </div>
                   </div>
                 </div>
@@ -114,6 +124,7 @@ export default function TemplateCampain1({ campeinId, landingId }) {
           </div>
         </>
       )}
+
       <div className="bg-gray-100 text-gray-800 font-sans">
         <div className="container mx-auto p-6">
           <h1 className="text-3xl lg:text-4xl text-blue-900 mb-6 text-center font-semibold">
@@ -175,6 +186,7 @@ export default function TemplateCampain1({ campeinId, landingId }) {
         </div>
         <div className="text-center pb-4">
           <button
+            onClick={openModal}
             type="button"
             className="bg-blue-500 hover:bg-blue-600 text-white text-lg md:text-xl lg:text-2xl px-14 py-8 rounded-full font-bold transition duration-300 transform hover:scale-105 hover:shadow-md"
           >
@@ -182,6 +194,26 @@ export default function TemplateCampain1({ campeinId, landingId }) {
           </button>
         </div>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-10 overflow-y-auto">
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <div className="bg-white p-8 rounded-md max-w-lg w-full">
+              <FormModal idCampain={campeinId} />
+              <button
+                onClick={closeModal}
+                className="absolute top-4 right-4 text-white hover:text-gray-400"
+              >
+                X
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

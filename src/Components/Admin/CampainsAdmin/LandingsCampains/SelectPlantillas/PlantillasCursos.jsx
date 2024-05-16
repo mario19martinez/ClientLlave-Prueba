@@ -2,17 +2,18 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
 export default function PlantillasCursos({ campeinId }) {
+  const Template3 = 3;
+  const Template4 = 4;
   const navigate = useNavigate();
 
   return (
     <div className="container mx-auto py-8 px-4">
       <button
-      onClick={() =>
-        navigate(
-          `/Admin/campain/landing/SelecForm/${campeinId}`
-        )
-      }
-      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mb-4">
+        onClick={() =>
+          navigate(`/Admin/campain/landing/SelecForm/${campeinId}`)
+        }
+        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mb-4"
+      >
         Atrás
       </button>
       <div className="grid grid-cols-2 gap-8">
@@ -33,7 +34,7 @@ export default function PlantillasCursos({ campeinId }) {
                   className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
                   onClick={() =>
                     navigate(
-                      `/admin/campain/landing/createLanding/${campeinId}`
+                      `/Admin/campain/createLanding/cursos/${campeinId}/${Template3}`
                     )
                   }
                 >
@@ -56,7 +57,14 @@ export default function PlantillasCursos({ campeinId }) {
                 <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2">
                   Vista previa
                 </button>
-                <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                <button
+                  className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                  onClick={() =>
+                    navigate(
+                      `/Admin/campain/createLanding/cursos/${campeinId}/${Template4}`
+                    )
+                  }
+                >
                   Seleccionar
                 </button>
               </div>
