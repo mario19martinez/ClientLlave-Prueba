@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-//import ClaseDetailUser from "./ClasesDetailUser";
 
 function ModuloDetailUser() {
   const [grupo, setGrupo] = useState(null);
@@ -9,8 +8,6 @@ function ModuloDetailUser() {
   const [mostrarPreguntas, setMostrarPreguntas] = useState(false);
   const [respuestas, setRespuestas] = useState({});
   const [userSub, setUserSub] = useState(null);
-  //const [clases, setClases] = useState([]);
-  //const [selectedClassId, setSelectedClassId] = useState(null);
 
   const { grupoId, moduloId } = useParams();
 
@@ -91,9 +88,6 @@ function ModuloDetailUser() {
     }
   };
 
-  // const handleClassSelect = (claseId) => {
-  //   setSelectedClassId(claseId);
-  // };
 
   if (!grupo || !modulo) {
     return (

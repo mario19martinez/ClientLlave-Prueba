@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-//import { useParams } from "react-router-dom";
+import PropTypes from "prop-types";
 import axios from "axios";
 
 function ClaseDetailUser({ claseId }) {
   const [clase, setClase] = useState(null);
-  //const { claseId } = useParams();
 
   useEffect(() => {
     const fetchClaseDetail = async () => {
@@ -37,7 +36,6 @@ function ClaseDetailUser({ claseId }) {
       </div>
     );
   }
-  //className=" p-8 bg-white w-1/2 rounded-lg shadow-lg translate-y-48 -translate-x-36"
 
   return (
     <div className="px-4 translate-y-10 translate-x-12" style={{ width: "700px" }}>
@@ -73,5 +71,9 @@ function ClaseDetailUser({ claseId }) {
     </div>
   );
 }
+
+ClaseDetailUser.propTypes = {
+  claseId: PropTypes.string.isRequired,
+};
 
 export default ClaseDetailUser;

@@ -46,7 +46,6 @@ function AllUsersAdmin() {
       if (!response.data) {
         throw new Error("Usuario no encontrado");
       }
-      console.log("response:", response);
       setSelectedUser(response.data);
     } catch (error) {
       console.error(
@@ -219,6 +218,12 @@ function AllUsersAdmin() {
           >
             <BarChartIcon className="text-green-400" />
           </button>
+          <button
+        onClick={() => navigate("/Admin/datos")}
+        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+      >
+        Datos/España
+      </button>
         </div>
         <div className="mt-4">
           <p className="text-gray-600 text-sm">

@@ -1,15 +1,13 @@
 import { useState, useMemo } from "react";
+import PropTypes from "prop-types";
 import axios from "axios";
 
 function AddUserGrupo({ nivelId, grupoId }) {
-  console.log("nivelId:", nivelId);
-  console.log("grupoId:", grupoId);
-  const [userSub, setUserSub] = useState("");
+  const [setUserSub] = useState("");
   const [error, setError] = useState(null);
   const [message, setMessage] = useState("");
   const [busqueda, setBusqueda] = useState("");
   const [resultados, setResultados] = useState([]);
-  //const [userSelected, setUserSelected] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleBuscar = async () => {
@@ -27,7 +25,6 @@ function AddUserGrupo({ nivelId, grupoId }) {
         ...usuario,
         userSub: usuario.id
       }))
-      console.log('user:', usuariosSub)
       setResultados(usuariosSub);
     } catch (error) {
       console.error("Error al buscar usuarios:", error.message);
@@ -42,13 +39,6 @@ function AddUserGrupo({ nivelId, grupoId }) {
   const handleSubmit = async (e, userSub) => {
     e.preventDefault();
     try {
-      // if (!user || !user.userSub) {
-      //   setError("Usuario inválido.");
-      //   return;
-      // }
-
-      //console.log("URL de la solicitud POST:", `/nivel/${nivelId}/grupo/${grupoId}/usuario`);
-    //console.log("Datos enviados en el cuerpo de la solicitud:", { userSub: user.userSub });
       const response = await axios.post(
         `/nivel/${nivelId}/grupo/${grupoId}/usuario`,
         {
@@ -115,5 +105,10 @@ function AddUserGrupo({ nivelId, grupoId }) {
     </div>
   );
 }
+
+AddUserGrupo.propTypes = {
+  nivelId: PropTypes.string.isRequired,
+  grupoId: PropTypes.string.isRequired,
+};
 
 export default AddUserGrupo;
