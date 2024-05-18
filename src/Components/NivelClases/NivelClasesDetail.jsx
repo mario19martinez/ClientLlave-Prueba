@@ -6,6 +6,7 @@ function NivelClasesDetail({ claseId }) {
   const [clase, setClase] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [mostrarTexto, setMostrarTexto] = useState(false)
 
   useEffect(() => {
     const fetchClase = async () => {
@@ -16,6 +17,7 @@ function NivelClasesDetail({ claseId }) {
         setClase(response.data);
         setLoading(false);
       } catch (error) {
+        console.error('Error al ver la clase:', error)
         setError(
           "Error al obtener la clase. Por favor, inténtalo de nuevo más tarde."
         );
@@ -34,6 +36,10 @@ function NivelClasesDetail({ claseId }) {
     const match = url.match(regex);
     return match ? match[1] : null;
   };
+
+  const toggleMostrarTexto = () => {
+    setMostrarTexto(!mostrarTexto)
+  }
 
   if (loading) {
     return (
@@ -75,7 +81,13 @@ function NivelClasesDetail({ claseId }) {
           <span className="font-semibold">Nombre:</span> {clase.name}
         </p>
       )}
-      {clase.texto && (
+      <button
+      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
+      onClick={toggleMostrarTexto}
+      >
+        {mostrarTexto ? "Ver menos" : "Ver más"}
+      </button>
+      {mostrarTexto && clase.texto && (
         <div className="mb-4">
           <h3 className="text-xl font-bold mb-2">Texto:</h3>
           <p className="text-gray-700">{clase.texto}</p>

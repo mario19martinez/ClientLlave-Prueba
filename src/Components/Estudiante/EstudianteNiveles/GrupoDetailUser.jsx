@@ -40,15 +40,21 @@ function GrupoDetailUser() {
             to={`/grupo/${grupoId}/modulo/${modulo.id}/detalles`}
             key={modulo.id}
           >
-            <li className="mb-4 bg-gray-100 border-b-4 border-blue-500 rounded-xl h-auto p-2 w-11/12 hover:bg-gray-200 transition-transform ease-in-out duration-300 hover:translate-y-2">
+            <li className=" relative mb-4 bg-gray-100 border-b-4 border-blue-600 rounded-xl h-auto p-2 w-11/12 hover:bg-gray-200 transition-transform ease-in-out duration-300 hover:translate-y-2">
               <h4 className=" pl-2 text-lg text-gray-800 font-semibold p-0">
                 {modulo.titulo}
               </h4>
               <p className="text-gray-700 pl-2">
-                {modulo.descripcion.length > 100
-                  ? `${modulo.descripcion.substring(0, 100)}...`
-                  : modulo.descripcion}
+                {modulo.contenido && modulo.contenido.length > 100
+                  ? `${modulo.contenido.substring(0, 100)}...`
+                  : modulo.contenido}
               </p>
+              <Link
+              to={`/grupo/${grupoId}/modulo/${modulo.id}/detalles`}
+              className="absolute top-4 right-2 px-4 py-2 bg-blue-600 font-semibold text-white rounded hover:bg-blue-700 transition-colors duration-300"
+            >
+              Ver Módulo
+            </Link>
             </li>
           </Link>
         ))}

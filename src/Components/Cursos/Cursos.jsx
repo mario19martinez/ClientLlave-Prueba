@@ -10,6 +10,22 @@ function CursoClases() {
   const [claseSeleccionada, setClaseSeleccionada] = useState(null);
   const [descripcion, setDescripcion] = useState("");
   const [mostrarTodasClases, setMostrarTodasClases] = useState(true); 
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("/user-info", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUserInfo(response.data);
+      } catch (error) {
+        console.error("Error al obtener información del usuario:", error);
+      }
+    };
+    getUserInfo();
+  }, []);
 
   useEffect(() => {
     const fetchClases = async () => {
@@ -58,11 +74,24 @@ function CursoClases() {
     return match ? match[1] : null;
   };
 
-  const handleClaseClick = (clase) => {
+  const handleClaseClick = async (clase) => {
     if (claseSeleccionada && claseSeleccionada.id === clase.id) {
       setClaseSeleccionada(null);
     } else {
       setClaseSeleccionada(clase);
+      try {
+        await axios.post('/seguimiento-clases', {
+          userSub: userInfo.sub,
+          cursoId: id,
+          claseId: clase.id,
+          duracion: 0,
+          inicio: new Date(),
+          fin: new Date(),
+        })
+        console.log('Segimiento creado.');
+      } catch (error) {
+        console.error('Error al crear el seguimiento:', error)
+      }
     }
   };
 
