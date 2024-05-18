@@ -84,7 +84,7 @@ function ModuloAdmin({ nivelId }) {
                 {modulo.titulo}
               </h3>
               <p className="text-gray-600">
-              {modulo.descripcion.length > 100 ? `${modulo.descripcion.substring(0, 100)}...` : modulo.descripcion}
+              {modulo.contenido.length > 100 ? `${modulo.contenido.substring(0, 100)}...` : modulo.contenido}
                 </p>
               </Link>
             </li>

@@ -39,6 +39,7 @@ function ModulosNivelStudent({ userSub }) {
           <li key={grupo.id} className="mb-2">
             <div className="bg-gray-100 rounded p-4">
               <h3 className="text-lg font-semibold mb-2">{grupo.name}</h3>
+              <h3 className="text-lg font-semibold mb-2">{grupo.descripcion}</h3>
             </div>
           </li>
         ))}

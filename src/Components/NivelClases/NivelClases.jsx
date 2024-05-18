@@ -45,7 +45,7 @@ function NivelClases() {
       <div className="flex justify-center items-center h-screen">
         <div className="bg-red-500 p-4 rounded-lg shadow-lg">
           <span className="text-white font-semibold">
-            No se encontró el módulo.
+            No se encontraron clases en este modulo.
           </span>
         </div>
       </div>

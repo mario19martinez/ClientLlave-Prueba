@@ -3,6 +3,7 @@ import axios from "axios";
 import Modal from 'react-modal'
 import PropTypes from "prop-types";
 import AddUserGrupo from "./AddUserGrupo";
+import CancelIcon from '@mui/icons-material/Cancel';
 
 function UsersGrupo({ nivelId, grupoId }) {
   const [usuarios, setUsuarios] = useState([]);
@@ -24,6 +25,17 @@ function UsersGrupo({ nivelId, grupoId }) {
 
     fetchUsuarios();
   }, [nivelId, grupoId]);
+
+  const closeModalAndReload = async () => {
+    setModalIsOpen(false);
+    try {
+      const response = await axios.get(`/nivel/${nivelId}/grupos/${grupoId}/usuarios`);
+      setUsuarios(response.data)
+      setModalIsOpen(false)
+    } catch (error) {
+      console.error('Error al obtener los grupos:', error);
+    }
+  }
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -49,13 +61,13 @@ function UsersGrupo({ nivelId, grupoId }) {
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
-        className="modal-content"
-        overlayClassName="modal-overlay"
+        className="flex justify-center items-center w-1/2 h-full"
+        overlayClassName="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-75"
       >
-        <button className="absolute top-2 right-2 text-gray-600" onClick={closeModal}>
-          X
+        <button className="absolute top-2 right-2 text-gray-100 hover:text-gray-900" onClick={closeModal}>
+          <CancelIcon fontSize="large" />
         </button>
-        <AddUserGrupo nivelId={nivelId} grupoId={grupoId} />
+        <AddUserGrupo nivelId={nivelId} grupoId={grupoId} closeModalAndReload={closeModalAndReload} />
       </Modal>
       {usuarios.length === 0 ? (
         <div className="text-center mt-4 text-gray-600">
