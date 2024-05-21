@@ -130,6 +130,7 @@ import ViewCreateLandingCursos from "./views/ViewAdmin/ViewCampain&Landings/View
 import ViewLandingCursos from "./views/ViewAdmin/ViewCampain&Landings/ViewLandingCurso";
 import ViewUserDatos from "./views/ViewAdmin/ViewUserDatos/ViewUserDatos";
 import UserDatosDetail from "./Components/Admin/AllUsersAdmin/UsersDatos/UserDatosDetail";
+import ViewSeguimientoClases from "./views/ViewAdmin/ViewSeguimientoClases/ViewSeguimientoClases";
 
 import axios from "axios";
 
@@ -378,6 +379,7 @@ function App() {
         <Route path="/campain/:landingId/Landing/:campeinId/:template/curso/:idcurso" element={<ViewLandingCursos />} />
         <Route path="/Admin/datos" element={<ViewUserDatos />} />
         <Route path="/dato/:id" element={<UserDatosDetail />} />
+        <Route path="/admin/seguimiento" element={<ViewSeguimientoClases />} />
       </Routes>
     </Router>
   );

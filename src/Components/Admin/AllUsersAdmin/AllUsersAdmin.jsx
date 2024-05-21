@@ -210,13 +210,19 @@ function AllUsersAdmin() {
             className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 flex items-center"
           >
             <DeleteIcon className="mr-2" />
-            Usuarios eliminados
+            Eliminados
           </button>
           <button
             onClick={() => navigate("/admin/AnalyticsUser")}
             className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
           >
             <BarChartIcon className="text-green-400" />
+          </button>
+          <button
+            onClick={() => navigate("/admin/seguimiento")}
+            className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+          >
+            Seguimiento
           </button>
           <button
         onClick={() => navigate("/Admin/datos")}
