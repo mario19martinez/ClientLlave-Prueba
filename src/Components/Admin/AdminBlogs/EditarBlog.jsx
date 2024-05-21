@@ -14,6 +14,8 @@ const EditarBlog = ({ blogId }) => {
     embeddedElement: "",
     estado: "",
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [modalState, setModalState] = useState("");
 
   useEffect(() => {
@@ -21,60 +23,42 @@ const EditarBlog = ({ blogId }) => {
       try {
         const response = await axios.get(`/blogs/${blogId}`);
         setBlog(response.data);
+        setLoading(false);
       } catch (error) {
         console.error("Hubo un error al obtener el blog:", error);
+        setError(
+          "Error al cargar el blog. Por favor, inténtelo de nuevo más tarde."
+        );
+        setLoading(false);
       }
     };
 
     fetchBlog();
   }, [blogId]);
 
-   // Función para observar cambios en el DOM
-   useEffect(() => {
-    const observer = new MutationObserver((mutationsList) => {
-      for (let mutation of mutationsList) {
-        if (mutation.type === 'childList') {
-          // Manejar cambios en el DOM aquí si es necesario
-        }
-      }
-    });
-
-    // Observar cambios en el nodo específico
-    observer.observe(document.getElementById('editor-container'), {
-      childList: true,
-      subtree: true,
-    });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
   const handleInputChange = (name, value) => {
     setBlog({ ...blog, [name]: value });
   };
 
   const handleRechazar = () => {
-    setBlog((prevBlog) => ({ ...prevBlog, estado: "rechazado" }));
-    handleUpdateBlog("rechazado");
+    updateBlogState("rechazado");
   };
 
   const handleGuardarBorrador = () => {
-    setBlog((prevBlog) => ({ ...prevBlog, estado: "borrador" }));
-    handleUpdateBlog("borrador");
+    updateBlogState("borrador");
   };
 
   const handlePublicarBlog = () => {
-    setBlog((prevBlog) => ({ ...prevBlog, estado: "publicado" }));
-    handleUpdateBlog("publicado");
+    updateBlogState("publicado");
   };
 
-  const handleUpdateBlog = async (estado) => {
+  const updateBlogState = async (estado) => {
     try {
       await axios.put(`/blogs/${blogId}`, { ...blog, estado });
       setModalState(estado.charAt(0).toUpperCase() + estado.slice(1));
     } catch (error) {
       console.error("Hubo un error al actualizar el blog:", error);
+      setError("Error al actualizar el blog. Por favor, inténtelo de nuevo.");
     }
   };
 
@@ -87,8 +71,16 @@ const EditarBlog = ({ blogId }) => {
     setModalState("");
   };
 
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
-    <div  id="editor-container" className="container mx-auto p-6 bg-white text-gray-800 rounded-lg shadow-lg">
+    <div className="container mx-auto p-6 bg-white text-gray-800 rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold mb-4 text-center">Editar Blog</h2>
       <div className="mb-4">
         <label className="block mb-1">Título:</label>
@@ -111,7 +103,7 @@ const EditarBlog = ({ blogId }) => {
           onBlur={handleImageBlur}
           className="w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
-        {blog.imageUrl && (
+        {blog.imageUrl ? (
           <div className="mt-2">
             <p className="block mb-1">Miniatura de la imagen:</p>
             <img
@@ -120,8 +112,7 @@ const EditarBlog = ({ blogId }) => {
               className="w-32 h-32 object-cover border border-gray-300"
             />
           </div>
-        )}
-        {!blog.imageUrl && (
+        ) : (
           <p className="text-gray-500">No hay imagen disponible</p>
         )}
       </div>
@@ -158,9 +149,7 @@ const EditarBlog = ({ blogId }) => {
         <textarea
           name="embeddedElement"
           value={blog.embeddedElement}
-          onChange={(e) =>
-            handleInputChange("embeddedElement", e.target.value)
-          }
+          onChange={(e) => handleInputChange("embeddedElement", e.target.value)}
           className="w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
           rows="3"
         />
