@@ -131,6 +131,8 @@ import ViewLandingCursos from "./views/ViewAdmin/ViewCampain&Landings/ViewLandin
 import ViewUserDatos from "./views/ViewAdmin/ViewUserDatos/ViewUserDatos";
 import UserDatosDetail from "./Components/Admin/AllUsersAdmin/UsersDatos/UserDatosDetail";
 import ViewSeguimientoClases from "./views/ViewAdmin/ViewSeguimientoClases/ViewSeguimientoClases";
+import ViewCursosCerticar from "./views/ViewAdmin/ViewCertificacion/ViewCursosCertificar";
+import ViewUsersCertificados from "./views/ViewAdmin/ViewCertificacion/ViewUsersCertificados";
 
 import axios from "axios";
 
@@ -380,6 +382,8 @@ function App() {
         <Route path="/Admin/datos" element={<ViewUserDatos />} />
         <Route path="/dato/:id" element={<UserDatosDetail />} />
         <Route path="/admin/seguimiento" element={<ViewSeguimientoClases />} />
+        <Route path="/Admin/Certificado" element={<ViewCursosCerticar />} />
+        <Route path="/Admin/Certificado/Curso/:idCurso" element={<ViewUsersCertificados />} />
       </Routes>
     </Router>
   );
