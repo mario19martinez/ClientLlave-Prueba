@@ -43,7 +43,7 @@ function NivelAdmin() {
   return (
     <div>
       <div className="absolute top-0 right-36 mt-28 ml-96 p-4 w-3/5 h-auto -translate-x-20">
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">Niveles</h2>
+        <h2 className="text-2xl font-bold mb-4 text-gray-700">Niveles</h2>
         <button
           onClick={() => setShowModal(true)}
           className="absolute top-0 right-0 mt-0 mr-8 h-16 bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
@@ -70,7 +70,7 @@ function NivelAdmin() {
                   key={nivel.id}
                   className="bg-gray-200 border-b-4 border-blue-500 rounded p-2 mb-4 hover:bg-gray-300 transition duration-300 translate-y-4"
                 >
-                  <strong className="block text-lg mb-2 font-bold text-gray-900">
+                  <strong className="block text-lg mb-2 font-bold text-gray-800">
                     {nivel.name}
                   </strong>
                 </div>
@@ -83,7 +83,6 @@ function NivelAdmin() {
         isOpen={showModal}
         onRequestClose={() => setShowModal(false)}
         className="modal"
-        // overlayClassName="overlay"
         contentLabel="Agregar Nivel"
         shouldCloseOnOverlayClick={true}
         shouldCloseOnEsc={true}

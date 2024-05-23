@@ -225,11 +225,11 @@ function AllUsersAdmin() {
             Seguimiento
           </button>
           <button
-        onClick={() => navigate("/Admin/datos")}
-        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-      >
-        Datos/España
-      </button>
+            onClick={() => navigate("/Admin/datos")}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          >
+            Datos/España
+          </button>
         </div>
         <div className="mt-4">
           <p className="text-gray-600 text-sm">
@@ -408,32 +408,40 @@ function AllUsersAdmin() {
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2 sm:col-span-1">
                 <p className="text-gray-700">Nombre:</p>
-                <p className="font-semibold text-gray-700">{selectedUser.name}</p>
+                <p className="font-semibold text-gray-700">
+                  {selectedUser.name}
+                </p>
               </div>
               <div className="mt-2">
                 <p className="text-gray-700">Apellido:</p>
-                <p className="font-semibold text-gray-700">{selectedUser.last_name}</p>
+                <p className="font-semibold text-gray-700">
+                  {selectedUser.last_name}
+                </p>
               </div>
               <div className="mt-2">
                 <p className="text-gray-700">Correo:</p>
-                <p className="font-semibold text-gray-700">{selectedUser.email}</p>
-              </div>
-              <div className="mt-2">
-                <p className="text-gray-700">ID:</p>
-                <p className="font-semibold text-gray-700">{selectedUser.identificacion}</p>
+                <p className="font-semibold text-gray-700">
+                  {selectedUser.email}
+                </p>
               </div>
               <div className="mt-2">
                 <p className="text-gray-700">País:</p>
-                <p className="font-semibold text-gray-700">{selectedUser.pais}</p>
+                <p className="font-semibold text-gray-700">
+                  {selectedUser.pais}
+                </p>
               </div>
               <div className="mt-2">
                 <p className="text-gray-700">Teléfono:</p>
-                <p className="font-semibold text-gray-700">{selectedUser.telefono}</p>
+                <p className="font-semibold text-gray-700">
+                  {selectedUser.telefono}
+                </p>
               </div>
               {selectedUser.grupo && (
                 <div className="mt-2">
                   <p className="text-gray-700">Grupo:</p>
-                  <p className="font-semibold text-gray-700">{selectedUser.grupo.name}</p>
+                  <p className="font-semibold text-gray-700">
+                    {selectedUser.grupo.name}
+                  </p>
                 </div>
               )}
               {selectedUser.grupo && selectedUser.grupo.nivel && (
@@ -445,6 +453,33 @@ function AllUsersAdmin() {
                 </div>
               )}
             </div>
+            {selectedUser.cursos && selectedUser.cursos.length > 0 && (
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <div className="col-span-1">
+                  <div>
+                    <h3 className="text-gray-700">Cursos</h3>
+                    <ul className="list-disc list-inside">
+                      {selectedUser.cursos.map((curso) => (
+                        <li
+                          key={curso.id}
+                          className="font-semibold text-gray-700"
+                        >
+                          {curso.name}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                <div className="col-span-1">
+                  <div>
+                    <h3 className="text-gray-700">Curso Actual</h3>
+                    <p className="font-semibold text-gray-700">
+                      {selectedUser.cursos[selectedUser.cursos.length - 1].name}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="flex justify-center mt-6">
               <button
                 className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none mr-4"

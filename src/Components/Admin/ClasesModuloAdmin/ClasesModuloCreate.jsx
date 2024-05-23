@@ -66,14 +66,14 @@ function ClaseModuloCreate() {
       <NavAdmin />
       <div className="flex">
         <SidebarAdmin />
-        <div className="container mx-auto mt-2 p-4  w-1/2">
-          <h2 className="text-2xl font-bold mb-2 text-gray-700 translate-x-20">
+        <div className="container mx-auto mt-4 p-4  w-1/2 -translate-x-10">
+          <h2 className="text-2xl font-bold mb-4 text-gray-700 translate-x-20">
             Agregar Clase
           </h2>
           {error && <p className="text-red-500">{error}</p>}
           <form
             onSubmit={handleSubmit}
-            className="max-w-lg mx-auto p-4 rounded-lg shadow-lg"
+            className="max-w-lg mx-auto p-4 rounded-lg shadow-lg bg-gray-200"
           >
             <div className="mb-4">
               <label
@@ -149,7 +149,7 @@ function ClaseModuloCreate() {
                 id="resumen"
                 value={formData.resumen}
                 onChange={handleResumenChange}
-                className="border-2 border-blue-600 rounded-md focus:border-blue-500"
+                className="border-2 border-blue-600 rounded-md focus:border-blue-500 bg-white"
               />
             </div>
             <button

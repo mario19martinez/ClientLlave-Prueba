@@ -94,7 +94,7 @@ function SeguimientoClases() {
               <th className="py-3 px-6 text-left">Clase</th>
               {/* <th className="py-3 px-6 text-left">Duración</th> */}
               <th className="py-3 px-6 text-left">Inicio</th>
-              {/* <th>Fin</th> */}
+              <th>Fin</th>
             </tr>
           </thead>
           <tbody className="text-gray-700 text-sm font-mono divide-y divide-gray-200">
@@ -112,6 +112,10 @@ function SeguimientoClases() {
                 <td className="py-3 px-6 text-left">{seguimiento.clase.name}</td>
                 <td className="py-3 px-6 text-left">
                 {new Date(seguimiento.inicio).toLocaleString()}
+                </td>
+                {/* <td className="py-3 px-6 text-left">{seguimiento.clase.name}</td> */}
+                <td className="py-3 px-6 text-left">
+                {new Date(seguimiento.fin).toLocaleString()}
                 </td>
               </tr>
             ))}

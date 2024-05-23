@@ -49,7 +49,7 @@ function GrupoCreate({ closeModalAndReload }) {
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-gray-300 rounded py-2 px-3 focus:outline-none focus:border-blue-400"
+            className="w-full font-medium text-gray-800 border border-gray-300 rounded py-2 px-3 focus:outline-none focus:border-blue-400"
           />
         </div>
 
@@ -62,7 +62,7 @@ function GrupoCreate({ closeModalAndReload }) {
             id="image"
             value={image}
             onChange={(e) => setImage(e.target.value)}
-            className="w-full border border-gray-300 rounded py-2 px-3 focus:outline-none focus:border-blue-400"
+            className="w-full font-medium text-gray-800 border border-gray-300 rounded py-2 px-3 focus:outline-none focus:border-blue-400"
           />
         </div>
         <div className="mb-4">
@@ -75,7 +75,7 @@ function GrupoCreate({ closeModalAndReload }) {
           <textarea
             id="descripcion"
             onChange={(e) => setDescripcion(e.target.value)}
-            className="w-full border border-gray-300 rounded py-2 px-3 focus:outline-none focus:border-blue-400"
+            className="w-full font-medium text-gray-800 border border-gray-300 rounded py-2 px-3 focus:outline-none focus:border-blue-400"
           ></textarea>
         </div>
         <button
