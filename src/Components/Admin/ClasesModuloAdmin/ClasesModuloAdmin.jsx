@@ -71,7 +71,7 @@ function ClaseModuloAdmin() {
               key={clase.id}
               className={`${
                 index % 2 === 0 ? "bg-gray-100" : "bg-gray-200"
-              } p-4 flex justify-between items-center transition duration-300 ease-in-out transform hover:scale-105`}
+              } p-4 mt-4 flex justify-between items-center transition duration-300 ease-in-out transform hover:scale-105`}
             >
               <div>
                 <h1

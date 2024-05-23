@@ -22,13 +22,13 @@ function ModulosDelGrupo() {
   }, [grupoId]);
 
   return (
-    <div className="bg-blue-600 shadow-md rounded-md p-6 translate-x-10 translate-y-10 w-56 absolute top-0 right-36 mt-28 ml-96">
-      <h2 className="text-xl font-bold text-white mb-4">Modulos ({modulos.length})</h2>
+    <div className="bg-gray-100 border-2 border-sky-500 shadow-md rounded-md p-6 translate-x-10 translate-y-10 w-56 absolute top-0 right-36 mt-28 ml-96">
+      <h2 className="text-xl font-bold text-gray-700 mb-4">Modulos ({modulos.length})</h2>
       {error && <p className="text-red-500">Error: {error}</p>}
       <ul>
         {modulos.map((modulo) => (
           <li key={modulo.id} className="border-b border-gray-200 py-4">
-            <p className="text-lg font-semibold mb-2 text-white">{modulo.titulo}</p>
+            <p className="text-lg font-semibold mb-2 text-gray-700">{modulo.titulo}</p>
             <p className="text-white mb-1">{modulo.descripcion.substring(0, 20)}</p>
           </li>
         ))}

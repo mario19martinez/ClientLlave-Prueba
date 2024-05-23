@@ -1,19 +1,22 @@
 import { useState, useMemo } from "react";
 import PropTypes from "prop-types";
+import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 
-function AddUserGrupo({ nivelId, grupoId }) {
-  const [setUserSub] = useState("");
+function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
+  const [userSub, setUserSub] = useState("");
   const [error, setError] = useState(null);
   const [message, setMessage] = useState("");
   const [busqueda, setBusqueda] = useState("");
   const [resultados, setResultados] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [userNotFound, setUserNotFound] = useState(false);
 
   const handleBuscar = async () => {
     try {
       setLoading(true);
       setError(null);
+      setUserNotFound(false);
 
       if (!busqueda.trim()) {
         setResultados([]);
@@ -21,11 +24,16 @@ function AddUserGrupo({ nivelId, grupoId }) {
       }
 
       const response = await axios.get(`/user?name=${busqueda}`);
-      const usuariosSub = response.data.map(usuario => ({
-        ...usuario,
-        userSub: usuario.id
-      }))
-      setResultados(usuariosSub);
+      if (response.data.length === 0) {
+        setUserNotFound(true);
+        setResultados([]);
+      } else {
+        const usuariosSub = response.data.map((usuario) => ({
+          ...usuario,
+          userSub: usuario.id,
+        }));
+        setResultados(usuariosSub);
+      }
     } catch (error) {
       console.error("Error al buscar usuarios:", error.message);
       setError("Error al buscar usuarios. por favor, intentalo de nuevo.");
@@ -46,7 +54,18 @@ function AddUserGrupo({ nivelId, grupoId }) {
         }
       );
       setMessage(response.data.message);
+      toast.success("Usuario agregado exitosamente!", {
+        position: "top-center",
+        autoClose: 1500,
+        closeOnClick: true,
+        theme: "colored",
+      });
+      setTimeout(() => {
+        closeModalAndReload();
+      }, 1800);
       setUserSub("");
+
+
     } catch (error) {
       setError(error.response.data.error);
     }
@@ -54,7 +73,7 @@ function AddUserGrupo({ nivelId, grupoId }) {
 
   return (
     <div className="max-w-md mx-auto p-4 bg-white rounded-md shadow-md">
-      <h2 className="text-lg font-semibold mb-4">Agregar Usuario</h2>
+      <h2 className="text-lg font-bold mb-4 text-gray-700">Agregar Usuario</h2>
       <div className="mb-4">
         <label
           htmlFor="userSearch"
@@ -78,10 +97,13 @@ function AddUserGrupo({ nivelId, grupoId }) {
             Buscar
           </button>
         </div>
-        {loading && (
-          <p className="text-gray-500 mt-2">Buscando usuarios...</p>
-        )}
+        {loading && <p className="text-gray-500 mt-2">Buscando usuarios...</p>}
         {error && <p className="text-red-600 mt-2">Error: {error}</p>}
+        {userNotFound && (
+          <p className="text-red-600 mt-2">
+            El Usuario no esta en la plataforma.
+          </p>
+        )}
         {memoizedResultados.length > 0 && (
           <ul className="mt-1 border border-gray-200 rounded-md divide-y divide-gray-200">
             {memoizedResultados.map((user, index) => (
@@ -102,6 +124,7 @@ function AddUserGrupo({ nivelId, grupoId }) {
         )}
       </div>
       {message && <p className="text-green-600 mt-2">{message}</p>}
+      <ToastContainer />
     </div>
   );
 }
@@ -109,6 +132,7 @@ function AddUserGrupo({ nivelId, grupoId }) {
 AddUserGrupo.propTypes = {
   nivelId: PropTypes.string.isRequired,
   grupoId: PropTypes.string.isRequired,
+  closeModalAndReload: PropTypes.func.isRequired,
 };
 
 export default AddUserGrupo;

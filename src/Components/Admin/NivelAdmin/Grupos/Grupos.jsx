@@ -27,6 +27,16 @@ function Grupos() {
     fetchGrupos();
   }, [id]);
 
+  const closeModalAndReload = async () => {
+    setModalIsOpen(false);
+    try {
+      const response = await axios.get(`/niveles/${id}/grupos`);
+      setGrupos(response.data)
+    } catch (error) {
+      console.error('Error al obtener los grupos:', error);
+    }
+  }
+
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -58,17 +68,17 @@ function Grupos() {
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
-        className="fixed inset-0 flex justify-center items-center"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+        className="modal"
+        overlayClassName=""
       >
-        <div className=" p-4 rounded-lg shadow-lg max-w-3xl w-full h-full overflow-y-auto flex flex-col justify-center items-center">
+        <div className=" p-4 rounded-lg max-w-1xl overflow-y-auto flex flex-col justify-center items-center">
         <button
           onClick={closeModal}
-          className="absolute top-4 right-4 text-gray-200"
+          className="absolute top-4 right-4 text-gray-800 hover:text-gray-600"
         >
           <CancelIcon fontSize="large" />
         </button>
-        <GrupoCreate nivelId={id} closeModal={closeModal} />
+        <GrupoCreate nivelId={id} closeModal={closeModal} closeModalAndReload={closeModalAndReload} />
         </div>
       </Modal>
       <ul>

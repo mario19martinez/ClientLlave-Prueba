@@ -6,11 +6,13 @@ import UsersGrupo from "../UserGrupo/UsersGrupo";
 import AddModulo from "../AddModulo/AddModulo";
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import CancelIcon from '@mui/icons-material/Cancel';
+import GrupoEdit from "./GrupoEdit";
 
 function GrupoDetail() {
   const [grupo, setGrupo] = useState(null);
   const [error, setError] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const navigate = useNavigate();
   const { id, grupoId } = useParams();
 
@@ -23,6 +25,7 @@ function GrupoDetail() {
         }
         const response = await axios.get(`/niveles/${id}/grupos/${grupoId}`);
         setGrupo(response.data);
+        console.log('response:', response)
       } catch (error) {
         setError(error.response.data.error);
         console.error("Ocurrio un error:", error);
@@ -31,17 +34,25 @@ function GrupoDetail() {
     fetchGrupo();
   }, [id, grupoId]);
 
-  const openModal = () => {
+  const openModalModulo = () => {
     setModalIsOpen(true)
   }
 
-  const closeModal = () => {
+  const closeModalModulo = () => {
     setModalIsOpen(false);
   }
 
   const handleGoBack = () => {
     navigate(-1);
   };
+
+  const openEditModal = () => {
+    setEditModalIsOpen(true);
+  }
+
+  const closeEditModulo = () => {
+    setEditModalIsOpen(false);
+  }
 
   if (error) {
     return <p>Error: {error}</p>;
@@ -60,7 +71,6 @@ function GrupoDetail() {
       <button onClick={handleGoBack} className="bg-blue-500 text-white w-20 h-10 mb-8 font-semibold py-0 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-2">
         <KeyboardBackspaceIcon fontSize="large" />
       </button>
-    {/* <div className=" mx-auto my-8 p-8 bg-gray-200 w-2/3 rounded shadow-lg"> */}
       <h2 className="text-xl font-bold mb-4 text-gray-700">Detalle del Grupo</h2>
       <p className="mb-4 font-gabarito text-gray-700">
         <strong className="text-gray-700 font-bold">Nombre:</strong> {grupo.name}
@@ -69,22 +79,41 @@ function GrupoDetail() {
         <strong className="text-gray-700 font-bold">Descripción:</strong> {grupo.descripcion}
       </p>
       <button
-      onClick={openModal}
+      onClick={openModalModulo}
       className="bg-indigo-500 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
       >
         Agregar Modulo
       </button>
+      <button
+      onClick={openEditModal} 
+      className="bg-green-500 text-white font-bold py-2 px-4 rounded-md ml-4 hover:bg-green-700 focus:outline-none"
+      >
+        Editar
+      </button>
       <Modal
       isOpen={modalIsOpen}
-      onRequestClose={closeModal}
+      onRequestClose={closeModalModulo}
       contentLabel="Agregar Modulo"
       >
-        <AddModulo nivelId={grupo.nivelId} grupoId={grupoId} />
-        <button onClick={closeModal} className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700">
+        <AddModulo nivelId={id} grupoId={grupoId} />
+        <button onClick={closeModalModulo} className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700">
           <CancelIcon fontSize="large" />
         </button>
       </Modal>
-      <UsersGrupo nivelId={grupo.nivelId} grupoId={grupoId} />
+      <Modal
+      isOpen={editModalIsOpen}
+      onRequestClose={closeEditModulo}
+      contentLabel="Editar Grupo"
+      className="flex items-center"
+      >
+        <div className="p-2 w-2/5 h-screen mx-auto rounded-lg shadow-lg">
+        <GrupoEdit nivelId={id} grupoId={grupoId} />
+        <button onClick={closeEditModulo} className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700">
+          <CancelIcon fontSize="large" />
+        </button>
+        </div>
+      </Modal>
+      <UsersGrupo nivelId={id} grupoId={grupoId} />
     </div>
   );
 }
