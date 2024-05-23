@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUsers as fetchUsersAction } from "../../../Redux/features/AdminUsers/AdminUsersSlices";

@@ -1,32 +1,19 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
 import PropTypes from "prop-types";
 import imgCertificado from "../../../assets/fondoCertificado.png";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 export default function Certificado({
   userData,
-  selectedCountry,
-  inscritoSeleccionado,
+  cursoNombre,
+  //cursoNivel,
+  numeroCertificado,
+  tipoDocumento,
+  documento,
+  fechaCreacion,
 }) {
-  // Obtener la fecha actual
-  const currentDate = new Date();
-  // Formatear la fecha como "DD de mes del año"
-  const formattedDate = `${currentDate.getDate()} de ${
-    [
-      "enero",
-      "febrero",
-      "marzo",
-      "abril",
-      "mayo",
-      "junio",
-      "julio",
-      "agosto",
-      "septiembre",
-      "octubre",
-      "noviembre",
-      "diciembre",
-    ][currentDate.getMonth()]
-  } del ${currentDate.getFullYear()}`;
+  // Formatear la fecha de creación
+  const formattedDate = format(new Date(fechaCreacion), "d 'de' MMMM 'del' yyyy", { locale: es });
 
   return (
     <div
@@ -43,11 +30,11 @@ export default function Certificado({
         <h1 className="text-2xl mt-8 underline">Certificado de Teología</h1>
         <p className="text-base mb-4">Este documento certifica que</p>
         <h2 className="text-2xl">
-          {userData.nombre} {userData.apellido}
+          {userData.name} {userData.last_name}
         </h2>
         <p className="text-base mb-4">
-          ha completado satisfactoriamente el {inscritoSeleccionado} de <br />
-          Teología con orientación Profética
+          ha completado satisfactoriamente el {cursoNombre} de <br />
+          Teología con orientacion profetica
         </p>
         <p className="text-base mb-4">
           en la Fundación Llave Para Las Naciones
@@ -56,8 +43,8 @@ export default function Certificado({
           Con una intensidad horaria de Ochenta (80) Horas
         </p>
         <p className="text-base mb-4">
-          Número de Identificación {userData.tipoDocumento}{" "}
-          {userData.numeroDocumento} de {selectedCountry}
+          Identificado con {tipoDocumento} {documento} de{" "}
+          {userData.pais}
         </p>
         <p className="text-base mb-4">Sahagún - Colombia</p>
         <p className="text-base mb-4">www.llaveparalasnaciones.com</p>
@@ -77,7 +64,9 @@ export default function Certificado({
         </div>
         {/* Mostrar la fecha de expedición */}
         <p className="text-base">Se expide el {formattedDate}</p>
-        <p className="text-base">Registrado en el libro de Actas N.02-0</p>
+        <p className="text-base">
+          Registrado en el libro de Actas N. {numeroCertificado}
+        </p>
       </div>
     </div>
   );
@@ -86,11 +75,14 @@ export default function Certificado({
 // Validación de PropTypes
 Certificado.propTypes = {
   userData: PropTypes.shape({
-    nombre: PropTypes.string.isRequired,
-    apellido: PropTypes.string.isRequired,
-    tipoDocumento: PropTypes.string.isRequired,
-    numeroDocumento: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    last_name: PropTypes.string.isRequired,
+    pais: PropTypes.string.isRequired,
   }).isRequired,
-  selectedCountry: PropTypes.string.isRequired,
-  inscritoSeleccionado: PropTypes.string.isRequired,
+  cursoNombre: PropTypes.string.isRequired,
+  cursoNivel: PropTypes.string.isRequired,
+  numeroCertificado: PropTypes.string.isRequired,
+  tipoDocumento: PropTypes.string.isRequired,
+  documento: PropTypes.string.isRequired,
+  fechaCreacion: PropTypes.string.isRequired,
 };
