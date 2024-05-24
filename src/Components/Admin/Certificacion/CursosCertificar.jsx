@@ -3,6 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getCursos } from "../../../Redux/features/courses/coursesSlice";
 
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
 export default function CursosCertificar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -31,14 +35,23 @@ export default function CursosCertificar() {
   };
 
   if (loading) {
-    return <div className="text-center">Cargando cursos...</div>;
+    return (
+      <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75 z-50">
+        <div className="bg-white p-8 rounded-lg shadow-lg">
+          <p className="text-center text-lg font-semibold mb-4">Cargando ...</p>
+          <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div className="text-center text-red-500">
-        Error al cargar cursos: {error}
-      </div>
+      <Box className="flex flex-col items-center justify-center h-screen bg-gray-100">
+        <Typography variant="h6" className="text-red-500">
+          Error al cargar cursos: {error}
+        </Typography>
+      </Box>
     );
   }
 
