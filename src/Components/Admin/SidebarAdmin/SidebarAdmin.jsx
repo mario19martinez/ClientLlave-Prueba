@@ -10,6 +10,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import SourceIcon from "@mui/icons-material/Source";
 import VideoFileIcon from "@mui/icons-material/VideoFile";
 import WebIcon from '@mui/icons-material/Web';
+import CardMembershipIcon from '@mui/icons-material/CardMembership';
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserData } from "../../../Redux/features/Users/usersSlice";
@@ -92,6 +93,21 @@ function SidebarAdmin({ selectedTab }) {
                 className={`${selectedTab === "Nivel" ? "text-white" : ""}`}
               />{" "}
               Niveles
+            </button>
+          </li>
+          <li className="mb-4">
+            <button
+              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
+                selectedTab === "Ceritificados"
+                  ? "bg-blue-400 text-white"
+                  : "hover:bg-blue-500 hover:text-white"
+              }`}
+              onClick={() => navigate("/Admin/Certificado")}
+            >
+              <CardMembershipIcon
+                className={`${selectedTab === "Ceritificados" ? "text-white" : ""}`}
+              />{" "}
+              Ceritificados
             </button>
           </li>
           <li className="mb-4">
