@@ -3,6 +3,7 @@ import ReactModal from "react-modal";
 import axios from "axios";
 import PropTypes from "prop-types";
 import html2pdf from "html2pdf.js";
+import { Preview, /*print*/ } from 'react-html2pdf';
 import CardMembershipIcon from "@mui/icons-material/CardMembership";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import EditNoteIcon from "@mui/icons-material/EditNote";
@@ -36,8 +37,9 @@ export default function UserCertificados({ cursoId }) {
   const [usuarios, setUsuarios] = useState([]);
   const [cursoNombre, setCursoNombre] = useState("");
   const [cursoNivel, setCursoNivel] = useState("");
+  const [cursoHora, setCursoHora] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [showModal, setShowModal] = useState(false); 
+  const [showModal, setShowModal] = useState(false);
   const [selectedCertificadoId, setSelectedCertificadoId] = useState(null);
   const [selectedUserSub, setSelectedUserSub] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -55,6 +57,8 @@ export default function UserCertificados({ cursoId }) {
 
         const cursoResponse = await axios.get(`/cursos/${cursoId}`);
         setCursoNombre(cursoResponse.data.name);
+        setCursoHora(cursoResponse.data.horas_catedra)
+        console.log('Horas catedra: ', cursoResponse.data.horas_catedra )
 
         const nivel = cursoResponse.data.nivel.toLowerCase();
         console.log("Valor de nivel:", nivel);
@@ -76,7 +80,8 @@ export default function UserCertificados({ cursoId }) {
               if (certificadoResponse.data) {
                 user.certificacion = "Certificado";
                 user.certificadoId = certificadoResponse.data.id;
-                user.numero_certificado = certificadoResponse.data.numero_certificado;
+                user.numero_certificado =
+                  certificadoResponse.data.numero_certificado;
                 user.tipoDocumento = certificadoResponse.data.tipoDocumento;
                 user.documento = certificadoResponse.data.documento;
                 user.createdAt = certificadoResponse.data.createdAt;
@@ -224,18 +229,36 @@ export default function UserCertificados({ cursoId }) {
   };
 
   const handleDownloadPDF = () => {
-    const element = document.getElementById('certificado');
+    const element = document.getElementById("certificado");
+    
+    // Obtener el ancho y alto del contenido del certificado
+    const contentWidth = 1300; // Ancho deseado
+    const contentHeight = 914; // Alto deseado
+  
+    // Configurar el formato del PDF como horizontal y ajustar el tamaño del contenido
     html2pdf()
       .from(element)
       .set({
         filename: `Certificado_${selectedUser.name}_${selectedUser.last_name}_${cursoNombre}.pdf`,
         html2canvas: { scale: 2 },
-        jsPDF: { orientation: 'landscape', unit: 'pt', format: [1123, 793] }
+        jsPDF: {
+          orientation: "landscape", // Formato horizontal
+          unit: "px", // Unidad en píxeles
+          format: [contentWidth, contentHeight], // Tamaño del contenido
+        },
       })
       .save();
-  };
+  };  
 
-  if (loading) return <p>Cargando...</p>;
+  if (loading)
+    return (
+      <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75 z-50">
+        <div className="bg-white p-8 rounded-lg shadow-lg">
+          <p className="text-center text-lg font-semibold mb-4">Cargando ...</p>
+          <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+        </div>
+      </div>
+    );
   if (error) return <p>Error: {error}</p>;
 
   return (
@@ -396,27 +419,30 @@ export default function UserCertificados({ cursoId }) {
           />
         </div>
       </ReactModal>
-      
+
       {showModal && (
-        <div className="fixed z-10 inset-0 overflow-y-auto">
+        <div className="fixed z-10 inset-0 overflow-y-auto ">
           <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div className="fixed inset-0 transition-opacity">
               <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
             <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
             &#8203;
-            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:max-w-4xl">
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full px-2 py-2">
+              <div className="bg-white">
                 <div id="certificado">
-                  <Certificado
-                    userData={selectedUser}
-                    cursoNombre={cursoNombre}
-                    cursoNivel={cursoNivel}
-                    numeroCertificado={selectedUser.numero_certificado}
-                    tipoDocumento={selectedUser.tipoDocumento}
-                    documento={selectedUser.documento}
-                    fechaCreacion={selectedUser.createdAt}
-                  />
+                  <Preview id="certificado">
+                    <Certificado
+                      userData={selectedUser}
+                      cursoNombre={cursoNombre}
+                      cursoNivel={cursoNivel}
+                      numeroCertificado={selectedUser.numero_certificado}
+                      tipoDocumento={selectedUser.tipoDocumento}
+                      documento={selectedUser.documento}
+                      fechaCreacion={selectedUser.createdAt}
+                      horas={cursoHora}
+                    />
+                  </Preview>
                 </div>
               </div>
               <div className="flex bg-gray-50 px-4 py-3 ">
