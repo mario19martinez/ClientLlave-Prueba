@@ -13,9 +13,11 @@ export default function MenuStudent() {
         <NavUser />
       </div>
       <div className="flex">
-        <SidebarUser selectedTab={selectedTab} />
+        <div className="sticky top-0 h-screen">
+          <SidebarUser selectedTab={selectedTab} />
+        </div>
         <div className="pt-8">
-        <Escritorio />
+          <Escritorio />
         </div>
       </div>
     </div>
