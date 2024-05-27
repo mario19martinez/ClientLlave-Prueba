@@ -63,6 +63,7 @@ export default function AgregarDocumentos({ idCertificado, idUser }) {
 
       if (response.status === 200) {
         alert("Documento actualizado con éxito");
+        window.location.reload()
       } else {
         alert(`Error: ${response.status} ${response.statusText}`);
       }

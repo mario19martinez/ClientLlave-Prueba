@@ -2,7 +2,8 @@
 import React from "react";
 import NavUser from "../../Components/Estudiante/NavUser/NavUser";
 import SidebarUser from "../../Components/Estudiante/SidebarUser/SidebarUser";
-import Certificado from "../../Components/Estudiante/Certificado/Certificado";
+import Certificados from "../../Components/Estudiante/DataUser/Certificados";
+
 
 export default function ViewCertificado() {
   return (
@@ -10,7 +11,7 @@ export default function ViewCertificado() {
       <NavUser />
       <div className="flex">
         <SidebarUser />
-        <Certificado />
+        <Certificados />
       </div>
     </div>
   );
