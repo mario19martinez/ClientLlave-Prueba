@@ -25,7 +25,6 @@ import ViewErrorPaginaConstruccion from "./views/ViewErrores/ViewErrorPaginaCons
 import AgregarCurso from "./Components/Admin/Cursos/AgregarCurso";
 import ViewAjustes from "./views/ViewMenuStudent/ViewAjustes";
 import ViewPreguntasRespuestas from "./views/ViewMenuStudent/ViewPreguntasRespuestas";
-import ViewMisTalleres from "./views/ViewMenuStudent/ViewMisTalleres";
 import ViewAdminCursos from "./views/ViewAdmin/ViewAdminCursos";
 import ViewAdminClasesTalleresPDF from "./views/ViewAdmin/ViewAdminClasesTalleresPDF";
 import ViewUsersAndCursos from "./views/ViewAdmin/ViewUsersAndCursos";
@@ -168,10 +167,6 @@ function App() {
           element={
             isLoggedIn ? <ViewPreguntasRespuestas /> : <Navigate to="/" />
           }
-        />
-        <Route
-          path="/estudiante/MisTalleres"
-          element={isLoggedIn ? <ViewMisTalleres /> : <Navigate to="/" />}
         />
         <Route
           path="/admin"
