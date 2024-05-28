@@ -7,6 +7,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserData } from "../../Redux/features/Users/usersSlice";
@@ -86,6 +87,22 @@ function SidebarEditor({ selectedTab }) {
                 className={`${selectedTab === "Blogs" ? "text-white" : ""} mr-2`}
               />{" "}
               Blogs
+            </button>
+          </li>
+
+          <li className="mb-4">
+            <button
+              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
+                selectedTab === "Asistencia"
+                  ? "bg-blue-400 text-white"
+                  : "hover:bg-blue-500 hover:text-white"
+              }`}
+              onClick={() => navigate("/Editor/Asistencia")}
+            >
+              <HowToRegIcon
+                className={`${selectedTab === "Asistencia" ? "text-white" : ""} mr-2`}
+              />{" "}
+              Asistecias
             </button>
           </li>
 

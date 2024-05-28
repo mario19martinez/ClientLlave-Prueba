@@ -1,7 +1,5 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
 import { Link } from "react-router-dom";
-import { RiArticleLine, RiBookOpenLine, RiLiveLine } from "react-icons/ri";
+import { RiArticleLine, RiBookOpenLine, RiLiveLine, RiCheckboxLine } from "react-icons/ri";
 
 export default function EscritorioEditor() {
   return (
@@ -35,6 +33,17 @@ export default function EscritorioEditor() {
             <h2 className="text-2xl font-semibold">Transmisión</h2>
             <p className="text-base text-gray-600">
               Administra las transmisiones en vivo.
+            </p>
+          </div>
+        </div>
+      </Link>
+      <Link to="/Editor/Asistencia" className="card-link">
+        <div className="flex items-center justify-center bg-gray-100 rounded-lg p-8 shadow-md w-96">
+          <RiCheckboxLine className="text-6xl text-purple-500 mr-8" />
+          <div>
+            <h2 className="text-2xl font-semibold">Asistencias a Clases</h2>
+            <p className="text-base text-gray-600">
+              Registra la asistencia de los estudiantes en las clases.
             </p>
           </div>
         </div>
