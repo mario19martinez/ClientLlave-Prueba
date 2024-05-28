@@ -133,6 +133,7 @@ import ViewSeguimientoClases from "./views/ViewAdmin/ViewSeguimientoClases/ViewS
 import ViewCursosCerticar from "./views/ViewAdmin/ViewCertificacion/ViewCursosCertificar";
 import ViewUsersCertificados from "./views/ViewAdmin/ViewCertificacion/ViewUsersCertificados";
 import ViewCertificado from "./views/ViewMenuStudent/ViewCertificado";
+import ViewAsisteciaEditor from "./views/ViewEditor/ViewAsisteciaEditor";
 
 import axios from "axios";
 
@@ -381,6 +382,7 @@ function App() {
         <Route path="/Admin/Certificado" element={<ViewCursosCerticar />} />
         <Route path="/Admin/Certificado/Curso/:idCurso" element={<ViewUsersCertificados />} />
         <Route path="/estudiante/certificados" element={<ViewCertificado />} />
+        <Route path="/Editor/Asistencia" element={<ViewAsisteciaEditor />} />
       </Routes>
     </Router>
   );

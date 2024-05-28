@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import logo from "../../assets/logo2.png";
 import LoginForm from "../InicioSesion/InicioSesion.jsx";
 import { getUserData } from "../../Redux/features/Users/usersSlice.js";
@@ -10,41 +9,25 @@ export default function Nav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
   const dispatch = useDispatch();
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("isLoggedIn") === "true"
-  );
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") === "true");
   const location = useLocation();
-
   const navigate = useNavigate();
-
   const userData = useSelector((state) => state.users.userData);
 
   const storedEmail = localStorage.getItem("email");
   const superAdmin = localStorage.getItem("SuperAdmin");
 
-  console.log("El super admin es:", superAdmin);
-
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const toggleLoginForm = () => {
-    setIsLoginFormOpen(!isLoginFormOpen);
-  };
-
-  const toggleRegistrationModal = () => {
-    navigate("/RegistroUser");
-  };
+  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
+  const toggleLoginForm = () => setIsLoginFormOpen(!isLoginFormOpen);
+  const openRegistrationModal = () => navigate("/RegistroUser");
 
   useEffect(() => {
-    // Escuchar cambios en localStorage y actualizar el estado de isLoggedIn
     const handleStorageChange = (e) => {
       if (e.key === "isLoggedIn") {
         setIsLoggedIn(e.newValue === "true");
       }
     };
     window.addEventListener("storage", handleStorageChange);
-
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
@@ -56,35 +39,28 @@ export default function Nav() {
     }
   }, [dispatch, storedEmail]);
 
-  console.log(userData);
-
   const redirect = () => {
-    if (
-      (isLoggedIn === true && userData && userData.rol === "client") ||
-      userData?.rol === "client"
-    ) {
-      //navigate("/estudiante/Escritorio");
+    if ((isLoggedIn && userData?.rol === "client") || userData?.rol === "client") {
       navigate("/estudiante/cursosInscritos");
-    } else if (
-      (isLoggedIn === true && userData && userData.rol === "admin") ||
-      userData?.rol === "admin"
-    ) {
+    } else if ((isLoggedIn && userData?.rol === "admin") || userData?.rol === "admin") {
       navigate("/admin");
-    } else if (isLoggedIn === true && userData === null) {
-      // Si userData es null y el usuario está autenticado,
-      // se redirige a la ruta de administrador
+    } else if (isLoggedIn && !userData) {
       navigate("/admin");
-    } else if (isLoggedIn === true && superAdmin === true) {
-      // Si no se detecta ningún rol específico pero el usuario es superAdmin,
-      // se redirige a la ruta de administrador
+    } else if (isLoggedIn && superAdmin) {
       navigate("/admin");
-    } else if (
-      (isLoggedIn === true && userData && userData.rol === "editor") ||
-      userData?.rol === "admin"
-    ) {
+    } else if ((isLoggedIn && userData?.rol === "editor") || userData?.rol === "admin") {
       navigate("/Editor");
     }
   };
+
+  const renderNavLink = (path, label) => (
+    <Link
+      to={path}
+      className={`hover:text-gray-300 transition-colors ${location.pathname === path ? "border-b-2 border-white" : ""}`}
+    >
+      {label}
+    </Link>
+  );
 
   return (
     <nav className="bg-blue-900 py-2 lg:py-3 px-8 lg:px-12 shadow-md">
@@ -95,37 +71,32 @@ export default function Nav() {
 
         <div className="w-1/4 lg:hidden flex justify-end">
           <div className="flex space-x-2">
-            <div className="flex flex-col justify-center items-center gap-4">
-              {isLoggedIn ? (
+            {isLoggedIn ? (
+              <button
+                type="button"
+                onClick={redirect}
+                className="py-2 px-4 w-28 bg-blue-600 text-white hover:bg-blue-800 transition-colors rounded-md"
+              >
+                Mi cuenta
+              </button>
+            ) : (
+              <>
                 <button
                   type="button"
-                  onClick={redirect}
-                  className="py-2 px-4 w-28 bg-blue-600 text-white hover:bg-blue-800 hover:text-white transition-colors rounded-md"
+                  className="py-2 px-4 bg-blue-600 text-sm text-white hover:bg-blue-800 transition-colors rounded-md"
+                  onClick={toggleLoginForm}
                 >
-                  Mi cuenta
+                  Iniciar Sesión
                 </button>
-              ) : (
-                <>
-                  <div className="flex space-x-2">
-  <button
-    type="button"
-    className="py-2 px-4 bg-blue-600 text-sm text-white hover:bg-blue-800 hover:text-white transition-colors rounded-md"
-    onClick={toggleLoginForm}
-  >
-    Iniciar Sesión
-  </button>
-  <button
-    type="button"
-    className="py-2 px-4 bg-blue-600 text-sm text-white hover:bg-blue-800 hover:text-white transition-colors rounded-md"
-    onClick={toggleRegistrationModal}
-  >
-    Crear cuenta
-  </button>
-</div>
-
-                </>
-              )}
-            </div>
+                <button
+                  type="button"
+                  className="py-2 px-4 bg-blue-600 text-sm text-white hover:bg-blue-800 transition-colors rounded-md"
+                  onClick={openRegistrationModal}
+                >
+                  Crear cuenta
+                </button>
+              </>
+            )}
             <button
               type="button"
               onClick={toggleMobileMenu}
@@ -149,59 +120,20 @@ export default function Nav() {
           </div>
         </div>
 
-        <nav className="hidden lg:flex justify-center items-center gap-8 text-white font-medium">
-          <Link
-            to="/"
-            className={`hover:text-gray-300 transition-colors ${
-              location.pathname === "/" ? "border-b-2 border-white" : ""
-            }`}
-          >
-            Inicio
-          </Link>
-          <Link
-            to="/blogs"
-            className={`hover:text-gray-300 transition-colors ${
-              location.pathname === "/blogs" ? "border-b-2 border-white" : ""
-            }`}
-          >
-            Blog
-          </Link>
-          <Link
-            to="/entrenamiento"
-            className={`hover:text-gray-300 transition-colors ${
-              location.pathname === "/entrenamiento"
-                ? "border-b-2 border-white"
-                : ""
-            }`}
-          >
-            Entrenamiento
-          </Link>
-          <Link
-            to="/Comunidad"
-            className={`hover:text-gray-300 transition-colors ${
-              location.pathname === "/Comunidad"
-                ? "border-b-2 border-white"
-                : ""
-            }`}
-          >
-            Comunidad
-          </Link>
-          <Link
-            to="/Nosotros"
-            className={`hover:text-gray-300 transition-colors ${
-              location.pathname === "/Nosotros" ? "border-b-2 border-white" : ""
-            }`}
-          >
-            Nosotros
-          </Link>
-        </nav>
+        <div className="hidden lg:flex justify-center items-center gap-8 text-white font-medium">
+          {renderNavLink("/", "Inicio")}
+          {renderNavLink("/blogs", "Blog")}
+          {renderNavLink("/entrenamiento", "Entrenamiento")}
+          {renderNavLink("/Comunidad", "Comunidad")}
+          {renderNavLink("/Nosotros", "Nosotros")}
+        </div>
 
         <div className="hidden lg:flex justify-center items-center gap-8">
           {isLoggedIn ? (
             <button
               type="button"
               onClick={redirect}
-              className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 hover:text-white transition-colors rounded-md"
+              className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 transition-colors rounded-md"
             >
               Mi cuenta
             </button>
@@ -209,15 +141,15 @@ export default function Nav() {
             <>
               <button
                 type="button"
-                className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 hover:text-white transition-colors"
+                className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 transition-colors rounded-md"
                 onClick={toggleLoginForm}
               >
                 Iniciar Sesión
               </button>
               <button
                 type="button"
-                className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 hover:text-white transition-colors mx-2 rounded-md"
-                onClick={toggleRegistrationModal}
+                className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 transition-colors rounded-md"
+                onClick={openRegistrationModal}
               >
                 Crear cuenta
               </button>
@@ -228,65 +160,19 @@ export default function Nav() {
 
       {mobileMenuOpen && (
         <div className="max-w-screen-lg mx-auto mt-4">
-          <nav className="flex flex-col text-white font-medium">
-            <a
-              href="#"
-              onClick={() => navigate("/")}
-              className={`hover:text-gray-300 transition-colors ${
-                location.pathname === "/" ? "border-b-2 border-white" : ""
-              }`}
-            >
-              Inicio
-            </a>
-            <a
-              href="#"
-              className={`hover:text-gray-300 transition-colors ${
-                location.pathname === "/blogs" ? "border-b-2 border-white" : ""
-              }`}
-              onClick={() => navigate("/blogs")}
-            >
-              Blog
-            </a>
-            <a
-              href="#"
-              onClick={() => navigate("/Error404")}
-              className={`hover:text-gray-300 transition-colors ${
-                location.pathname === "/Error404"
-                  ? "border-b-2 border-white"
-                  : ""
-              }`}
-            >
-              Entrenamiento
-            </a>
-            <a
-              href=""
-              onClick={() => navigate("/Comunidad")}
-              className={`hover:text-gray-300 transition-colors ${
-                location.pathname === "/Comunidad"
-                  ? "border-b-2 border-white"
-                  : ""
-              }`}
-            >
-              Comunidad
-            </a>
-            <a
-              href="#"
-              className={`hover:text-gray-300 transition-colors ${
-                location.pathname === "/Nosotros"
-                  ? "border-b-2 border-white"
-                  : ""
-              }`}
-              onClick={() => navigate("/Nosotros")}
-            >
-              Nosotros
-            </a>
+          <nav className="flex flex-col text-white font-medium space-y-2">
+            {renderNavLink("/", "Inicio")}
+            {renderNavLink("/blogs", "Blog")}
+            {renderNavLink("/entrenamiento", "Entrenamiento")}
+            {renderNavLink("/Comunidad", "Comunidad")}
+            {renderNavLink("/Nosotros", "Nosotros")}
           </nav>
         </div>
       )}
 
       {isLoginFormOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="rounded-lg p-8 w-full max-w-md">
+          <div className="rounded-lg p-8 w-full max-w-md bg-white">
             <LoginForm onClose={toggleLoginForm} />
           </div>
         </div>
