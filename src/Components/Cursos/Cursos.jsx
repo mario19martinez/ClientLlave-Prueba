@@ -9,7 +9,7 @@ function CursoClases() {
   const [clases, setClases] = useState([]);
   const [claseSeleccionada, setClaseSeleccionada] = useState(null);
   const [descripcion, setDescripcion] = useState("");
-  const [mostrarTodasClases, setMostrarTodasClases] = useState(true); 
+  const [mostrarTodasClases, setMostrarTodasClases] = useState(true);
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
@@ -69,7 +69,7 @@ function CursoClases() {
 
   const extractYoutubeVideoId = (url) => {
     const regex =
-      /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+      /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/;
     const match = url.match(regex);
     return match ? match[1] : null;
   };
@@ -80,17 +80,17 @@ function CursoClases() {
     } else {
       setClaseSeleccionada(clase);
       try {
-        await axios.post('/seguimiento-clases', {
+        await axios.post("/seguimiento-clases", {
           userSub: userInfo.sub,
           cursoId: id,
           claseId: clase.id,
           duracion: 0,
           inicio: new Date(),
           fin: new Date(),
-        })
-        console.log('Segimiento creado.');
+        });
+        console.log("Segimiento creado.");
       } catch (error) {
-        console.error('Error al crear el seguimiento:', error)
+        console.error("Error al crear el seguimiento:", error);
       }
     }
   };
