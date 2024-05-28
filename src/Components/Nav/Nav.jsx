@@ -41,7 +41,7 @@ export default function Nav() {
 
   const redirect = () => {
     if ((isLoggedIn && userData?.rol === "client") || userData?.rol === "client") {
-      navigate("/estudiante/cursosInscritos");
+      navigate("/estudiante/Escritorio");
     } else if ((isLoggedIn && userData?.rol === "admin") || userData?.rol === "admin") {
       navigate("/admin");
     } else if (isLoggedIn && !userData) {
@@ -172,7 +172,7 @@ export default function Nav() {
 
       {isLoginFormOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="rounded-lg p-8 w-full max-w-md bg-white">
+          <div className="rounded-lg p-8 w-full max-w-md">
             <LoginForm onClose={toggleLoginForm} />
           </div>
         </div>
