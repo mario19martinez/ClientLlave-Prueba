@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
@@ -13,6 +12,8 @@ const CrearBlog = () => {
     imageUrl: "",
     embeddedElement: "",
     estado: "",
+    autor: "", // Nuevo campo de autor
+    Lectura: "", // Nuevo campo de lectura
   });
 
   const handleChange = (name, value) => {
@@ -26,12 +27,10 @@ const CrearBlog = () => {
       const response = await axios.post("/blogs", formData);
       console.log("Blog creado:", response.data);
       window.alert("¡El blog ha sido creado con éxito!");
-      window.location.reload();
+      navigate("/admin/blogs");
     } catch (error) {
       console.error("Hubo un error al crear el blog:", error);
     }
-    navigate("/admin/blogs");
-    window.location.reload();
   };
 
   const goBack = () => {
@@ -125,7 +124,35 @@ const CrearBlog = () => {
             rows="4"
           />
         </div>
-        <div className="flex">
+
+        <div>
+          <label className="block text-gray-800 mb-1">Autor:</label>
+          <select
+            name="autor"
+            value={formData.autor}
+            onChange={(e) => handleChange("autor", e.target.value)}
+            className="w-full p-3 border rounded-md focus:outline-none focus:border-blue-400 bg-white"
+            required
+          >
+            <option value="">Selecciona un autor</option>
+            <option value="Profeta Petra">Profeta Petra</option>
+            <option value="Apóstol Diego">Apóstol Diego</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-gray-800 mb-1">Tempo de lectura:</label>
+          <input
+            type="text"
+            name="Lectura"
+            value={formData.Lectura}
+            onChange={(e) => handleChange("Lectura", e.target.value)}
+            className="w-full p-3 border rounded-md focus:outline-none focus:border-blue-400 bg-white"
+            required
+          />
+        </div>
+
+        <div className="flex py-4">
           <button
             type="button"
             className="bg-gray-500 text-white py-3 px-6 rounded-md mr-4 hover:bg-gray-600 focus:outline-none focus:bg-gray-600"

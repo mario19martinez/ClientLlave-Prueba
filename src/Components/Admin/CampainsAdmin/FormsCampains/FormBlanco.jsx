@@ -18,6 +18,7 @@ const initialValues = {
   name: "",
   last_name: "",
   identificacion: "",
+  tipo_documento: "",
   email: "",
   telefono: "",
   pais: "",
@@ -34,6 +35,8 @@ const validationSchema = Yup.object().shape({
     .required("El email es requerido"),
   telefono: Yup.string().required("El teléfono es requerido"),
   pais: Yup.string().required("El país es requerido"),
+  identificacion: Yup.string().required("La identificación es requerida"),
+  tipo_documento: Yup.string().required("El tipo de documento es requerido"),
   privacyPolicy: Yup.boolean().oneOf(
     [true],
     "Debes aceptar la política de privacidad"
@@ -47,8 +50,10 @@ const validationSchema = Yup.object().shape({
 export default function FormBlanco({ idCampain }) {
   const [fullPhoneNumber, setFullPhoneNumber] = useState("");
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
+  const [tipoDocumentoOptions, setTipoDocumentoOptions] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [initialValuesWithCampaign, setInitialValuesWithCampaign] = useState(initialValues);
+  const [initialValuesWithCampaign, setInitialValuesWithCampaign] =
+    useState(initialValues);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -75,12 +80,13 @@ export default function FormBlanco({ idCampain }) {
     enableReinitialize: true, // Allow the form to reinitialize with new initialValues
     validationSchema,
     onSubmit: async (values) => {
-      values.telefono = `${selectedCountryCode} ${values.telefono}`;
+      values.telefono = `${selectedCountryCode} ${fullPhoneNumber}`;
       if (!values.privacyPolicy || !values.dataTreatmentPolicy) {
         setOpenDialog(true);
         return;
       }
       try {
+        console.log("Datos enviados:", values);
         const response = await axios.post("/useriniciado", values);
         const { token, message } = response.data;
         localStorage.setItem("isLoggedIn", "true");
@@ -95,14 +101,25 @@ export default function FormBlanco({ idCampain }) {
     },
   });
 
+  const updateTipoDocumentoOptions = (countryName) => {
+    const country = paisesData.paises.find(
+      (pais) => pais.nombre === countryName
+    );
+    if (country) {
+      setTipoDocumentoOptions(country.tipo_documento);
+    } else {
+      setTipoDocumentoOptions([]);
+    }
+  };
+
   return (
-    <div>
-      <h1 className="text-xl font-bold text-center mb-6">
-        Regístrate ahora para obtener 10 Clases de Obsequio
+    <div className="bg-white ">
+      <h1 className="text-2xl text-gray-800 font-bold text-center mb-6">
+        Regístrate ahora
       </h1>
 
-      <form onSubmit={formik.handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form onSubmit={formik.handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label
               htmlFor="name"
@@ -117,7 +134,7 @@ export default function FormBlanco({ idCampain }) {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.name}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
             {formik.touched.name && formik.errors.name && (
               <p className="mt-1 text-sm text-red-600">{formik.errors.name}</p>
@@ -137,7 +154,7 @@ export default function FormBlanco({ idCampain }) {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.last_name}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 text-gray-500 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
             {formik.touched.last_name && formik.errors.last_name && (
               <p className="mt-1 text-sm text-red-600">
@@ -158,14 +175,15 @@ export default function FormBlanco({ idCampain }) {
             name="pais"
             onChange={(e) => {
               formik.handleChange(e);
-              setSelectedCountryCode(
-                paisesData.paises.find((pais) => pais.nombre === e.target.value)
-                  .codigo_telefonico
+              const selectedCountry = paisesData.paises.find(
+                (pais) => pais.nombre === e.target.value
               );
+              setSelectedCountryCode(selectedCountry.codigo_telefonico);
+              updateTipoDocumentoOptions(e.target.value);
             }}
             onBlur={formik.handleBlur}
             value={formik.values.pais}
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            className="mt-1 text-gray-500 block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           >
             <option value="" disabled>
               Seleccione país
@@ -180,7 +198,63 @@ export default function FormBlanco({ idCampain }) {
             <p className="mt-1 text-sm text-red-600">{formik.errors.pais}</p>
           )}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label
+              htmlFor="tipo_documento"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Tipo de documento de identidad:
+            </label>
+            <select
+              id="tipo_documento"
+              name="tipo_documento"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.tipo_documento}
+              className="mt-1 block text-gray-700 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            >
+              <option value="" disabled>
+                Seleccione un tipo de documento
+              </option>
+              {tipoDocumentoOptions.map((documento) => (
+                <option key={documento} value={documento}>
+                  {documento}
+                </option>
+              ))}
+            </select>
+            {formik.touched.tipo_documento && formik.errors.tipo_documento && (
+              <p className="mt-1 text-sm text-red-600">
+                {formik.errors.tipo_documento}
+              </p>
+            )}
+          </div>
+          <div>
+            <label
+              htmlFor="identificacion"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Numero de documento de identidad:
+            </label>
+            <input
+              type="text"
+              id="identificacion"
+              name="identificacion"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.identificacion}
+              className="mt-1 text-gray-700 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+            {formik.touched.identificacion && formik.errors.identificacion && (
+              <p className="mt-1 text-sm text-red-600">
+                {formik.errors.identificacion}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-1">
             <label
               htmlFor="indicativo"
@@ -194,7 +268,7 @@ export default function FormBlanco({ idCampain }) {
               name="indicativo"
               value={selectedCountryCode}
               readOnly
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 text-gray-500 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 bg-gray-100"
             />
           </div>
           <div className="md:col-span-2">
@@ -214,7 +288,7 @@ export default function FormBlanco({ idCampain }) {
               }}
               onBlur={formik.handleBlur}
               value={fullPhoneNumber}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block text-gray-500 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
             {formik.touched.telefono && formik.errors.telefono && (
               <p className="mt-1 text-sm text-red-600">
@@ -237,79 +311,63 @@ export default function FormBlanco({ idCampain }) {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.email}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            className="mt-1 text-gray-500 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
           {formik.touched.email && formik.errors.email && (
             <p className="mt-1 text-sm text-red-600">{formik.errors.email}</p>
           )}
         </div>
-        <div className="flex items-start">
-          <div className="flex items-center h-5">
-            <input
-              id="privacyPolicy"
-              name="privacyPolicy"
-              type="checkbox"
-              checked={formik.values.privacyPolicy}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-            />
-          </div>
-          <div className="ml-3 text-sm">
-            <label
-              htmlFor="privacyPolicy"
-              className="font-medium text-gray-700"
-            >
-              Acepto la política de privacidad
-            </label>
-          </div>
-          {formik.touched.privacyPolicy && formik.errors.privacyPolicy && (
-            <p className="mt-1 text-sm text-red-600">
-              {formik.errors.privacyPolicy}
-            </p>
-          )}
+        <div className="flex items-center">
+          <input
+            id="privacyPolicy"
+            name="privacyPolicy"
+            type="checkbox"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            checked={formik.values.privacyPolicy}
+            className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+          />
+          <label
+            htmlFor="privacyPolicy"
+            className="ml-2 block text-sm text-gray-900"
+          >
+            Acepto la política de privacidad
+          </label>
         </div>
-        <div className="flex items-start">
-          <div className="flex items-center h-5">
-            <input
-              id="dataTreatmentPolicy"
-              name="dataTreatmentPolicy"
-              type="checkbox"
-              checked={formik.values.dataTreatmentPolicy}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-            />
-          </div>
-          <div className="ml-3 text-sm">
-            <label
-              htmlFor="dataTreatmentPolicy"
-              className="font-medium text-gray-700"
-            >
-              Acepto la política de tratamiento de datos
-            </label>
-          </div>
-          {formik.touched.dataTreatmentPolicy &&
-            formik.errors.dataTreatmentPolicy && (
-              <p className="mt-1 text-sm text-red-600">
-                {formik.errors.dataTreatmentPolicy}
-              </p>
-            )}
+        <div className="flex items-center">
+          <input
+            id="dataTreatmentPolicy"
+            name="dataTreatmentPolicy"
+            type="checkbox"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            checked={formik.values.dataTreatmentPolicy}
+            className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+          />
+          <label
+            htmlFor="dataTreatmentPolicy"
+            className="ml-2 block text-sm text-gray-900"
+          >
+            Acepto la política de tratamiento de datos
+          </label>
         </div>
-        <div className="flex justify-center">
+        <div className="text-center">
           <button
             type="submit"
-            className="mt-4 py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition duration-300"
+            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            Registrarme
+            Registrarse
           </button>
         </div>
       </form>
 
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>{"Políticas no aceptadas"}</DialogTitle>
+        <DialogTitle>
+          Políticas de privacidad y tratamiento de datos
+        </DialogTitle>
         <DialogContent>
-          <p>Por favor, acepta las políticas para continuar.</p>
+          Debes aceptar las políticas de privacidad y tratamiento de datos para
+          continuar.
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)} color="primary">

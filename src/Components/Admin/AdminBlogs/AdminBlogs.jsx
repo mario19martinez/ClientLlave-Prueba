@@ -34,7 +34,7 @@ const AdminBlogs = () => {
     <div className="p-8">
       <h2 className="text-2xl font-bold mb-4">Administrar Blogs</h2>
       <button
-        onClick={() => navigate("/Editor/Blogs/CrearBlog")}
+        onClick={() => navigate("/blog/CrearBlog")}
         className="bg-green-500 text-white px-4 py-2 rounded-md mb-4"
       >
         Crear Nuevo Blog

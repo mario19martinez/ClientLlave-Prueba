@@ -7,6 +7,8 @@ function SeguimientoClases() {
   const [seguimientos, setSeguimientos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, /*setPageSize*/] = useState(10); // Tamaño de la página
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,6 +28,11 @@ function SeguimientoClases() {
     setSearchTerm(e.target.value);
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Aplicar filtros directamente en la petición
   const filteredSeguimientos = seguimientos.filter((seguimiento) => {
     const userMatch =
       (seguimiento.user?.name
@@ -45,6 +52,14 @@ function SeguimientoClases() {
 
     return userMatch || cursoMatch || claseMatch;
   });
+
+  // Paginación
+  const indexOfLastSeguimiento = currentPage * pageSize;
+  const indexOfFirstSeguimiento = indexOfLastSeguimiento - pageSize;
+  const currentSeguimientos = filteredSeguimientos.slice(
+    indexOfFirstSeguimiento,
+    indexOfLastSeguimiento
+  );
 
   const goBack = () => {
     navigate(-1);
@@ -66,7 +81,7 @@ function SeguimientoClases() {
   }
 
   return (
-    <div className="container absolute mx-auto p-4 top-0 mt-28 right-16 ml-96 w-3/4">
+    <div className="px-3 py-3">
       <button
         onClick={goBack}
         className="bg-blue-500 text-white w-20 h-10 mb-8 font-semibold py-0 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-1"
@@ -92,13 +107,12 @@ function SeguimientoClases() {
               <th className="py-3 px-6 text-left">Usuario</th>
               <th className="py-3 px-6 text-left">Curso</th>
               <th className="py-3 px-6 text-left">Clase</th>
-              {/* <th className="py-3 px-6 text-left">Duración</th> */}
               <th className="py-3 px-6 text-left">Inicio</th>
               <th>Fin</th>
             </tr>
           </thead>
           <tbody className="text-gray-700 text-sm font-mono divide-y divide-gray-200">
-          {filteredSeguimientos.map((seguimiento) => (
+            {currentSeguimientos.map((seguimiento) => (
               <tr
                 key={seguimiento.id}
                 className="border-b border-gray-200 hover:bg-gray-100"
@@ -111,16 +125,29 @@ function SeguimientoClases() {
                 </td>
                 <td className="py-3 px-6 text-left">{seguimiento.clase.name}</td>
                 <td className="py-3 px-6 text-left">
-                {new Date(seguimiento.inicio).toLocaleString()}
+                  {new Date(seguimiento.inicio).toLocaleString()}
                 </td>
-                {/* <td className="py-3 px-6 text-left">{seguimiento.clase.name}</td> */}
                 <td className="py-3 px-6 text-left">
-                {new Date(seguimiento.fin).toLocaleString()}
+                  {new Date(seguimiento.fin).toLocaleString()}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
+      {/* Paginación */}
+      <div className="flex justify-center mt-4">
+        {Array.from({ length: Math.ceil(filteredSeguimientos.length / pageSize) }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => handlePageChange(i + 1)}
+            className={`mx-1 px-3 py-1 rounded-lg ${
+              currentPage === i + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
       </div>
     </div>
   );

@@ -6,8 +6,10 @@ export default function ViewSeguimientoClases() {
   return (
     <div>
       <NavAdmin />
-      <SidebarAdmin selectedTab="defaultTab" />
-      <SeguimientoClases />
+      <div className="flex">
+        <SidebarAdmin selectedTab="defaultTab" />
+        <SeguimientoClases />
+      </div>
     </div>
   );
 }
