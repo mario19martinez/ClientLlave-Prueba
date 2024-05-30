@@ -92,13 +92,12 @@ function SeguimientoClases() {
               <th className="py-3 px-6 text-left">Usuario</th>
               <th className="py-3 px-6 text-left">Curso</th>
               <th className="py-3 px-6 text-left">Clase</th>
-              {/* <th className="py-3 px-6 text-left">Duración</th> */}
               <th className="py-3 px-6 text-left">Inicio</th>
-              <th>Fin</th>
+              <th className="py-3 px-6 text-left">Progreso</th>
             </tr>
           </thead>
           <tbody className="text-gray-700 text-sm font-mono divide-y divide-gray-200">
-          {filteredSeguimientos.map((seguimiento) => (
+            {filteredSeguimientos.map((seguimiento) => (
               <tr
                 key={seguimiento.id}
                 className="border-b border-gray-200 hover:bg-gray-100"
@@ -109,13 +108,14 @@ function SeguimientoClases() {
                 <td className="py-3 px-6 text-left">
                   {seguimiento.curso?.name}
                 </td>
-                <td className="py-3 px-6 text-left">{seguimiento.clase.name}</td>
                 <td className="py-3 px-6 text-left">
-                {new Date(seguimiento.inicio).toLocaleString()}
+                  {seguimiento.clase.name}
                 </td>
-                {/* <td className="py-3 px-6 text-left">{seguimiento.clase.name}</td> */}
                 <td className="py-3 px-6 text-left">
-                {new Date(seguimiento.fin).toLocaleString()}
+                  {new Date(seguimiento.inicio).toLocaleString()}
+                </td>
+                <td className="py-3 px-6 text-left">
+                  {seguimiento.progreso.toFixed(1)}%
                 </td>
               </tr>
             ))}
