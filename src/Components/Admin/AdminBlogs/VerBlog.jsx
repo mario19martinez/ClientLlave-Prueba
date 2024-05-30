@@ -23,10 +23,19 @@ const VerBlog = () => {
     }
   }, [blogId]);
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
     <div className="max-w-3xl mx-auto py-8 overflow-y-auto">
       {blogDetails && (
         <div className="bg-white rounded-lg overflow-hidden shadow-lg p-8">
+          <div className="flex space-x-5 py-2">
+            <p>{formatDate(blogDetails.createdAt)}</p>
+            <p><strong>{blogDetails.Lectura}</strong></p>
+          </div>
           <h2 className="text-4xl font-bold text-center mb-6">
             {blogDetails.title}
           </h2>
@@ -44,6 +53,7 @@ const VerBlog = () => {
               dangerouslySetInnerHTML={{ __html: blogDetails.content }}
             />
           </div>
+          <p className="pb-10 pt-3"><em>{blogDetails.autor}</em></p>
           {/* Renderizar embeddedElement */}
           {blogDetails.embeddedElement && (
             <div
