@@ -6,6 +6,8 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 function SeguimientoClases() {
   const [seguimientos, setSeguimientos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCurso, setSelectedCurso] = useState('');
+  const [cursos, setCursos] = useState([])
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -19,12 +21,28 @@ function SeguimientoClases() {
         console.error("Error al ver los seguimientos:", error);
       }
     };
+
+    const fetchCursos = async () => {
+      try {
+        const response = await axios.get('/cursos');
+        setCursos(response.data);
+      } catch (error) {
+        setError(error.message)
+        console.error('Error al obtener los cursos:', error);
+      }
+    }
+
     fetchSeguimiento();
+    fetchCursos();
   }, []);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
+
+  const handleCursoChange = (e) => {
+    setSelectedCurso(e.target.value);
+  }
 
   const filteredSeguimientos = seguimientos.filter((seguimiento) => {
     const userMatch =
@@ -43,7 +61,11 @@ function SeguimientoClases() {
       typeof seguimiento.clase === "string" &&
       seguimiento.clase.toLowerCase().includes(searchTerm.toLowerCase());
 
-    return userMatch || cursoMatch || claseMatch;
+      const selectedCursoMatch = selectedCurso
+      ? seguimiento.cursoId === parseInt(selectedCurso)
+      : true;
+
+    return (userMatch || cursoMatch || claseMatch) && selectedCursoMatch;
   });
 
   const goBack = () => {
@@ -76,14 +98,26 @@ function SeguimientoClases() {
       <h1 className="text-xl font-bold mb-6 text-gray-700">
         Seguimiento de Clases
       </h1>
-      <div className="mb-4">
+      <div className="mb-4 flex space-x-4">
         <input
           type="text"
           placeholder="Buscar..."
           value={searchTerm}
           onChange={handleSearchChange}
-          className="border-2  border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
+          className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
         />
+        <select
+          value={selectedCurso}
+          onChange={handleCursoChange}
+          className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
+        >
+          <option value="">Todos los cursos</option>
+          {cursos.map((curso) => (
+            <option key={curso.id} value={curso.id}>
+              {curso.name}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="overflow-x-auto border border-gray-400 rounded-lg shadow-md">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
@@ -114,9 +148,14 @@ function SeguimientoClases() {
                 <td className="py-3 px-6 text-left">
                   {new Date(seguimiento.inicio).toLocaleString()}
                 </td>
-                <td className="py-3 px-6 text-left">
+                <td
+                  className={`py-3 px-6 text-left font-semibold w-0 ${seguimiento.progreso >= 80 ? 'bg-green-500 text-white' : 'bg-yellow-300 text-black'}`}
+                >
                   {seguimiento.progreso.toFixed(1)}%
                 </td>
+                {/* <td className="py-3 px-6 text-left">
+                  {seguimiento.progreso.toFixed(1)}%
+                </td> */}
               </tr>
             ))}
           </tbody>
