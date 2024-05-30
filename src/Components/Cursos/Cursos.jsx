@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, /*useRef*/ } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { FaCheckCircle } from "react-icons/fa";
@@ -55,7 +54,6 @@ function CursoClases() {
     fetchCursoDescripcion();
   }, [id]);
 
-  // Este useEffect es para obtener el progreso de las clases
   useEffect(() => {
     if (userInfo && userInfo.sub) {
       const fetchProgreso = async () => {
@@ -72,8 +70,6 @@ function CursoClases() {
     }
   }, [userInfo, id]);
 
-
-  // useEffect que se encarga del seguimiento de las clases
   useEffect(() => {
     if (claseSeleccionada && claseSeleccionada.url && claseSeleccionada.platform === "youtube") {
       const onYouTubeIframeAPIReady = () => {
@@ -136,7 +132,8 @@ function CursoClases() {
         clearInterval(youtubePlayer.intervalId);
       }
       setYoutubePlayer(null);
-    }  }, [claseSeleccionada, userInfo, id]);
+    }
+  }, [claseSeleccionada, userInfo, id]);
 
   const extractYoutubeVideoId = (url) => {
     const regex =
@@ -146,7 +143,6 @@ function CursoClases() {
   };
 
   const handleClaseClick = async (clase) => {
-    console.log('clase seleccionada:', clase)
     if (claseSeleccionada && claseSeleccionada.id === clase.id) {
       setClaseSeleccionada(null);
     } else {
@@ -185,22 +181,23 @@ function CursoClases() {
                   claseSeleccionada && claseSeleccionada.id === clase.id
                     ? "bg-blue-200 scale-105"
                     : clase.pdfURL
-                    ? "bg-green-200 hover:scale-105"
+                    ? "bg-blue-200 hover:scale-105"
                     : "bg-gray-200 hover:scale-105"
                 }`}
                 onClick={() => handleClaseClick(clase)}
               >
                 <div className="py-1">
                   <h3 className="text-xl font-semibold mb-2">{clase.name}</h3>
-                  {!clase.pdfURL && (
-                    <div className="mb-2">
-                      <div className="flex items-center mb-1">
+                  {claseSeleccionada && claseSeleccionada.id === clase.id && (
+                    <div className="w-full">
+                      <div className="flex items-center mb-2">
                         <div className="w-full mr-2">
-                          <div className="text-sm text-gray-600 mb-1">Progreso de la clase</div>
                           <div className="h-2 bg-white rounded-full">
                             <div
                               className={`h-2 rounded-full transition-width duration-500 ${
-                                progreso[clase.id] >= 80 ? "bg-green-500" : "bg-yellow-500"
+                                progreso[clase.id] >= 80
+                                  ? "bg-green-500"
+                                  : "bg-yellow-500"
                               }`}
                               style={{
                                 width: `${progreso[clase.id] || 0}%`,
@@ -281,38 +278,40 @@ function CursoClases() {
                   claseSeleccionada && claseSeleccionada.id === clases[clases.length - 1].id
                     ? "bg-blue-200 scale-105"
                     : clases[clases.length - 1].pdfURL
-                    ? "bg-green-100 hover:scale-105"
+                    ? "bg-blue-200 hover:scale-105"
                     : "bg-gray-200 hover:scale-105"
                 }`}
                 onClick={() => handleClaseClick(clases[clases.length - 1])}
               >
                 <div className="py-1">
-                  <h3 className="text-xl font-semibold mb-2">{clases[clases.length - 1].name}</h3>
-                  {!clases[clases.length - 1].pdfURL && (
-                    <div className="mb-2">
-                      <div className="flex items-center mb-1">
-                        <div className="w-full mr-2">
-                          <div className="text-sm text-gray-600 mb-1">Progreso de la clase</div>
-                          <div className="h-2 bg-white rounded-full">
-                            <div
-                              className={`h-2 rounded-full transition-width duration-500 ${
-                                progreso[clases[clases.length - 1].id] >= 80 ? "bg-green-500" : "bg-yellow-500"
-                              }`}
-                              style={{
-                                width: `${progreso[clases[clases.length - 1].id] || 0}%`,
-                              }}
-                            ></div>
+                  <h3>{clases[clases.length - 1].name}</h3>
+                  {claseSeleccionada &&
+                    claseSeleccionada.id === clases[clases.length - 1].id && (
+                      <div className="w-full">
+                        <div className="flex items-center mb-2">
+                          <div className="w-full mr-2">
+                            <div className="h-2 bg-white rounded-full">
+                              <div
+                                className={`h-2 rounded-full transition-width duration-500 ${
+                                  progreso[clases[clases.length - 1].id] >= 80
+                                    ? "bg-green-500"
+                                    : "bg-yellow-500"
+                                }`}
+                                style={{
+                                  width: `${progreso[clases[clases.length - 1].id] || 0}%`,
+                                }}
+                              ></div>
+                            </div>
                           </div>
+                          <span className="ml-2">{`${(progreso[clases[clases.length - 1].id] || 0).toFixed(1)}%`}</span>
+                          {progreso[clases[clases.length - 1].id] >= 80 ? (
+                            <FaCheckCircle className="text-green-500 ml-2" />
+                          ) : (
+                            <BsEye className="text-gray-500 ml-2" />
+                          )}
                         </div>
-                        <span className="ml-2">{`${(progreso[clases[clases.length - 1].id] || 0).toFixed(1)}%`}</span>
-                        {progreso[clases[clases.length - 1].id] >= 80 ? (
-                          <FaCheckCircle className="text-green-500 ml-2" />
-                        ) : (
-                          <BsEye className="text-gray-500 ml-2" />
-                        )}
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-sm text-gray-600 mb-4">Haz clic para ver más</p>
@@ -335,37 +334,38 @@ function CursoClases() {
                     />
                   </svg>
                 </div>
-                {claseSeleccionada && claseSeleccionada.id === clases[clases.length - 1].id && (
-                  <div className="aspect-w-16 aspect-h-9 transition-all duration-500">
-                    {claseSeleccionada.url && claseSeleccionada.platform === "youtube" ? (
-                      <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-                        <div id={`youtubePlayer-${claseSeleccionada.id}`} className="absolute top-0 left-0 w-full h-full" />
-                      </div>
-                    ) : claseSeleccionada.pdfURL ? (
-                      <div>
-                        <ul className="space-y-2">
-                          <li key={claseSeleccionada.id}>
-                            {claseSeleccionada.id === clases[clases.length - 1].id && (
-                              <a
-                                href={claseSeleccionada.pdfURL}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center justify-between bg-blue-500 text-white px-4 py-2 rounded-md"
-                              >
-                                <span>{claseSeleccionada.name} PDF</span>
-                                <button className="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1 rounded-md">
-                                  Ver Taller
-                                </button>
-                              </a>
-                            )}
-                          </li>
-                        </ul>
-                      </div>
-                    ) : (
-                      <p>No hay contenido disponible para esta clase.</p>
-                    )}
-                  </div>
-                )}
+                {claseSeleccionada &&
+                  claseSeleccionada.id === clases[clases.length - 1].id && (
+                    <div className="aspect-w-16 aspect-h-9 transition-all duration-500">
+                      {claseSeleccionada.url && claseSeleccionada.platform === "youtube" ? (
+                        <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
+                          <div id={`youtubePlayer-${claseSeleccionada.id}`} className="absolute top-0 left-0 w-full h-full" />
+                        </div>
+                      ) : claseSeleccionada.pdfURL ? (
+                        <div>
+                          <ul className="space-y-2">
+                            <li key={claseSeleccionada.id}>
+                              {claseSeleccionada.id === clases[clases.length - 1].id && (
+                                <a
+                                  href={claseSeleccionada.pdfURL}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center justify-between bg-blue-500 text-white px-4 py-2 rounded-md"
+                                >
+                                  <span>{claseSeleccionada.name} PDF</span>
+                                  <button className="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1 rounded-md">
+                                    Ver Taller
+                                  </button>
+                                </a>
+                              )}
+                            </li>
+                          </ul>
+                        </div>
+                      ) : (
+                        <p>No hay contenido disponible para esta clase.</p>
+                      )}
+                    </div>
+                  )}
               </li>
             )}
       </ul>
