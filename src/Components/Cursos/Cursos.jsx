@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+// eslint-disable-next-line no-unused-vars
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { FaCheckCircle } from "react-icons/fa";
@@ -54,6 +55,7 @@ function CursoClases() {
     fetchCursoDescripcion();
   }, [id]);
 
+  // Este useEffect es para obtener el progreso de las clases
   useEffect(() => {
     if (userInfo && userInfo.sub) {
       const fetchProgreso = async () => {
@@ -70,6 +72,8 @@ function CursoClases() {
     }
   }, [userInfo, id]);
 
+
+  // useEffect que se encarga del seguimiento de las clases
   useEffect(() => {
     if (claseSeleccionada && claseSeleccionada.url && claseSeleccionada.platform === "youtube") {
       const onYouTubeIframeAPIReady = () => {
@@ -132,8 +136,7 @@ function CursoClases() {
         clearInterval(youtubePlayer.intervalId);
       }
       setYoutubePlayer(null);
-    }
-  }, [claseSeleccionada, userInfo, id]);
+    }  }, [claseSeleccionada, userInfo, id]);
 
   const extractYoutubeVideoId = (url) => {
     const regex =
@@ -143,6 +146,7 @@ function CursoClases() {
   };
 
   const handleClaseClick = async (clase) => {
+    console.log('clase seleccionada:', clase)
     if (claseSeleccionada && claseSeleccionada.id === clase.id) {
       setClaseSeleccionada(null);
     } else {
