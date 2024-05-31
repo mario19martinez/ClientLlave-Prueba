@@ -88,7 +88,7 @@ function SeguimientoClases() {
   }
 
   return (
-    <div className="container absolute mx-auto p-4 top-0 mt-28 right-16 ml-96 w-3/4">
+    <div className="py-5 px-10 ">
       <button
         onClick={goBack}
         className="bg-blue-500 text-white w-20 h-10 mb-8 font-semibold py-0 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-1"
