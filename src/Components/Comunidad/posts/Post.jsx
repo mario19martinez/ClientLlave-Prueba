@@ -15,7 +15,7 @@ import PropTypes from "prop-types";
 import Comments from '../Comments/Comments'
 import axios from "axios";
 
-const Post = ({ username, userImg, date, content, imageSrc, initialLikes, postId }) => {
+const Post = ({ username, userImg, date, content, imageSrc, initialLikes, postId, createdAt }) => {
   const [likes, setLikes] = useState(initialLikes || 0);
   const [hasLiked, setHasLiked] = useState(false);
 
@@ -59,6 +59,17 @@ const Post = ({ username, userImg, date, content, imageSrc, initialLikes, postId
     }
   };
 
+  const formatDate = (dateString) => {
+    const options = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+    return new Date(dateString).toLocaleString(undefined, options);
+  };
+
   return (
     <div className="flex justify-center">
       <Card className="m-4 p-4 shadow-lg md:w-1/2">
@@ -68,6 +79,13 @@ const Post = ({ username, userImg, date, content, imageSrc, initialLikes, postId
             <div>
               <Typography variant="subtitle1" component="div">
                 {username}
+              </Typography>
+              <Typography
+                variant="caption"
+                color="textSecondary"
+                component="div"
+              >
+                {formatDate(createdAt)}  {/* Mostrar la fecha y la hora formateada */}
               </Typography>
               <Typography
                 variant="caption"
@@ -123,6 +141,7 @@ const Post = ({ username, userImg, date, content, imageSrc, initialLikes, postId
 Post.propTypes = {
   username: PropTypes.string.isRequired,
   userImg: PropTypes.string,
+  createdAt: PropTypes.string,
   date: PropTypes.string,
   content: PropTypes.string,
   imageSrc: PropTypes.string,

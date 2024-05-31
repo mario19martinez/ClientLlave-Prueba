@@ -18,6 +18,7 @@ const PostsList = () => {
         const updatedPosts = response.data.posts.map((post) => ({
           ...post,
           initialLikes: post.likes,
+          createdAt: post.createdAt || "02/2/2024, 00:00",
         }));
         setPosts(updatedPosts.reverse());
       })
@@ -32,6 +33,7 @@ const PostsList = () => {
         <Post
           key={post.id}
           username={`${post.user.name} ${post.user.last_name}`}
+          createdAt={post.createdAt}
           userImg={post.user.image}
           date={post.date}
           content={post.content}
