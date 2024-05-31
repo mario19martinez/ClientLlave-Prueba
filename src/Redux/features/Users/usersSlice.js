@@ -111,6 +111,7 @@ const usersSlice = createSlice({
       })
       .addCase(getUserData.rejected, (state, action) => {
         state.error = action.error.message;
+        state.userData = {}; // o null, dependiendo de cómo manejes los estados de error
       })
       .addCase(updateUser.pending, (state) => {
         state.loginStatus = "loading";
