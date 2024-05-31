@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Computer as ComputerIcon,
@@ -18,6 +18,7 @@ const SidebarUser = ({ selectedTab }) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.users.userData);
   const storedEmail = localStorage.getItem("email");
+  const [sessionExpired, setSessionExpired] = useState(false);
 
   useEffect(() => {
     if (storedEmail) {
@@ -25,9 +26,24 @@ const SidebarUser = ({ selectedTab }) => {
     }
   }, [dispatch, storedEmail]);
 
+  useEffect(() => {
+    if (userData) {
+      const tokenExpiration = new Date(userData.tokenExpiration);
+      const now = new Date();
+      if (tokenExpiration <= now) {
+        setSessionExpired(true);
+      }
+    }
+  }, [userData]);
+
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
+  };
+
+  const closeModalAndLogout = () => {
+    setSessionExpired(false);
+    handleLogout();
   };
 
   const menuItems = [
@@ -99,6 +115,20 @@ const SidebarUser = ({ selectedTab }) => {
           </div>
         </div>
       </div>
+      {sessionExpired && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/3">
+            <h2 className="text-xl font-semibold mb-4">Sesión expirada</h2>
+            <p className="mb-4">Tu sesión ha expirado. Por favor, inicia sesión nuevamente.</p>
+            <button
+              onClick={closeModalAndLogout}
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+            >
+              Aceptar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
