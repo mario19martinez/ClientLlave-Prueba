@@ -117,7 +117,10 @@ function ClasesDetailModulo() {
             {clase.texto && (
               <div className="mb-4">
                 <h3 className="text-xl font-bold mb-2 text-gray-800">Texto:</h3>
-                <p className="font-gabarito text-gray-700">{clase.texto}</p>
+                <div
+                  className="text-gray-700"
+                  dangerouslySetInnerHTML={{ __html: clase.texto}}
+                />
               </div>
             )}
 
