@@ -46,6 +46,20 @@ function ClaseEditAdmin() {
     });
   };
 
+  const handleTextoChange = (value) => {
+    setClaseData({
+      ...claseData,
+      texto: value,
+    });
+  };
+
+  const handleResumenChange = (value) => {
+    setClaseData({
+      ...claseData,
+      resumen: value,
+    });
+  };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -53,8 +67,6 @@ function ClaseEditAdmin() {
       await axios.put(`/nivel/${nivelId}/modulo/${moduloId}/clase/${claseId}`, claseData);
       setSuccessAlert(true);
 
-      //setTimeout(() => {}, 1000);
-      console.log("Clase modificada exitosamente");
       toast.success("Clase modificada exitosamente!", {
         position: "top-center",
         autoClose: 1500,
@@ -69,11 +81,17 @@ function ClaseEditAdmin() {
     }
   };
 
-  const handleQuillChange = (value) => {
-    setClaseData({
-      ...claseData,
-      resumen: value,
-    });
+  const quillModules = {
+    toolbar: [
+      [{ header: "1" }, { header: "2" }, { font: [] }],
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+      ["link", "image", "video"],
+      ["clean"],
+      [{ align: [] }],
+      [{ color: [] }, { background: [] }],
+    ],
   };
 
   if (loading) {
@@ -167,12 +185,12 @@ function ClaseEditAdmin() {
                 >
                   Texto:
                 </label>
-                <textarea
+                <ReactQuill
                   id="texto"
-                  name="texto"
                   value={claseData.texto}
-                  onChange={handleInputChange}
-                  className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
+                  onChange={handleTextoChange}
+                  modules={quillModules}
+                  className="border-2 border-gray-400 rounded-md p-2 focus:outline-none focus:border-blue-500"
                 />
               </div>
 
@@ -186,7 +204,8 @@ function ClaseEditAdmin() {
                 <ReactQuill
                   id="resumen"
                   value={claseData.resumen}
-                  onChange={handleQuillChange}
+                  onChange={handleResumenChange}
+                  modules={quillModules}
                   className="border-2 border-gray-400 rounded-md p-2 focus:outline-none focus:border-blue-500"
                 />
               </div>

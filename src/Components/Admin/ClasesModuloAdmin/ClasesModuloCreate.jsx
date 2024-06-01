@@ -6,10 +6,10 @@ import { useParams } from "react-router-dom";
 import NavAdmin from "../NavAdmin/NavAdmin";
 import SidebarAdmin from "../SidebarAdmin/SidebarAdmin";
 import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function ClaseModuloCreate() {
   const { nivelId, moduloId } = useParams();
-  //const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     url: "",
@@ -20,11 +20,13 @@ function ClaseModuloCreate() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  console.log("Soy el moduloId: ", moduloId);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleTextoChange = (value) => {
+    setFormData({ ...formData, texto: value });
   };
 
   const handleResumenChange = (value) => {
@@ -36,7 +38,6 @@ function ClaseModuloCreate() {
     setLoading(true);
     try {
       await axios.post(`nivel/${nivelId}/modulo/${moduloId}/clase`, formData);
-      console.log("Clase creada con éxito");
       setFormData({
         name: "",
         url: "",
@@ -61,12 +62,25 @@ function ClaseModuloCreate() {
     }
   };
 
+  const quillModules = {
+    toolbar: [
+      [{ header: "1" }, { header: "2" }, { font: [] }],
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+      ["link", "image", "video"],
+      ["clean"],
+      [{ align: [] }],
+      [{ color: [] }, { background: [] }],
+    ],
+  };
+
   return (
     <div>
       <NavAdmin />
       <div className="flex">
         <SidebarAdmin />
-        <div className="container mx-auto mt-4 p-4  w-1/2 -translate-x-10">
+        <div className="container mx-auto mt-4 p-4 w-1/2 -translate-x-10">
           <h2 className="text-2xl font-bold mb-4 text-gray-700 translate-x-20">
             Agregar Clase
           </h2>
@@ -130,13 +144,13 @@ function ClaseModuloCreate() {
               >
                 Texto:
               </label>
-              <textarea
+              <ReactQuill
                 id="texto"
-                name="texto"
                 value={formData.texto}
-                onChange={handleChange}
-                className="border-2 border-blue-600 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
-              ></textarea>
+                onChange={handleTextoChange}
+                modules={quillModules}
+                className="border-2 border-blue-600 rounded-md focus:border-blue-500 bg-white"
+              />
             </div>
             <div className="mb-4">
               <label
@@ -149,6 +163,7 @@ function ClaseModuloCreate() {
                 id="resumen"
                 value={formData.resumen}
                 onChange={handleResumenChange}
+                modules={quillModules}
                 className="border-2 border-blue-600 rounded-md focus:border-blue-500 bg-white"
               />
             </div>

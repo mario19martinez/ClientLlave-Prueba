@@ -75,7 +75,6 @@ function ClaseModuloAdmin() {
             >
               <div>
                 <h1
-                  //onClick={() => handleClassAccess(clase.id)}
                   onClick={() => navigateToClaseDetail(clase.id)}
                   className="cursor-pointer font-bold text-gray-700"
                 >
@@ -84,11 +83,13 @@ function ClaseModuloAdmin() {
                 <p
                   className="text-gray-800"
                   onClick={() => navigateToClaseDetail(clase.id)}
-                >
-                  {clase.texto.length > 70
-                    ? `${clase.texto.substring(0, 70)}...`
-                    : clase.texto}
-                </p>
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      clase.texto.length > 70
+                        ? `${clase.texto.substring(0, 70)}...`
+                        : clase.texto,
+                  }}
+                />
               </div>
               <button
                 onClick={() => handleDelete(clase.id)}
