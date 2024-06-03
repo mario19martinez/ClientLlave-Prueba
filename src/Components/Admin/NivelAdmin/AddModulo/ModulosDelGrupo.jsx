@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 function ModulosDelGrupo() {
@@ -22,14 +22,14 @@ function ModulosDelGrupo() {
   }, [grupoId]);
 
   return (
-    <div className="bg-gray-100 border-2 border-sky-500 shadow-md rounded-md p-6 translate-x-10 translate-y-10 w-56 absolute top-0 right-36 mt-28 ml-96">
+    <div className="bg-gray-100 border-2 border-gray-300 shadow-md rounded-md p-6 translate-x-14 translate-y-10 w-60 absolute top-0 right-36 mt-28 ml-96">
       <h2 className="text-xl font-bold text-gray-700 mb-4">Modulos ({modulos.length})</h2>
       {error && <p className="text-red-500">Error: {error}</p>}
       <ul>
         {modulos.map((modulo) => (
           <li key={modulo.id} className="border-b border-gray-200 py-4">
             <p className="text-lg font-semibold mb-2 text-gray-700">{modulo.titulo}</p>
-            <p className="text-white mb-1">{modulo.descripcion.substring(0, 20)}</p>
+            {/* <p className="text-w mb-1">{modulo.descripcion.substring(0, 20)}</p> */}
           </li>
         ))}
       </ul>

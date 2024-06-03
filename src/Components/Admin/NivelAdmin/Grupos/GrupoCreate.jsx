@@ -36,7 +36,7 @@ function GrupoCreate({ closeModalAndReload }) {
   };
 
   return (
-    <div className="w-96 mx-auto my-8 p-8 bg-blue-600 rounded shadow-lg">
+    <div className="w-96 mx-auto my-8 p-8 bg-blue-500 rounded shadow-lg">
       <h2 className="text-xl font-bold mb-4 text-white">Crear Grupo</h2>
       {error && <p className="text-red-500 mb-4">Error: {error}</p>}
       <form onSubmit={handleSubmit}>

@@ -45,12 +45,12 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const respuestaSeleccionada = preguntas.every(
-      (pregunta) => pregunta.respuestaCorrecta !== ""
-    );
-    if (!respuestaSeleccionada) {
-      alert("Por favor, selecciona una respuesta correcta para cada pregunta.");
-    }
+    // const respuestaSeleccionada = preguntas.every(
+    //   (pregunta) => pregunta.respuestaCorrecta !== ""
+    // );
+    // if (!respuestaSeleccionada) {
+    //   alert("Por favor, selecciona una respuesta correcta para cada pregunta.");
+    // }
     try {
       const preguntasFormateadas = preguntas.map((pregunta) => ({
         pregunta: pregunta.pregunta,
@@ -151,7 +151,6 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
               value={pregunta.pregunta}
               placeholder={`Ingrese la pregunta ${index + 1}`}
               onChange={(e) => handleChangePregunta(index, e)}
-              required
             />
             {pregunta.opciones.map((opcion, idx) => (
               <input
@@ -161,7 +160,6 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
                 value={opcion}
                 onChange={(e) => handleChangeOpcion(index, idx, e)}
                 placeholder={`Opción ${String.fromCharCode(97 + idx)}`}
-                required
               />
             ))}
             <label
@@ -175,7 +173,6 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
               className="border-2 border-gray-400 rounded-md p-2 w-full mt-2 focus:outline-none focus:border-blue-500"
               value={pregunta.respuestaCorrecta}
               onChange={(e) => handleChangeRespuesta(index, e)}
-              required
             >
               <option value="">Seleccione una respuesta</option>
               {pregunta.opciones.map((opcion, idx) => (

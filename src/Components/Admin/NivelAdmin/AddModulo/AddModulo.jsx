@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import PropTypes from 'prop-types'
 
-function AddModulo({ nivelId, grupoId }) {
+function AddModulo({ nivelId, grupoId, closeModalAndReload }) {
   const [modulos, setModulos] = useState([]);
   const [moduloId, setModuloId] = useState("");
   const [error, setError] = useState(null);
@@ -48,6 +50,16 @@ function AddModulo({ nivelId, grupoId }) {
         }
       );
       setSuccessMessage(response.data.message);
+      toast.success('Modulo agregado con exitosamente!', {
+        position: 'top-center',
+        autoClose: 1500,
+        closeOnClick: true,
+        theme: 'colored',
+      });
+
+      setTimeout(() => {
+        closeModalAndReload();
+      }, 1800)
       setError(null);
     } catch (error) {
       console.error("Error al agregar el Modulo:", error);
@@ -57,7 +69,7 @@ function AddModulo({ nivelId, grupoId }) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+    <div className="max-w-2xl mx-auto bg-gray-100 p-8 rounded-lg shadow-lg">
       <h2 className="text-3xl mb-6 font-semibold text-center text-gray-700">Agregar Módulo a Grupo</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-6">
@@ -87,10 +99,17 @@ function AddModulo({ nivelId, grupoId }) {
           Agregar Módulo
         </button>
       </form>
+      <ToastContainer />
       {error && <p className="text-red-500 font-bold mt-4">Error: {error}</p>}
       {successMessage && <p className="text-green-500 font-bold mt-4">{successMessage}</p>}
     </div>
   );
 }
+
+AddModulo.propTypes = {
+  nivelId: PropTypes.string.isRequired,
+  grupoId: PropTypes.string.isRequired,
+  closeModalAndReload: PropTypes.func.isRequired,
+};
 
 export default AddModulo;
