@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import PropTypes from "prop-types";
 import ClaseDetailUser from "../Estudiante/EstudianteNiveles/ClasesDetailUser";
-//import NivelClasesDetail from "./NivelClasesDetail";
 
 function NivelClases() {
   const [clases, setClases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedClassId, setSelectedClassId] = useState(null);
+  const [showClasses, setShowClasses] = useState(false);
   const { moduloId } = useParams();
 
   useEffect(() => {
@@ -27,6 +27,13 @@ function NivelClases() {
 
   const handleClassSelect = (claseId) => {
     setSelectedClassId(claseId);
+    if (window.innerWidth <= 768) { // Ocultar la lista en móviles al seleccionar una clase
+      setShowClasses(false);
+    }
+  };
+
+  const toggleShowClasses = () => {
+    setShowClasses(!showClasses);
   };
 
   if (loading) {
@@ -45,7 +52,7 @@ function NivelClases() {
       <div className="flex justify-center items-center h-screen">
         <div className="bg-red-500 p-4 rounded-lg shadow-lg">
           <span className="text-white font-semibold">
-            No se encontraron clases en este modulo.
+            No se encontraron clases en este módulo.
           </span>
         </div>
       </div>
@@ -54,15 +61,22 @@ function NivelClases() {
 
   return (
     <div className="flex flex-col items-start w-screen translate-x-0">
-      {/* Class Information */}
-      <div className="flex w-screen">
-        <div className=" p-0 mt-8 rounded-lg shadow-md px-2 ">
+      <div className="w-full p-4">
+        <button
+          onClick={toggleShowClasses}
+          className="md:hidden bg-blue-500 text-white py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+        >
+          {showClasses ? "Ocultar Clases" : "Mostrar Clases"}
+        </button>
+      </div>
+      <div className="flex flex-col md:flex-row w-full">
+        <div className={`p-0 mt-4 rounded-lg shadow-md px-2 transition-all duration-500 ease-in-out ${showClasses ? 'block' : 'hidden md:block'}`}>
           <h2 className="text-2xl font-bold mb-6 text-gray-800">Clases</h2>
           <ul className="grid gap-4">
             {clases.map((clase) => (
               <li
                 key={clase.id}
-                className={` h-6 shadow-lg shadow-blue-500/50 rounded-lg p-6 border-b-4 border-blue-500 flex items-center justify-between transition duration-500 transform hover:scale-105 ${
+                className={`shadow-lg shadow-blue-500/50 rounded-lg p-6 border-b-4 border-blue-500 flex items-center justify-between transition duration-500 transform hover:scale-105 cursor-pointer ${
                   selectedClassId === clase.id ? "bg-blue-500 border-gray-500 text-white" : ""
                 }`}
                 onClick={() => handleClassSelect(clase.id)}
@@ -86,7 +100,7 @@ function NivelClases() {
             ))}
           </ul>
         </div>
-        <div className="px-2 py-2 w-2/3">
+        <div className="px-2 py-2 w-full md:w-2/3">
           {selectedClassId && (
             <ClaseDetailUser moduloId={moduloId} claseId={selectedClassId} />
           )}
