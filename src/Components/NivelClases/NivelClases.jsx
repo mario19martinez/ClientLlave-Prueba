@@ -60,7 +60,7 @@ function NivelClases() {
   }
 
   return (
-    <div className="flex flex-col items-start w-screen translate-x-0">
+    <div className="flex flex-col items-start ">
       <div className="w-full p-4">
         <button
           onClick={toggleShowClasses}

@@ -16,7 +16,7 @@ function GrupoDetailUser() {
         setModulos(response.data.modulos);
       } catch (error) {
         console.error(
-          "Error al obtnener los detalles del grupo y los modulos:",
+          "Error al obtener los detalles del grupo y los módulos:",
           error
         );
       }
@@ -26,39 +26,43 @@ function GrupoDetailUser() {
   }, [grupoId]);
 
   if (!grupo) {
-    return <div className="text-center mt-4">Cargando...</div>;
+    return <div className="flex justify-center items-center h-screen">Cargando...</div>;
   }
 
   return (
-    <div className="absolute translate-x-56 translate-y-10 mx-auto p-4 w-3/4">
-      <h2 className="text-2xl text-gray-800 font-bold mb-2">{grupo.name}</h2>
-      <p className="text-gray-700 mb-4">{grupo.descripcion}</p>
-      <h3 className="text-xl text-gray-800 font-semibold mb-2">Modulos:</h3>
-      <ul>
+    <div className="px-4 lg:px-20 py-8">
+      <h2 className="text-3xl lg:text-4xl text-gray-800 font-bold mb-4">{grupo.name}</h2>
+      <p className="text-lg text-gray-700 mb-6">{grupo.descripcion}</p>
+      <h3 className="text-xl lg:text-2xl text-gray-800 font-semibold mb-4">Módulos:</h3>
+      <div className="grid gap-6 lg:grid-cols-2">
         {modulos.map((modulo) => (
           <Link
             to={`/grupo/${grupoId}/modulo/${modulo.id}/detalles`}
             key={modulo.id}
           >
-            <li className=" relative mb-4 bg-gray-100 border-b-4 border-blue-600 rounded-xl h-auto p-2 w-11/12 hover:bg-gray-200 transition-transform ease-in-out duration-300 hover:translate-y-2">
-              <h4 className=" pl-2 text-lg text-gray-800 font-semibold p-0">
-                {modulo.titulo}
-              </h4>
-              <p className="text-gray-700 pl-2">
-                {modulo.contenido && modulo.contenido.length > 100
-                  ? `${modulo.contenido.substring(0, 100)}...`
-                  : modulo.contenido}
-              </p>
-              <Link
-              to={`/grupo/${grupoId}/modulo/${modulo.id}/detalles`}
-              className="absolute top-4 right-2 px-4 py-2 bg-blue-600 font-semibold text-white rounded hover:bg-blue-700 transition-colors duration-300"
-            >
-              Ver Módulo
-            </Link>
-            </li>
+            <div className="bg-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300 ease-in-out">
+              <div className="p-6">
+                <h4 className="text-lg lg:text-xl font-semibold text-gray-800 mb-2">
+                  {modulo.titulo}
+                </h4>
+                <p className="text-gray-700">
+                  {modulo.contenido && modulo.contenido.length > 100
+                    ? `${modulo.contenido.substring(0, 100)}...`
+                    : modulo.contenido}
+                </p>
+              </div>
+              <div className="flex justify-end p-4 bg-gray-300">
+                <Link
+                  to={`/grupo/${grupoId}/modulo/${modulo.id}/detalles`}
+                  className="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition duration-300 ease-in-out"
+                >
+                  Ver Módulo
+                </Link>
+              </div>
+            </div>
           </Link>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
