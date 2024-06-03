@@ -151,7 +151,7 @@ function ModuloDetailsStudent() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl py-10 px-4 sm:px-6 lg:px-8">
+    <div className="px-5 py-5">
       <h1 className="text-3xl font-bold mb-6 text-gray-900">{modulo.titulo}</h1>
       <p className="text-gray-700 mb-6">{modulo.contenido}</p>
 

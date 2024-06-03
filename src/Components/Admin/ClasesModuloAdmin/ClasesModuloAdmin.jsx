@@ -81,7 +81,7 @@ function ClaseModuloAdmin() {
                   {clase.name}
                 </h1>
                 <p
-                  className="text-gray-800"
+                  className="ql-editor"
                   onClick={() => navigateToClaseDetail(clase.id)}
                   dangerouslySetInnerHTML={{
                     __html:

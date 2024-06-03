@@ -15,7 +15,9 @@ function NivelClases() {
     const fetchClases = async () => {
       try {
         const response = await axios.get(`/modulo/${moduloId}/clases`);
-        setClases(response.data);
+        // Ordenar las clases por su fecha de creación
+        const sortedClases = response.data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        setClases(sortedClases);
         setLoading(false);
       } catch (error) {
         console.error("Error al obtener las clases:", error);
