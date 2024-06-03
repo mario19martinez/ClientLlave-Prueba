@@ -7,8 +7,8 @@ export default function ViewModuloClases() {
     <div>
       <NavUser />
       <div className="flex">
-      <SidebarUser />
-      <ModuloDetailsStudent />
+        <SidebarUser />
+        <ModuloDetailsStudent />
       </div>
       {/* <NivelClases /> */}
     </div>
