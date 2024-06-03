@@ -118,7 +118,7 @@ function ClasesDetailModulo() {
               <div className="mb-4">
                 <h3 className="text-xl font-bold mb-2 text-gray-800">Texto:</h3>
                 <div
-                  className="text-gray-700"
+                  className="ql-editor"
                   dangerouslySetInnerHTML={{ __html: clase.texto}}
                 />
               </div>
@@ -128,7 +128,7 @@ function ClasesDetailModulo() {
               <div>
                 <h3 className="text-xl font-bold mb-2 text-gray-800">Resumen:</h3>
                 <div
-                  className="text-gray-700"
+                  className="ql-editor"
                   dangerouslySetInnerHTML={{ __html: clase.resumen }}
                 />
               </div>
