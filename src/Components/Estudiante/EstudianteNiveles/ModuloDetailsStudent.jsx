@@ -177,7 +177,7 @@ function ModuloDetailsStudent() {
 
       <button
         onClick={() => setMostrarPreguntas(!mostrarPreguntas)}
-        className="text-blue-500 underline mt-4 mb-8 block"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 mt-4 mb-8 block mx-auto"
       >
         {mostrarPreguntas ? "Ocultar preguntas" : "Mostrar preguntas"}
       </button>
@@ -188,7 +188,7 @@ function ModuloDetailsStudent() {
           {Array.isArray(modulo.preguntas) && modulo.preguntas.length > 0 ? (
             <>
               {modulo.preguntas.map((pregunta, index) => (
-                <div key={index} className="mb-6">
+                <div key={index} className="mb-6 p-4 border border-gray-300 rounded-lg">
                   <p className="text-gray-700 mb-2">
                     {index + 1}: {pregunta.pregunta}
                   </p>
@@ -225,7 +225,7 @@ function ModuloDetailsStudent() {
               ))}
               <button
                 onClick={handleSubmitAnswers}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 transition duration-300"
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4 transition duration-300"
                 disabled={
                   Object.keys(respuestas).length !== modulo.preguntas.length
                 }
