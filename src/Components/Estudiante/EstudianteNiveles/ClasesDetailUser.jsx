@@ -115,6 +115,17 @@ function ClaseDetailUser({ claseId }) {
           />
         </div>
       )}
+
+      <div className="mt-6 text-center">
+        <a
+          href={clase.pdfURL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+        >
+          Material de apoyo
+        </a>
+      </div>
     </div>
   );
 }
