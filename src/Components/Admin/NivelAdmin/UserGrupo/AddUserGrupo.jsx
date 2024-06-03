@@ -1,6 +1,5 @@
 import { useState, useMemo } from "react";
 import PropTypes from "prop-types";
-import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 
 function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
@@ -23,20 +22,29 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
         return;
       }
 
-      const response = await axios.get(`/user?name=${busqueda}`);
-      if (response.data.length === 0) {
+      const response = await axios.get(`/search`, {
+        params: {
+          nivelId: nivelId,
+          name: busqueda.toLowerCase(),
+        },
+      });
+
+      const { usuarios } = response.data;
+
+      if (usuarios.length === 0) {
         setUserNotFound(true);
         setResultados([]);
       } else {
-        const usuariosSub = response.data.map((usuario) => ({
+        const usuariosSub = usuarios.map((usuario) => ({
           ...usuario,
-          userSub: usuario.id,
+          userSub: usuario.sub,
+          grupoName: usuario.grupo ? usuario.grupo.name : null, // Añadimos el nombre del grupo si existe
         }));
         setResultados(usuariosSub);
       }
     } catch (error) {
       console.error("Error al buscar usuarios:", error.message);
-      setError("Error al buscar usuarios. por favor, intentalo de nuevo.");
+      setError(error.response.data.error);
     } finally {
       setLoading(false);
     }
@@ -44,35 +52,30 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
 
   const memoizedResultados = useMemo(() => resultados, [resultados]);
 
-  const handleSubmit = async (e, userSub) => {
+  const handleSubmit = async (e, userSub) => { // Eliminar el argumento userSub
     e.preventDefault();
     try {
       const response = await axios.post(
-        `/nivel/${nivelId}/grupo/${grupoId}/usuario`,
+        `/add-user-grupo`,
         {
           userSub: userSub,
+          grupoId: grupoId,
+          nivelId: nivelId,
         }
       );
       setMessage(response.data.message);
-      toast.success("Usuario agregado exitosamente!", {
-        position: "top-center",
-        autoClose: 1500,
-        closeOnClick: true,
-        theme: "colored",
-      });
       setTimeout(() => {
         closeModalAndReload();
-      }, 1800);
-      setUserSub("");
-
-
+      }, 1500);
+      setUserSub(""); // Limpiar el estado después de la operación exitosa
     } catch (error) {
       setError(error.response.data.error);
     }
   };
 
+
   return (
-    <div className="max-w-md mx-auto p-4 bg-white rounded-md shadow-md">
+    <div className="max-w-md mx-auto p-4 bg-blue-100 rounded-md shadow-md w-1/2 h-auto">
       <h2 className="text-lg font-bold mb-4 text-gray-700">Agregar Usuario</h2>
       <div className="mb-4">
         <label
@@ -88,7 +91,7 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
             onBlur={handleBuscar}
-            className="mt-1 p-2 flex-1 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 p-2 flex-1 border rounded-md bg-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
           <button
             onClick={handleBuscar}
@@ -101,7 +104,7 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
         {error && <p className="text-red-600 mt-2">Error: {error}</p>}
         {userNotFound && (
           <p className="text-red-600 mt-2">
-            El Usuario no esta en la plataforma.
+            El Usuario no está en la plataforma.
           </p>
         )}
         {memoizedResultados.length > 0 && (
@@ -109,11 +112,18 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
             {memoizedResultados.map((user, index) => (
               <li
                 key={index}
-                className="flex items-center justify-between px-4 py-2 hover:bg-gray-100"
+                className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 bg-white"
               >
-                <span>{user.name}</span>
+                <div>
+                  <span>{user.name}</span>
+                  {user.grupoName && (
+                    <span className="text-sm text-gray-700 ml-2">
+                      (En grupo: {user.grupoName})
+                    </span>
+                  )}
+                </div>
                 <button
-                  onClick={(e) => handleSubmit(e, user.sub)}
+                  onClick={(e) => handleSubmit(e, user.userSub)}
                   className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                 >
                   Agregar
@@ -124,7 +134,6 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
         )}
       </div>
       {message && <p className="text-green-600 mt-2">{message}</p>}
-      <ToastContainer />
     </div>
   );
 }

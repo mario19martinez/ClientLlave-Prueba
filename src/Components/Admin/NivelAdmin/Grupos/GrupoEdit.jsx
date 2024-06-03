@@ -3,7 +3,7 @@ import axios from "axios";
 
 function GrupoEdit({ nivelId, grupoId }) {
   const [grupoData, setGrupoData] = useState({});
-  const [formData, setFormData] = useState({ name: "", descripcion: "" });
+  const [formData, setFormData] = useState({ name: "", descripcion: "", image: "" });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -11,14 +11,13 @@ function GrupoEdit({ nivelId, grupoId }) {
   useEffect(() => {
     const fetchGrupo = async () => {
       try {
-        const response = await axios.get(
-          `/niveles/${nivelId}/grupos/${grupoId}`
-        );
+        const response = await axios.get(`/niveles/${nivelId}/grupos/${grupoId}`);
         setGrupoData(response.data);
-        setFormData({ 
+        setFormData({
           name: response.data.name,
-          descripcion: response.data.descripcion
-        })
+          descripcion: response.data.descripcion,
+          image: response.data.image
+        });
         setLoading(false);
       } catch (error) {
         console.error("Error al traer la informacion del grupo:", error);
@@ -38,7 +37,7 @@ function GrupoEdit({ nivelId, grupoId }) {
     e.preventDefault();
     try {
       await axios.put(`/nivel/${nivelId}/grupo/${grupoId}`, formData);
-      setSuccessMessage("Grupo actualizado con exito.");
+      setSuccessMessage("Grupo actualizado con éxito.");
     } catch (error) {
       setError("Error al modificar el grupo.");
     }
@@ -79,6 +78,23 @@ function GrupoEdit({ nivelId, grupoId }) {
             className="w-full h-10 border-blue-500 border-2 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
+        <div className="mb-4 pt-6">
+          <label htmlFor="image" className="block text-base font-medium text-gray-700 mb-1">URL de la Imagen:</label>
+          <input
+            type="text"
+            name="image"
+            id="image"
+            value={formData.image}
+            onChange={handleInputChange}
+            className="w-full h-10 border-blue-500 border-2 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+        {/* {grupoData.image && (
+          <div className="mb-4 pt-6">
+            <label className="block text-base font-medium text-gray-700 mb-1">Imagen Actual:</label>
+            <img src={grupoData.image} alt="Imagen actual del grupo" className="max-w-full h-auto rounded-md" />
+          </div>
+        )} */}
         <button type="submit"
         className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
         >Guardar</button>

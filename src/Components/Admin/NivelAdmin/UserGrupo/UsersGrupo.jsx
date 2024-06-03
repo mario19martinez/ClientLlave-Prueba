@@ -4,6 +4,7 @@ import Modal from 'react-modal'
 import PropTypes from "prop-types";
 import AddUserGrupo from "./AddUserGrupo";
 import CancelIcon from '@mui/icons-material/Cancel';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function UsersGrupo({ nivelId, grupoId }) {
   const [usuarios, setUsuarios] = useState([]);
@@ -25,6 +26,19 @@ function UsersGrupo({ nivelId, grupoId }) {
 
     fetchUsuarios();
   }, [nivelId, grupoId]);
+
+  const handleDeleteUser = async (userSub, userName) => {
+    try {
+      const confirmDelete = window.confirm(`¿Estás seguro de eliminar al usuario ${userName} del grupo?`);
+      if (confirmDelete) {
+        await axios.delete(`/usuario/${userSub}/grupo/${grupoId}`);
+        const updatedUsers = usuarios.filter(usuario => usuario.sub !== userSub);
+        setUsuarios(updatedUsers);
+      }
+    } catch (error) {
+      console.error('Error al eliminar el usuario:', error);
+    }
+  };
 
   const closeModalAndReload = async () => {
     setModalIsOpen(false);
@@ -50,12 +64,12 @@ function UsersGrupo({ nivelId, grupoId }) {
   }
 
   return (
-    <div className="overflow-x-auto translate-y-4">
+    <div className="overflow-x-auto translate-y-4 w-3/4">
       <button
         className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mb-4 font-bold"
         onClick={openModal}
       >
-        Agregar Usuario
+      Agregar Usuario
       </button>
 
       <Modal
@@ -74,13 +88,14 @@ function UsersGrupo({ nivelId, grupoId }) {
           Aún no hay usuarios agregados al grupo.
         </div>
       ) : (
-        <table className="w-3/4 bg-white shadow-md rounded">
+        <table className="w-full bg-white shadow-md rounded">
           <thead>
-            <tr className="text-left bg-blue-600 text-white">
-              <th className="py-2 px-3">Nombre</th>
-              <th className="py-2 px-3">Apellido</th>
-              <th className="py-2 px-3">Email</th>
-              <th className="py-2 px-3">Teléfono</th>
+            <tr className="text-left bg-blue-200 text-gray-800">
+              <th className="py-2 px-3 font-semibold">Nombre</th>
+              <th className="py-2 px-3 font-semibold">Apellido</th>
+              <th className="py-2 px-3 font-semibold">Email</th>
+              <th className="py-2 px-3 font-semibold">Teléfono</th>
+              <th className="py-2 px-3 font-semibold">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -88,13 +103,19 @@ function UsersGrupo({ nivelId, grupoId }) {
               <tr
                 key={index}
                 className={
-                  (index % 2 === 0 ? "bg-gray-200 " : "bg-white ") + "text-left"
+                  (index % 2 === 0 ? "bg-gray-100 " : "bg-white ") + "text-left"
                 }
               >
-                <td className="py-2 px-3">{usuario.name}</td>
-                <td className="py-2 px-3">{usuario.last_name}</td>
-                <td className="py-2 px-3">{usuario.email}</td>
-                <td className="py-2 px-3">{usuario.telefono}</td>
+                <td className="py-2 px-3 font-mono">{usuario.name}</td>
+                <td className="py-2 px-3 font-mono">{usuario.last_name}</td>
+                <td className="py-2 px-3 font-mono">{usuario.email}</td>
+                <td className="py-2 px-3 font-mono">{usuario.telefono}</td>
+                <td className="py-2 px-3 font-mono ">
+                  <button onClick={() => handleDeleteUser(usuario.sub, usuario.name)}
+                  className="text-red-500 hover:bg-red-600 hover:text-white">
+                    <DeleteIcon fontSize="large" />
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
