@@ -6,7 +6,7 @@ function ClaseDetailUser({ claseId }) {
   const [clase, setClase] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [mostrarTexto, setMostrarTexto] = useState(false)
+  const [mostrarTexto, setMostrarTexto] = useState(false);
 
   useEffect(() => {
     const fetchClaseDetail = async () => {
@@ -14,7 +14,7 @@ function ClaseDetailUser({ claseId }) {
         const response = await axios.get(`/clase/${claseId}/detalles`);
         const { clase } = response.data;
         setClase(clase);
-        setLoading(false)
+        setLoading(false);
       } catch (error) {
         console.error("Error al obtener los detalles de la clase:", error);
         setError(
@@ -35,8 +35,8 @@ function ClaseDetailUser({ claseId }) {
   };
 
   const toggleMostrarTexto = () => {
-    setMostrarTexto(!mostrarTexto)
-  }
+    setMostrarTexto(!mostrarTexto);
+  };
 
   if (loading) {
     return (
@@ -50,11 +50,11 @@ function ClaseDetailUser({ claseId }) {
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="text-red-600 text-center mt-4">{error}</div>;
   }
 
   if (!clase) {
-    return <div>No se encontró la clase.</div>;
+    return <div className="text-center mt-4">No se encontró la clase.</div>;
   }
 
   const caracteresIniciales = 270;
@@ -62,13 +62,13 @@ function ClaseDetailUser({ claseId }) {
   const mostrarBoton = clase.texto.length > caracteresIniciales;
 
   return (
-    <div className="px-4 translate-y-10 translate-x-12" style={{ width: "700px" }}>
-      <h2>{clase.name}</h2>
-      <div className="aspect-w-16 aspect-h-9 mb-6">
+    <div className="max-w-3xl mx-auto p-4">
+      <h2 className="text-3xl font-bold mb-6 text-gray-800">{clase.name}</h2>
+      <div className="relative mb-8" style={{ paddingBottom: '56.25%', height: 0 }}>
         {clase.url && (
           <iframe
             title={clase.name}
-            className="w-full h-96 rounded-lg shadow-lg"
+            className="absolute top-0 left-0 w-full h-full rounded-lg shadow-lg"
             src={`https://www.youtube.com/embed/${extractYoutubeVideoId(
               clase.url
             )}`}
@@ -77,36 +77,37 @@ function ClaseDetailUser({ claseId }) {
           ></iframe>
         )}
       </div>
-      {/* <button
-      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
-      onClick={toggleMostrarTexto}
-    >
-      {mostrarTexto ? "Ver menos" : "Ver más"}
-    </button> */}
-    {mostrarTexto ? (
-      <div className="mb-4">
-        <h3 className="text-xl font-bold mb-2 text-gray-800">Leectura de la clase:</h3>
-        <p className="text-gray-700 font-gabarito">{clase.texto}</p>
-      </div>
-    ) : (
-      <div className="mb-4">
-        <h3 className="text-xl font-bold mb-2 text-gray-800">Leectura de la clase:</h3>
-        <p className="text-gray-700 font-gabarito">{textoAbreviado}</p>
-        {mostrarBoton && (
-          <button
-            className="text-blue-500 hover:text-blue-700"
-            onClick={toggleMostrarTexto}
-          >
-            Ver más...
-          </button>
+      <div className="mb-6">
+        <h3 className="text-xl font-bold mb-2 text-gray-800">
+          Lectura de la clase:
+        </h3>
+        {mostrarTexto ? (
+          <div
+            className="text-gray-700 font-light"
+            dangerouslySetInnerHTML={{ __html: clase.texto }}
+          />
+        ) : (
+          <div>
+            <div
+              className="text-gray-700 font-light"
+              dangerouslySetInnerHTML={{ __html: textoAbreviado }}
+            />
+            {mostrarBoton && (
+              <button
+                className="text-blue-500 hover:text-blue-700 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                onClick={toggleMostrarTexto}
+              >
+                Ver más...
+              </button>
+            )}
+          </div>
         )}
       </div>
-    )}
       {clase.resumen && (
         <div>
           <h3 className="text-xl font-bold mb-2 text-gray-800">Resumen:</h3>
           <div
-            className="text-gray-700"
+            className="text-gray-700 font-light"
             dangerouslySetInnerHTML={{ __html: clase.resumen }}
           />
         </div>
