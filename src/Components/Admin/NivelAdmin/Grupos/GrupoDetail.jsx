@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import Modal from "react-modal";
 import UsersGrupo from "../UserGrupo/UsersGrupo";
@@ -13,6 +14,7 @@ function GrupoDetail() {
   const [error, setError] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
+  const [setLoading] = useState(true);
   const navigate = useNavigate();
   const { id, grupoId } = useParams();
 
@@ -25,7 +27,7 @@ function GrupoDetail() {
         }
         const response = await axios.get(`/niveles/${id}/grupos/${grupoId}`);
         setGrupo(response.data);
-        console.log('response:', response)
+        // console.log('response:', response)
       } catch (error) {
         setError(error.response.data.error);
         console.error("Ocurrio un error:", error);
@@ -34,13 +36,48 @@ function GrupoDetail() {
     fetchGrupo();
   }, [id, grupoId]);
 
-  const openModalModulo = () => {
-    setModalIsOpen(true)
-  }
-
-  const closeModalModulo = () => {
+  const closeModalAndReload = async () => {
     setModalIsOpen(false);
-  }
+    setLoading(true);
+    try {
+      const response = await axios.get(`/niveles/${id}/grupos/${grupoId}`);
+      setGrupo(response.data);
+    } catch (error) {
+      console.error("Error al obtener los niveles:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteGrupo = async () => {
+    // Primero, mostramos un cuadro de confirmación al usuario
+    const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este grupo?");
+    
+    // Si el usuario confirma, procedemos con la eliminación
+    if (confirmDelete) {
+      try {
+        await axios.delete(`/nivel/${id}/grupo/${grupoId}`);
+        toast.success("Eliminando...!", {
+          position: "top-center",
+          autoClose: 1500,
+          closeOnClick: true,
+          theme: "light",
+        });
+        // Redirige a la pagina anterior
+        setTimeout(() => {
+          navigate(-1);
+        }, 1700)
+      } catch (error) {
+        console.error('Error al eliminar el grupo:', error);
+        toast.warn("Ocurrio un error al eliminar el grupo.", {
+          position: "top-center",
+          autoClose: 1700,
+          closeOnClick: true,
+          theme: "light",
+        });
+      }
+    }
+  };
 
   const handleGoBack = () => {
     navigate(-1);
@@ -68,6 +105,7 @@ function GrupoDetail() {
 
   return (
     <div className="absolute top-0 right-36 mt-28 ml-96 p-4 w-3/4 h-auto rounded translate-x-14 translate-y-4">
+      <ToastContainer />
       <button onClick={handleGoBack} className="bg-blue-500 text-white w-20 h-10 mb-8 font-semibold py-0 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-2">
         <KeyboardBackspaceIcon fontSize="large" />
       </button>
@@ -79,10 +117,10 @@ function GrupoDetail() {
         <strong className="text-gray-700 font-bold">Descripción:</strong> {grupo.descripcion}
       </p>
       <button
-      onClick={openModalModulo}
+      onClick={() => setModalIsOpen(true)}
       className="bg-indigo-500 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
       >
-        Agregar Modulo
+       Agregar Modulo
       </button>
       <button
       onClick={openEditModal} 
@@ -90,13 +128,20 @@ function GrupoDetail() {
       >
         Editar
       </button>
+      <button
+        onClick={handleDeleteGrupo}
+        className="bg-red-500 text-white font-bold py-2 px-4 rounded-md ml-4 hover:bg-red-700 focus:outline-none"
+      >
+        {/* <DeleteIcon /> */}
+        Eliminar
+      </button>
       <Modal
       isOpen={modalIsOpen}
-      onRequestClose={closeModalModulo}
+      onRequestClose={() => setModalIsOpen(false)}
       contentLabel="Agregar Modulo"
       >
-        <AddModulo nivelId={id} grupoId={grupoId} />
-        <button onClick={closeModalModulo} className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700">
+        <AddModulo nivelId={id} grupoId={grupoId} closeModalAndReload={closeModalAndReload} />
+        <button onClick={() => setModalIsOpen(false)} className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700">
           <CancelIcon fontSize="large" />
         </button>
       </Modal>
