@@ -7,8 +7,8 @@ export default function ViewGrupoDetailUser() {
     <div>
       <NavUser />
       <div className="flex">
-      <SidebarUser />
-      <GrupoDetailUser />
+        <SidebarUser />
+        <GrupoDetailUser />
       </div>
     </div>
   );
