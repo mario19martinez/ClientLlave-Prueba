@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import PropTypes from "prop-types";
 import ClaseDetailUser from "../Estudiante/EstudianteNiveles/ClasesDetailUser";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 function NivelClases() {
   const [clases, setClases] = useState([]);
@@ -66,9 +67,19 @@ function NivelClases() {
       <div className="w-full p-4">
         <button
           onClick={toggleShowClasses}
-          className="md:hidden bg-blue-500 text-white py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+          className={`md:hidden bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 flex items-center`}
         >
-          {showClasses ? "Ocultar Clases" : "Mostrar Clases"}
+          {showClasses ? (
+            <>
+              <FaChevronUp className="mr-2" />
+              Ocultar Clases
+            </>
+          ) : (
+            <>
+              <FaChevronDown className="mr-2" />
+              Mostrar Clases
+            </>
+          )}
         </button>
       </div>
       <div className="flex flex-col md:flex-row w-full">
