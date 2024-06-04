@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import NivelClases from "../../NivelClases/NivelClases";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function ModuloDetailsStudent() {
   const { grupoId, moduloId } = useParams();
@@ -199,7 +200,17 @@ function ModuloDetailsStudent() {
             onClick={() => setMostrarPreguntas(!mostrarPreguntas)}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 mt-4 mb-8 block mx-auto"
           >
-            {mostrarPreguntas ? "Ocultar preguntas" : "Mostrar preguntas"}
+            {mostrarPreguntas ? (
+              <>
+                <FaEyeSlash className="inline-block mr-2" />
+                Ocultar preguntas
+              </>
+            ) : (
+              <>
+                <FaEye className="inline-block mr-2" />
+                Mostrar preguntas
+              </>
+            )}
           </button>
 
           {mostrarPreguntas && (
@@ -214,7 +225,7 @@ function ModuloDetailsStudent() {
                     key={index}
                     className="mb-6 p-4 border border-gray-300 rounded-lg"
                   >
-                    <p className="text-gray-700 mb-2">
+                    <p className="text-gray-700 mb-2 font-bold">
                       {index + 1}: {pregunta.pregunta}
                     </p>
                     <div className="space-y-2">

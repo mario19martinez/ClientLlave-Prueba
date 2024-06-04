@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { FaFilePdf } from "react-icons/fa";
 
 function ClaseDetailUser({ claseId }) {
   const [clase, setClase] = useState(null);
@@ -121,8 +122,9 @@ function ClaseDetailUser({ claseId }) {
           href={clase.pdfURL}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+          className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-transform duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300"
         >
+          <FaFilePdf className="inline-block mr-2" />
           Material de apoyo
         </a>
       </div>
