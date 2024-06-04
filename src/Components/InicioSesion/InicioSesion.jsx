@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
@@ -9,7 +8,6 @@ import {
   clearRegistrationStatus,
   getUserData,
 } from "../../Redux/features/Users/usersSlice";
-import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 
 LoginForm.propTypes = {
@@ -52,6 +50,7 @@ export default function LoginForm({ onClose }) {
           // Manejar el inicio de sesión del SuperAdmin
           isLoggedIn = "true";
           localStorage.setItem("SuperAdmin", "true");
+          localStorage.setItem("userRole", "SuperAdmin");
           navigate("/admin");
 
         } else if (userRole === "admin") {
@@ -60,14 +59,16 @@ export default function LoginForm({ onClose }) {
           isLoggedIn = "true";
           localStorage.setItem("token", token);
           localStorage.setItem("email", values.email);
+          localStorage.setItem("userRole", userRole);
           navigate("/admin");
 
         } else if (userRole === "editor") {
-          // Iniciar sesión para el rol de administrador
+          // Iniciar sesión para el rol de editor
           const token = await dispatch(loginUser(values)).unwrap();
           isLoggedIn = "true";
           localStorage.setItem("token", token);
           localStorage.setItem("email", values.email);
+          localStorage.setItem("userRole", userRole);
           navigate("/Editor");
 
         } else {
@@ -76,6 +77,7 @@ export default function LoginForm({ onClose }) {
           isLoggedIn = "true";
           localStorage.setItem("token", token);
           localStorage.setItem("email", values.email);
+          localStorage.setItem("userRole", userRole);
           //navigate("/estudiante/Escritorio");
           navigate("/estudiante/cursosInscritos");
           onClose(); // Cerrar el formulario después del inicio de sesión
@@ -86,14 +88,13 @@ export default function LoginForm({ onClose }) {
         window.location.reload();
       } catch (error) {
         console.error("Error al iniciar sesión:", error);
-        formik.setFieldError("email", "Credenciales incorrectas");
-        toast.error("Error al iniciar sesión. Verifica tus datos", {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 3000,
-          closeOnClick: true,
-          pauseOnHover: false,
-          theme: "colored",
-        });
+        if (error.response && error.response.status === 403) {
+          formik.setFieldError("email", "Usuario baneado");
+          alert("Usuario baneado. Contacta al soporte");
+        } else {
+          formik.setFieldError("email", "Credenciales incorrectas");
+          formik.setFieldError("password", "Credenciales incorrectas");
+        }
       }
     },
   });
