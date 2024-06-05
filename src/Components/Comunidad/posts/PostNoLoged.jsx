@@ -25,10 +25,10 @@ import Comments from "../Comments/Comments";
 const PostNoLoged = ({
   username,
   userImg,
-  date,
   content,
   imageSrc,
   postId,
+  createdAt,
 }) => {
   const [hasLiked] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -54,6 +54,17 @@ const PostNoLoged = ({
     handleDialogOpen();
   };
 
+  const formatDate = (dateString) => {
+    const options = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+    return new Date(dateString).toLocaleString(undefined, options);
+  };
+
   return (
     <div className="flex justify-center">
       <Card className="m-4 p-4 shadow-lg md:w-1/2">
@@ -69,7 +80,7 @@ const PostNoLoged = ({
                 color="textSecondary"
                 component="div"
               >
-                {date}
+                {formatDate(createdAt)}  {/* Mostrar la fecha y la hora formateada */}
               </Typography>
             </div>
           </div>
@@ -146,6 +157,7 @@ PostNoLoged.propTypes = {
   imageSrc: PropTypes.string,
   initialLikes: PropTypes.number,
   postId: PropTypes.number.isRequired,
+  createdAt: PropTypes.string,
 };
 
 export default PostNoLoged;

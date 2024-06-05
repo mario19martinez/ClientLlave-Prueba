@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Post from "./Post";
 
@@ -18,9 +17,12 @@ const PostsList = () => {
         const updatedPosts = response.data.posts.map((post) => ({
           ...post,
           initialLikes: post.likes,
-          createdAt: post.createdAt || "02/2/2024, 00:00",
+          // Si `createdAt` es una cadena de fecha válida, se mantendrá, de lo contrario, se establecerá en una fecha predeterminada
+          createdAt: post.createdAt ? new Date(post.createdAt) : new Date("2024-02-02T00:00:00"),
         }));
-        setPosts(updatedPosts.reverse());
+        // Ordena los posts por fecha de creación, de la más reciente a la más antigua
+        updatedPosts.sort((a, b) => b.createdAt - a.createdAt);
+        setPosts(updatedPosts);
       })
       .catch((error) => {
         console.error("Error al obtener las publicaciones:", error);
