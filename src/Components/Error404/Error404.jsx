@@ -1,12 +1,11 @@
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Error404() {
-  useEffect(() => {
-    handleLogout();
-  }, []);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.clear();
+    navigate("/");
   };
 
   return (
@@ -21,7 +20,7 @@ function Error404() {
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <a
-            href="/"
+            onClick={handleLogout}
             className="rounded-full bg-white text-blue-800 px-6 py-3 text-lg font-semibold shadow-lg hover:bg-blue-900 hover:text-white transition duration-300"
           >
             Regresar al inicio
