@@ -65,7 +65,7 @@ function ClaseDetailUser({ claseId }) {
   return (
     <div className="max-w-3xl mx-auto p-4">
       <h2 className="text-3xl font-bold mb-6 text-gray-800">{clase.name}</h2>
-      <div className="mb-8 relative" style={{ paddingTop: "56.25%" }}>
+      <div className="mb-8 relative" style={{ paddingTop: "56.25%", width: "100%", maxWidth: "800px", margin: "0 auto" }}>
         {clase.url && (
           <div className="absolute top-0 left-0 w-full h-full">
             <iframe

@@ -61,6 +61,7 @@ export default function Login() {
           // Manejar el inicio de sesión del SuperAdmin
           isLoggedIn = "true";
           localStorage.setItem("SuperAdmin", "true");
+          localStorage.setItem("userRole", "SuperAdmin");
           navigate("/admin");
 
         } else if (userRole === "admin") {
@@ -69,6 +70,7 @@ export default function Login() {
           isLoggedIn = "true";
           localStorage.setItem("token", token);
           localStorage.setItem("email", values.email);
+          localStorage.setItem("userRole", userRole);
           navigate("/admin");
         
         } else if (userRole === "editor") {
@@ -77,6 +79,7 @@ export default function Login() {
           isLoggedIn = "true";
           localStorage.setItem("token", token);
           localStorage.setItem("email", values.email);
+          localStorage.setItem("userRole", userRole);
           navigate("/Editor");
         
         }else {
@@ -85,8 +88,9 @@ export default function Login() {
           isLoggedIn = "true";
           localStorage.setItem("token", token);
           localStorage.setItem("email", values.email);
-          //navigate("/estudiante/Escritorio");
-          navigate("/estudiante/cursosInscritos");
+          localStorage.setItem("userRole", userRole);
+          navigate("/estudiante/Escritorio");
+          //navigate("/estudiante/cursosInscritos");
         }
 
         // Actualizamos el estado de isLoggedIn después de la autenticación

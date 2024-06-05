@@ -78,8 +78,8 @@ export default function LoginForm({ onClose }) {
           localStorage.setItem("token", token);
           localStorage.setItem("email", values.email);
           localStorage.setItem("userRole", userRole);
-          //navigate("/estudiante/Escritorio");
-          navigate("/estudiante/cursosInscritos");
+          navigate("/estudiante/Escritorio");
+          //navigate("/estudiante/cursosInscritos");
           onClose(); // Cerrar el formulario después del inicio de sesión
         }
 
