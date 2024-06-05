@@ -36,6 +36,7 @@ function AllUsersAdmin() {
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortAsc, setSortAsc] = useState(true);
+  const [showAllCourses, setShowAllCourses] = useState(false);
   const usersPerPage = 10;
 
   const navigate = useNavigate();
@@ -375,124 +376,129 @@ function AllUsersAdmin() {
         </div>
       )}
       {isModalOpen && (
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={handleCloseModal}
-          contentLabel="Detalles del usuario"
-          className="Modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 rounded-lg p-8 shadow-lg z-50 w-1/2"
-          overlayClassName="Overlay fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center z-50"
-        >
-          <button
-            onClick={handleCloseModal}
-            className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
-          </button>
-          <div className=" rounded-lg p-8  ">
-            <p className="text-center text-lg font-bold mb-4 text-gray-700">
-              Detalles del usuario
-            </p>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2 sm:col-span-1">
-                <p className="text-gray-700">Nombre:</p>
-                <p className="font-semibold text-gray-700">
-                  {selectedUser.name}
-                </p>
-              </div>
-              <div className="mt-2">
-                <p className="text-gray-700">Apellido:</p>
-                <p className="font-semibold text-gray-700">
-                  {selectedUser.last_name}
-                </p>
-              </div>
-              <div className="mt-2">
-                <p className="text-gray-700">Correo:</p>
-                <p className="font-semibold text-gray-700">
-                  {selectedUser.email}
-                </p>
-              </div>
-              <div className="mt-2">
-                <p className="text-gray-700">País:</p>
-                <p className="font-semibold text-gray-700">
-                  {selectedUser.pais}
-                </p>
-              </div>
-              <div className="mt-2">
-                <p className="text-gray-700">Teléfono:</p>
-                <p className="font-semibold text-gray-700">
-                  {selectedUser.telefono}
-                </p>
-              </div>
-              {selectedUser.grupo && (
-                <div className="mt-2">
-                  <p className="text-gray-700">Grupo:</p>
-                  <p className="font-semibold text-gray-700">
-                    {selectedUser.grupo.name}
-                  </p>
-                </div>
-              )}
-              {selectedUser.grupo && selectedUser.grupo.nivel && (
-                <div className="mt-2">
-                  <p className="text-gray-700">Nivel:</p>
-                  <p className="font-semibold text-gray-700">
-                    {selectedUser.grupo.nivel.name}
-                  </p>
-                </div>
-              )}
+       <Modal
+       isOpen={isModalOpen}
+       onRequestClose={handleCloseModal}
+       contentLabel="Detalles del usuario"
+       className="Modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-8 shadow-2xl z-50 w-11/12 max-w-2xl"
+       overlayClassName="Overlay fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50"
+     >
+       <button
+         onClick={handleCloseModal}
+         className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none"
+       >
+         <svg
+           xmlns="http://www.w3.org/2000/svg"
+           fill="none"
+           viewBox="0 0 24 24"
+           stroke="currentColor"
+           className="w-6 h-6"
+         >
+           <path
+             strokeLinecap="round"
+             strokeLinejoin="round"
+             strokeWidth="2"
+             d="M6 18L18 6M6 6l12 12"
+           ></path>
+         </svg>
+       </button>
+       <div className="rounded-lg p-8">
+         <p className="text-center text-2xl font-bold mb-4 text-gray-800">
+           Detalles del usuario
+         </p>
+         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+           <div>
+             <p className="text-gray-700">Nombre:</p>
+             <p className="font-semibold text-gray-800">
+               {selectedUser.name}
+             </p>
+           </div>
+           <div>
+             <p className="text-gray-700">Apellido:</p>
+             <p className="font-semibold text-gray-800">
+               {selectedUser.last_name}
+             </p>
+           </div>
+           <div>
+             <p className="text-gray-700">Correo:</p>
+             <p className="font-semibold text-gray-800">
+               {selectedUser.email}
+             </p>
+           </div>
+           <div>
+             <p className="text-gray-700">País:</p>
+             <p className="font-semibold text-gray-800">
+               {selectedUser.pais}
+             </p>
+           </div>
+           <div>
+             <p className="text-gray-700">Teléfono:</p>
+             <p className="font-semibold text-gray-800">
+               {selectedUser.telefono}
+             </p>
+           </div>
+           {selectedUser.grupo && (
+             <div>
+               <p className="text-gray-700">Grupo:</p>
+               <p className="font-semibold text-gray-800">
+                 {selectedUser.grupo.name}
+               </p>
+             </div>
+           )}
+           {selectedUser.grupo && selectedUser.grupo.nivel && (
+             <div>
+               <p className="text-gray-700">Nivel:</p>
+               <p className="font-semibold text-gray-800">
+                 {selectedUser.grupo.nivel.name}
+               </p>
+             </div>
+           )}
+         </div>
+         {selectedUser.cursos && selectedUser.cursos.length > 0 ? (
+           <div className="mt-4 flex space-x-20">
+            <div>
+            <h3 className="text-lg font-bold text-gray-800">Cursos</h3>
+             <ul className="list-disc list-inside">
+               {(showAllCourses ? selectedUser.cursos : selectedUser.cursos.slice(0, 3)).map((curso) => (
+                 <li key={curso.id} className="font-semibold text-gray-800">
+                   {curso.name}
+                 </li>
+               ))}
+             </ul>
+             {selectedUser.cursos.length > 3 && (
+               <button
+                 className="mt-2 text-blue-500 hover:underline focus:outline-none"
+                 onClick={() => setShowAllCourses(!showAllCourses)}
+               >
+                 {showAllCourses ? "Ver menos" : "Ver más"}
+               </button>
+             )}
             </div>
-            {selectedUser.cursos && selectedUser.cursos.length > 0 && (
-              <div className="grid grid-cols-2 gap-4 mt-4">
-                <div className="col-span-1">
-                  <div>
-                    <h3 className="text-gray-700">Cursos</h3>
-                    <ul className="list-disc list-inside">
-                      {selectedUser.cursos.map((curso) => (
-                        <li
-                          key={curso.id}
-                          className="font-semibold text-gray-700"
-                        >
-                          {curso.name}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-                <div className="col-span-1">
-                  <div>
-                    <h3 className="text-gray-700">Curso Actual</h3>
-                    <p className="font-semibold text-gray-700">
-                      {selectedUser.cursos[selectedUser.cursos.length - 1].name}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-            <div className="flex justify-center mt-6">
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none mr-4"
-                onClick={() => handleEditUser(selectedUser.email)}
-              >
-                Editar
-              </button>
-              <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none">
-                Novedad
-              </button>
-            </div>
-          </div>
-        </Modal>
+             <div className="mt-4">
+               <h3 className="text-lg font-bold text-gray-800">Curso Actual</h3>
+               <p className="font-semibold text-gray-800">
+                 {selectedUser.cursos[selectedUser.cursos.length - 1].name}
+               </p>
+             </div>
+           </div>
+         ) : (
+           <p className="mt-4 text-red-500 font-semibold">
+             El usuario no está inscrito en ningún curso.
+           </p>
+         )}
+         <div className="flex justify-center mt-6">
+           <button
+             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none mr-4"
+             onClick={() => handleEditUser(selectedUser.email)}
+           >
+             Editar
+           </button>
+           <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none">
+             Novedad
+           </button>
+         </div>
+       </div>
+     </Modal>
       )}
 
       {isEditModalOpen && selectedUserEmail && (
