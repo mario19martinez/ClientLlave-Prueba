@@ -5,7 +5,7 @@ import NivelClases from "../../NivelClases/NivelClases";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function ModuloDetailsStudent() {
-  const { grupoId, moduloId } = useParams();
+  const { nivelId, grupoId, moduloId } = useParams();
   const [modulo, setModulo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mostrarPreguntas, setMostrarPreguntas] = useState(false);
@@ -38,7 +38,7 @@ function ModuloDetailsStudent() {
     const fetchModulo = async () => {
       try {
         const moduloResponse = await axios.get(
-          `/grupo/${grupoId}/modulo/${moduloId}/detalles`
+          `/nivel/${nivelId}/grupo/${grupoId}/modulo/${moduloId}/detalles`
         );
         const moduloData = moduloResponse.data.modulo;
         setModulo(moduloData);
@@ -54,7 +54,7 @@ function ModuloDetailsStudent() {
     };
 
     fetchModulo();
-  }, [grupoId, moduloId]);
+  }, [grupoId, moduloId, nivelId]);
 
   useEffect(() => {
     const fetchRespuestasUsuario = async () => {

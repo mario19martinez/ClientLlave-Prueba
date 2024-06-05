@@ -6,12 +6,12 @@ function GrupoDetailUser() {
   const [grupo, setGrupo] = useState(null);
   const [modulos, setModulos] = useState([]);
 
-  const { grupoId } = useParams();
+  const { nivelId, grupoId } = useParams();
 
   useEffect(() => {
     const fetchGrupoDetail = async () => {
       try {
-        const response = await axios.get(`/grupo/${grupoId}/detalles`);
+        const response = await axios.get(`/nivel/${nivelId}/grupo/${grupoId}/detalles`);
         setGrupo(response.data.grupo);
         setModulos(response.data.modulos);
       } catch (error) {
@@ -23,7 +23,7 @@ function GrupoDetailUser() {
     };
 
     fetchGrupoDetail();
-  }, [grupoId]);
+  }, [grupoId, nivelId]);
 
   if (!grupo) {
     return <div className="flex justify-center items-center h-screen">Cargando...</div>;
@@ -35,32 +35,27 @@ function GrupoDetailUser() {
       <p className="text-lg text-gray-700 mb-6">{grupo.descripcion}</p>
       <h3 className="text-xl lg:text-2xl text-gray-800 font-semibold mb-4">Módulos:</h3>
       <div className="grid gap-6 lg:grid-cols-2">
-        {modulos.map((modulo) => (
-          <Link
-            to={`/grupo/${grupoId}/modulo/${modulo.id}/detalles`}
-            key={modulo.id}
-          >
-            <div className="bg-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300 ease-in-out">
-              <div className="p-6">
-                <h4 className="text-lg lg:text-xl font-semibold text-gray-800 mb-2">
-                  {modulo.titulo}
-                </h4>
-                <p className="text-gray-700">
-                  {modulo.contenido && modulo.contenido.length > 100
-                    ? `${modulo.contenido.substring(0, 100)}...`
-                    : modulo.contenido}
-                </p>
-              </div>
-              <div className="flex justify-end p-4 bg-gray-300">
-                <Link
-                  to={`/grupo/${grupoId}/modulo/${modulo.id}/detalles`}
-                  className="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition duration-300 ease-in-out"
-                >
-                  Ver Módulo
-                </Link>
-              </div>
+      {modulos.map((modulo) => (
+          <div key={modulo.id} className="bg-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300 ease-in-out">
+            <div className="p-6">
+              <h4 className="text-lg lg:text-xl font-semibold text-gray-800 mb-2">
+                {modulo.titulo}
+              </h4>
+              <p className="text-gray-700">
+                {modulo.contenido && modulo.contenido.length > 100
+                  ? `${modulo.contenido.substring(0, 100)}...`
+                  : modulo.contenido}
+              </p>
             </div>
-          </Link>
+            <div className="flex justify-end p-4 bg-gray-300">
+              <Link
+                to={`/nivel/${nivelId}/grupo/${grupoId}/modulo/${modulo.id}/detalles`}
+                className="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition duration-300 ease-in-out"
+              >
+                Ver Módulo
+              </Link>
+            </div>
+          </div>
         ))}
       </div>
     </div>

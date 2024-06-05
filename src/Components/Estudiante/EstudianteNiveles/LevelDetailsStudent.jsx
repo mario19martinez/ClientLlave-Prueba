@@ -5,6 +5,8 @@ import axios from "axios";
 import ModulosNivelStudent from "./ModulosNivelStudent";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
+// NO SE ESTA USANDO ESTE COMPONENTE
+
 function LevelDetailsStudent() {
   const [nivel, setNivel] = useState(null);
   const [loading, setLoading] = useState(true);
