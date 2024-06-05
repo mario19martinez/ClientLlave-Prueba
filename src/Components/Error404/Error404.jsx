@@ -1,4 +1,14 @@
+import { useEffect } from "react";
+
 function Error404() {
+  useEffect(() => {
+    handleLogout();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.clear();
+  };
+
   return (
     <main className="h-screen w-screen grid place-items-center bg-gradient-to-r from-blue-400 to-indigo-950 px-6 py-24 sm:py-32 lg:px-8 text-white">
       <div className="text-center">
