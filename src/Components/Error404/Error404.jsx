@@ -5,7 +5,7 @@ function Error404() {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/");
+    navigate("/login");
   };
 
   return (
