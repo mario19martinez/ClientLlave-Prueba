@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -152,12 +150,97 @@ import axios from "axios";
 axios.defaults.baseURL = "https://apillave-ebd57605aa78.herokuapp.com/";  
 
 const isLoggedIn = localStorage.getItem("isLoggedIn");
-//const userRole = localStorage.getItem("userRole", userRole);
+const userRole = localStorage.getItem("userRole");
 
 function App() {
   return (
     <Router>
       <Routes>
+
+      {(userRole === "client" || userRole === "admin" || userRole === "SuperAdmin") && (
+          <>
+            <Route path="/estudiante/Escritorio" element={isLoggedIn ? <ViewMenuStudent /> : <Navigate to="/login" />} />
+            <Route path="/estudiante/profile" element={isLoggedIn ? <ViewProfile /> : <Navigate to="/login" />} />
+            <Route path="/estudiante/cursosInscritos" element={isLoggedIn ? <ViewCursosInscritos /> : <Navigate to="/login" />} />
+            <Route path="/estudiante/Ajustes" element={isLoggedIn ? <ViewAjustes /> : <Navigate to="/login" />} />
+            <Route path="/estudiante/Preguntas&Respuestas" element={ isLoggedIn ? <ViewPreguntasRespuestas /> : <Navigate to="/login" /> } />
+            <Route path="/estudiante/NivelInscrito" element={isLoggedIn ? <ViewNivelesInscitos /> : <Navigate to="/login" />} />
+            <Route path="/estudiante/NivelesDetails/:id" element={isLoggedIn ? <ViewLevelsDetails /> : <Navigate to="/login" />} />
+            <Route path="/estudiante/nivel/:nivelId/modulo/:moduloId" element={ isLoggedIn ? <ViewModuloDetailsUser /> : <Navigate to="/login" />} />
+            <Route path="/estudiante/datosLegales" element={isLoggedIn ? <ViewCertificacion /> : <Navigate to="/login" />} />
+            <Route path="/estudiante/certificados" element={isLoggedIn ? <ViewCertificado /> : <Navigate to="/login" />} />
+          </>
+        )}
+
+        {/* Rutas página Admins */}
+        {(userRole === "admin" || userRole === "SuperAdmin") && (
+          <>
+            <Route path="/admin" element={isLoggedIn ? <ViewDashBoardAdmin /> : <Navigate to="/login" />} />
+            <Route path="/admin/cursos" element={isLoggedIn ? <ViewAdminCursos /> : <Navigate to="/login" />} />
+            <Route path="/admin/roles" element={isLoggedIn ? <ViewRoles /> : <Navigate to="/login" />} />
+            <Route path="/admin/curso/:id" element={isLoggedIn ? <ViewClasesAdmin /> : <Navigate to="/login" />} />
+            <Route path="/admin/cursos/edit/:id" element={isLoggedIn ? <CursoEdit /> : <Navigate to="/login" />} />
+            <Route path="/admin/cursos/:id/clases/:claseId/pdf" element={isLoggedIn ? <ViewAdminClasesTalleresPDF /> : <Navigate to="/login" />} />
+            <Route path="/admin/cursos/crearTaller" element={isLoggedIn ? <ViewCrearTalleres /> : <Navigate to="/login" />} />
+            <Route path="/admin/usersDeleted" element={isLoggedIn ? <ViewUsersDeleted /> : <Navigate to="/login" />} />
+            <Route path="/admin/cursosDeleted" element={isLoggedIn ? <ViewCursosEliminados /> : <Navigate to="/login" />} />
+            <Route path="/admin/testimonios" element={isLoggedIn ? <ViewAdminTestimonio /> : <Navigate to="/login" />} />
+            <Route path="/admin/cursos/users-cursos" element={isLoggedIn ? <ViewUsersAndCursos /> : <Navigate to="/login" />} />
+            <Route path="/admin/cursos/cursos-users" element={isLoggedIn ? <ViewCursosAndUsers /> : <Navigate to="/login" />} />
+            <Route path="/admin/blogs" element={isLoggedIn ? <ViewAdminBlogs /> : <Navigate to="/login" />} />
+            <Route path="/admin/blogDetails/:blogId" element={isLoggedIn ? <ViewBlogDetailsAdmin /> : <Navigate to="/login" />} />
+            <Route path="/Admin/CrearNosostros" element={isLoggedIn ? <ViewAdminAbautCreate /> : <Navigate to="/login" />} />
+            <Route path="/Admin/EditarNosotros/:id" element={isLoggedIn ? <ViewAdminAbautActualizar /> : <Navigate to="/login" /> } />
+            <Route path="/Admin/Nosotros" element={isLoggedIn ? <ViewAdminAbaut /> : <Navigate to="/login" /> } />
+            <Route path="/admin/ajustes" element={isLoggedIn ? <ViewAjustesAdmin /> : <Navigate to="/login" />} />
+            <Route path="/admin/informacion" element={isLoggedIn ? <Viewinformacion /> : <Navigate to="/login" /> } />
+            <Route path="/admin/noticias" element={isLoggedIn ? <ViewNoticias /> : <Navigate to="/login" />} />
+            <Route path="/admin/AnalyticsUser" element={isLoggedIn ? <ViewAnalyticsUsers /> : <Navigate to="/login" />} />
+            <Route path="/admin/egresados/crear" element={isLoggedIn ? <ViewCreateEgresados /> : <Navigate to="/login" /> } />
+            <Route path="/AdminPage" element={isLoggedIn ? <ViewAdminPage /> : <Navigate to="/login" />} />
+            <Route path="/admin/egresados" element={isLoggedIn ? <ViewEgresadosAdmin /> : <Navigate to="/login" /> } />
+            <Route path="/admin/egresados/edit/:id" element={isLoggedIn ? <ViewEgresadosEdit /> : <Navigate to="/login" /> } />
+            <Route path="/admin/profetico" element={isLoggedIn ? <ViewProfeticosAdmin /> : <Navigate to="/login" />} />
+            <Route path="/admin/profetico/edit/:id" element={isLoggedIn ? <ViewProfeticoEdit /> : <Navigate to="/login" /> } />
+            <Route path="/admin/nivel/:nivelId/modulo/:moduloId/clase/:claseId" element={isLoggedIn ? <ClasesDetailModulo /> : <Navigate to="/login" /> } />
+            <Route path="/admin/deleted" element={isLoggedIn ? <ViewNivelDeleteAdmin /> : <Navigate to="/login" /> } />
+            <Route path="/admin/nivel/:nivelId/modulo/:moduloId/clase/create" element={isLoggedIn ? <ClaseModuloCreate /> : <Navigate to="/login" /> } />
+            <Route path="/admin/nivel/:nivelId/modulo/:moduloId/clase/:claseId/editar" element={isLoggedIn ? <ClaseEditAdmin /> : <Navigate to="/login" /> } />
+            <Route path="/admin/campain" element={isLoggedIn ? <ViewCampainAdmin /> : <Navigate to="/login" />} />
+            <Route path="/admin/campain/AllUserCampain" element={isLoggedIn ? <ViewAllUsersCampain /> : <Navigate to="/login" /> } />
+            <Route path="/admin/campain/users/:campeinId" element={isLoggedIn ? <ViewUsersCampain /> : <Navigate to="/login" />} />
+            <Route path="/admin/campain/landing/:campeinId" element={isLoggedIn ? <ViewLandingCampain /> : <Navigate to="/login" /> } />
+            <Route path="/admin/campain/landing/createLanding/:campeinId/:template" element={isLoggedIn ? <ViewCrearLanding /> : <Navigate to="/login" /> } />
+            <Route path="/admin/transmisiones" element={isLoggedIn ? <ViewTransmisionAdmin /> : <Navigate to="/login" /> } />
+            <Route path="/Admin/Blog/Editar/:id" element={isLoggedIn ? <ViewBlogEdit />: <Navigate to="/login" /> } />
+            <Route path="/Admin/campain/landing/SelecForm/:campeinId" element={isLoggedIn ? <ViewSelectFormLanding /> : <Navigate to="/login" />} />
+            <Route path="/Admin/campain/landing/selectPlantilla/curso/:campeinId" element={isLoggedIn ? <ViewPlatillaCurso /> : <Navigate to="/login" />} />
+            <Route path="/Admin/campain/landing/selectPlantilla/:campeinId" element={isLoggedIn ? <ViewPlantillaCampain /> : <Navigate to="/login" />} />
+            <Route path="/Admin/campain/createLanding/cursos/:campeinId/:template" element={isLoggedIn ? <ViewCreateLandingCursos /> : <Navigate to="/login" />}/>
+            <Route path="/admin/videos" element={isLoggedIn ? <Viewadminvideo /> : <Navigate to="/login" /> } />
+            <Route path="/Admin/datos" element={isLoggedIn ?<ViewUserDatos /> : <Navigate to="/login" /> } />
+            <Route path="/admin/seguimiento" element={isLoggedIn ? <ViewSeguimientoClases /> : <Navigate to="/login" />} />
+            <Route path="/Admin/Certificado" element={isLoggedIn ? <ViewCursosCerticar /> : <Navigate to="/login" />} />
+            <Route path="/Admin/Certificado/Curso/:idCurso" element={isLoggedIn ? <ViewUsersCertificados /> : <Navigate to="/login" />} />
+          </>
+        )}
+        
+        {/*Rutas pagina Editor */}
+        {(userRole === "admin" || userRole === "SuperAdmin" || userRole === "editor") && (
+          <>
+            <Route path="/Editor" element={isLoggedIn ? <ViewEscritorioEditor /> : <Navigate to="/login" /> } />
+            <Route path="/Editor/Blogs" element={isLoggedIn ? <ViewBlogEditor /> : <Navigate to="/login" />} />
+            <Route path="/Editor/Blogs/CrearBlog" element={isLoggedIn ? <ViewCrearBlogEditor /> : <Navigate to="/login" />} />
+            <Route path="/Editor/Blogs/EditarBlog/:id" element={isLoggedIn ? <ViewEditarBlogEditor /> : <Navigate to="/login" /> } />
+            <Route path="/Editor/Blogs/VerBlog/:id" element={isLoggedIn ? <ViewVerBlogEditor /> : <Navigate to="/login" />} />
+            <Route path="/Editor/Cursos" element={isLoggedIn ? <ViewCursosEditor /> : <Navigate to="/login" />}/>
+            <Route path="/Editor/Cursos/CursoDetails/:id" element={isLoggedIn ? <ViewCursosDetailsEditor /> : <Navigate to="/login" />} />
+            <Route path="/Editor/Transmision" element={isLoggedIn ? <ViewTransmisionEditor /> : <Navigate to="/login" />} />
+            <Route path="/Editor/Ajustes" element={isLoggedIn ? <ViewEditorAjustes /> : <Navigate to="/login" /> }/>
+            <Route path="/Editor/Asistencia" element={isLoggedIn ? <ViewAsisteciaEditor /> : <Navigate to="/login" />} />
+          </>
+        )}
+
         {/*Rutas pagina home libre */}
         <Route path="/" element={<ViewHome />} />
         <Route path="/RegistroUser" element={<ViewRegistro />} />
@@ -184,85 +267,12 @@ function App() {
         <Route path="/transmisionDetails/:id" element={<ViewTransmisionDetails/>} /> 
         <Route path="/RegistroDatos" element={<ViewFormRegistroUsersIglesia />}/>
         {/*<Route path="/cursos" element={<Cursos />} />*/}
-
-        {/*Rutas pagina Estudiantes */}
-        <Route path="/estudiante/Escritorio" element={isLoggedIn ? <ViewMenuStudent /> : <Navigate to="/" />} />
-        <Route path="/estudiante/profile" element={isLoggedIn ? <ViewProfile /> : <Navigate to="/" />} />
-        <Route path="/estudiante/cursosInscritos" element={isLoggedIn ? <ViewCursosInscritos /> : <Navigate to="/" />} />
-        <Route path="/estudiante/Ajustes" element={isLoggedIn ? <ViewAjustes /> : <Navigate to="/" />} />
-        <Route path="/estudiante/Preguntas&Respuestas" element={ isLoggedIn ? <ViewPreguntasRespuestas /> : <Navigate to="/" /> } />
-        <Route path="/estudiante/NivelInscrito" element={isLoggedIn ? <ViewNivelesInscitos /> : <Navigate to="/" />} />
-        <Route path="/estudiante/NivelesDetails/:id" element={isLoggedIn ? <ViewLevelsDetails /> : <Navigate to="/" />} />
-        <Route path="/estudiante/nivel/:nivelId/modulo/:moduloId" element={ isLoggedIn ? <ViewModuloDetailsUser /> : <Navigate to="/" />} />
-        <Route path="/estudiante/datosLegales" element={isLoggedIn ? <ViewCertificacion /> : <Navigate to="/" />} />
-        <Route path="/estudiante/certificados" element={isLoggedIn ? <ViewCertificado /> : <Navigate to="/" />} />
-
-        {/*Rutas pagina Admins */}
-        <Route path="/admin" element={isLoggedIn ? <ViewDashBoardAdmin /> : <Navigate to="/" />} />
-        <Route path="/admin/cursos" element={isLoggedIn ? <ViewAdminCursos /> : <Navigate to="/" />} />
-        <Route path="/admin/roles" element={isLoggedIn ? <ViewRoles /> : <Navigate to="/" />} />
-        <Route path="/admin/curso/:id" element={isLoggedIn ? <ViewClasesAdmin /> : <Navigate to="/" />} />
-        <Route path="/admin/cursos/edit/:id" element={isLoggedIn ? <CursoEdit /> : <Navigate to="/" />} />
-        <Route path="/admin/cursos/:id/clases/:claseId/pdf" element={isLoggedIn ? <ViewAdminClasesTalleresPDF /> : <Navigate to="/" />} />
-        <Route path="/admin/cursos/crearTaller" element={isLoggedIn ? <ViewCrearTalleres /> : <Navigate to="/" />} />
-        <Route path="/admin/usersDeleted" element={isLoggedIn ? <ViewUsersDeleted /> : <Navigate to="/" />} />
-        <Route path="/admin/cursosDeleted" element={isLoggedIn ? <ViewCursosEliminados /> : <Navigate to="/" />} />
-        <Route path="/admin/testimonios" element={isLoggedIn ? <ViewAdminTestimonio /> : <Navigate to="/" />} />
-        <Route path="/admin/cursos/users-cursos" element={isLoggedIn ? <ViewUsersAndCursos /> : <Navigate to="/" />} />
-        <Route path="/admin/cursos/cursos-users" element={isLoggedIn ? <ViewCursosAndUsers /> : <Navigate to="/" />} />
-        <Route path="/admin/blogs" element={isLoggedIn ? <ViewAdminBlogs /> : <Navigate to="/" />} />
-        <Route path="/admin/blogDetails/:blogId" element={isLoggedIn ? <ViewBlogDetailsAdmin /> : <Navigate to="/" />} />
-        <Route path="/Admin/CrearNosostros" element={<ViewAdminAbautCreate />} />
-        <Route path="/Admin/EditarNosotros/:id" element={<ViewAdminAbautActualizar />} />
-        <Route path="/Admin/Nosotros" element={<ViewAdminAbaut />} />
-        <Route path="/admin/ajustes" element={isLoggedIn ? <ViewAjustesAdmin /> : <Navigate to="/" />} />
-        <Route path="/admin/informacion" element={<Viewinformacion />} />
-        <Route path="/admin/noticias" element={<ViewNoticias />} />
-        <Route path="/admin/AnalyticsUser" element={<ViewAnalyticsUsers />} />
-        <Route path="/admin/egresados/crear" element={<ViewCreateEgresados />} />
-        <Route path="/AdminPage" element={<ViewAdminPage />} />
-        <Route path="/admin/egresados" element={<ViewEgresadosAdmin />} />
-        <Route path="/admin/egresados/edit/:id" element={<ViewEgresadosEdit />} />
-        <Route path="/admin/profetico" element={<ViewProfeticosAdmin />} />
-        <Route path="/admin/profetico/edit/:id" element={<ViewProfeticoEdit />} />
-        <Route path="/admin/nivel/:nivelId/modulo/:moduloId/clase/:claseId" element={<ClasesDetailModulo />} />
-        <Route path="/admin/deleted" element={<ViewNivelDeleteAdmin />} />
-        <Route path="/admin/nivel/:nivelId/modulo/:moduloId/clase/create" element={<ClaseModuloCreate />} />
-        <Route path="/admin/nivel/:nivelId/modulo/:moduloId/clase/:claseId/editar" element={<ClaseEditAdmin />} />
-        <Route path="/admin/campain" element={<ViewCampainAdmin />} />
-        <Route path="/admin/campain/AllUserCampain" element={<ViewAllUsersCampain />} />
-        <Route path="/admin/campain/users/:campeinId" element={<ViewUsersCampain />} />
-        <Route path="/admin/campain/landing/:campeinId" element={<ViewLandingCampain />} />
-        <Route path="/admin/campain/landing/createLanding/:campeinId/:template" element={<ViewCrearLanding />} />
-        <Route path="/admin/transmisiones" element={<ViewTransmisionAdmin />} />
-        <Route path="/Admin/Blog/Editar/:id" element={<ViewBlogEdit />} />
-        <Route path="/Admin/campain/landing/SelecForm/:campeinId" element={<ViewSelectFormLanding />} />
-        <Route path="/Admin/campain/landing/selectPlantilla/curso/:campeinId" element={<ViewPlatillaCurso />} />
-        <Route path="/Admin/campain/landing/selectPlantilla/:campeinId" element={<ViewPlantillaCampain />} />
-        <Route path="/Admin/campain/createLanding/cursos/:campeinId/:template" element={<ViewCreateLandingCursos />}/>
-        <Route path="/admin/videos" element={<Viewadminvideo />} />
-        <Route path="/Admin/datos" element={<ViewUserDatos />} />
-        <Route path="/admin/seguimiento" element={<ViewSeguimientoClases />} />
-        <Route path="/Admin/Certificado" element={<ViewCursosCerticar />} />
-        <Route path="/Admin/Certificado/Curso/:idCurso" element={<ViewUsersCertificados />} />
-
-        {/*Rutas pagina Editor */}
-        <Route path="/Editor" element={<ViewEscritorioEditor />} />
-        <Route path="/Editor/Blogs" element={<ViewBlogEditor />} />
-        <Route path="/Editor/Blogs/CrearBlog" element={<ViewCrearBlogEditor />} />
-        <Route path="/Editor/Blogs/EditarBlog/:id" element={<ViewEditarBlogEditor />} />
-        <Route path="/Editor/Blogs/VerBlog/:id" element={<ViewVerBlogEditor />} />
-        <Route path="/Editor/Cursos" element={<ViewCursosEditor />}/>
-        <Route path="/Editor/Cursos/CursoDetails/:id" element={<ViewCursosDetailsEditor />} />
-        <Route path="/Editor/Transmision" element={<ViewTransmisionEditor />} />
-        <Route path="/Editor/Ajustes" element={<ViewEditorAjustes />}/>
-        <Route path="/Editor/Asistencia" element={<ViewAsisteciaEditor />} />
-        
+    
         {/*Rutas pagina no asociadas */}
         <Route path="/Comunidad" element={isLoggedIn ? <HomeComunidadView /> : <Navigate to="/Comunidad/NoLoged" />}/>
-        <Route path="/blog/CrearBlog" element={<ViewBlogCreate />} />
-        <Route path="/cursos/:id/clases/:claseId/pdf" element={isLoggedIn ? <ViewClasesTalleresPDF /> : <Navigate to="/" />} />
-        <Route path="/userDetail/:identificacion" element={isLoggedIn ? <UserDetail /> : <Navigate to="/" />} />
+        <Route path="/blog/CrearBlog" element={isLoggedIn ? <ViewBlogCreate /> : <Navigate to="/login" />} />
+        <Route path="/cursos/:id/clases/:claseId/pdf" element={isLoggedIn ? <ViewClasesTalleresPDF /> : <Navigate to="/login" />} />
+        <Route path="/userDetail/:identificacion" element={isLoggedIn ? <UserDetail /> : <Navigate to="/login" />} />
         <Route path="/agregarclases" element={<AgregarClases />} />
         <Route path="/Comunidad/users" element={<UserList users={userData} />} />
         <Route path="/message" element={<Message />} />
@@ -291,6 +301,9 @@ function App() {
         <Route path="/campain/:landingId/Landing/:campeinId/:template" element={<ViewLanding />} />
         <Route path="/campain/:landingId/Landing/:campeinId/:template/curso/:idcurso" element={<ViewLandingCursos />} />
         <Route path="/dato/:id" element={<UserDatosDetail />} />
+
+        {/*Ruta de error cuando un rol no pertenece a su ruta */}
+        <Route path="*" element={<Navigate to="/error" />} />
       </Routes>
     </Router>
   );
