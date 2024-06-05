@@ -277,7 +277,7 @@ function ModuloDetailsStudent() {
           )}
         </>
       ) : (
-        <div className="text-center mt-4">Este módulo no tiene preguntas.</div>
+        <div className="text-center mt-4"></div>
       )}
 
       {quizCompletado && (
