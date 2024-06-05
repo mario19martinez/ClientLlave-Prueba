@@ -8,14 +8,42 @@ function ClaseDetailUser({ claseId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [mostrarTexto, setMostrarTexto] = useState(false);
+  const [progreso, setProgreso] = useState({});
+  const [youtubePlayer, setYoutubePlayer] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [grupoId, setGrupoId] = useState(null);
+  const [nivelId, setNivelId] = useState(null);
+  const [moduloId, setModuloId] = useState(null);
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("/user-info", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUserInfo(response.data);
+        console.log(userInfo);
+      } catch (error) {
+        console.error("Error al obtener información del usuario:", error);
+      }
+    };
+    getUserInfo();
+  }, []);
 
   useEffect(() => {
     const fetchClaseDetail = async () => {
       try {
+        setLoading(true);
+        setClase(null)
         const response = await axios.get(`/clase/${claseId}/detalles`);
-        const { clase } = response.data;
-        setClase(clase);
+        const { moduloId, grupoId, nivelId } = response.data.clase;
+        setModuloId(moduloId);
+        setGrupoId(grupoId);
+        setNivelId(nivelId);
+        setClase(response.data.clase);
         setLoading(false);
+        console.log('clase:', response);
       } catch (error) {
         console.error("Error al obtener los detalles de la clase:", error);
         setError(
@@ -28,9 +56,82 @@ function ClaseDetailUser({ claseId }) {
     fetchClaseDetail();
   }, [claseId]);
 
+  useEffect(() => {
+    if (clase && clase.url && userInfo) {
+      const onYouTubeIframeAPIReady = () => {
+        const player = new window.YT.Player(`youtubePlayer-${claseId}`, {
+          videoId: extractYoutubeVideoId(clase.url),
+          events: {
+            onStateChange: (event) => {
+              console.log("Evento:", event);
+              if (event.data === window.YT.PlayerState.PLAYING) {
+                const intervalId = setInterval(async () => {
+                  const currentTime = event.target.playerInfo.currentTime;
+                  const duration = event.target.playerInfo.duration;
+                  const newProgreso = (currentTime / duration) * 100;
+                  setProgreso((prevProgresos) => ({
+                    ...prevProgresos,
+                    [claseId]: newProgreso,
+                  }));
+                  const lastSavedProgreso = progreso[claseId] || 0;
+                  if (newProgreso - lastSavedProgreso >= 5) {
+                    // if (userInfo.sub && clase.grupoId && clase.nivelId && clase.moduloId) {
+                      //console.log("Datos antes de axios.post:", { userSub, clase, userInfo });
+                      try {
+                        const response = await axios.post("/movimiento-usuario", {
+                          userSub: userInfo.sub,
+                          // grupoId: clase.grupoId,
+                          // nivelId: clase.nivelId,
+                          //moduloId: clase.moduloId,
+                          claseId,
+                          progreso: newProgreso,
+                          inicio: new Date().toISOString(),
+                        });
+                        console.log('registro:', response)
+                      } catch (error) {
+                        console.error("Error al actualizar el progreso:", error);
+                      }
+                    
+                  }
+                }, 15000);
+                player.intervalId = intervalId;
+              } else if (
+                event.data === window.YT.PlayerState.PAUSED ||
+                event.data === window.YT.PlayerState.ENDED
+              ) {
+                clearInterval(player.intervalId);
+              }
+            },
+          },
+        });
+        setYoutubePlayer(player);
+      };
+  
+      if (!window.YT) {
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+        const firstScriptTag = document.getElementsByTagName("script")[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      } else {
+        onYouTubeIframeAPIReady();
+      }
+  
+      return () => {
+        if (youtubePlayer && youtubePlayer.intervalId) {
+          clearInterval(youtubePlayer.intervalId);
+        }
+        if (youtubePlayer) {
+          youtubePlayer.destroy();
+        }
+        setYoutubePlayer(null);
+      };
+    }
+  }, [clase, userInfo, claseId]);
+
   const extractYoutubeVideoId = (url) => {
     const regex =
-      /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+      /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/;
     const match = url.match(regex);
     return match ? match[1] : null;
   };
@@ -65,19 +166,32 @@ function ClaseDetailUser({ claseId }) {
   return (
     <div className="max-w-3xl mx-auto p-4">
       <h2 className="text-3xl font-bold mb-6 text-gray-800">{clase.name}</h2>
+      <div className="relative pt-1 mb-6">
+        <div className="flex mb-2 items-center justify-between">
+          <div>
+            <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200">
+              Progreso
+            </span>
+          </div>
+          <div className="text-right">
+            <span className="text-xs font-semibold inline-block text-blue-600">
+              {Math.round(progreso[claseId] || 0)}%
+            </span>
+          </div>
+        </div>
+        <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-200">
+          <div
+          style={{ width: `${Math.round(progreso[claseId] || 0)}%` }}
+          className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"
+          ></div>
+        </div>
+      </div>
       <div className="mb-8 relative" style={{ paddingTop: "56.25%", width: "100%", maxWidth: "800px", margin: "0 auto" }}>
         {clase.url && (
-          <div className="absolute top-0 left-0 w-full h-full">
-            <iframe
-              title={clase.name}
-              className="w-full h-full rounded-lg shadow-lg"
-              src={`https://www.youtube.com/embed/${extractYoutubeVideoId(
-                clase.url
-              )}`}
-              frameBorder="0"
-              allowFullScreen
-            ></iframe>
-          </div>
+          <div
+          id={`youtubePlayer-${claseId}`}
+          className="absolute top-0 left-0 w-full h-full"
+        />
         )}
       </div>
       <div className="mb-6">
