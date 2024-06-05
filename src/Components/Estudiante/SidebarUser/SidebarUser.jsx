@@ -39,6 +39,7 @@ const SidebarUser = ({ selectedTab }) => {
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
+    window.location.reload()
   };
 
   const closeModalAndLogout = () => {

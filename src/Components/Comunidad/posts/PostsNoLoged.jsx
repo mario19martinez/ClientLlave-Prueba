@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PostNoLoged from "./PostNoLoged";
 import axios from "axios";
 
@@ -9,17 +8,17 @@ const PostsNoLoged = () => {
 
   useEffect(() => {
     axios
-      .get("/allPost", {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
+      .get("/allPost")
       .then((response) => {
         const updatedPosts = response.data.posts.map((post) => ({
           ...post,
           initialLikes: post.likes,
+          // Si `createdAt` es una cadena de fecha válida, se mantendrá, de lo contrario, se establecerá en una fecha predeterminada
+          createdAt: post.createdAt ? new Date(post.createdAt) : new Date("2024-02-02T00:00:00"),
         }));
-        setPosts(updatedPosts.reverse());
+        // Ordena los posts por fecha de creación, de la más reciente a la más antigua
+        updatedPosts.sort((a, b) => b.createdAt - a.createdAt);
+        setPosts(updatedPosts);
       })
       .catch((error) => {
         console.error("Error al obtener las publicaciones:", error);
