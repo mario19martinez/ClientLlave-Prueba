@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
+// EN REVISION PARA DETERMINAR SI SE ESTA USANDO O NO
+
 function ModuloDetailUser() {
   const [grupo, setGrupo] = useState(null);
   const [modulo, setModulo] = useState(null);
@@ -9,7 +11,7 @@ function ModuloDetailUser() {
   const [respuestas, setRespuestas] = useState({});
   const [userSub, setUserSub] = useState(null);
 
-  const { grupoId, moduloId } = useParams();
+  const { nivelId, grupoId, moduloId } = useParams();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -21,7 +23,6 @@ function ModuloDetailUser() {
           },
         });
         setUserSub(response.data.userSub);
-        console.log("response:", response);
       } catch (error) {
         console.error("Error al obtener el sub del usuario:", error);
       }
@@ -34,7 +35,7 @@ function ModuloDetailUser() {
     const fetchModuloDetail = async () => {
       try {
         const response = await axios.get(
-          `/grupo/${grupoId}/modulo/${moduloId}/detalles`
+          `/nivel/${nivelId}/grupo/${grupoId}/modulo/${moduloId}/detalles`
         );
         const { grupo, modulo } = response.data;
         setGrupo(grupo);
@@ -49,7 +50,7 @@ function ModuloDetailUser() {
     };
 
     fetchModuloDetail();
-  }, [grupoId, moduloId]);
+  }, [nivelId, grupoId, moduloId]);
 
   const handleAnswerChange = (index, event) => {
     const opcionSeleccionada = event.target.value;

@@ -52,7 +52,7 @@ export default function NivelesInscritos() {
                   <p className="text-gray-700 mb-2">{grupo.descripcion}</p>
                 </div>
                 {/* Enlace al detalle del nivel con su respectivo id */}
-                <Link to={`/grupo/${grupo.id}/detalles`}>
+                <Link to={`/nivel/${grupo.nivel.id}/grupo/${grupo.id}/detalles`}>
                   <button
                     className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   >
