@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Avatar,
   IconButton,
@@ -12,15 +11,14 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ShareIcon from "@mui/icons-material/Share";
 import PropTypes from "prop-types";
-import Comments from '../Comments/Comments'
+import Comments from '../Comments/Comments';
 import axios from "axios";
 
-const Post = ({ username, userImg, date, content, imageSrc, initialLikes, postId, createdAt }) => {
+const Post = ({ username, userImg, content, imageSrc, initialLikes, postId, createdAt }) => {
   const [likes, setLikes] = useState(initialLikes || 0);
   const [hasLiked, setHasLiked] = useState(false);
 
   useEffect(() => {
-    // Obtener la cantidad de likes al montar el componente
     getLikesCount();
   }, []);
 
@@ -37,7 +35,6 @@ const Post = ({ username, userImg, date, content, imageSrc, initialLikes, postId
         const response = await axios.post("/newLike", { postId }, config);
         setLikes(response.data.likes);
 
-        // Cambiar el estado del like del usuario
         setHasLiked(true);
       }
     } catch (error) {
@@ -62,7 +59,7 @@ const Post = ({ username, userImg, date, content, imageSrc, initialLikes, postId
   const formatDate = (dateString) => {
     const options = {
       year: 'numeric',
-      month: 'numeric',
+      month: 'long',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
@@ -71,64 +68,51 @@ const Post = ({ username, userImg, date, content, imageSrc, initialLikes, postId
   };
 
   return (
-    <div className="flex justify-center">
-      <Card className="m-4 p-4 shadow-lg md:w-1/2">
-        <CardContent className="flex flex-col">
-          <div className="flex items-center mb-3">
-            <Avatar className="mr-2" alt={username} src={userImg} />
+    <div className="flex justify-center my-6">
+      <Card className="w-full md:w-2/3 lg:w-1/2 shadow-lg rounded-lg p-4 bg-white dark:bg-gray-900 transition duration-300 ease-in-out">
+        <CardContent>
+          <div className="flex items-center mb-4">
+            <Avatar className="mr-3" alt={username} src={userImg} />
             <div>
-              <Typography variant="subtitle1" component="div">
+              <Typography variant="subtitle1" component="div" className="font-semibold">
                 {username}
               </Typography>
-              <Typography
-                variant="caption"
-                color="textSecondary"
-                component="div"
-              >
-                {formatDate(createdAt)}  {/* Mostrar la fecha y la hora formateada */}
-              </Typography>
-              <Typography
-                variant="caption"
-                color="textSecondary"
-                component="div"
-              >
-                {date}
+              <Typography variant="caption" color="textSecondary" component="div">
+                {formatDate(createdAt)}
               </Typography>
             </div>
           </div>
-          <div>
-            <Typography variant="body1" component="p" className="mb-3">
-              {content || ""}
-            </Typography>
-            {imageSrc && (
-              <div className="flex justify-center">
-                <img
-                  src={imageSrc}
-                  alt="Post"
-                  className="w-full md:w-auto h-auto mb-3 rounded-lg"
-                />
-              </div>
-            )}
-          </div>
+          <Typography variant="body1" component="p" className="mb-4 text-gray-800 dark:text-gray-200">
+            {content}
+          </Typography>
+          {imageSrc && (
+            <div className="flex justify-center mb-4">
+              <img
+                src={imageSrc}
+                alt="Post"
+                className="w-full md:w-auto h-auto rounded-lg object-cover"
+              />
+            </div>
+          )}
           <Comments postId={postId} />
         </CardContent>
-        <CardActions className="flex justify-between items-center">
+        <CardActions className="flex justify-between">
           <IconButton
             aria-label="add to favorites"
             onClick={handleLike}
             disabled={hasLiked}
-            style={{ color: hasLiked ? "red" : "inherit" }}
+            className={`transition-colors duration-300 ${hasLiked ? "text-red-600" : "text-gray-600 dark:text-gray-400"}`}
           >
             <FavoriteIcon />
             <Typography variant="caption" className="ml-2">
               {likes}
             </Typography>
           </IconButton>
-          <div className="flex gap-2">
-            <IconButton aria-label="comment">
+          <div className="flex gap-4">
+            <IconButton aria-label="comment" className="text-gray-600 dark:text-gray-400 transition-colors duration-300 hover:text-blue-500">
               <ChatBubbleOutlineIcon />
             </IconButton>
-            <IconButton aria-label="share">
+            <IconButton aria-label="share" className="text-gray-600 dark:text-gray-400 transition-colors duration-300 hover:text-blue-500">
               <ShareIcon />
             </IconButton>
           </div>

@@ -36,6 +36,7 @@ const NavSocial = () => {
     localStorage.removeItem("userName");
     window.localStorage.clear();
     navigate("/");
+    window.location.reload();
   };
 
   return (
@@ -72,7 +73,6 @@ const NavSocial = () => {
               alt="profile"
               className="w-8 h-8 rounded-full object-cover"
             />
-            <span className="md:hidden">{userData?.name || ""}</span>
             <span className="hidden md:inline">{`${userData?.name || ""} ${userData?.last_name || ""}`}</span>
             <ExpandMoreIcon />
           </div>

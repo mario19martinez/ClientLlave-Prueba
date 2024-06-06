@@ -15,11 +15,12 @@ function Clases() {
   const [modalAgregarClaseIsOpen, setModalAgregarClaseIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentPageBeforeEdit, setCurrentPageBeforeEdit] = useState(1); // Almacena la página actual antes de editar una clase
+  const [currentPageBeforeEdit, setCurrentPageBeforeEdit] = useState(1); 
   const navigate = useNavigate();
+  console.log(loading);
 
-  const clasesPerPage = 10; // Número de clases por página
-  const maxPagesToShow = 5; // Número máximo de páginas de paginación a mostrar
+  const clasesPerPage = 10; 
+  const maxPagesToShow = 5; 
 
   useEffect(() => {
     const fetchClases = async () => {
@@ -29,7 +30,8 @@ function Clases() {
         const sortedClases = response.data.sort((a, b) => a.id - b.id);
         if (response.status === 200) {
           const data = await response.data;
-          setClases(sortedClases); // Actualizar las clases manteniendo el orden original
+          console.log(data);
+          setClases(sortedClases); 
         } else {
           throw new Error("Curso no encontrado");
         }
@@ -47,8 +49,8 @@ function Clases() {
     try {
       const response = await axios.get(`/cursos/${id}/clases`);
       const sortedClases = response.data.sort((a, b) => a.id - b.id);
-      setClases(sortedClases); // Actualizar las clases manteniendo el orden original
-      setCurrentPage(currentPageBeforeEdit); // Restaurar la página actual después de editar
+      setClases(sortedClases); 
+      setCurrentPage(currentPageBeforeEdit); 
     } catch (error) {
       console.error("Error al obtener las clases:", error);
     } finally {

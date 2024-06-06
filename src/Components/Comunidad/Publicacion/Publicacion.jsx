@@ -1,6 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useContext, useEffect } from "react";
-// import { AddPhotoAlternate } from "@mui/icons-material";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserData } from "../../../Redux/features/Users/usersSlice";
 import UploadWidget from "../../UploadWidget/UploadWidget";
@@ -11,8 +9,6 @@ const Publicacion = () => {
   const userData = useSelector((state) => state.users.userData);
   const storedEmail = localStorage.getItem("email");
   const authToken = localStorage.getItem("token");
-
-  console.log("Este es el token: ", authToken);
 
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
@@ -38,7 +34,7 @@ const Publicacion = () => {
 
       const postData = {
         content: content,
-        image: image, // Utilizar directamente la URL de la imagen
+        image: image,
       };
 
       const response = await axios.post("/create-post", postData, {
@@ -61,47 +57,48 @@ const Publicacion = () => {
   };
 
   return (
-    <div className="shadow-lg rounded-3xl bg-gray-100 dark:bg-gray-800 text-black dark:text-white mb-20">
-      <div className="container p-5">
-        <div className="top flex items-center gap-4">
+    <div className="shadow-lg rounded-lg bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 mb-8 mx-4 md:mx-auto md:max-w-2xl">
+      <div className="p-5">
+        <div className="flex items-center gap-4">
           <img
             src={
               userData?.image ||
               "https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280.jpg"
             }
-            alt=""
+            alt="profile"
             className="w-10 h-10 rounded-full object-cover"
           />
           <input
             type="text"
-            placeholder={`Quieres publicar algo ${userData?.name || ""}?`}
+            placeholder={`¿Quieres publicar algo, ${userData?.name || ""}?`}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="border-none outline-none bg-transparent w-3/4 text-black dark:text-white"
+            className="border-none outline-none bg-transparent w-full text-gray-800 dark:text-gray-200"
           />
         </div>
-        <hr className="my-5 border-t border-gray-500 dark:border-gray-600" />
-        <div className="bottom flex justify-between items-center">
-          <div className="left flex items-center gap-4">
-            <UploadWidget
-              onImageUpload={handleImageUpload}
+        {imagePreview && (
+          <div className="my-4">
+            <img
+              src={imagePreview}
+              alt="Vista previa"
+              className="w-full h-auto rounded-md object-cover"
             />
-            {imagePreview && (
-              <img
-                src={imagePreview}
-                alt="Vista previa"
-                style={{ width: "50px", height: "50px", borderRadius: "5px" }}
-              />
-            )}
           </div>
-          <div className="right">
-            <button
-              onClick={handlePostPublish}
-              className="px-3 py-1 bg-blue-500 text-white rounded-md"
-            >
-              Publicar
-            </button>
+        )}
+        <hr className="my-4 border-t border-gray-300 dark:border-gray-700" />
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2 cursor-pointer">
+            <UploadWidget onImageUpload={handleImageUpload} />
+            <span className="text-gray-600 dark:text-gray-400">
+              Sube una imagen
+            </span>
           </div>
+          <button
+            onClick={handlePostPublish}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200"
+          >
+            Publicar
+          </button>
         </div>
       </div>
     </div>

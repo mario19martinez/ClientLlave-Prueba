@@ -8,7 +8,7 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
   const [contenido, setContenido] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [preguntas, setPreguntas] = useState([
-    { pregunta: "", opciones: ["a", "b", "c", "d"], respuestaCorrecta: "" },
+    { pregunta: "", opciones: ["", "", "", ""], respuestaCorrecta: "" },
   ]);
 
   const agregarPregunta = () => {
@@ -16,7 +16,7 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
       ...preguntas,
       {
         pregunta: "",
-        opciones: ["a", "b", "c", "d"],
+        opciones: ["", "", "", ""],
         respuestaCorrecta: "",
       },
     ]);
@@ -45,16 +45,10 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // const respuestaSeleccionada = preguntas.every(
-    //   (pregunta) => pregunta.respuestaCorrecta !== ""
-    // );
-    // if (!respuestaSeleccionada) {
-    //   alert("Por favor, selecciona una respuesta correcta para cada pregunta.");
-    // }
     try {
       const preguntasFormateadas = preguntas.map((pregunta) => ({
         pregunta: pregunta.pregunta,
-        opciones: pregunta.opciones,
+        opciones: pregunta.opciones.map((opcion, idx) => `${String.fromCharCode(97 + idx)}. ${opcion}`),
         respuestaCorrecta: pregunta.respuestaCorrecta,
       }));
 
@@ -69,7 +63,7 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
       setContenido("");
       setDescripcion("");
       setPreguntas([
-        { pregunta: "", opciones: ["a", "b", "c", "d"], respuestaCorrecta: "" },
+        { pregunta: "", opciones: ["", "", "", ""], respuestaCorrecta: "" },
       ]);
       console.log(response.data);
       toast.success("Modulo creado exitosamente!", {
@@ -89,7 +83,7 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
   };
 
   return (
-    <div className="bg-blue-500 p-2 rounded-md shadow-md max-w-lg h-full overflow-y-auto">
+    <div className="bg-blue-500 w-screen p-2 rounded-md shadow-md max-w-lg h-full overflow-y-auto">
       <h2 className="text-2xl font-bold mb-4 text-gray-100 ms-4">
         Agregar Modulo
       </h2>
@@ -153,14 +147,18 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
               onChange={(e) => handleChangePregunta(index, e)}
             />
             {pregunta.opciones.map((opcion, idx) => (
-              <input
-                key={idx}
-                type="text"
-                className="border-2 border-gray-400 rounded-md p-2 w-full mt-2 focus:outline-none focus:border-blue-500"
-                value={opcion}
-                onChange={(e) => handleChangeOpcion(index, idx, e)}
-                placeholder={`Opción ${String.fromCharCode(97 + idx)}`}
-              />
+              <div key={idx} className="flex items-center mb-2">
+                <span className="mr-2 text-gray-100 font-semibold">
+                  {String.fromCharCode(97 + idx)}.
+                </span>
+                <input
+                  type="text"
+                  className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
+                  value={opcion}
+                  onChange={(e) => handleChangeOpcion(index, idx, e)}
+                  placeholder={`Opción ${String.fromCharCode(97 + idx)}`}
+                />
+              </div>
             ))}
             <label
               className="block text-gray-100 font-semibold  mb-2"
