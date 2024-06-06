@@ -36,7 +36,7 @@ function ModuloEditAdmin() {
         setLoading(false);
       } catch (error) {
         console.error("Error al obtener el detalle del modulo:", error);
-        setError("Produjo un error al cargar el detalle del modulo.");
+        setError("Se produjo un error al cargar el detalle del modulo.");
         setLoading(false);
       }
     };
@@ -73,6 +73,20 @@ function ModuloEditAdmin() {
     setFormData({
       ...formData,
       preguntas: newPreguntas,
+    });
+  };
+
+  const agregarPregunta = () => {
+    setFormData({
+      ...formData,
+      preguntas: [
+        ...formData.preguntas,
+        {
+          pregunta: "",
+          opciones: ["a", "b", "c", "d"],
+          respuestaCorrecta: "",
+        },
+      ],
     });
   };
 
@@ -210,7 +224,7 @@ function ModuloEditAdmin() {
                       onChange={(e) =>
                         handlePreguntasChange(index, {
                           target: {
-                            name: `opciones.${idx}`,
+                            name: `opcion${idx}`,
                             value: e.target.value,
                           },
                         })
@@ -220,23 +234,17 @@ function ModuloEditAdmin() {
                     />
                   ))}
                   <label
-                    className="block text-gray-700 font-bold  mb-2"
+                    className="block text-gray-700 font-bold mb-2"
                     htmlFor={`respuesta-${index}`}
                   >
                     Respuesta Correcta:
                   </label>
                   <select
                     id={`respuesta-${index}`}
+                    name="respuestaCorrecta"
                     className="border-2 border-gray-400 rounded-md p-2 w-full mt-2 focus:outline-none focus:border-blue-500"
                     value={pregunta.respuestaCorrecta}
-                    onChange={(e) =>
-                      handlePreguntasChange(index, {
-                        target: {
-                          name: "respuestaCorrecta",
-                          value: e.target.value,
-                        },
-                      })
-                    }
+                    onChange={(e) => handlePreguntasChange(index, e)}
                     required
                   >
                     <option value="">Seleccione una respuesta</option>
@@ -249,6 +257,14 @@ function ModuloEditAdmin() {
                 </div>
               ))}
             </div>
+
+            <button
+              type="button"
+              onClick={agregarPregunta}
+              className="bg-blue-900 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mb-4 font-semibold"
+            >
+              Agregar Pregunta
+            </button>
 
             <div className="mt-4">
               <button
