@@ -11,6 +11,8 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
   const [loading, setLoading] = useState(false);
   const [userNotFound, setUserNotFound] = useState(false);
 
+  console.log(userSub);
+
   const handleBuscar = async () => {
     try {
       setLoading(true);
@@ -75,7 +77,7 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
 
 
   return (
-    <div className="max-w-md mx-auto p-4 bg-blue-100 rounded-md shadow-md w-1/2 h-auto">
+    <div className="mx-auto w-screen p-4 bg-blue-100 rounded-md shadow-md h-auto">
       <h2 className="text-lg font-bold mb-4 text-gray-700">Agregar Usuario</h2>
       <div className="mb-4">
         <label
@@ -115,7 +117,7 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
                 className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 bg-white"
               >
                 <div>
-                  <span>{user.name}</span>
+                  <span>{user.name} {user.last_name}</span>
                   {user.grupoName && (
                     <span className="text-sm text-gray-700 ml-2">
                       (En grupo: {user.grupoName})

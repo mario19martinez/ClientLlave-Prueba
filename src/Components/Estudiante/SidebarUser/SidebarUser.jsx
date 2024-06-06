@@ -12,6 +12,7 @@ import RateReviewIcon from "@mui/icons-material/RateReview";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserData } from "../../../Redux/features/Users/usersSlice";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
 
 const SidebarUser = ({ selectedTab }) => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const SidebarUser = ({ selectedTab }) => {
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
-    window.location.reload()
+    window.location.reload();
   };
 
   const closeModalAndLogout = () => {
@@ -116,23 +117,20 @@ const SidebarUser = ({ selectedTab }) => {
           </div>
         </div>
       </div>
-      {sessionExpired && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/3">
-            <h2 className="text-xl font-semibold mb-4">Sesión expirada</h2>
-            <p className="mb-4">Tu sesión ha expirado. Por favor, inicia sesión nuevamente.</p>
-            <button
-              onClick={closeModalAndLogout}
-              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-            >
-              Aceptar
-            </button>
-          </div>
-        </div>
-      )}
+      <Dialog open={sessionExpired} onClose={closeModalAndLogout}>
+        <DialogTitle>Sesión expirada</DialogTitle>
+        <DialogContent>
+          <p>Tu sesión ha expirado. Por favor, inicia sesión nuevamente.</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeModalAndLogout} color="primary">
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
-}
+};
 
 SidebarUser.propTypes = {
   selectedTab: PropTypes.string.isRequired,

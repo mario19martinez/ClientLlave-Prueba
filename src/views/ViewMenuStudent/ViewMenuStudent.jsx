@@ -16,9 +16,7 @@ export default function MenuStudent() {
         <div className="sticky top-0 h-screen">
           <SidebarUser selectedTab={selectedTab} />
         </div>
-        <div className="pt-8">
           <Escritorio />
-        </div>
       </div>
     </div>
   );
