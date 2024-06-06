@@ -11,8 +11,6 @@ function ClaseDetailUser({ claseId }) {
   const [progreso, setProgreso] = useState({});
   const [youtubePlayer, setYoutubePlayer] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
-  const [grupoId, setGrupoId] = useState(null);
-  const [nivelId, setNivelId] = useState(null);
   const [moduloId, setModuloId] = useState(null);
 
   useEffect(() => {
@@ -23,7 +21,6 @@ function ClaseDetailUser({ claseId }) {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUserInfo(response.data);
-        console.log(userInfo);
       } catch (error) {
         console.error("Error al obtener información del usuario:", error);
       }
@@ -35,15 +32,11 @@ function ClaseDetailUser({ claseId }) {
     const fetchClaseDetail = async () => {
       try {
         setLoading(true);
-        setClase(null)
+        setClase(null);
         const response = await axios.get(`/clase/${claseId}/detalles`);
-        const { moduloId, grupoId, nivelId } = response.data.clase;
-        setModuloId(moduloId);
-        setGrupoId(grupoId);
-        setNivelId(nivelId);
         setClase(response.data.clase);
+        setModuloId(response.data.clase.moduloId)
         setLoading(false);
-        console.log('clase:', response);
       } catch (error) {
         console.error("Error al obtener los detalles de la clase:", error);
         setError(
@@ -52,9 +45,26 @@ function ClaseDetailUser({ claseId }) {
         setLoading(false);
       }
     };
-
+  
     fetchClaseDetail();
   }, [claseId]);
+
+  useEffect(() => {
+    if (userInfo && userInfo.sub && moduloId) {
+      const fetchRegistro = async () => {
+        try {
+          const response = await axios.get('/registro-actividad', {
+            params: { userSub: userInfo.sub, moduloId: moduloId },
+          })
+          setProgreso(response.data);
+        } catch (error) {
+          console.error('error al obtener el progreso:', error);
+        }
+      }
+      fetchRegistro()
+    }
+  }, [userInfo, moduloId])
+  
 
   useEffect(() => {
     if (clase && clase.url && userInfo) {
@@ -63,35 +73,29 @@ function ClaseDetailUser({ claseId }) {
           videoId: extractYoutubeVideoId(clase.url),
           events: {
             onStateChange: (event) => {
-              console.log("Evento:", event);
               if (event.data === window.YT.PlayerState.PLAYING) {
                 const intervalId = setInterval(async () => {
-                  const currentTime = event.target.playerInfo.currentTime;
-                  const duration = event.target.playerInfo.duration;
+                  const currentTime = event.target.getCurrentTime();
+                  const duration = event.target.getDuration();
                   const newProgreso = (currentTime / duration) * 100;
                   setProgreso((prevProgresos) => ({
                     ...prevProgresos,
                     [claseId]: newProgreso,
                   }));
                   const lastSavedProgreso = progreso[claseId] || 0;
-                  if (newProgreso - lastSavedProgreso >= 5) {
-                    // if (userInfo.sub && clase.grupoId && clase.nivelId && clase.moduloId) {
-                      //console.log("Datos antes de axios.post:", { userSub, clase, userInfo });
-                      try {
-                        const response = await axios.post("/movimiento-usuario", {
-                          userSub: userInfo.sub,
-                          // grupoId: clase.grupoId,
-                          // nivelId: clase.nivelId,
-                          //moduloId: clase.moduloId,
-                          claseId,
-                          progreso: newProgreso,
-                          inicio: new Date().toISOString(),
-                        });
-                        console.log('registro:', response)
-                      } catch (error) {
-                        console.error("Error al actualizar el progreso:", error);
-                      }
-                    
+                  if (newProgreso >= 100) {
+                    clearInterval(intervalId); // Detener el intervalo si el progreso llega al 100%
+                  } else if (newProgreso - lastSavedProgreso >= 5) {
+                    try {
+                      await axios.post("/movimiento-usuario", {
+                        userSub: userInfo.sub,
+                        moduloId: clase.moduloId,
+                        claseId,
+                        progreso: newProgreso,
+                      });
+                    } catch (error) {
+                      console.error("Error al actualizar el progreso:", error);
+                    }
                   }
                 }, 15000);
                 player.intervalId = intervalId;
@@ -100,13 +104,14 @@ function ClaseDetailUser({ claseId }) {
                 event.data === window.YT.PlayerState.ENDED
               ) {
                 clearInterval(player.intervalId);
+                player.intervalId = null; // Asegurarse de que el intervalo no se ejecute de nuevo
               }
             },
           },
         });
         setYoutubePlayer(player);
       };
-  
+
       if (!window.YT) {
         const tag = document.createElement("script");
         tag.src = "https://www.youtube.com/iframe_api";
@@ -116,10 +121,11 @@ function ClaseDetailUser({ claseId }) {
       } else {
         onYouTubeIframeAPIReady();
       }
-  
+
       return () => {
         if (youtubePlayer && youtubePlayer.intervalId) {
           clearInterval(youtubePlayer.intervalId);
+          youtubePlayer.intervalId = null
         }
         if (youtubePlayer) {
           youtubePlayer.destroy();
@@ -127,7 +133,7 @@ function ClaseDetailUser({ claseId }) {
         setYoutubePlayer(null);
       };
     }
-  }, [clase, userInfo, claseId]);
+  }, [clase, userInfo, claseId, moduloId]);
 
   const extractYoutubeVideoId = (url) => {
     const regex =
@@ -150,7 +156,6 @@ function ClaseDetailUser({ claseId }) {
       </div>
     );
   }
-
   if (error) {
     return <div className="text-red-600 text-center mt-4">{error}</div>;
   }
