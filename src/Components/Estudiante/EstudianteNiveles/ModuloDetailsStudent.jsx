@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import NivelClases from "../../NivelClases/NivelClases";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Modal from "react-modal"; // Importa el componente Modal si no lo tienes aún
 
 function ModuloDetailsStudent() {
   const { nivelId, grupoId, moduloId } = useParams();
@@ -14,6 +15,8 @@ function ModuloDetailsStudent() {
   const [modulos] = useState([]);
   const [userSub, setUserSub] = useState(null);
   const [quizCompletado, setQuizCompletado] = useState(false);
+  const [progresos, setProgresos] = useState({});
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -55,6 +58,32 @@ function ModuloDetailsStudent() {
 
     fetchModulo();
   }, [grupoId, moduloId, nivelId]);
+
+  useEffect(() => {
+    const fetchProgresos = async () => {
+      if (userSub) {
+        try {
+          const responseClases = await axios.get(`/modulo/${moduloId}/clases`);
+          const clases = responseClases.data;
+          const responseProgresos = await axios.get("/registro-actividad", {
+            params: { userSub, moduloId },
+          });
+          const progresos = responseProgresos.data;
+          
+          const progresoPorClase = clases.reduce((acc, clase) => {
+            acc[clase.id] = progresos[clase.id] || 0;
+            return acc;
+          }, {});
+
+          setProgresos(progresoPorClase);
+        } catch (error) {
+          console.error("Error al obtener los progresos:", error);
+        }
+      }
+    };
+
+    fetchProgresos();
+  }, [userSub, moduloId]);
 
   useEffect(() => {
     const fetchRespuestasUsuario = async () => {
@@ -145,6 +174,18 @@ function ModuloDetailsStudent() {
     return pregunta.pregunta.trim() !== "" && opcionesValidas;
   };
 
+  const checkAllClassesCompleted = () => {
+    return Object.values(progresos).every((progreso) => progreso >= 80);
+  };
+
+  const toggleMostrarPreguntas = () => {
+    if (checkAllClassesCompleted()) {
+      setMostrarPreguntas(!mostrarPreguntas);
+    } else {
+      setShowModal(true);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -197,7 +238,7 @@ function ModuloDetailsStudent() {
       modulo.preguntas.filter(isPreguntaValida).length > 0 ? (
         <>
           <button
-            onClick={() => setMostrarPreguntas(!mostrarPreguntas)}
+            onClick={toggleMostrarPreguntas}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 mt-4 mb-8 block mx-auto"
           >
             {mostrarPreguntas ? (
@@ -290,6 +331,27 @@ function ModuloDetailsStudent() {
           Algunas respuestas son incorrectas. Inténtalo de nuevo.
         </div>
       )}
+
+      <Modal
+        isOpen={showModal}
+        onRequestClose={() => setShowModal(false)}
+        className="fixed inset-0 flex items-center justify-center z-50 p-4"
+        overlayClassName="fixed inset-0 bg-gray-800 bg-opacity-75"
+      >
+        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full text-center">
+          <h2 className="text-3xl font-bold mb-4 text-red-600">Advertencia</h2>
+          <p className="text-gray-700 mb-6">
+            Debes ver todas las clases al 80% o más para poder ver y responder
+            las preguntas.
+          </p>
+          <button
+            onClick={() => setShowModal(false)}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+          >
+            Entendido
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 }

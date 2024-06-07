@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { FaFilePdf } from "react-icons/fa";
+import { FaFilePdf, FaCheckCircle, FaClock } from "react-icons/fa";
 
 function ClaseDetailUser({ claseId }) {
   const [clase, setClase] = useState(null);
@@ -35,7 +35,7 @@ function ClaseDetailUser({ claseId }) {
         setClase(null);
         const response = await axios.get(`/clase/${claseId}/detalles`);
         setClase(response.data.clase);
-        setModuloId(response.data.clase.moduloId)
+        setModuloId(response.data.clase.moduloId);
         setLoading(false);
       } catch (error) {
         console.error("Error al obtener los detalles de la clase:", error);
@@ -45,7 +45,7 @@ function ClaseDetailUser({ claseId }) {
         setLoading(false);
       }
     };
-  
+
     fetchClaseDetail();
   }, [claseId]);
 
@@ -55,16 +55,15 @@ function ClaseDetailUser({ claseId }) {
         try {
           const response = await axios.get('/registro-actividad', {
             params: { userSub: userInfo.sub, moduloId: moduloId },
-          })
+          });
           setProgreso(response.data);
         } catch (error) {
           console.error('error al obtener el progreso:', error);
         }
-      }
-      fetchRegistro()
+      };
+      fetchRegistro();
     }
-  }, [userInfo, moduloId])
-  
+  }, [userInfo, moduloId]);
 
   useEffect(() => {
     if (clase && clase.url && userInfo) {
@@ -125,7 +124,7 @@ function ClaseDetailUser({ claseId }) {
       return () => {
         if (youtubePlayer && youtubePlayer.intervalId) {
           clearInterval(youtubePlayer.intervalId);
-          youtubePlayer.intervalId = null
+          youtubePlayer.intervalId = null;
         }
         if (youtubePlayer) {
           youtubePlayer.destroy();
@@ -168,15 +167,19 @@ function ClaseDetailUser({ claseId }) {
   const textoAbreviado = clase.texto.slice(0, caracteresIniciales);
   const mostrarBoton = clase.texto.length > caracteresIniciales;
 
+  const progressColor = (progreso[claseId] || 0) > 80 ? "bg-green-500" : "bg-yellow-500";
+  const progressIcon = (progreso[claseId] || 0) > 80 ? <FaCheckCircle className="text-green-500" /> : <FaClock className="text-blue-500" />;
+
   return (
-    <div className="max-w-3xl mx-auto p-4">
+    <div className="max-w-3xl p-4">
       <h2 className="text-3xl font-bold mb-6 text-gray-800">{clase.name}</h2>
       <div className="relative pt-1 mb-6">
         <div className="flex mb-2 items-center justify-between">
-          <div>
+          <div className="flex items-center">
             <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200">
               Progreso
             </span>
+            <span className="ml-2">{progressIcon}</span>
           </div>
           <div className="text-right">
             <span className="text-xs font-semibold inline-block text-blue-600">
@@ -186,17 +189,17 @@ function ClaseDetailUser({ claseId }) {
         </div>
         <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-200">
           <div
-          style={{ width: `${Math.round(progreso[claseId] || 0)}%` }}
-          className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"
+            style={{ width: `${Math.round(progreso[claseId] || 0)}%` }}
+            className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center ${progressColor}`}
           ></div>
         </div>
       </div>
       <div className="mb-8 relative" style={{ paddingTop: "56.25%", width: "100%", maxWidth: "800px", margin: "0 auto" }}>
         {clase.url && (
           <div
-          id={`youtubePlayer-${claseId}`}
-          className="absolute top-0 left-0 w-full h-full"
-        />
+            id={`youtubePlayer-${claseId}`}
+            className="absolute top-0 left-0 w-full h-full"
+          />
         )}
       </div>
       <div className="mb-6">

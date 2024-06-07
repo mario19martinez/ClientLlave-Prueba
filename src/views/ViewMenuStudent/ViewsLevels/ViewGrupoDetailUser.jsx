@@ -7,7 +7,9 @@ export default function ViewGrupoDetailUser() {
     <div>
       <NavUser />
       <div className="flex">
-        <SidebarUser />
+        <div className="sticky top-0 h-screen">
+          <SidebarUser />
+        </div>
         <GrupoDetailUser />
       </div>
     </div>
