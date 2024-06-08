@@ -18,6 +18,7 @@ function Escritorio() {
   const navigate = useNavigate();
   const storedEmail = localStorage.getItem("email");
   const [cursosInscritos, setCursosInscritos] = useState([]);
+  const [nivelesInscritos, setNivelesInscritos] = useState([]);
   const [certificados, setCertificados] = useState(0);
   const [transmisiones, setTransmisiones] = useState(0);
 
@@ -43,6 +44,17 @@ function Escritorio() {
       }
     };
 
+    const fetchNivelesInscritos = async () => {
+      if (userData?.sub) {
+        try {
+          const response = await axios.get(`/user/${userData.sub}/grupos-nivel`);
+          setNivelesInscritos(response.data.grupos);
+        } catch (error) {
+          console.error('Error al obtener los niveles inscritos del usuario:', error);
+        }
+      }
+    };
+
     const fetchCertificados = async () => {
       if (userData?.sub) {
         try {
@@ -64,13 +76,12 @@ function Escritorio() {
     };
 
     fetchCourses();
+    fetchNivelesInscritos();
     fetchCertificados();
     fetchTransmisiones();
   }, [dispatch, userData]);
 
-  const totalCursos = cursosInscritos.length;
-
-  const Inscritos = totalCursos;
+  const totalCursos = cursosInscritos.length + nivelesInscritos.length;
 
   const containerStyle = "flex flex-wrap justify-center items-center h-auto p-4";
   const cardStyle =
@@ -88,7 +99,7 @@ function Escritorio() {
             <ImportContactsIcon className={iconStyle} fontSize="large" />
           </div>
           <h3 className={labelStyle}>Mis Cursos</h3>
-          <p className={countStyle}>{Inscritos}</p>
+          <p className={countStyle}>{totalCursos}</p>
           <p className="text-sm text-gray-500">Haz clic para ver tus cursos</p>
         </div>
 
