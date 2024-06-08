@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import PropTypes from 'prop-types'
 
-function AddModulo({ nivelId, grupoId, closeModalAndReload }) {
+function AddModulo({ nivelId, grupoId }) {
   const [modulos, setModulos] = useState([]);
   const [moduloId, setModuloId] = useState("");
   const [error, setError] = useState(null);
@@ -26,7 +26,6 @@ function AddModulo({ nivelId, grupoId, closeModalAndReload }) {
     const fetchModulosEnGrupo = async () => {
       try {
         const response = await axios.get(`/grupo/${grupoId}/modulos`);
-        console.log('response:', response)
         setModulosEnGrupo(response.data.modulos);
       } catch (error) {
         setError("Error al obtener los modulos del grupo");
@@ -52,14 +51,14 @@ function AddModulo({ nivelId, grupoId, closeModalAndReload }) {
       setSuccessMessage(response.data.message);
       toast.success('Modulo agregado con exitosamente!', {
         position: 'top-center',
-        autoClose: 1500,
+        autoClose: 1200,
         closeOnClick: true,
         theme: 'colored',
       });
 
       setTimeout(() => {
-        closeModalAndReload();
-      }, 1800)
+        window.location.reload();
+      }, 1500)
       setError(null);
     } catch (error) {
       console.error("Error al agregar el Modulo:", error);
@@ -109,7 +108,6 @@ function AddModulo({ nivelId, grupoId, closeModalAndReload }) {
 AddModulo.propTypes = {
   nivelId: PropTypes.string.isRequired,
   grupoId: PropTypes.string.isRequired,
-  closeModalAndReload: PropTypes.func.isRequired,
 };
 
 export default AddModulo;

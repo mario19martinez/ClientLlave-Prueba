@@ -7,7 +7,7 @@ export default function ViewModuloClases() {
     <div>
       <NavUser />
       <div className="flex">
-        <SidebarUser />
+        <SidebarUser selectedTab="defaultTab"/>
         <ModuloDetailsStudent />
       </div>
       {/* <NivelClases /> */}

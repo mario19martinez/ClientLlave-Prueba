@@ -12,7 +12,7 @@ export default function ViewLevelsDetails() {
     <div>
       <NavUser />
       <div className="flex">
-        <SidebarUser />
+        <SidebarUser selectedTab="defaultTab"/>
         <LevelDetailsStudent nivelId={id} />
       </div>
     </div>
