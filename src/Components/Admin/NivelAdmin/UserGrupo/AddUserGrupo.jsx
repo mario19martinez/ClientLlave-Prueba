@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import PropTypes from "prop-types";
+import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 
 function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
@@ -10,8 +11,6 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
   const [resultados, setResultados] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userNotFound, setUserNotFound] = useState(false);
-
-  console.log(userSub);
 
   const handleBuscar = async () => {
     try {
@@ -66,12 +65,24 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
         }
       );
       setMessage(response.data.message);
+      toast.success('Usuario agregado con exito!', {
+        position: 'top-center',
+        autoClose: 1200,
+        closeOnClick: true,
+        theme: 'light'
+      });
       setTimeout(() => {
         closeModalAndReload();
       }, 1500);
       setUserSub(""); // Limpiar el estado después de la operación exitosa
     } catch (error) {
       setError(error.response.data.error);
+      toast.warning('El usuario ya esta inscrito en un Grupo!', {
+        position: 'top-center',
+        autoClose: 1800,
+        closeOnClick: true,
+        theme: 'light'
+      });
     }
   };
 
@@ -136,6 +147,7 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
         )}
       </div>
       {message && <p className="text-green-600 mt-2">{message}</p>}
+      <ToastContainer />
     </div>
   );
 }

@@ -20,7 +20,6 @@ function ModuloDetailAdmin() {
           `/nivel/${nivelId}/modulo/${moduloId}`
         );
         const moduloData = response.data;
-        console.log(moduloData);
         setModulo(moduloData);
         setLoading(false);
       } catch (error) {

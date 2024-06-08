@@ -8,7 +8,7 @@ export default function ViewModuloClases() {
       <NavUser />
       <div className="flex">
         <div className="sticky top-0 h-screen">
-          <SidebarUser />
+          <SidebarUser selectedTab="defaultTab" />
         </div>
         <ModuloDetailsStudent />
       </div>
