@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from 'prop-types'
 import axios from "axios";
 
 function GrupoEdit({ nivelId, grupoId }) {
@@ -44,11 +45,18 @@ function GrupoEdit({ nivelId, grupoId }) {
   };
 
   if (loading) {
-    return <div>Cargando...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-blue-600"></div>
+        <span className="ml-4 text-xl font-bold text-blue-600">
+          Cargando...
+        </span>
+      </div>
+    );
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="text-center text-red-500 mt-4">Error: {error}</div>;
   }
 
   return (
@@ -101,6 +109,11 @@ function GrupoEdit({ nivelId, grupoId }) {
       </form>
     </div>
   );
+}
+
+GrupoEdit.propTypes = {
+  nivelId: PropTypes.string.isRequired,
+  grupoId: PropTypes.string.isRequired
 }
 
 export default GrupoEdit;

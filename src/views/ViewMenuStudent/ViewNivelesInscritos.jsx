@@ -9,7 +9,7 @@ export default function ViewNivelesInscitos () {
         <div>
             <NavUser />
             <div className="flex">
-                <SidebarUser />
+                <SidebarUser selectedTab="defaultTab"/>
                 <NivelesInscritos />
             </div>
         </div>

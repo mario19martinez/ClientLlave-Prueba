@@ -52,7 +52,7 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
         respuestaCorrecta: pregunta.respuestaCorrecta,
       }));
 
-      const response = await axios.post(`/nivel/${nivelId}/modulo`, {
+      await axios.post(`/nivel/${nivelId}/modulo`, {
         titulo,
         contenido,
         descripcion,
@@ -65,7 +65,6 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
       setPreguntas([
         { pregunta: "", opciones: ["", "", "", ""], respuestaCorrecta: "" },
       ]);
-      console.log(response.data);
       toast.success("Modulo creado exitosamente!", {
         position: "bottom-center",
         autoClose: 1500,

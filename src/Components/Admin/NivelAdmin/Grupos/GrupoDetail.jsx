@@ -14,7 +14,6 @@ function GrupoDetail() {
   const [error, setError] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
-  const [setLoading] = useState(true);
   const navigate = useNavigate();
   const { id, grupoId } = useParams();
 
@@ -27,7 +26,6 @@ function GrupoDetail() {
         }
         const response = await axios.get(`/niveles/${id}/grupos/${grupoId}`);
         setGrupo(response.data);
-        // console.log('response:', response)
       } catch (error) {
         setError(error.response.data.error);
         console.error("Ocurrio un error:", error);
@@ -35,19 +33,6 @@ function GrupoDetail() {
     };
     fetchGrupo();
   }, [id, grupoId]);
-
-  const closeModalAndReload = async () => {
-    setModalIsOpen(false);
-    setLoading(true);
-    try {
-      const response = await axios.get(`/niveles/${id}/grupos/${grupoId}`);
-      setGrupo(response.data);
-    } catch (error) {
-      console.error("Error al obtener los niveles:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDeleteGrupo = async () => {
     // Primero, mostramos un cuadro de confirmación al usuario
@@ -92,15 +77,22 @@ function GrupoDetail() {
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return <p className="text-center text-red-500 mt-4">Error: {error}</p>;
   }
 
   if (!grupo) {
-    return <p>Cargando...</p>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-blue-600"></div>
+        <span className="ml-4 text-xl font-semibold text-blue-600">
+          Cargando...
+        </span>
+      </div>
+    );
   }
 
   if (id === undefined) {
-    return <p>Error: ID de nivel no encontrado</p>;
+    return <p className="text-center text-red-500 mt-4">Error: ID de nivel no encontrado</p>;
   }
 
   return (
@@ -140,7 +132,7 @@ function GrupoDetail() {
       onRequestClose={() => setModalIsOpen(false)}
       contentLabel="Agregar Modulo"
       >
-        <AddModulo nivelId={id} grupoId={grupoId} closeModalAndReload={closeModalAndReload} />
+        <AddModulo nivelId={id} grupoId={grupoId}  />
         <button onClick={() => setModalIsOpen(false)} className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700">
           <CancelIcon fontSize="large" />
         </button>
