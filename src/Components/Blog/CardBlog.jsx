@@ -1,8 +1,6 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import img from '../../assets/cardBlog.png'
+import img from '../../assets/cardBlog.png';
 
 const CardBlog = ({ blog }) => {
   const navigate = useNavigate();
@@ -19,9 +17,14 @@ const CardBlog = ({ blog }) => {
     return html.replace(/<[^>]+>/g, '');
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
     <div
-      className="bg-white rounded-lg overflow-hidden shadow-lg mx-auto mb-8 transform transition duration-300 hover:scale-105"
+      className="bg-white rounded-lg overflow-hidden shadow-lg mx-auto mb-8 transform transition duration-300 hover:scale-105 hover:shadow-xl"
       onClick={handleCardClick}
       style={{ cursor: "pointer" }}
     >
@@ -44,11 +47,19 @@ const CardBlog = ({ blog }) => {
         <div className="font-semibold text-xl mb-2 text-gray-800 line-clamp-2">
           {blog.title}
         </div>
-        <div className="text-gray-600 line-clamp-3">
+        <div className="text-gray-600 line-clamp-3 mb-4">
           {stripHtmlTags(blog.content)}
         </div>
-        <div className="flex justify-end mt-4">
-          <p className="text-gray-600 text-sm">Click para leer más</p>
+        <div className="flex justify-between items-center mt-4">
+          <p className="text-gray-500 text-sm">{formatDate(blog.createdAt)}</p>
+          {blog.autor && (
+            <span className="text-sm bg-blue-100 text-blue-800 py-1 px-3 rounded-full">
+              {blog.autor}
+            </span>
+          )}
+        </div>
+        <div className="flex justify-end mt-2">
+          <p className="text-blue-500 text-sm">Click para leer más</p>
         </div>
       </div>
     </div>
@@ -61,6 +72,8 @@ CardBlog.propTypes = {
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    autor: PropTypes.string,
   }).isRequired,
 };
 

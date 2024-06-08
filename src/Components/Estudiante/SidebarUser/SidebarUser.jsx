@@ -82,7 +82,7 @@ const SidebarUser = ({ selectedTab }) => {
               {menuItems.slice(0, -2).map((item) => (
                 <li key={item.name} className="min-w-max">
                   <button
-                    className={`flex items-center space-x-4 px-4 py-3 text-white ${
+                    className={`flex items-center space-x-5 px-4 py-3 text-white ${
                       selectedTab === item.name
                         ? "bg-gradient-to-r from-sky-500 to-cyan-300"
                         : "group hover:text-cyan-300"
@@ -101,7 +101,7 @@ const SidebarUser = ({ selectedTab }) => {
               {menuItems.slice(-2).map((item) => (
                 <li key={item.name} className="min-w-max">
                   <button
-                    className={`flex items-center space-x-4 px-4 py-3 text-white ${
+                    className={`flex items-center space-x-5 px-4 py-3 text-white ${
                       selectedTab === item.name
                         ? "bg-gradient-to-r from-sky-500 to-cyan-300"
                         : "group hover:text-cyan-300"

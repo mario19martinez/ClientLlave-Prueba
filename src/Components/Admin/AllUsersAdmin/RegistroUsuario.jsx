@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import paisesData from "../../FormResgistro/Paises.json";
@@ -9,6 +8,7 @@ import {
   clearRegistrationStatus,
 } from "../../../Redux/features/Users/usersSlice";
 import { toast } from "react-toastify";
+import "tailwindcss/tailwind.css";
 
 const initialValues = {
   name: "",
@@ -83,11 +83,13 @@ const RegistrationModal = () => {
   }, [registrationStatus, error, dispatch]);
 
   return (
-        <div className="inline-block align-bottom bg-blue-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full">
-          <form onSubmit={formik.handleSubmit} className="p-6">
-            <h1 className="text-2xl font-semibold mb-4 text-white">Registro</h1>
+    <div className="">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
+        <h1 className="text-2xl font-semibold mb-4 text-gray-800">Registro</h1>
+        <form onSubmit={formik.handleSubmit}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="mb-3">
-              <label htmlFor="name" className="text-white">
+              <label htmlFor="name" className="block text-gray-700">
                 Nombre:
               </label>
               <input
@@ -97,15 +99,15 @@ const RegistrationModal = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.name}
-                className="w-full p-2 rounded-md bg-blue-600 text-white"
+                className="w-full p-2 border border-gray-300 rounded-md"
               />
               {formik.touched.name && formik.errors.name ? (
-                <p className="text-red-500 mt-1">{formik.errors.name}</p>
+                <p className="text-red-500 text-sm mt-1">{formik.errors.name}</p>
               ) : null}
             </div>
 
             <div className="mb-3">
-              <label htmlFor="last_name" className="text-white">
+              <label htmlFor="last_name" className="block text-gray-700">
                 Apellido:
               </label>
               <input
@@ -115,35 +117,17 @@ const RegistrationModal = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.last_name}
-                className="w-full p-2 rounded-md bg-blue-600 text-white"
+                className="w-full p-2 border border-gray-300 rounded-md"
               />
               {formik.touched.last_name && formik.errors.last_name ? (
-                <p className="text-red-500 mt-1">{formik.errors.last_name}</p>
+                <p className="text-red-500 text-sm mt-1">{formik.errors.last_name}</p>
               ) : null}
             </div>
+          </div>
 
-            {/*<div className="mb-3">
-              <label htmlFor="identificacion" className="text-white">
-                No. Identificación:
-              </label>
-              <input
-                type="text"
-                id="identificacion"
-                name="identificacion"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.identificacion}
-                className="w-full p-2 rounded-md bg-blue-600 text-white"
-              />
-              {formik.touched.identificacion && formik.errors.identificacion ? (
-                <p className="text-red-500 mt-1">
-                  {formik.errors.identificacion}
-                </p>
-              ) : null}
-            </div>*/}
-
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="mb-3">
-              <label htmlFor="pais" className="text-white">
+              <label htmlFor="pais" className="block text-gray-700">
                 País:
               </label>
               <select
@@ -160,7 +144,7 @@ const RegistrationModal = () => {
                 }}
                 onBlur={formik.handleBlur}
                 value={formik.values.pais}
-                className="w-full p-2 rounded-md bg-blue-600 text-white"
+                className="w-full p-2 border border-gray-300 rounded-md"
               >
                 <option value="" disabled>
                   Seleccione país
@@ -172,53 +156,53 @@ const RegistrationModal = () => {
                 ))}
               </select>
               {formik.touched.pais && formik.errors.pais ? (
-                <p className="text-red-500 mt-1">{formik.errors.pais}</p>
+                <p className="text-red-500 text-sm mt-1">{formik.errors.pais}</p>
               ) : null}
             </div>
 
             <div className="mb-3">
-              <label htmlFor="telefono" className="text-white">
+              <label htmlFor="telefono" className="block text-gray-700">
                 Teléfono:
               </label>
-              <div className="flex items-center">
-                <input
-                  type="text"
-                  id="telefono"
-                  name="telefono"
-                  onChange={(e) => {
-                    formik.handleChange(e);
-                    setFullPhoneNumber(e.target.value);
-                  }}
-                  onBlur={formik.handleBlur}
-                  value={fullPhoneNumber}
-                  className="w-full p-2 rounded-md bg-blue-600 text-white"
-                />
-                {formik.touched.telefono && formik.errors.telefono ? (
-                  <p className="text-red-500 mt-1">{formik.errors.telefono}</p>
-                ) : null}
-              </div>
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="email" className="text-white">
-                Email:
-              </label>
               <input
-                type="email"
-                id="email"
-                name="email"
-                onChange={formik.handleChange}
+                type="text"
+                id="telefono"
+                name="telefono"
+                onChange={(e) => {
+                  formik.handleChange(e);
+                  setFullPhoneNumber(e.target.value);
+                }}
                 onBlur={formik.handleBlur}
-                value={formik.values.email}
-                className="w-full p-2 rounded-md bg-blue-600 text-white"
+                value={fullPhoneNumber}
+                className="w-full p-2 border border-gray-300 rounded-md"
               />
-              {formik.touched.email && formik.errors.email ? (
-                <p className="text-red-500 mt-1">{formik.errors.email}</p>
+              {formik.touched.telefono && formik.errors.telefono ? (
+                <p className="text-red-500 text-sm mt-1">{formik.errors.telefono}</p>
               ) : null}
             </div>
+          </div>
 
+          <div className="mb-3">
+            <label htmlFor="email" className="block text-gray-700">
+              Email:
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            />
+            {formik.touched.email && formik.errors.email ? (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.email}</p>
+            ) : null}
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="mb-3">
-              <label htmlFor="contraseña" className="text-white">
+              <label htmlFor="contraseña" className="block text-gray-700">
                 Contraseña:
               </label>
               <input
@@ -228,15 +212,15 @@ const RegistrationModal = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.contraseña}
-                className="w-full p-2 rounded-md bg-blue-600 text-white"
+                className="w-full p-2 border border-gray-300 rounded-md"
               />
               {formik.touched.contraseña && formik.errors.contraseña ? (
-                <p className="text-red-500 mt-1">{formik.errors.contraseña}</p>
+                <p className="text-red-500 text-sm mt-1">{formik.errors.contraseña}</p>
               ) : null}
             </div>
 
             <div className="mb-3">
-              <label htmlFor="confirmPassword" className="text-white">
+              <label htmlFor="confirmPassword" className="block text-gray-700">
                 Confirmar Contraseña:
               </label>
               <input
@@ -246,23 +230,26 @@ const RegistrationModal = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.confirmPassword}
-                className="w-full p-2 rounded-md bg-blue-600 text-white"
+                className="w-full p-2 border border-gray-300 rounded-md"
               />
               {formik.touched.confirmPassword &&
               formik.errors.confirmPassword ? (
-                <p className="text-red-500 mt-1">
+                <p className="text-red-500 text-sm mt-1">
                   {formik.errors.confirmPassword}
                 </p>
               ) : null}
             </div>
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover-bg-blue-600"
-            >
-              Regístrar Usuario
-            </button>
-          </form>
-        </div>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 mt-4"
+          >
+            Regístrar Usuario
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 

@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 
@@ -21,10 +20,23 @@ const Blog = ({ blogId }) => {
     }
   }, [blogId]);
 
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
-    <div className="max-w-3xl mx-auto py-8">
+    <div className="max-w-3xl mx-auto py-8 px-4">
       {blogDetails && (
         <div className="bg-white rounded-lg overflow-hidden shadow-lg p-8">
+          <div className="flex justify-between items-center mb-4 text-gray-600">
+            <span className="text-sm">{formatDate(blogDetails.createdAt)}</span>
+            {blogDetails.autor && (
+              <span className="text-sm bg-blue-100 text-blue-800 py-1 px-3 rounded-full">
+                {blogDetails.autor}
+              </span>
+            )}
+          </div>
           <h2 className="text-4xl font-bold text-center mb-6 text-gray-800">
             {blogDetails.title}
           </h2>
@@ -36,13 +48,22 @@ const Blog = ({ blogId }) => {
               style={{ maxHeight: "400px" }}
             />
           )}
-          <div className="text-base lg:text-lg leading-relaxed text-gray-700">
+          {blogDetails.Lectura && (
+            <div className="flex justify-center items-center text-gray-600 mt-4">
+              <span className="text-sm">
+                Tiempo estimado de lectura: {blogDetails.Lectura}
+              </span>
+            </div>
+          )}
+          <div className="text-base lg:text-lg leading-relaxed text-gray-700 mb-8">
             <div
-              className="ql-editor" // Agrega una clase específica de React Quill para aplicar estilos
+              className="ql-editor"
               dangerouslySetInnerHTML={{ __html: blogDetails.content }}
             />
           </div>
-          {/* Renderizar embeddedElement */}
+          {blogDetails.autor && (
+            <p className="italic text-gray-600">{blogDetails.autor}</p>
+          )}
           {blogDetails.embeddedElement && (
             <div
               className="embedded-element mt-8"
