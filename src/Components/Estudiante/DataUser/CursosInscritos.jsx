@@ -63,7 +63,7 @@ export default function CursosInscritos() {
   return (
     <div className="px-4 md:px-20 lg:px-40 py-8">
       <div className="mb-8 flex flex-col items-center justify-center">
-        <h2 className="text-2xl font-bold text-gray-700">Cursos y Niveles Inscritos</h2>
+        <h2 className="text-2xl font-bold text-gray-700">Cursos Inscritos</h2>
       </div>
 
       <div className="font-normal text-center md:text-left">
