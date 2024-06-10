@@ -42,7 +42,7 @@ const Informacion = () => {
 
   return (
     <div className="absolute top-0 left-0 mt-28 ml-96 p-4">
-      <h1 className="text-2xl font-bold mb-4">Lista de Información</h1>
+      <h1 className="text-2xl font-bold mb-4 text-gray-800">Lista de Información</h1>
       <button
         onClick={() => setModalIsOpen(true)}
         className="bg-blue-500 text-white py-2 px-4 rounded-lg mb-4"

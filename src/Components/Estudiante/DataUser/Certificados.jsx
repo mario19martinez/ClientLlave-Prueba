@@ -30,7 +30,7 @@ export default function Certificados() {
           const response = await axios.get(
             `/certificadosCurso/usuario/${userData.sub}`
           );
-          console.log("Datos de certificados:", response.data);
+          //console.log("Datos de certificados:", response.data);
           setCertificados(response.data);
         } catch (error) {
           console.error("Error fetching certificates:", error);

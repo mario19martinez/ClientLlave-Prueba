@@ -25,7 +25,7 @@ const UploadWidget = ({ onImageUpload }) => {
           }
           setImagePreview(result.info.secure_url);
         }
-        console.log(result);
+        //console.log(result);
       }
     );
   }, [onImageUpload, cloundName, uploadPreset]);

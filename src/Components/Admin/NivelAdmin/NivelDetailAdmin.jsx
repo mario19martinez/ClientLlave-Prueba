@@ -8,8 +8,6 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import GroupsIcon from '@mui/icons-material/Groups';
 import NivelEdit from "./NivelEdit";
 import ModuloAdmin from "../ModuloAdmin/ModuloAdmin";
-import AddUserNivel from "./AddUserNivel/AddUserNivel";
-import UserNivelList from "./AddUserNivel/UserNivelList";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 function NivelDetailAdmin() {
@@ -17,8 +15,6 @@ function NivelDetailAdmin() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [showUserModal, setShowUserModal] = useState(false);
-  const [showUserList] = useState(false);
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -61,10 +57,6 @@ function NivelDetailAdmin() {
 
   const handleCloseModal = () => {
     setShowModal(false);
-  };
-
-  const handleCloseUserModal = () => {
-    setShowUserModal(false);
   };
 
   const handleNavigateToGrupos = () => {
@@ -131,12 +123,6 @@ function NivelDetailAdmin() {
           </div>
         )}
       </div>
-      {showUserList && (
-        <div>
-          <h2>Usuarios Inscritos al Nivel</h2>
-          <UserNivelList nivelId={id} />
-        </div>
-      )}
       <div>
         <ModuloAdmin nivelId={id} />
       </div>
@@ -158,24 +144,7 @@ function NivelDetailAdmin() {
           </button>
         </div>
       </Modal>
-      <Modal
-        isOpen={showUserModal}
-        onRequestClose={handleCloseUserModal}
-        className="modal"
-        contentLabel="Agregar Usuario al Nivel"
-        shouldCloseOnOverlayClick={true}
-        shouldCloseOnEsc={true}
-      >
-        <div className="modal-content p-2 w-2/5 h-screen mx-auto rounded-lg shadow-lg">
-          <AddUserNivel nivelId={id} onUserAdded={handleCloseUserModal} />
-          <button
-            onClick={handleCloseUserModal}
-            className="absolute top-1 right-1 hover:text-red-400 text-gray-500 rounded-full"
-          >
-            <CancelIcon fontSize="large" />
-          </button>
-        </div>
-      </Modal>
+     
     </div>
   );
 }

@@ -17,7 +17,6 @@ function Clases() {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPageBeforeEdit, setCurrentPageBeforeEdit] = useState(1); 
   const navigate = useNavigate();
-  console.log(loading);
 
   const clasesPerPage = 10; 
   const maxPagesToShow = 5; 
@@ -26,11 +25,9 @@ function Clases() {
     const fetchClases = async () => {
       try {
         const response = await axios.get(`/cursos/${id}/clases`);
-        console.log("response", response);
         const sortedClases = response.data.sort((a, b) => a.id - b.id);
         if (response.status === 200) {
-          const data = await response.data;
-          console.log(data);
+           await response.data;
           setClases(sortedClases); 
         } else {
           throw new Error("Curso no encontrado");
