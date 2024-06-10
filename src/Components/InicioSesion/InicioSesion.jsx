@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
@@ -9,12 +9,15 @@ import {
   getUserData,
 } from "../../Redux/features/Users/usersSlice";
 import PropTypes from "prop-types";
+import { FaEnvelope, FaLock } from "react-icons/fa";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner"; 
 
 LoginForm.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
 export default function LoginForm({ onClose }) {
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { VITE_ADMIN_EMAIL, VITE_ADMIN_PASSWORD } = import.meta.env;
@@ -37,6 +40,7 @@ export default function LoginForm({ onClose }) {
     },
     validationSchema,
     onSubmit: async (values) => {
+      setIsLoading(true); // Mostrar spinner de carga
       try {
         const userDataResponse = await dispatch(getUserData(values.email));
         const userRole = userDataResponse.payload?.rol || "";
@@ -52,7 +56,6 @@ export default function LoginForm({ onClose }) {
           localStorage.setItem("SuperAdmin", "true");
           localStorage.setItem("userRole", "SuperAdmin");
           navigate("/admin");
-
         } else if (userRole === "admin") {
           // Iniciar sesión para el rol de administrador
           const token = await dispatch(loginUser(values)).unwrap();
@@ -61,7 +64,6 @@ export default function LoginForm({ onClose }) {
           localStorage.setItem("email", values.email);
           localStorage.setItem("userRole", userRole);
           navigate("/admin");
-
         } else if (userRole === "editor") {
           // Iniciar sesión para el rol de editor
           const token = await dispatch(loginUser(values)).unwrap();
@@ -70,7 +72,6 @@ export default function LoginForm({ onClose }) {
           localStorage.setItem("email", values.email);
           localStorage.setItem("userRole", userRole);
           navigate("/Editor");
-
         } else {
           // Iniciar sesión para otros roles (asumiendo "client")
           const token = await dispatch(loginUser(values)).unwrap();
@@ -79,7 +80,6 @@ export default function LoginForm({ onClose }) {
           localStorage.setItem("email", values.email);
           localStorage.setItem("userRole", userRole);
           navigate("/estudiante/Escritorio");
-          //navigate("/estudiante/cursosInscritos");
           onClose(); // Cerrar el formulario después del inicio de sesión
         }
 
@@ -95,63 +95,76 @@ export default function LoginForm({ onClose }) {
           formik.setFieldError("email", "Credenciales incorrectas");
           formik.setFieldError("password", "Credenciales incorrectas");
         }
+      } finally {
+        setIsLoading(false); // Ocultar spinner de carga
       }
     },
   });
 
   return (
-    <div className="bg-blue-900 rounded-lg p-6 relative">
-      <button
-        className="absolute top-2 right-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-        onClick={onClose}
-      >
-        X
-      </button>
-      <h2 className="text-2xl font-semibold text-white mb-4">Iniciar Sesión</h2>
-      <h4 className="text-white text-lg mb-2">¡Hola, bienvenido de nuevo!</h4>
-      <form onSubmit={formik.handleSubmit}>
-        <div className="mb-3">
-          <label className="text-white block">Correo electronico:</label>
-          <input
-            className="w-full p-2 rounded-md bg-blue-600 text-white"
-            type="email"
-            name="email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.email && formik.errors.email ? (
-            <p className="text-red-500 mt-1">{formik.errors.email}</p>
-          ) : null}
-        </div>
-        <div className="mb-3">
-          <label className="text-white block">Contraseña:</label>
-          <input
-            className="w-full p-2 rounded-md bg-blue-600 text-white"
-            type="password"
-            name="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.password && formik.errors.password ? (
-            <p className="text-red-500 mt-1">{formik.errors.password}</p>
-          ) : null}
-        </div>
-        <p className="text-white mb-2">¿Olvidaste tu contraseña?</p>
+    <>
+      {isLoading && <LoadingSpinner />}
+      <div className="bg-blue-900 rounded-lg p-8 relative shadow-lg">
         <button
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-          type="submit"
+          className="absolute top-2 right-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300"
+          onClick={onClose}
         >
-          Acceder
+          X
         </button>
-      </form>
-      <p className="text-white mt-2">
-        ¿No tienes una cuenta?{" "}
-        <a href="#" className="text-blue-300">
-          Regístrate ahora
-        </a>
-      </p>
-    </div>
+        <h2 className="text-3xl font-semibold text-white mb-4">Iniciar Sesión</h2>
+        <h4 className="text-white text-lg mb-6">¡Hola, bienvenido de nuevo!</h4>
+        <form onSubmit={formik.handleSubmit} className="space-y-4">
+          <div className="relative">
+            <label className="text-white block mb-1">Correo electrónico:</label>
+            <div className="flex items-center bg-blue-600 rounded-md p-2">
+              <FaEnvelope className="text-white mr-2" />
+              <input
+                className="w-full bg-transparent text-white focus:outline-none"
+                type="email"
+                name="email"
+                placeholder="Ingresa tu correo"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+            {formik.touched.email && formik.errors.email ? (
+              <p className="text-red-500 mt-1">{formik.errors.email}</p>
+            ) : null}
+          </div>
+          <div className="relative">
+            <label className="text-white block mb-1">Contraseña:</label>
+            <div className="flex items-center bg-blue-600 rounded-md p-2">
+              <FaLock className="text-white mr-2" />
+              <input
+                className="w-full bg-transparent text-white focus:outline-none"
+                type="password"
+                name="password"
+                placeholder="Ingresa tu contraseña"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+            {formik.touched.password && formik.errors.password ? (
+              <p className="text-red-500 mt-1">{formik.errors.password}</p>
+            ) : null}
+          </div>
+          <p className="text-white mb-4">¿Olvidaste tu contraseña?</p>
+          <button
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+            type="submit"
+          >
+            Acceder
+          </button>
+        </form>
+        <p className="text-white mt-4">
+          ¿No tienes una cuenta?{" "}
+          <a href="#" className="text-blue-300 hover:underline">
+            Regístrate ahora
+          </a>
+        </p>
+      </div>
+    </>
   );
 }

@@ -12,21 +12,22 @@ import {
 import { toast } from "react-toastify";
 import HomeIcon from "@mui/icons-material/Home";
 import fondo from "../../assets/apostol_profeta.jpg";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner"; 
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { VITE_ADMIN_EMAIL, VITE_ADMIN_PASSWORD } = import.meta.env;
 
-  const [showModal, setShowModal] = useState(false); // Estado para controlar la visibilidad del modal
+  const [showModal, setShowModal] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false); 
 
   useEffect(() => {
     dispatch(clearRegistrationStatus());
     const isNewUser = localStorage.getItem("NewUser");
-    console.log("Es nuevo usuario ? ", isNewUser);
     if (isNewUser === "true") {
-      setShowModal(true); // Mostrar el modal si NewUser es true
-      localStorage.removeItem("NewUser"); // Limpiar el valor de NewUser después de mostrar el modal
+      setShowModal(true); 
+      localStorage.removeItem("NewUser"); 
     }
   }, [dispatch]);
 
@@ -48,11 +49,12 @@ export default function Login() {
     },
     validationSchema,
     onSubmit: async (values) => {
+      setIsLoading(true); // Mostrar spinner de carga
       try {
         const userDataResponse = await dispatch(getUserData(values.email));
         const userRole = userDataResponse.payload?.rol || "";
 
-        let isLoggedIn = "false"; // Inicializamos como no autenticado
+        let isLoggedIn = "false"; 
 
         if (
           values.email === VITE_ADMIN_EMAIL &&
@@ -63,7 +65,6 @@ export default function Login() {
           localStorage.setItem("SuperAdmin", "true");
           localStorage.setItem("userRole", "SuperAdmin");
           navigate("/admin");
-
         } else if (userRole === "admin") {
           // Iniciar sesión para el rol de administrador
           const token = await dispatch(loginUser(values)).unwrap();
@@ -72,7 +73,6 @@ export default function Login() {
           localStorage.setItem("email", values.email);
           localStorage.setItem("userRole", userRole);
           navigate("/admin");
-        
         } else if (userRole === "editor") {
           // Iniciar sesión para el rol de administrador
           const token = await dispatch(loginUser(values)).unwrap();
@@ -81,8 +81,7 @@ export default function Login() {
           localStorage.setItem("email", values.email);
           localStorage.setItem("userRole", userRole);
           navigate("/Editor");
-        
-        }else {
+        } else {
           // Iniciar sesión para otros roles (asumiendo "client")
           const token = await dispatch(loginUser(values)).unwrap();
           isLoggedIn = "true";
@@ -90,7 +89,6 @@ export default function Login() {
           localStorage.setItem("email", values.email);
           localStorage.setItem("userRole", userRole);
           navigate("/estudiante/Escritorio");
-          //navigate("/estudiante/cursosInscritos");
         }
 
         // Actualizamos el estado de isLoggedIn después de la autenticación
@@ -105,6 +103,8 @@ export default function Login() {
           pauseOnHover: false,
           theme: "colored",
         });
+      } finally {
+        setIsLoading(false); // Ocultar spinner de carga
       }
     },
   });
@@ -121,7 +121,7 @@ export default function Login() {
     <div
       className="min-h-screen bg-cover bg-center relative"
       style={{
-        backgroundImage: `url(${fondo})`, 
+        backgroundImage: `url(${fondo})`,
       }}
     >
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
@@ -143,6 +143,7 @@ export default function Login() {
             </div>
           </div>
         )}
+        {isLoading && <LoadingSpinner />}
         <div className="flex justify-start py-3">
           <button
             onClick={handleGoBack}
