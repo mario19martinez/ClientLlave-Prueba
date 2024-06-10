@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import YouTubeIcon from "@mui/icons-material/YouTube";
@@ -39,7 +38,7 @@ export default function ContadorTransmision() {
     let interval;
     if (transmision && !eventoActivo) {
       interval = setInterval(() => {
-        setAnimating(true); // Inicia la animación
+        setAnimating(true); 
         const diferencia = new Date(transmision.fechaTransmision) - new Date();
         if (diferencia > 0) {
           setTiempoRestante({
@@ -54,7 +53,7 @@ export default function ContadorTransmision() {
           clearInterval(interval);
           setEventoActivo(true);
         }
-        setAnimating(false); // Finaliza la animación después de actualizar el tiempo
+        setAnimating(false); 
       }, 1000);
     }
 
