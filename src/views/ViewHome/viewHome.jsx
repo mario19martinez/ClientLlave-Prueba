@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
 import Nav from "../../Components/Nav/Nav";
 import LandingPage from "../../Components/LandingPage/LandingPage";
 import ComponentesProfeticos from "../../Components/LandingPage/Profetico/ComponenteProfetico";
