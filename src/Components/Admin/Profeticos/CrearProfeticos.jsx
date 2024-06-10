@@ -73,14 +73,14 @@ const CrearProfeticos = () => {
         opciones: pregunta.opciones,
         respuestaCorrecta: pregunta.respuestaCorrecta,
       }));
-      console.log("Datos enviados al backend:", {
-        titulo,
-        descripcion,
-        video: videoID,
-        contenido,
-        tipo,
-        preguntas: preguntasFormateadas,
-      });
+      // console.log("Datos enviados al backend:", {
+      //   titulo,
+      //   descripcion,
+      //   video: videoID,
+      //   contenido,
+      //   tipo,
+      //   preguntas: preguntasFormateadas,
+      // });
 
       await axios.post("/profeticos", {
         titulo,

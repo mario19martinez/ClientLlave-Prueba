@@ -40,7 +40,7 @@ function ModuloDetailUser() {
         const { grupo, modulo } = response.data;
         setGrupo(grupo);
         setModulo(modulo);
-        console.log('modulo:', response)
+        //console.log('modulo:', response)
       } catch (error) {
         console.error(
           "Error al obtener los detalles del modulo y las clases:",
@@ -69,7 +69,7 @@ function ModuloDetailUser() {
           respuesta: respuestas[index] || "",
         })
       );
-      const response = await axios.post(
+       await axios.post(
         "/modulo/responder",
         {
           userSub: userSub,
@@ -83,7 +83,7 @@ function ModuloDetailUser() {
         }
       );
 
-      console.log("Respuestas enviadas:", response.data);
+      //console.log("Respuestas enviadas:", response.data);
     } catch (error) {
       console.error("Error al enviar respuestas:", error);
     }

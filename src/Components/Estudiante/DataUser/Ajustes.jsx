@@ -123,12 +123,10 @@ function Ajustes() {
       ...usuario,
       contraseña: contrasena,
     };
-    console.log(usuarioActualizado);
 
     //dispatch(updateUser({ id: userData.identificacion, userData: usuarioActualizado }));
     //window.location.reload();
-    const response = await dispatch(updateUser({ id: userData.identificacion, userData: usuarioActualizado }));
-    console.log("Respuesta del servidor:", response);
+    await dispatch(updateUser({ id: userData.identificacion, userData: usuarioActualizado }));
 
     // Agregamos un retraso de un segundo antes de recargar la pagina
     setTimeout(() => {

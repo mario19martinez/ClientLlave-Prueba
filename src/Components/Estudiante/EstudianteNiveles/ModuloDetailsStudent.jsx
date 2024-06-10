@@ -46,7 +46,7 @@ function ModuloDetailsStudent() {
         const moduloData = moduloResponse.data.modulo;
         setModulo(moduloData);
         setLoading(false);
-        console.log("Modulo data:", moduloData); // Log del módulo completo
+        //console.log("Modulo data:", moduloData); // Log del módulo completo
         if (moduloData.preguntas) {
           console.log("Preguntas del módulo:", moduloData.preguntas); // Log de las preguntas
         }

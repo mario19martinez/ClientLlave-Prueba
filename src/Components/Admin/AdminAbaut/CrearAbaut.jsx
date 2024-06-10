@@ -14,11 +14,10 @@ const CrearAbout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/about', {
+      await axios.post('/about', {
         titulo,
         content,
       });
-      console.log('Nuevo About creado:', response.data);
       setTitulo('');
       setContent('');
       toast.success('Agregando nuevo elemento a Nosotros...', {
