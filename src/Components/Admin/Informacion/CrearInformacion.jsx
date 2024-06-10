@@ -11,8 +11,7 @@ const CrearInformacion = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("/informacion", { titulo, content });
-      console.log("Información creada:", response.data);
+       await axios.post("/informacion", { titulo, content });
       // Limpiar el formulario después de crear la información
       setTitulo("");
       setContent("");
@@ -25,7 +24,7 @@ const CrearInformacion = () => {
 
   return (
     <div className="container mx-auto mt-8">
-      <h1 className="text-2xl font-bold mb-4">Crear Nueva Información</h1>
+      <h1 className="text-2xl font-bold mb-4 text-white">Crear Nueva Información</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="titulo" className="block text-white font-bold mb-2">Título:</label>
@@ -51,7 +50,7 @@ const CrearInformacion = () => {
         </div>
         <button
           type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed font-bold"
+          className="bg-blue-500 hover:bg-blue-800 text-white py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed font-bold"
           disabled={loading}
         >
           {loading ? "Creando..." : "Crear"}

@@ -61,10 +61,10 @@ const Adminvideo = () => {
 
   return (
     <div className="absolute top-0 left-0 mt-28 ml-96 p-4">
-      <h2 className="text-xl font-bold mb-4">Videos</h2>
+      <h2 className="text-xl font-bold mb-4 text-gray-800">Videos</h2>
       <button
         onClick={() => setShowModal(true)}
-        className="bg-blue-500 text-white py-2 px-4 rounded flex items-center hover:bg-blue-600"
+        className="bg-blue-500 text-white py-2 px-4 rounded flex items-center hover:bg-blue-600 font-semibold"
       >
         <AddIcon /> Subir Video
       </button>
@@ -82,7 +82,7 @@ const Adminvideo = () => {
               key={video.id}
               className="border border-gray-200 rounded-lg p-4 mb-4"
             >
-              <h3 className="text-lg font-semibold">{video.titulo}</h3>
+              <h3 className="text-lg font-semibold text-gray-800">{video.titulo}</h3>
               <iframe
                 title="url"
                 style={{
@@ -96,7 +96,7 @@ const Adminvideo = () => {
                 allowFullScreen
               ></iframe>
               <button
-                className="bg-red-500 text-white py-2 px-4 rounded mt-2"
+                className="bg-red-500 hover:bg-white text-white hover:text-red-500 py-2 px-4 rounded mt-2"
                 onClick={() => handleDeleteVideo(video.id)}
               >
                 <DeleteForeverIcon />

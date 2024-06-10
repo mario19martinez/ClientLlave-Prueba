@@ -91,33 +91,33 @@ function Grupos() {
         </div>
       </Modal>
       {groupedGrupos.map((row, rowIndex) => (
-  <div key={rowIndex} className="flex justify-between mb-4 translate-y-4">
-    {row.map((grupo) => (
-      <div key={grupo.id} className="flex flex-col items-center">
-        <Link
-          to={`/niveles/${id}/grupos/${grupo.id}`}
-          className="bg-gray-100 w-40 h-56 rounded-md border-b-4 border-blue-600 hover:border-blue-800 transition-transform ease-in-out duration-300 hover:translate-y-2 flex flex-col justify-center items-center"
-        >
-          <img
-            src={grupo.image}
-            alt={grupo.name}
-            className="w-40 h-auto mb-2" // Ajustar tamaño de imagen
-          />
-          <p className="text-gray-700 font-hammersmithOne p-2 text-center">
-            {grupo.name}
-          </p>
-          <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-800 transition-transform ease-in-out duration-300 hover:translate-y-1 mt-0">
-            Ver Grupo
-          </button>
-        </Link>
-      </div>
-    ))}
-    {/* Asegurarse de que haya suficientes espacios vacíos para mantener la distribución */}
-    {[...Array(3 - row.length)].map((_, index) => (
-      <div key={index} className="w-40"></div>
-    ))}
-  </div>
-))}
+        <div key={rowIndex} className="flex justify-between mb-4 translate-y-4">
+          {row.map((grupo) => (
+            <div key={grupo.id} className="flex flex-col items-center">
+              <Link
+                to={`/niveles/${id}/grupos/${grupo.id}`}
+                className="bg-gray-100 w-40 h-56 rounded-md border-b-4 border-blue-600 hover:border-blue-800 transition-transform ease-in-out duration-300 hover:translate-y-2 flex flex-col justify-center items-center"
+              >
+                <img
+                  src={grupo.image}
+                  alt={grupo.name}
+                  className="w-40 h-auto mb-2" // Ajustar tamaño de imagen
+                />
+                <p className="text-gray-700 font-hammersmithOne p-2 text-center">
+                  {grupo.name}
+                </p>
+                <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-800 transition-transform ease-in-out duration-300 hover:translate-y-1 mt-0">
+                  Ver Grupo
+                </button>
+              </Link>
+            </div>
+          ))}
+          {/* Asegurarse de que haya suficientes espacios vacíos para mantener la distribución */}
+          {[...Array(3 - row.length)].map((_, index) => (
+            <div key={index} className="w-40"></div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 }

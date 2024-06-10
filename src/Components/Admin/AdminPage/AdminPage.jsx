@@ -20,11 +20,11 @@ export default function AdminPage() {
 
   return (
     <div className="py-10 px-32 flex flex-col items-center">
-      <h1 className="text-3xl font-bold mb-6">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">
         Funcionalidades y elementos de la página principal
       </h1>
       <div>
-        <h2 className="text-xl font-semibold mb-4">Secciones a editar</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">Secciones a editar</h2>
         <div className="flex flex-col gap-6">
           <button
             onClick={handleNavigate("/admin/Egresados")}

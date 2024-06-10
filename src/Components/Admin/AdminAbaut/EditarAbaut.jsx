@@ -29,7 +29,6 @@ const EditarAbout = ({ id }) => {
   const handleUpdateAbout = async () => {
     try {
       await axios.put(`/about/${id}`, { titulo, content });
-      console.log("Contenido 'About' actualizado correctamente");
       navigate("/Admin/Nosotros");
     } catch (error) {
       console.error("Error updating About content:", error);

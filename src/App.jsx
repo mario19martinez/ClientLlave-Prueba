@@ -111,6 +111,7 @@ import ModuloEditAdmin from "./Components/Admin/ModuloAdmin/ModuloEditAdmin";
 import AgregarCurso from "./Components/Admin/Cursos/AgregarCurso";
 import UserDetail from "./Components/Admin/UserDetail/UserDetail";
 import AgregarClases from "./Components/Admin/Clases/AgregarClases";
+import ViewRegistroActividad from "./views/ViewAdmin/ViewRegistroActividad/ViewRegistroActividad";
 
 //imports editor
 import ViewEscritorioEditor from "./views/ViewEditor/ViewEscritorioEditor";
@@ -222,6 +223,7 @@ function App() {
             <Route path="/admin/seguimiento" element={isLoggedIn ? <ViewSeguimientoClases /> : <Navigate to="/login" />} />
             <Route path="/Admin/Certificado" element={isLoggedIn ? <ViewCursosCerticar /> : <Navigate to="/login" />} />
             <Route path="/Admin/Certificado/Curso/:idCurso" element={isLoggedIn ? <ViewUsersCertificados /> : <Navigate to="/login" />} />
+            <Route path="/admin/registro-actividades" element={<ViewRegistroActividad />} />
           </>
         )}
         

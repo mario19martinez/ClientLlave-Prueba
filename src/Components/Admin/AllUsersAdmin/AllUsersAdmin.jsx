@@ -226,6 +226,12 @@ function AllUsersAdmin() {
             Seguimiento
           </button>
           <button
+            onClick={() => navigate("/admin/registro-actividades")}
+            className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+          >
+            Act Niveles
+          </button>
+          <button
             onClick={() => navigate("/Admin/datos")}
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
