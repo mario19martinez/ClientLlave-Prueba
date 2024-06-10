@@ -89,9 +89,6 @@ const Publicacion = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2 cursor-pointer">
             <UploadWidget onImageUpload={handleImageUpload} />
-            <span className="text-gray-600 dark:text-gray-400">
-              Sube una imagen
-            </span>
           </div>
           <button
             onClick={handlePostPublish}

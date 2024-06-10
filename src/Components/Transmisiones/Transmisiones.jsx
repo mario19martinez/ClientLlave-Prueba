@@ -1,8 +1,7 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FiRadio } from "react-icons/fi";
 import axios from "axios";
-import { Link } from "react-router-dom"; // Importa Link para la navegación
+import { Link } from "react-router-dom"; 
 
 export default function Transmisiones() {
   const [transmisiones, setTransmisiones] = useState([]);
@@ -49,7 +48,7 @@ export default function Transmisiones() {
       <div className="py-5 px-16 grid grid-cols-1 md:grid-cols-3 gap-4">
         {currentTransmisiones.map((transmision) => (
           <Link
-            to={`/transmisionDetails/${transmision.id}`} // Envía el ID de la transmisión en la URL
+            to={`/transmisionDetails/${transmision.id}`} 
             key={transmision.id}
             className="border bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden w-72"
           >
@@ -61,6 +60,7 @@ export default function Transmisiones() {
               className="w-full h-40 object-cover"
             />
             <div className="p-4">
+              <p>{transmision.createdAt}</p>
               <h3 className="text-lg font-semibold">{transmision.titulo}</h3>
               <p
                 className={`${
