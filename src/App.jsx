@@ -112,6 +112,7 @@ import AgregarCurso from "./Components/Admin/Cursos/AgregarCurso";
 import UserDetail from "./Components/Admin/UserDetail/UserDetail";
 import AgregarClases from "./Components/Admin/Clases/AgregarClases";
 import ViewRegistroActividad from "./views/ViewAdmin/ViewRegistroActividad/ViewRegistroActividad";
+//import ViewSelectedCertificado from "./views/ViewAdmin/ViewCertificacion/ViewSelectedCertificados";
 
 //imports editor
 import ViewEscritorioEditor from "./views/ViewEditor/ViewEscritorioEditor";
@@ -146,7 +147,6 @@ import ViewFormProfetico from "./views/ViewCompProfeticos/ViewFormProfetico";
 //import ViewModuloClases from "./views/ViewMenuStudent/ViewsLevels/ViewModuloClases";
 
 import axios from "axios";
-import ViewSelectedCertificado from "./views/ViewAdmin/ViewCertificacion/ViewSelectedCertificados";
 
 //axios.defaults.baseURL = "http://localhost:3001";
 axios.defaults.baseURL = "https://apillave-ebd57605aa78.herokuapp.com/";  
@@ -225,7 +225,7 @@ function App() {
             <Route path="/Admin/Certificado" element={isLoggedIn ? <ViewCursosCerticar /> : <Navigate to="/login" />} />
             <Route path="/Admin/Certificado/Curso/:idCurso" element={isLoggedIn ? <ViewUsersCertificados /> : <Navigate to="/login" />} />
             <Route path="/admin/registro-actividades" element={<ViewRegistroActividad />} />
-            <Route path="/admin/selectedCertificado" element={isLoggedIn? <ViewSelectedCertificado /> : <Navigate to="/login" />} />
+            {/*<Route path="/admin/selectedCertificado" element={isLoggedIn? <ViewSelectedCertificado /> : <Navigate to="/login" />} />*/}
           </>
         )}
         
