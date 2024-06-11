@@ -112,6 +112,7 @@ import AgregarCurso from "./Components/Admin/Cursos/AgregarCurso";
 import UserDetail from "./Components/Admin/UserDetail/UserDetail";
 import AgregarClases from "./Components/Admin/Clases/AgregarClases";
 import ViewRegistroActividad from "./views/ViewAdmin/ViewRegistroActividad/ViewRegistroActividad";
+//import ViewSelectedCertificado from "./views/ViewAdmin/ViewCertificacion/ViewSelectedCertificados";
 
 //imports editor
 import ViewEscritorioEditor from "./views/ViewEditor/ViewEscritorioEditor";
@@ -137,7 +138,7 @@ import AgregarAmigo from "./Components/Comunidad/AgregarAmigo/AgregarAmigo";
 import ViewChat from "./views/ViewComunidad/chat/ViewChat";
 import ViewClasesUser from "./views/ViewCursoUser/ViewCursoUser";
 import Viewdetailsentrenamiento from "./views/Viewdetailsentrenamiento/Viewdetailsentrenamiento";
-//import ViewFormProfetico from "./views/ViewCompProfeticos/ViewFormProfetico";
+import ViewFormProfetico from "./views/ViewCompProfeticos/ViewFormProfetico";
 
 //import Cursos from "./Components/Admin/Cursos/Cursos";
 //import Entrenamiento from "./Components/Entrenamiento/Entrenamiento";
@@ -146,7 +147,6 @@ import Viewdetailsentrenamiento from "./views/Viewdetailsentrenamiento/Viewdetai
 //import ViewModuloClases from "./views/ViewMenuStudent/ViewsLevels/ViewModuloClases";
 
 import axios from "axios";
-import ViewSelectedCertificado from "./views/ViewAdmin/ViewCertificacion/ViewSelectedCertificados";
 
 axios.defaults.baseURL = "http://localhost:3001";
 //axios.defaults.baseURL = "https://apillave-ebd57605aa78.herokuapp.com/";  
@@ -225,7 +225,7 @@ function App() {
             <Route path="/Admin/Certificado" element={isLoggedIn ? <ViewCursosCerticar /> : <Navigate to="/login" />} />
             <Route path="/Admin/Certificado/Curso/:idCurso" element={isLoggedIn ? <ViewUsersCertificados /> : <Navigate to="/login" />} />
             <Route path="/admin/registro-actividades" element={<ViewRegistroActividad />} />
-            <Route path="/admin/selectedCertificado" element={isLoggedIn? <ViewSelectedCertificado /> : <Navigate to="/login" />} />
+            {/*<Route path="/admin/selectedCertificado" element={isLoggedIn? <ViewSelectedCertificado /> : <Navigate to="/login" />} />*/}
           </>
         )}
         
@@ -281,7 +281,7 @@ function App() {
         <Route path="/Comunidad/users" element={<UserList users={userData} />} />
         <Route path="/message" element={<Message />} />
         <Route path="/agregarAmigo" element={<AgregarAmigo />} />
-        {/*<Route path="/CrearProfetico" element={<ViewFormProfetico />} />*/}
+        <Route path="/CrearProfetico" element={<ViewFormProfetico />} />
         <Route path="/chat-users" element={<ViewChat />} />
         <Route path="/user/curso/:id" element={<ViewClasesUser />} />
         <Route path="/my-posts" element={<ViewMyPost />} />
