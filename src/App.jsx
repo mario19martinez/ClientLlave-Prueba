@@ -9,7 +9,7 @@ import {
 import ViewHome from "./views/ViewHome/viewHome";
 import ViewAbaut from "./views/ViewAbaut/ViewAbaut";
 import ViewBlog from "./views/ViewBlogs/ViewBlog";
-//import ViewBlogs from "./views/ViewBlogs/ViewBlogs";
+import ViewBlogs from "./views/ViewBlogs/ViewBlogs";
 import Error404 from "./Components/Error404/Error404";
 import ViewLogin from "./views/ViewLogin/ViewLogin";
 import ViewRegistro from "./views/ViewRigistro/ViewRegistro";
@@ -252,7 +252,7 @@ function App() {
         <Route path="/FormObsequio" element={<ViewFormObsequio />} />
         <Route path="/PoliticasPrivacidad" element={<ViewPoliticas />} />
         <Route path="/Nosotros" element={<ViewAbaut />} />
-        {/*<Route path="/blogs" element={<ViewBlogs />} />*/}
+        <Route path="/blogs" element={<ViewBlogs />} />
         <Route path="/blog/:blogId" element={<ViewBlog />} />
         <Route path="/error" element={<Error404 />} />
         <Route path="/Error404" element={<ViewErrorPaginaConstruccion />} />
