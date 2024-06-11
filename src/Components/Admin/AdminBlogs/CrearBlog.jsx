@@ -123,6 +123,19 @@ const CrearBlog = () => {
             className="w-full p-3 border rounded-md focus:outline-none focus:border-blue-400 bg-white"
             rows="4"
           />
+          {/* Previsualización del elemento incrustado de Soundcloud */}
+          <div className="mt-4">
+            <h2>Previsualización:</h2>
+            <iframe
+              title="Embedded Soundcloud"
+              width="100%"
+              height="300"
+              scrolling="no"
+              frameBorder="no"
+              allow="autoplay"
+              src={formData.embeddedElement}
+            />
+          </div>
         </div>
 
         <div>
@@ -135,7 +148,9 @@ const CrearBlog = () => {
             required
           >
             <option value="">Selecciona un autor</option>
-            <option value="Profeta Petra Montecino">Profeta Petra Montecino </option>
+            <option value="Profeta Petra Montecino">
+              Profeta Petra Montecino{" "}
+            </option>
             <option value="Apóstol Diego Rullier">Apóstol Diego Rullier</option>
           </select>
         </div>
@@ -157,9 +172,9 @@ const CrearBlog = () => {
             type="button"
             className="bg-gray-500 text-white py-3 px-6 rounded-md mr-4 hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
             onClick={(e) => {
-              e.preventDefault(); 
+              e.preventDefault();
               setFormData({ ...formData, estado: "borrador" });
-              handleSubmit(e); 
+              handleSubmit(e);
             }}
           >
             Guardar Borrador
@@ -168,9 +183,9 @@ const CrearBlog = () => {
             type="button"
             className="bg-blue-500 text-white py-3 px-6 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
             onClick={(e) => {
-              e.preventDefault(); 
+              e.preventDefault();
               setFormData({ ...formData, estado: "publicado" });
-              handleSubmit(e); 
+              handleSubmit(e);
             }}
           >
             Publicar Blog
