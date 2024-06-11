@@ -153,6 +153,11 @@ const EditarBlog = ({ blogId }) => {
           className="w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
           rows="3"
         />
+        {/* Aquí puedes mostrar la previsualización del elemento incrustado */}
+        <div className="mt-4">
+          <h2>Previsualización del incrustado:</h2>
+          <div dangerouslySetInnerHTML={{ __html: blog.embeddedElement }} />
+        </div>
       </div>
       <div>
         <label className="block text-gray-800 mb-1">Autor:</label>
@@ -164,7 +169,9 @@ const EditarBlog = ({ blogId }) => {
           required
         >
           <option value="">Selecciona un autor</option>
-          <option value="Profeta Petra Montecino">Profeta Petra Montecino </option>
+          <option value="Profeta Petra Montecino">
+            Profeta Petra Montecino{" "}
+          </option>
           <option value="Apóstol Diego Rullier">Apóstol Diego Rullier</option>
         </select>
       </div>
