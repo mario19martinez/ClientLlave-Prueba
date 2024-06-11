@@ -9,7 +9,7 @@ import {
 import ViewHome from "./views/ViewHome/viewHome";
 import ViewAbaut from "./views/ViewAbaut/ViewAbaut";
 import ViewBlog from "./views/ViewBlogs/ViewBlog";
-import ViewBlogs from "./views/ViewBlogs/ViewBlogs";
+//import ViewBlogs from "./views/ViewBlogs/ViewBlogs";
 import Error404 from "./Components/Error404/Error404";
 import ViewLogin from "./views/ViewLogin/ViewLogin";
 import ViewRegistro from "./views/ViewRigistro/ViewRegistro";
@@ -146,6 +146,7 @@ import ViewFormProfetico from "./views/ViewCompProfeticos/ViewFormProfetico";
 //import ViewModuloClases from "./views/ViewMenuStudent/ViewsLevels/ViewModuloClases";
 
 import axios from "axios";
+import ViewSelectedCertificado from "./views/ViewAdmin/ViewCertificacion/ViewSelectedCertificados";
 
 //axios.defaults.baseURL = "http://localhost:3001";
 axios.defaults.baseURL = "https://apillave-ebd57605aa78.herokuapp.com/";  
@@ -224,6 +225,7 @@ function App() {
             <Route path="/Admin/Certificado" element={isLoggedIn ? <ViewCursosCerticar /> : <Navigate to="/login" />} />
             <Route path="/Admin/Certificado/Curso/:idCurso" element={isLoggedIn ? <ViewUsersCertificados /> : <Navigate to="/login" />} />
             <Route path="/admin/registro-actividades" element={<ViewRegistroActividad />} />
+            <Route path="/admin/selectedCertificado" element={isLoggedIn? <ViewSelectedCertificado /> : <Navigate to="/login" />} />
           </>
         )}
         
@@ -250,7 +252,7 @@ function App() {
         <Route path="/FormObsequio" element={<ViewFormObsequio />} />
         <Route path="/PoliticasPrivacidad" element={<ViewPoliticas />} />
         <Route path="/Nosotros" element={<ViewAbaut />} />
-        <Route path="/blogs" element={<ViewBlogs />} />
+        {/*<Route path="/blogs" element={<ViewBlogs />} />*/}
         <Route path="/blog/:blogId" element={<ViewBlog />} />
         <Route path="/error" element={<Error404 />} />
         <Route path="/Error404" element={<ViewErrorPaginaConstruccion />} />

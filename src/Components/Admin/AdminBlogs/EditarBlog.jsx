@@ -154,6 +154,32 @@ const EditarBlog = ({ blogId }) => {
           rows="3"
         />
       </div>
+      <div>
+        <label className="block text-gray-800 mb-1">Autor:</label>
+        <select
+          name="autor"
+          value={blog.autor}
+          onChange={(e) => handleInputChange("autor", e.target.value)}
+          className="w-full p-3 border rounded-md focus:outline-none focus:border-blue-400 bg-white"
+          required
+        >
+          <option value="">Selecciona un autor</option>
+          <option value="Profeta Petra">Profeta Petra Montecino </option>
+          <option value="Apóstol Diego">Apóstol Diego Rullier</option>
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-gray-800 mb-1">Tempo de lectura:</label>
+        <input
+          type="text"
+          name="Lectura"
+          value={blog.Lectura}
+          onChange={(e) => handleInputChange("Lectura", e.target.value)}
+          className="w-full p-3 border rounded-md focus:outline-none focus:border-blue-400 bg-white"
+          required
+        />
+      </div>
 
       <div className="flex justify-center mb-4">
         <p className="mr-2">Estado:</p>
