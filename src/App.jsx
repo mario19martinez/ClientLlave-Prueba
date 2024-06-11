@@ -137,7 +137,7 @@ import AgregarAmigo from "./Components/Comunidad/AgregarAmigo/AgregarAmigo";
 import ViewChat from "./views/ViewComunidad/chat/ViewChat";
 import ViewClasesUser from "./views/ViewCursoUser/ViewCursoUser";
 import Viewdetailsentrenamiento from "./views/Viewdetailsentrenamiento/Viewdetailsentrenamiento";
-import ViewFormProfetico from "./views/ViewCompProfeticos/ViewFormProfetico";
+//import ViewFormProfetico from "./views/ViewCompProfeticos/ViewFormProfetico";
 
 //import Cursos from "./Components/Admin/Cursos/Cursos";
 //import Entrenamiento from "./Components/Entrenamiento/Entrenamiento";
@@ -148,8 +148,8 @@ import ViewFormProfetico from "./views/ViewCompProfeticos/ViewFormProfetico";
 import axios from "axios";
 import ViewSelectedCertificado from "./views/ViewAdmin/ViewCertificacion/ViewSelectedCertificados";
 
-//axios.defaults.baseURL = "http://localhost:3001";
-axios.defaults.baseURL = "https://apillave-ebd57605aa78.herokuapp.com/";  
+axios.defaults.baseURL = "http://localhost:3001";
+//axios.defaults.baseURL = "https://apillave-ebd57605aa78.herokuapp.com/";  
 
 const isLoggedIn = localStorage.getItem("isLoggedIn");
 const userRole = localStorage.getItem("userRole");
@@ -281,7 +281,7 @@ function App() {
         <Route path="/Comunidad/users" element={<UserList users={userData} />} />
         <Route path="/message" element={<Message />} />
         <Route path="/agregarAmigo" element={<AgregarAmigo />} />
-        <Route path="/CrearProfetico" element={<ViewFormProfetico />} />
+        {/*<Route path="/CrearProfetico" element={<ViewFormProfetico />} />*/}
         <Route path="/chat-users" element={<ViewChat />} />
         <Route path="/user/curso/:id" element={<ViewClasesUser />} />
         <Route path="/my-posts" element={<ViewMyPost />} />
