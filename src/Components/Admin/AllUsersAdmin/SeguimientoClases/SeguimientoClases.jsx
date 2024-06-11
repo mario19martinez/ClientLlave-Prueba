@@ -9,6 +9,8 @@ function SeguimientoClases() {
   const [selectedCurso, setSelectedCurso] = useState('');
   const [cursos, setCursos] = useState([])
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 20;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,6 +69,17 @@ function SeguimientoClases() {
 
     return (userMatch || cursoMatch || claseMatch) && selectedCursoMatch;
   });
+
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentSeguimientos = filteredSeguimientos.slice(indexOfFirstUser, indexOfLastUser);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(filteredSeguimientos.length / usersPerPage); i++) {
+    pageNumbers.push(i);
+  }
 
   const goBack = () => {
     navigate(-1);
@@ -131,7 +144,7 @@ function SeguimientoClases() {
             </tr>
           </thead>
           <tbody className="text-gray-700 text-sm font-mono divide-y divide-gray-200">
-            {filteredSeguimientos.map((seguimiento) => (
+            {currentSeguimientos.map((seguimiento) => (
               <tr
                 key={seguimiento.id}
                 className="border-b border-gray-200 hover:bg-gray-100"
@@ -161,6 +174,52 @@ function SeguimientoClases() {
           </tbody>
         </table>
       </div>
+      <nav className="mt-4" aria-label="Pagination">
+        <ul className="flex justify-center">
+          <li>
+            <button
+            onClick={() => setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`${
+              currentPage === 1
+              ? "bg-gray-200 text-gray-600"
+              : "bg-white hover:bg-gray-50"
+            } px-3 py-1 border border-gray-300 rounded-l-md font-medium text-sm focus:outline-none`}
+            >
+              &lt;
+              <span className="sr-only">Previous</span>
+            </button>
+          </li>
+          {pageNumbers.map((pageNumber) => (
+            <li key={pageNumber}>
+              <button
+              onClick={() => paginate(pageNumber)}
+              className={`${
+                pageNumber === currentPage
+                ? "bg-blue-500 text-white"
+                : "bg-white hover:bg-gray-50"
+              } px-3 py-1 border border-gray-300 font-medium text-sm focus:outline-none`}
+              >
+                {pageNumber}
+              </button>
+            </li>
+          ))}
+          <li>
+            <button
+            onClick={() => setCurrentPage(currentPage === pageNumbers.length ? pageNumbers.length : currentPage + 1)}
+            disabled={currentPage === pageNumbers.length}
+            className={`${
+              currentPage === pageNumbers.length
+              ? "bg-gray-200 text-gray-600"
+              : "bg-white hover:bg-gray-50"
+            } px-3 py-1 border border-gray-300 rounded-r-md font-medium text-sm focus:outline-none`}
+            >
+              &gt;
+              <span className="sr-only">Next</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 }
