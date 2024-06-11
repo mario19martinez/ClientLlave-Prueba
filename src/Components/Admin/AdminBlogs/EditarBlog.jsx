@@ -164,8 +164,8 @@ const EditarBlog = ({ blogId }) => {
           required
         >
           <option value="">Selecciona un autor</option>
-          <option value="Profeta Petra">Profeta Petra Montecino </option>
-          <option value="Apóstol Diego">Apóstol Diego Rullier</option>
+          <option value="Profeta Petra Montecino">Profeta Petra Montecino </option>
+          <option value="Apóstol Diego Rullier">Apóstol Diego Rullier</option>
         </select>
       </div>
 
