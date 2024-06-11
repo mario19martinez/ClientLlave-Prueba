@@ -6,6 +6,8 @@ function RegistroActividad() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 20;
 
   useEffect(() => {
     const fetchRegistros = async () => {
@@ -50,6 +52,17 @@ function RegistroActividad() {
     return userMatch || grupoMatch || moduloMatch || claseMatch;
   });
 
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentRegistros = filteredRegistros.slice(indexOfFirstUser, indexOfLastUser);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(filteredRegistros.length / usersPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -77,7 +90,7 @@ function RegistroActividad() {
         onChange={handleSearchChange}
         className="border-2 border-gray-400 p-2 mb-4 focus:border-blue-800 focus:outline-none rounded-lg"
       />
-      {filteredRegistros.length === 0 ? (
+      {currentRegistros.length === 0 ? (
         <p>No hay registros disponibles.</p>
       ) : (
         <div className="overflow-x-auto border border-gray-400 rounded-lg shadow-md">
@@ -136,6 +149,52 @@ function RegistroActividad() {
           </table>
         </div>
       )}
+      <nav className="mt-4" aria-label="Pagination">
+        <ul className="flex justify-center">
+          <li>
+            <button
+            onClick={() => setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`${
+              currentPage === 1
+              ? "bg-gray-200 text-gray-600"
+              : "bg-white hover:bg-gray-50"
+            } px-3 py-1 border border-gray-300 rounded-l-md font-medium text-sm focus:outline-none`}
+            >
+              &lt;
+              <span className="sr-only">Previous</span>
+            </button>
+          </li>
+          {pageNumbers.map((pageNumber) => (
+            <li key={pageNumber}>
+              <button
+              onClick={() => paginate(pageNumber)}
+              className={`${
+                pageNumber === currentPage
+                ? "bg-blue-500 text-white"
+                : "bg-white hover:bg-gray-50"
+              } px-3 py-1 border border-gray-300 font-medium text-sm focus:outline-none`}
+              >
+                {pageNumber}
+              </button>
+            </li>
+          ))}
+          <li>
+            <button
+            onClick={() => setCurrentPage(currentPage === pageNumbers.length ? pageNumbers.length : currentPage + 1)}
+            disabled={currentPage === pageNumbers.length}
+            className={`${
+              currentPage === pageNumbers.length
+              ? "bg-gray-200 text-gray-600"
+              : "bg-white hover:bg-gray-50"
+            } px-3 py-1 border border-gray-300 rounded-r-md font-medium text-sm focus:outline-none`}
+            >
+              &gt;
+              <span className="sr-only">Next</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 }
