@@ -12,8 +12,8 @@ const Blogs = () => {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get("/blogs");
-        const reversedBlogs = response.data.reverse();
-        setBlogs(reversedBlogs);
+        const sortedBlogs = response.data.sort((a, b) => b.id - a.id); // Ordenar blogs por ID descendente
+        setBlogs(sortedBlogs);
         setLoading(false);
       } catch (error) {
         console.error("Hubo un error al obtener los blogs:", error);

@@ -135,8 +135,8 @@ const CrearBlog = () => {
             required
           >
             <option value="">Selecciona un autor</option>
-            <option value="Profeta Petra">Profeta Petra</option>
-            <option value="Apóstol Diego">Apóstol Diego</option>
+            <option value="Profeta Petra">Profeta Petra Montecino </option>
+            <option value="Apóstol Diego">Apóstol Diego Rullier</option>
           </select>
         </div>
 
