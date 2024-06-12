@@ -2,24 +2,25 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
+import { FaTrashAlt } from "react-icons/fa"; // Importa el icono de eliminación
 
 function ModuloCreate({ nivelId, closeModalAndReload }) {
   const [titulo, setTitulo] = useState("");
   const [contenido, setContenido] = useState("");
   const [descripcion, setDescripcion] = useState("");
-  const [preguntas, setPreguntas] = useState([
-    { pregunta: "", opciones: ["", "", "", ""], respuestaCorrecta: "" },
-  ]);
+  const [preguntas, setPreguntas] = useState([]);
 
   const agregarPregunta = () => {
     setPreguntas([
       ...preguntas,
-      {
-        pregunta: "",
-        opciones: ["", "", "", ""],
-        respuestaCorrecta: "",
-      },
+      { tipo: "opcion_multiple", pregunta: "", opciones: ["", "", "", ""], respuestaCorrecta: "" },
     ]);
+  };
+
+  const eliminarPregunta = (index) => {
+    const newPreguntas = [...preguntas];
+    newPreguntas.splice(index, 1);
+    setPreguntas(newPreguntas);
   };
 
   const handleChangePregunta = (index, e) => {
@@ -42,15 +43,25 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
     setPreguntas(newPreguntas);
   };
 
+  const handleChangeTipo = (index, e) => {
+    const { value } = e.target;
+    const newPreguntas = [...preguntas];
+    newPreguntas[index].tipo = value;
+    newPreguntas[index].opciones = value === "opcion_multiple" ? ["", "", "", ""] : [];
+    newPreguntas[index].respuestaCorrecta = "";
+    setPreguntas(newPreguntas);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const preguntasFormateadas = preguntas.map((pregunta) => ({
+      const preguntasFormateadas = preguntas.length > 0 ? preguntas.map((pregunta) => ({
+        tipo: pregunta.tipo,
         pregunta: pregunta.pregunta,
-        opciones: pregunta.opciones.map((opcion, idx) => `${String.fromCharCode(97 + idx)}. ${opcion}`),
+        opciones: pregunta.tipo === "opcion_multiple" ? pregunta.opciones.map((opcion, idx) => `${String.fromCharCode(97 + idx)}. ${opcion}`) : undefined,
         respuestaCorrecta: pregunta.respuestaCorrecta,
-      }));
+      })) : null;
 
       await axios.post(`/nivel/${nivelId}/modulo`, {
         titulo,
@@ -62,9 +73,7 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
       setTitulo("");
       setContenido("");
       setDescripcion("");
-      setPreguntas([
-        { pregunta: "", opciones: ["", "", "", ""], respuestaCorrecta: "" },
-      ]);
+      setPreguntas([]);
       toast.success("Modulo creado exitosamente!", {
         position: "bottom-center",
         autoClose: 1500,
@@ -129,13 +138,28 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
           />
         </div>
         {preguntas.map((pregunta, index) => (
-          <div key={index} className="mb-2">
+          <div key={index} className="mb-2 border p-4 rounded-lg relative">
+            <button
+              type="button"
+              onClick={() => eliminarPregunta(index)}
+              className="absolute top-2 right-2 text-red-500 hover:text-red-700 transition duration-300"
+            >
+              <FaTrashAlt />
+            </button>
             <label
               htmlFor={`pregunta-${index}`}
               className="block text-gray-100 font-semibold mb-2"
             >
               Pregunta {index + 1}
             </label>
+            <select
+              value={pregunta.tipo}
+              onChange={(e) => handleChangeTipo(index, e)}
+              className="mb-2 border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
+            >
+              <option value="opcion_multiple">Opción Múltiple</option>
+              <option value="verdadero_falso">Verdadero/Falso</option>
+            </select>
             <input
               type="text"
               id={`pregunta-${index}`}
@@ -145,7 +169,7 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
               placeholder={`Ingrese la pregunta ${index + 1}`}
               onChange={(e) => handleChangePregunta(index, e)}
             />
-            {pregunta.opciones.map((opcion, idx) => (
+            {pregunta.tipo === "opcion_multiple" && pregunta.opciones.map((opcion, idx) => (
               <div key={idx} className="flex items-center mb-2">
                 <span className="mr-2 text-gray-100 font-semibold">
                   {String.fromCharCode(97 + idx)}.
@@ -160,24 +184,37 @@ function ModuloCreate({ nivelId, closeModalAndReload }) {
               </div>
             ))}
             <label
-              className="block text-gray-100 font-semibold  mb-2"
+              className="block text-gray-100 font-semibold mb-2"
               htmlFor={`respuesta-${index}`}
             >
               Respuesta Correcta:
             </label>
-            <select
-              id={`respuesta-${index}`}
-              className="border-2 border-gray-400 rounded-md p-2 w-full mt-2 focus:outline-none focus:border-blue-500"
-              value={pregunta.respuestaCorrecta}
-              onChange={(e) => handleChangeRespuesta(index, e)}
-            >
-              <option value="">Seleccione una respuesta</option>
-              {pregunta.opciones.map((opcion, idx) => (
-                <option key={idx} value={String.fromCharCode(97 + idx)}>
-                  {String.fromCharCode(97 + idx)}
-                </option>
-              ))}
-            </select>
+            {pregunta.tipo === "opcion_multiple" ? (
+              <select
+                id={`respuesta-${index}`}
+                className="border-2 border-gray-400 rounded-md p-2 w-full mt-2 focus:outline-none focus:border-blue-500"
+                value={pregunta.respuestaCorrecta}
+                onChange={(e) => handleChangeRespuesta(index, e)}
+              >
+                <option value="">Seleccione una respuesta</option>
+                {pregunta.opciones.map((opcion, idx) => (
+                  <option key={idx} value={String.fromCharCode(97 + idx)}>
+                    {String.fromCharCode(97 + idx)}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <select
+                id={`respuesta-${index}`}
+                className="border-2 border-gray-400 rounded-md p-2 w-full mt-2 focus:outline-none focus:border-blue-500"
+                value={pregunta.respuestaCorrecta}
+                onChange={(e) => handleChangeRespuesta(index, e)}
+              >
+                <option value="">Seleccione la respuesta</option>
+                <option value="verdadero">Verdadero</option>
+                <option value="falso">Falso</option>
+              </select>
+            )}
           </div>
         ))}
         <button

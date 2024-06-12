@@ -8,8 +8,10 @@ export default function ViewNivelAdmin() {
   return (
     <div>
       <NavAdmin />
-      <SidebarAdmin selectedTab={selectedTab} />
-      <NivelAdmin />
+      <div className="flex">
+        <SidebarAdmin selectedTab={selectedTab} />
+        <NivelAdmin />
+      </div>
     </div>
   );
 }
