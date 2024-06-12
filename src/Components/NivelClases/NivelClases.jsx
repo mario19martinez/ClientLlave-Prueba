@@ -78,11 +78,11 @@ function NivelClases() {
   }
 
   return (
-    <div className="flex flex-col items-start">
-      <div className="w-full p-4 flex justify-center md:justify-start">
+    <div className="flex flex-col md:flex-row w-full">
+      <div className="w-full md:w-1/3 p-4">
         <button
           onClick={toggleShowClasses}
-          className={`md:hidden bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 flex items-center`}
+          className="md:hidden bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center w-full mb-4"
         >
           {showClasses ? (
             <>
@@ -96,9 +96,7 @@ function NivelClases() {
             </>
           )}
         </button>
-      </div>
-      <div className="flex flex-col md:flex-row w-full">
-        <div className={`p-0 mt-4 rounded-lg shadow-md px-2 transition-all duration-500 ease-in-out ${showClasses ? 'block' : 'hidden md:block'}`}>
+        <div className={`transition-all duration-500 ease-in-out ${showClasses ? 'block' : 'hidden md:block'}`}>
           <h2 className="text-2xl font-bold mb-6 text-gray-800">Clases</h2>
           <ul className="grid gap-4">
             {clases.map((clase) => {
@@ -144,24 +142,24 @@ function NivelClases() {
             })}
           </ul>
         </div>
-        <div className="px-2 py-2 w-full md:w-2/3">
-          {selectedClassId ? (
-            <ClaseDetailUser moduloId={moduloId} claseId={selectedClassId} />
-          ) : (
-            <div className="text-center text-gray-700 p-6 border border-dashed border-gray-400 rounded-lg">
-              <p className="text-lg font-semibold flex items-center justify-center">
-                {window.innerWidth <= 768
-                  ? "Pulsa el botón de 'Mostrar Clases' para desplegar la lista de clases del módulo."
-                  : (
-                    <>
-                      <FaInfoCircle className="mr-2" />
-                      No hay clase seleccionada. Selecciona una clase para verla aquí.
-                    </>
-                  )}
-              </p>
-            </div>
-          )}
-        </div>
+      </div>
+      <div className="flex-1 p-4">
+        {selectedClassId ? (
+          <ClaseDetailUser moduloId={moduloId} claseId={selectedClassId} />
+        ) : (
+          <div className="text-center text-gray-700 p-6 border border-dashed border-gray-400 rounded-lg">
+            <p className="text-lg font-semibold flex items-center justify-center">
+              {window.innerWidth <= 768
+                ? "Pulsa el botón de 'Mostrar Clases' para desplegar la lista de clases del módulo."
+                : (
+                  <>
+                    <FaInfoCircle className="mr-2" />
+                    No hay clase seleccionada. Selecciona una clase para verla aquí.
+                  </>
+                )}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

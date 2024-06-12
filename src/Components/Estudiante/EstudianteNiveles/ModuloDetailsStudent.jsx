@@ -46,9 +46,8 @@ function ModuloDetailsStudent() {
         const moduloData = moduloResponse.data.modulo;
         setModulo(moduloData);
         setLoading(false);
-        //console.log("Modulo data:", moduloData); // Log del módulo completo
         if (moduloData.preguntas) {
-          console.log("Preguntas del módulo:", moduloData.preguntas); // Log de las preguntas
+          console.log("Preguntas del módulo:", moduloData.preguntas);
         }
       } catch (error) {
         console.error("Error al obtener el módulo:", error);
@@ -69,7 +68,7 @@ function ModuloDetailsStudent() {
             params: { userSub, moduloId },
           });
           const progresos = responseProgresos.data;
-          
+
           const progresoPorClase = clases.reduce((acc, clase) => {
             acc[clase.id] = progresos[clase.id] || 0;
             return acc;
@@ -210,13 +209,13 @@ function ModuloDetailsStudent() {
   }
 
   return (
-    <div className="px-5 py-5">
+    <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6 text-gray-900">{modulo.titulo}</h1>
       <p className="text-gray-700 mb-6">{modulo.contenido}</p>
 
       <nav className="bg-blue-500 p-4 shadow-md border-t-4 border-blue-100 mb-4">
-        <div className="flex items-center justify-between">
-          <div className="text-xl font-bold text-white">
+        <div className="flex flex-col md:flex-row items-center justify-between">
+          <div className="text-xl font-bold text-white mb-2 md:mb-0">
             Módulo actual: {modulo.titulo}
           </div>
           <div className="space-x-4">
@@ -232,7 +231,9 @@ function ModuloDetailsStudent() {
         </div>
       </nav>
 
-      <NivelClases moduloId={moduloId} />
+      <div>
+        <NivelClases moduloId={moduloId} />
+      </div>
 
       {modulo.preguntas &&
       modulo.preguntas.filter(isPreguntaValida).length > 0 ? (

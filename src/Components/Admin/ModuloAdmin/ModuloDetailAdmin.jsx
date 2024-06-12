@@ -16,9 +16,7 @@ function ModuloDetailAdmin() {
   useEffect(() => {
     const fetchModulo = async () => {
       try {
-        const response = await axios.get(
-          `/nivel/${nivelId}/modulo/${moduloId}`
-        );
+        const response = await axios.get(`/nivel/${nivelId}/modulo/${moduloId}`);
         const moduloData = response.data;
         setModulo(moduloData);
         setLoading(false);
@@ -61,7 +59,7 @@ function ModuloDetailAdmin() {
   if (!modulo) {
     return (
       <div className="text-center mt-4">
-        No se encontro ningun modulo con ID proporcionado.
+        No se encontró ningún módulo con ID proporcionado.
       </div>
     );
   }
@@ -89,14 +87,18 @@ function ModuloDetailAdmin() {
               <p className="text-gray-700 mb-1">
                 Pregunta {index + 1}: {pregunta.pregunta}
               </p>
-              <p className="text-gray-600 mb-1">Opciones:</p>
-              <ul className="list-disc pl-5">
-                {pregunta.opciones.map((opcion, idx) => (
-                  <li key={idx} className="text-gray-700">
-                    {opcion}
-                  </li>
-                ))}
-              </ul>
+              {pregunta.tipo === "opcion_multiple" && (
+                <>
+                  <p className="text-gray-600 mb-1">Opciones:</p>
+                  <ul className="list-disc pl-5">
+                    {pregunta.opciones.map((opcion, idx) => (
+                      <li key={idx} className="text-gray-700">
+                        {opcion}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
               <p className="text-gray-600">
                 Respuesta Correcta: {pregunta.respuestaCorrecta}
               </p>

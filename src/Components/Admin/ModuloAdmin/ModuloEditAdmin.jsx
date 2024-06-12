@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FaTrashAlt } from "react-icons/fa";
 import NavAdmin from "../NavAdmin/NavAdmin";
 import SidebarAdmin from "../SidebarAdmin/SidebarAdmin";
+import { toast, ToastContainer } from "react-toastify";
 
 function ModuloEditAdmin() {
   const params = useParams();
@@ -22,16 +24,21 @@ function ModuloEditAdmin() {
     const fetchModulo = async () => {
       const { nivelId, moduloId } = params;
       try {
-        const response = await axios.get(
-          `/nivel/${nivelId}/modulo/${moduloId}`
-        );
+        const response = await axios.get(`/nivel/${nivelId}/modulo/${moduloId}`);
         const moduloData = response.data;
+        
+        const preguntas = moduloData.preguntas ? moduloData.preguntas.map((pregunta) => ({
+          ...pregunta,
+          opciones: pregunta.opciones || ["", "", "", ""],
+          tipo: pregunta.opciones ? "opcion_multiple" : "verdadero_falso",
+        })) : [];
+
         setFormData({
-          titulo: moduloData.titulo,
-          contenido: moduloData.contenido,
-          descripcion: moduloData.descripcion,
-          activo: moduloData.activo,
-          preguntas: moduloData.preguntas,
+          titulo: moduloData.titulo || "",
+          contenido: moduloData.contenido || "",
+          descripcion: moduloData.descripcion || "",
+          activo: moduloData.activo || false,
+          preguntas: preguntas,
         });
         setLoading(false);
       } catch (error) {
@@ -68,6 +75,10 @@ function ModuloEditAdmin() {
       newPreguntas[index].opciones[opcionIndex] = value;
     } else if (name === "respuestaCorrecta") {
       newPreguntas[index].respuestaCorrecta = value;
+    } else if (name === "tipo") {
+      newPreguntas[index].tipo = value;
+      newPreguntas[index].opciones = value === "opcion_multiple" ? ["", "", "", ""] : [];
+      newPreguntas[index].respuestaCorrecta = "";
     }
 
     setFormData({
@@ -82,11 +93,21 @@ function ModuloEditAdmin() {
       preguntas: [
         ...formData.preguntas,
         {
+          tipo: "opcion_multiple",
           pregunta: "",
-          opciones: ["a", "b", "c", "d"],
+          opciones: ["", "", "", ""],
           respuestaCorrecta: "",
         },
       ],
+    });
+  };
+
+  const eliminarPregunta = (index) => {
+    const newPreguntas = [...formData.preguntas];
+    newPreguntas.splice(index, 1);
+    setFormData({
+      ...formData,
+      preguntas: newPreguntas,
     });
   };
 
@@ -95,10 +116,35 @@ function ModuloEditAdmin() {
 
     const { nivelId, moduloId } = params;
     try {
-      await axios.put(`/nivel/${nivelId}/modulo/${moduloId}`, formData);
-      navigate(`/nivel/${nivelId}/modulo/${moduloId}`);
+      const preguntasFormateadas = formData.preguntas.map((pregunta) => ({
+        tipo: pregunta.tipo,
+        pregunta: pregunta.pregunta,
+        opciones: pregunta.tipo === "opcion_multiple" ? pregunta.opciones.map((opcion, idx) => `${String.fromCharCode(97 + idx)}. ${opcion}`) : undefined,
+        respuestaCorrecta: pregunta.respuestaCorrecta,
+      }));
+
+      await axios.put(`/nivel/${nivelId}/modulo/${moduloId}`, {
+        ...formData,
+        preguntas: preguntasFormateadas,
+      });
+      toast.success("Módulo actualizado exitosamente!", {
+        position: "bottom-center",
+        autoClose: 1500,
+        closeOnClick: true,
+        theme: "colored",
+      });
+
+      setTimeout(() => {
+        navigate(`/nivel/${nivelId}/modulo/${moduloId}`);
+      }, 1800);
     } catch (error) {
       console.error("Error al actualizar el modulo:", error);
+      toast.error("Error al actualizar el modulo.", {
+        position: "bottom-center",
+        autoClose: 1500,
+        closeOnClick: true,
+        theme: "colored",
+      });
     }
   };
 
@@ -122,7 +168,7 @@ function ModuloEditAdmin() {
       <NavAdmin />
       <div className="flex">
         <SidebarAdmin />
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md">
+        <div className="bg-gray-100 p-6 rounded-lg shadow-md w-full max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
             Editar Módulo
           </h2>
@@ -141,6 +187,7 @@ function ModuloEditAdmin() {
                 value={formData.titulo}
                 onChange={handleChange}
                 className="mt-1 p-2 border rounded-md w-full"
+                required
               />
             </div>
 
@@ -157,6 +204,8 @@ function ModuloEditAdmin() {
                 value={formData.contenido}
                 onChange={handleChange}
                 className="mt-1 p-2 border rounded-md w-full"
+                rows="6"
+                required
               />
             </div>
 
@@ -173,6 +222,8 @@ function ModuloEditAdmin() {
                 value={formData.descripcion}
                 onChange={handleChange}
                 className="mt-1 p-2 border rounded-md w-full"
+                rows="3"
+                required
               />
             </div>
 
@@ -198,13 +249,29 @@ function ModuloEditAdmin() {
                 Preguntas
               </label>
               {formData.preguntas.map((pregunta, index) => (
-                <div key={index} className="mb-6">
+                <div key={index} className="mb-6 border p-4 rounded-lg relative">
+                  <button
+                    type="button"
+                    onClick={() => eliminarPregunta(index)}
+                    className="absolute top-2 right-2 text-red-500 hover:text-red-700 transition duration-300"
+                  >
+                    <FaTrashAlt />
+                  </button>
                   <label
                     htmlFor={`pregunta-${index}`}
                     className="block text-gray-700 font-bold mb-2"
                   >
                     Pregunta {index + 1}
                   </label>
+                  <select
+                    name="tipo"
+                    value={pregunta.tipo}
+                    onChange={(e) => handlePreguntasChange(index, e)}
+                    className="mb-2 border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="opcion_multiple">Opción Múltiple</option>
+                    <option value="verdadero_falso">Verdadero/Falso</option>
+                  </select>
                   <input
                     type="text"
                     id={`pregunta-${index}`}
@@ -215,23 +282,27 @@ function ModuloEditAdmin() {
                     onChange={(e) => handlePreguntasChange(index, e)}
                     required
                   />
-                  {pregunta.opciones.map((opcion, idx) => (
-                    <input
-                      key={idx}
-                      type="text"
-                      className="border-2 border-gray-400 rounded-md p-2 w-full mt-2 focus:outline-none focus:border-blue-500"
-                      value={opcion}
-                      onChange={(e) =>
-                        handlePreguntasChange(index, {
-                          target: {
-                            name: `opcion${idx}`,
-                            value: e.target.value,
-                          },
-                        })
-                      }
-                      placeholder={`Opción ${String.fromCharCode(97 + idx)}`}
-                      required
-                    />
+                  {pregunta.tipo === "opcion_multiple" && pregunta.opciones.map((opcion, idx) => (
+                    <div key={idx} className="flex items-center mb-2">
+                      <span className="mr-2 text-gray-700 font-semibold">
+                        {String.fromCharCode(97 + idx)}.
+                      </span>
+                      <input
+                        type="text"
+                        className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
+                        value={opcion}
+                        onChange={(e) =>
+                          handlePreguntasChange(index, {
+                            target: {
+                              name: `opcion${idx}`,
+                              value: e.target.value,
+                            },
+                          })
+                        }
+                        placeholder={`Opción ${String.fromCharCode(97 + idx)}`}
+                        required
+                      />
+                    </div>
                   ))}
                   <label
                     className="block text-gray-700 font-bold mb-2"
@@ -239,21 +310,36 @@ function ModuloEditAdmin() {
                   >
                     Respuesta Correcta:
                   </label>
-                  <select
-                    id={`respuesta-${index}`}
-                    name="respuestaCorrecta"
-                    className="border-2 border-gray-400 rounded-md p-2 w-full mt-2 focus:outline-none focus:border-blue-500"
-                    value={pregunta.respuestaCorrecta}
-                    onChange={(e) => handlePreguntasChange(index, e)}
-                    required
-                  >
-                    <option value="">Seleccione una respuesta</option>
-                    {pregunta.opciones.map((opcion, idx) => (
-                      <option key={idx} value={String.fromCharCode(97 + idx)}>
-                        {String.fromCharCode(97 + idx)}
-                      </option>
-                    ))}
-                  </select>
+                  {pregunta.tipo === "opcion_multiple" ? (
+                    <select
+                      id={`respuesta-${index}`}
+                      name="respuestaCorrecta"
+                      className="border-2 border-gray-400 rounded-md p-2 w-full mt-2 focus:outline-none focus:border-blue-500"
+                      value={pregunta.respuestaCorrecta}
+                      onChange={(e) => handlePreguntasChange(index, e)}
+                      required
+                    >
+                      <option value="">Seleccione una respuesta</option>
+                      {pregunta.opciones.map((opcion, idx) => (
+                        <option key={idx} value={String.fromCharCode(97 + idx)}>
+                          {String.fromCharCode(97 + idx)}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <select
+                      id={`respuesta-${index}`}
+                      name="respuestaCorrecta"
+                      className="border-2 border-gray-400 rounded-md p-2 w-full mt-2 focus:outline-none focus:border-blue-500"
+                      value={pregunta.respuestaCorrecta}
+                      onChange={(e) => handlePreguntasChange(index, e)}
+                      required
+                    >
+                      <option value="">Seleccione una respuesta</option>
+                      <option value="verdadero">Verdadero</option>
+                      <option value="falso">Falso</option>
+                    </select>
+                  )}
                 </div>
               ))}
             </div>
@@ -277,6 +363,7 @@ function ModuloEditAdmin() {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
