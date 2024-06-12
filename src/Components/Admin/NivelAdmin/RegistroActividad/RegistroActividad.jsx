@@ -4,6 +4,8 @@ import axios from "axios";
 function RegistroActividad() {
   const [registros, setRegistros] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [grupos, setGrupos] = useState([]);
+  const [selectedGrupo, setSelectedGrupo] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,11 +24,26 @@ function RegistroActividad() {
       }
     };
 
+    const fetchGrupos = async () => {
+      try {
+        const response = await axios.get("/grupos");
+        setGrupos(response.data);
+      } catch (error) {
+        setError(error.message);
+        console.error("Error al obtener los cursos:", error);
+      }
+    };
+
     fetchRegistros();
+    fetchGrupos();
   }, []);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleGrupoChange = (e) => {
+    setSelectedGrupo(e.target.value);
   };
 
   const filteredRegistros = registros.filter((registro) => {
@@ -49,17 +66,37 @@ function RegistroActividad() {
         ?.toLowerCase()
         .includes(searchTerm.toLowerCase()) ?? false;
 
-    return userMatch || grupoMatch || moduloMatch || claseMatch;
+    const selectedGrupoMatch = selectedGrupo
+      ? registro.modulo &&
+        registro.modulo.grupos.some((grupo) => {
+          const groupIdString = grupo?.GrupoModulo?.grupoId?.toString();
+          const selectedGroupIdString = selectedGrupo.toString();
+          console.log("Comparación:", groupIdString === selectedGroupIdString);
+          return groupIdString === selectedGroupIdString;
+        })
+      : true;
+
+    return (
+      (userMatch || grupoMatch || moduloMatch || claseMatch) &&
+      selectedGrupoMatch
+    );
   });
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentRegistros = filteredRegistros.slice(indexOfFirstUser, indexOfLastUser);
+  const currentRegistros = filteredRegistros.slice(
+    indexOfFirstUser,
+    indexOfLastUser
+  );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filteredRegistros.length / usersPerPage); i++) {
+  for (
+    let i = 1;
+    i <= Math.ceil(filteredRegistros.length / usersPerPage);
+    i++
+  ) {
     pageNumbers.push(i);
   }
 
@@ -90,6 +127,18 @@ function RegistroActividad() {
         onChange={handleSearchChange}
         className="border-2 border-gray-400 p-2 mb-4 focus:border-blue-800 focus:outline-none rounded-lg"
       />
+      <select
+        value={selectedGrupo}
+        onChange={handleGrupoChange}
+        className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
+      >
+        <option value="">Todos los cursos</option>
+        {grupos.map((grupo) => (
+          <option key={grupo.id} value={grupo.id}>
+            {grupo.name}
+          </option>
+        ))}
+      </select>
       {currentRegistros.length === 0 ? (
         <p>No hay registros disponibles.</p>
       ) : (
@@ -106,7 +155,7 @@ function RegistroActividad() {
               </tr>
             </thead>
             <tbody className="text-gray-700 text-sm font-mono divide-y divide-gray-200">
-              {registros.map((registro) => (
+              {currentRegistros.map((registro) => (
                 <tr
                   key={registro.id}
                   className="border-b border-gray-200 hover:bg-gray-100"
@@ -153,13 +202,15 @@ function RegistroActividad() {
         <ul className="flex justify-center">
           <li>
             <button
-            onClick={() => setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)}
-            disabled={currentPage === 1}
-            className={`${
-              currentPage === 1
-              ? "bg-gray-200 text-gray-600"
-              : "bg-white hover:bg-gray-50"
-            } px-3 py-1 border border-gray-300 rounded-l-md font-medium text-sm focus:outline-none`}
+              onClick={() =>
+                setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)
+              }
+              disabled={currentPage === 1}
+              className={`${
+                currentPage === 1
+                  ? "bg-gray-200 text-gray-600"
+                  : "bg-white hover:bg-gray-50"
+              } px-3 py-1 border border-gray-300 rounded-l-md font-medium text-sm focus:outline-none`}
             >
               &lt;
               <span className="sr-only">Previous</span>
@@ -168,12 +219,12 @@ function RegistroActividad() {
           {pageNumbers.map((pageNumber) => (
             <li key={pageNumber}>
               <button
-              onClick={() => paginate(pageNumber)}
-              className={`${
-                pageNumber === currentPage
-                ? "bg-blue-500 text-white"
-                : "bg-white hover:bg-gray-50"
-              } px-3 py-1 border border-gray-300 font-medium text-sm focus:outline-none`}
+                onClick={() => paginate(pageNumber)}
+                className={`${
+                  pageNumber === currentPage
+                    ? "bg-blue-500 text-white"
+                    : "bg-white hover:bg-gray-50"
+                } px-3 py-1 border border-gray-300 font-medium text-sm focus:outline-none`}
               >
                 {pageNumber}
               </button>
@@ -181,13 +232,19 @@ function RegistroActividad() {
           ))}
           <li>
             <button
-            onClick={() => setCurrentPage(currentPage === pageNumbers.length ? pageNumbers.length : currentPage + 1)}
-            disabled={currentPage === pageNumbers.length}
-            className={`${
-              currentPage === pageNumbers.length
-              ? "bg-gray-200 text-gray-600"
-              : "bg-white hover:bg-gray-50"
-            } px-3 py-1 border border-gray-300 rounded-r-md font-medium text-sm focus:outline-none`}
+              onClick={() =>
+                setCurrentPage(
+                  currentPage === pageNumbers.length
+                    ? pageNumbers.length
+                    : currentPage + 1
+                )
+              }
+              disabled={currentPage === pageNumbers.length}
+              className={`${
+                currentPage === pageNumbers.length
+                  ? "bg-gray-200 text-gray-600"
+                  : "bg-white hover:bg-gray-50"
+              } px-3 py-1 border border-gray-300 rounded-r-md font-medium text-sm focus:outline-none`}
             >
               &gt;
               <span className="sr-only">Next</span>
