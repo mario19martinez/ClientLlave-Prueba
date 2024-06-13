@@ -5,7 +5,9 @@ function RegistroActividad() {
   const [registros, setRegistros] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [grupos, setGrupos] = useState([]);
+  const [niveles, setNiveles] = useState([]);
   const [selectedGrupo, setSelectedGrupo] = useState("");
+  const [selectedNivel, setSelectedNivel] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,6 +26,16 @@ function RegistroActividad() {
       }
     };
 
+    const fetchNiveles = async () => {
+      try {
+        const responseNivel = await axios.get("/all-niveles");
+        setNiveles(responseNivel.data);
+      } catch (error) {
+        setError(error.message);
+        console.error("Error al cargar los niveles:", error);
+      }
+    };
+
     const fetchGrupos = async () => {
       try {
         const response = await axios.get("/grupos");
@@ -35,11 +47,17 @@ function RegistroActividad() {
     };
 
     fetchRegistros();
+    fetchNiveles();
     fetchGrupos();
   }, []);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleNivelChange = (e) => {
+    const selectedValue = e.target.value;
+    setSelectedNivel(selectedValue);
   };
 
   const handleGrupoChange = (e) => {
@@ -66,19 +84,22 @@ function RegistroActividad() {
         ?.toLowerCase()
         .includes(searchTerm.toLowerCase()) ?? false;
 
+    const selectedNivelMatch =
+      !selectedNivel || registro.modulo.grupos.some((grupo) => grupo.nivel.id === selectedNivel);
+
     const selectedGrupoMatch = selectedGrupo
       ? registro.modulo &&
         registro.modulo.grupos.some((grupo) => {
           const groupIdString = grupo?.GrupoModulo?.grupoId?.toString();
           const selectedGroupIdString = selectedGrupo.toString();
-          console.log("Comparación:", groupIdString === selectedGroupIdString);
           return groupIdString === selectedGroupIdString;
         })
       : true;
 
     return (
       (userMatch || grupoMatch || moduloMatch || claseMatch) &&
-      selectedGrupoMatch
+      selectedGrupoMatch &&
+     selectedNivelMatch
     );
   });
 
@@ -128,6 +149,18 @@ function RegistroActividad() {
         className="border-2 border-gray-400 p-2 mb-4 focus:border-blue-800 focus:outline-none rounded-lg"
       />
       <select
+        value={selectedNivel}
+        onChange={handleNivelChange}
+        className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
+      >
+        <option value="">Todos los cursos</option>
+        {niveles.map((nivel) => (
+          <option key={nivel.id} value={nivel.id}>
+            {nivel.name}
+          </option>
+        ))}
+      </select>
+      <select
         value={selectedGrupo}
         onChange={handleGrupoChange}
         className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
@@ -147,6 +180,7 @@ function RegistroActividad() {
             <thead className="bg-blue-200 border-b border-gray-300">
               <tr className="bg-blue-100 text-gray-700 uppercase text-xs leading-normal">
                 <th className="py-3 px-6 text-left">Usuario</th>
+                <th className="py-3 px-6 text-left">Nivel</th>
                 <th className="py-3 px-6 text-left">Grupo</th>
                 <th className="py-3 px-6 text-left">Modulo</th>
                 <th className="py-3 px-6 text-left">Clase</th>
@@ -163,6 +197,14 @@ function RegistroActividad() {
                   <td className="py-3 px-6 text-left whitespace-nowrap">
                     {registro.user
                       ? `${registro.user.name} ${registro.user.last_name}`
+                      : ""}
+                  </td>
+                  <td className="py-3 px-6 text-left whitespace-nowrap">
+                    {registro.modulo &&
+                    registro.modulo.grupos &&
+                    registro.modulo.grupos[0] &&
+                    registro.modulo.grupos[0].nivel
+                      ? registro.modulo.grupos[0].nivel.name
                       : ""}
                   </td>
                   <td className="py-3 px-6 text-left whitespace-nowrap">
