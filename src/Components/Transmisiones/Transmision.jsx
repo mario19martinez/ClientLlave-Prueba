@@ -60,7 +60,7 @@ export default function Transmision() {
     const regExp =
       /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/;
     const match = url.match(regExp);
-    return match && match[7].length === 11 ? match[7] : null;
+    return match && match[1] ? match[1] : null;
   };
 
   const videoId = ultimaTransmision ? extractYouTubeId(ultimaTransmision.urltransmision) : null;

@@ -31,7 +31,7 @@ export default function TransmisionDetails(props) {
     const regExp =
       /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/;
     const match = url.match(regExp);
-    return match && match[7].length === 11 ? match[7] : null;
+    return match && match[1] ? match[1] : null;
   };
 
   const videoId = transmision.urltransmision
@@ -62,8 +62,8 @@ export default function TransmisionDetails(props) {
           <div className="mt-4 flex items-center justify-center">
             <iframe
               title="Video de transmisión"
-              width="640" // Aumentar el ancho
-              height="360" // Aumentar la altura
+              width="640"
+              height="360"
               src={videoUrl}
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -73,21 +73,21 @@ export default function TransmisionDetails(props) {
           </div>
         )}
         <div className="flex py-3">
-        <p className="px-2">Estado: </p>
-        <p
-          className={`${
-            transmision.estado ? "text-green-500" : "text-red-500"
-          } font-semibold`}
-        >
-          {transmision.estado ? (
-            <span>
-              En vivo{" "}
-              <FiRadio style={iconStyle} className="inline-block ml-2" />
-            </span>
-          ) : (
-            "Finalizada"
-          )}
-        </p>
+          <p className="px-2">Estado: </p>
+          <p
+            className={`${
+              transmision.estado ? "text-green-500" : "text-red-500"
+            } font-semibold`}
+          >
+            {transmision.estado ? (
+              <span>
+                En vivo{" "}
+                <FiRadio style={iconStyle} className="inline-block ml-2" />
+              </span>
+            ) : (
+              "Finalizada"
+            )}
+          </p>
         </div>
       </div>
     </div>
