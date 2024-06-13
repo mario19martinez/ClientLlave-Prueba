@@ -4,7 +4,7 @@ import axios from "axios";
 
 function GrupoEdit({ nivelId, grupoId }) {
   const [grupoData, setGrupoData] = useState({});
-  const [formData, setFormData] = useState({ name: "", descripcion: "", image: "" });
+  const [formData, setFormData] = useState({ name: "", descripcion: "", image: "", fechaInicio: "" });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -17,7 +17,8 @@ function GrupoEdit({ nivelId, grupoId }) {
         setFormData({
           name: response.data.name,
           descripcion: response.data.descripcion,
-          image: response.data.image
+          image: response.data.image,
+          fechaInicio: response.data.fechaInicio ? response.data.fechaInicio.split('T')[0] : ""
         });
         setLoading(false);
       } catch (error) {
@@ -39,6 +40,9 @@ function GrupoEdit({ nivelId, grupoId }) {
     try {
       await axios.put(`/nivel/${nivelId}/grupo/${grupoId}`, formData);
       setSuccessMessage("Grupo actualizado con éxito.");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       setError("Error al modificar el grupo.");
     }
@@ -60,7 +64,7 @@ function GrupoEdit({ nivelId, grupoId }) {
   }
 
   return (
-    <div className="max-w-full mx-auto mt-8 bg-gray-100 p-8 rounded-lg shadow-lg translate-y-10">
+    <div className="max-w-full mx-auto mt-8 bg-gray-100 p-4 rounded-lg shadow-lg translate-y-0">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">Modificar Grupo</h2>
       {successMessage && <div className="text-green-600 mb-4">{successMessage}</div>}
       <form onSubmit={handleSubmit}>
@@ -82,6 +86,17 @@ function GrupoEdit({ nivelId, grupoId }) {
             name="descripcion"
             id="descripcion"
             value={formData.descripcion}
+            onChange={handleInputChange}
+            className="w-full h-10 border-blue-500 border-2 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+        <div className="mb-4 pt-6">
+          <label htmlFor="fechaInicio" className="block text-base font-medium text-gray-700 mb-1">Fecha de Inicio:</label>
+          <input
+            type="date"
+            name="fechaInicio"
+            id="fechaInicio"
+            value={formData.fechaInicio}
             onChange={handleInputChange}
             className="w-full h-10 border-blue-500 border-2 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           />
