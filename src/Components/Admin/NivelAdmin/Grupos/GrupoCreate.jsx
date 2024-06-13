@@ -8,6 +8,7 @@ function GrupoCreate({ closeModalAndReload }) {
   const [name, setName] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [image, setImage] = useState("");
+  const [fechaInicio, setFechaInicio] = useState("")
   const [error, setError] = useState(null);
   const { id } = useParams();
 
@@ -18,6 +19,7 @@ function GrupoCreate({ closeModalAndReload }) {
         name,
         image,
         descripcion,
+        fechaInicio
       });
       toast.success("Grupo creado exitosamente!", {
         position: "top-center",
@@ -78,6 +80,24 @@ function GrupoCreate({ closeModalAndReload }) {
             className="w-full font-medium text-gray-800 border border-gray-300 rounded py-2 px-3 focus:outline-none focus:border-blue-400"
           ></textarea>
         </div>
+
+        <div className="flex-1 mb-0">
+            <label
+              htmlFor="fechaInicio"
+              className="block text-sm font-medium text-gray-800"
+            >
+              Fecha Inicio
+              <input
+                type="date"
+                id="fechaInicio"
+                name="fechaInicio"
+                value={fechaInicio}
+                onChange={(e) => setFechaInicio(e.target.value)}
+                className="w-full font-medium text-gray-800 border border-gray-300 rounded py-2 px-3 focus:outline-none focus:border-blue-400"
+              />
+            </label>
+          </div>
+
         <button
           type="submit"
           className="bg-blue-900 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition duration-300"
