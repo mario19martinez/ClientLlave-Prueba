@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import NivelClases from "../../NivelClases/NivelClases";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Modal from "react-modal"; // Importa el componente Modal si no lo tienes aún
+import Modal from "react-modal";
 
 function ModuloDetailsStudent() {
   const { nivelId, grupoId, moduloId } = useParams();
@@ -28,7 +28,7 @@ function ModuloDetailsStudent() {
           },
         });
         setUserSub(response.data.userSub);
-        console.log("response:", response);
+        //console.log("response:", response);
       } catch (error) {
         console.error("Error al obtener el sub del usuario:", error);
       }
@@ -46,9 +46,9 @@ function ModuloDetailsStudent() {
         const moduloData = moduloResponse.data.modulo;
         setModulo(moduloData);
         setLoading(false);
-        if (moduloData.preguntas) {
-          console.log("Preguntas del módulo:", moduloData.preguntas);
-        }
+        // if (moduloData.preguntas) {
+        //   console.log("Preguntas del módulo:", moduloData.preguntas);
+        // }
       } catch (error) {
         console.error("Error al obtener el módulo:", error);
         setLoading(false);
@@ -102,6 +102,7 @@ function ModuloDetailsStudent() {
               {}
             );
             setRespuestas(formattedRespuestas);
+            //console.log('Respuestas del usuario: ', respuestasData)
           }
         } catch (error) {
           console.error("Error al obtener las respuestas del usuario:", error);
@@ -127,6 +128,7 @@ function ModuloDetailsStudent() {
         (pregunta, index) => ({
           pregunta: pregunta.pregunta,
           respuesta: respuestas[index] || "",
+          tipo: pregunta.tipo,
         })
       );
       const response = await axios.post(
@@ -150,8 +152,15 @@ function ModuloDetailsStudent() {
   };
 
   const verificarRespuesta = (preguntaIndex, respuesta) => {
-    const respuestaCorrecta = modulo.preguntas[preguntaIndex].respuestaCorrecta;
-    return respuesta.startsWith(respuestaCorrecta);
+    const pregunta = modulo.preguntas[preguntaIndex];
+    
+    if (pregunta.tipo === "opcion_multiple") {
+      return respuesta.startsWith(pregunta.respuestaCorrecta);
+    } else if (pregunta.tipo === "verdadero_falso") {
+      return respuesta === pregunta.respuestaCorrecta;
+    }
+    
+    return false; // Si no es un tipo válido, retornar falso
   };
 
   const todasCorrectas = () => {
@@ -165,11 +174,15 @@ function ModuloDetailsStudent() {
   };
 
   const isPreguntaValida = (pregunta) => {
-    if (!pregunta || !pregunta.pregunta || !Array.isArray(pregunta.opciones)) {
+    if (!pregunta || !pregunta.pregunta) {
       return false;
     }
-    const opcionesValidas =
-      pregunta.opciones.filter((opcion) => opcion.trim() !== "").length > 0;
+    if (pregunta.tipo === "opcion_multiple" && !Array.isArray(pregunta.opciones)) {
+      return false;
+    }
+    const opcionesValidas = pregunta.tipo === "opcion_multiple"
+      ? pregunta.opciones.filter((opcion) => opcion.trim() !== "").length > 0
+      : true;
     return pregunta.pregunta.trim() !== "" && opcionesValidas;
   };
 
@@ -268,28 +281,60 @@ function ModuloDetailsStudent() {
                     className="mb-6 p-4 border border-gray-300 rounded-lg"
                   >
                     <p className="text-gray-700 mb-2 font-bold">
-                      {index + 1}: {pregunta.pregunta}
+                      {index + 1}: {pregunta.tipo === "opcion_multiple" ? "Seleccione la respuesta correcta:" : "Determine si es verdadero o falso:"}
+                      <br />
+                      {pregunta.pregunta}
                     </p>
                     <div className="space-y-2">
-                      {pregunta.opciones.map((opcion, opcionIndex) => (
-                        <div key={opcionIndex} className="flex items-center">
-                          <input
-                            type="radio"
-                            id={`opcion-${index}-${opcionIndex}`}
-                            name={`pregunta-${index}`}
-                            value={opcion}
-                            checked={respuestas[index] === opcion}
-                            onChange={(e) => handleAnswerChange(index, e)}
-                            className="mr-2"
-                          />
-                          <label
-                            htmlFor={`opcion-${index}-${opcionIndex}`}
-                            className="text-gray-600"
-                          >
-                            {opcion}
+                      {pregunta.tipo === "opcion_multiple" ? (
+                        pregunta.opciones.map((opcion, opcionIndex) => (
+                          <div key={opcionIndex} className="flex items-center">
+                            <input
+                              type="radio"
+                              id={`opcion-${index}-${opcionIndex}`}
+                              name={`pregunta-${index}`}
+                              value={opcion}
+                              checked={respuestas[index] === opcion}
+                              onChange={(e) => handleAnswerChange(index, e)}
+                              className="mr-2"
+                              disabled={quizCompletado}
+                            />
+                            <label
+                              htmlFor={`opcion-${index}-${opcionIndex}`}
+                              className="text-gray-600"
+                            >
+                              {opcion}
+                            </label>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="flex items-center space-x-4">
+                          <label className="flex items-center cursor-pointer">
+                            <input
+                              type="radio"
+                              name={`pregunta-${index}`}
+                              value="verdadero"
+                              checked={respuestas[index] === "verdadero"}
+                              onChange={(e) => handleAnswerChange(index, e)}
+                              className="mr-2"
+                              disabled={quizCompletado}
+                            />
+                            <span className="text-gray-600">Verdadero</span>
+                          </label>
+                          <label className="flex items-center cursor-pointer">
+                            <input
+                              type="radio"
+                              name={`pregunta-${index}`}
+                              value="falso"
+                              checked={respuestas[index] === "falso"}
+                              onChange={(e) => handleAnswerChange(index, e)}
+                              className="mr-2"
+                              disabled={quizCompletado}
+                            />
+                            <span className="text-gray-600">Falso</span>
                           </label>
                         </div>
-                      ))}
+                      )}
                     </div>
                     {quizCompletado && respuestas[index] && (
                       <div
