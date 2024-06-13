@@ -11,16 +11,8 @@ function ModuloAdmin({ nivelId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [sortOrder, setSortOrder] = useState("asc"); 
-
-  const toggleModal = () => {
-    setShowModal(!showModal);
-  };
-
-  const toggleSortOrder = () => {
-    const newOrder = sortOrder === "asc" ? "desc" : "asc";
-    setSortOrder(newOrder);
-  };
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [highlightedIndex, setHighlightedIndex] = useState(null);
 
   useEffect(() => {
     const fetchModulos = async () => {
@@ -49,7 +41,51 @@ function ModuloAdmin({ nivelId }) {
     }
   };
 
-  // Ordenar los módulos según el título y el sortOrder
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
+  const toggleSortOrder = () => {
+    const newOrder = sortOrder === "asc" ? "desc" : "asc";
+    setSortOrder(newOrder);
+  };
+
+  const updateModuloTitles = async (modulos) => {
+    const updatedModulos = modulos.map((modulo, index) => {
+      const numero = (index + 1).toString().padStart(2, "0");
+      const titulo = `${numero} ${modulo.titulo.replace(/^\d{2}\s*/, "")}`;
+      return { ...modulo, titulo };
+    });
+
+    for (const modulo of updatedModulos) {
+      try {
+        await axios.put(`/nivel/${nivelId}/modulo/${modulo.id}`, {
+          titulo: modulo.titulo,
+        });
+      } catch (error) {
+        console.error(`Error al actualizar el título del módulo ${modulo.id}:`, error);
+      }
+    }
+
+    setModulos(updatedModulos);
+  };
+
+  const handleMove = async (index, direction) => {
+    if (direction === "up" && index > 0) {
+      const newModulos = [...modulos];
+      [newModulos[index - 1], newModulos[index]] = [newModulos[index], newModulos[index - 1]];
+      await updateModuloTitles(newModulos);
+      setHighlightedIndex(index - 1);
+    } else if (direction === "down" && index < modulos.length - 1) {
+      const newModulos = [...modulos];
+      [newModulos[index + 1], newModulos[index]] = [newModulos[index], newModulos[index + 1]];
+      await updateModuloTitles(newModulos);
+      setHighlightedIndex(index + 1);
+    }
+
+    setTimeout(() => setHighlightedIndex(null), 2000); // Remove highlight after 2 seconds
+  };
+
   const sortedModulos = [...modulos].sort((a, b) => {
     const numA = parseInt(a.titulo.substring(0, 2));
     const numB = parseInt(b.titulo.substring(0, 2));
@@ -85,7 +121,6 @@ function ModuloAdmin({ nivelId }) {
         contentLabel="Agregar Módulo"
       >
         <div className="bg-opacity-25 p-4 rounded-lg shadow-lg max-w-3xl w-full h-full overflow-y-auto flex flex-col justify-center items-center">
-          {/* Renderiza el componente ModuloCreate dentro del modal */}
           <ModuloCreate
             nivelId={nivelId}
             closeModalAndReload={closeModalAndReload}
@@ -103,10 +138,10 @@ function ModuloAdmin({ nivelId }) {
       {error && <div className="text-center text-red-500">Error: {error}</div>}
       {sortedModulos.length > 0 ? (
         <ul>
-          {sortedModulos.map((modulo) => (
+          {sortedModulos.map((modulo, index) => (
             <li
               key={modulo.id}
-              className="my-4 p-4 bg-white rounded-md shadow-md transition-transform ease-in-out duration-300 hover:translate-y-2"
+              className={`my-4 p-4 bg-white rounded-md shadow-md transition-transform ease-in-out duration-300 hover:translate-y-2 ${highlightedIndex === index ? "bg-yellow-200" : ""}`}
             >
               <Link to={`/nivel/${nivelId}/modulo/${modulo.id}`}>
                 <h3 className="text-xl font-bold text-gray-800">
@@ -118,6 +153,20 @@ function ModuloAdmin({ nivelId }) {
                     : modulo.contenido}
                 </p>
               </Link>
+              <div className="mt-2 space-x-2">
+                <button
+                  onClick={() => handleMove(index, "up")}
+                  className="bg-green-500 text-white font-semibold py-1 px-2 rounded-md hover:bg-green-600 transition duration-300"
+                >
+                  Subir
+                </button>
+                <button
+                  onClick={() => handleMove(index, "down")}
+                  className="bg-yellow-500 text-white font-semibold py-1 px-2 rounded-md hover:bg-yellow-600 transition duration-300"
+                >
+                  Bajar
+                </button>
+              </div>
             </li>
           ))}
         </ul>
