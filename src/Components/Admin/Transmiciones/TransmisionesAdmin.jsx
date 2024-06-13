@@ -60,7 +60,7 @@ export default function TransmisionAdmin() {
 
   const extractYouTubeId = (url) => {
     const regExp =
-      /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+      /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/;
     const match = url.match(regExp);
     return match && match[7].length === 11 ? match[7] : null;
   };
