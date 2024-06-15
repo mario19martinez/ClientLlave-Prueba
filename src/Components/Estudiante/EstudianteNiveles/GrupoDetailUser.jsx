@@ -15,10 +15,7 @@ function GrupoDetailUser() {
         setGrupo(response.data.grupo);
         setModulos(response.data.modulos);
       } catch (error) {
-        console.error(
-          "Error al obtener los detalles del grupo y los módulos:",
-          error
-        );
+        console.error("Error al obtener los detalles del grupo y los módulos:", error);
       }
     };
 
@@ -35,11 +32,11 @@ function GrupoDetailUser() {
       <p className="text-lg text-gray-700 mb-6">{grupo.descripcion}</p>
       <h3 className="text-xl lg:text-2xl text-gray-800 font-semibold mb-4">Módulos:</h3>
       <div className="grid gap-6 lg:grid-cols-2">
-      {modulos.map((modulo) => (
-          <div key={modulo.id} className="bg-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300 ease-in-out">
+        {modulos.map((modulo) => (
+          <div key={modulo.id} className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
             <div className="p-6">
               <h4 className="text-lg lg:text-xl font-semibold text-gray-800 mb-2">
-                {modulo.titulo}
+                {modulo.titulo.replace(/^\d{2}\s*/, "")} {/* Elimina los dos primeros caracteres si son números */}
               </h4>
               <p className="text-gray-700">
                 {modulo.contenido && modulo.contenido.length > 100
@@ -47,10 +44,10 @@ function GrupoDetailUser() {
                   : modulo.contenido}
               </p>
             </div>
-            <div className="flex justify-end p-4 bg-gray-300">
+            <div className="flex justify-end p-4 bg-gray-100">
               <Link
                 to={`/nivel/${nivelId}/grupo/${grupoId}/modulo/${modulo.id}/detalles`}
-                className="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition duration-300 ease-in-out"
+                className="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition-colors duration-300 ease-in-out"
               >
                 Ver Módulo
               </Link>
