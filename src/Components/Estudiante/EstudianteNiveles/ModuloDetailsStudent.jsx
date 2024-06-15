@@ -28,7 +28,6 @@ function ModuloDetailsStudent() {
           },
         });
         setUserSub(response.data.userSub);
-        //console.log("response:", response);
       } catch (error) {
         console.error("Error al obtener el sub del usuario:", error);
       }
@@ -46,9 +45,6 @@ function ModuloDetailsStudent() {
         const moduloData = moduloResponse.data.modulo;
         setModulo(moduloData);
         setLoading(false);
-        // if (moduloData.preguntas) {
-        //   console.log("Preguntas del módulo:", moduloData.preguntas);
-        // }
       } catch (error) {
         console.error("Error al obtener el módulo:", error);
         setLoading(false);
@@ -60,10 +56,10 @@ function ModuloDetailsStudent() {
 
   useEffect(() => {
     const fetchProgresos = async () => {
-      if (userSub) {
+      if (userSub && modulo) {
         try {
           const responseClases = await axios.get(`/modulo/${moduloId}/clases`);
-          const clases = responseClases.data;
+          const clases = responseClases.data.filter(clase => clase.url && clase.url.trim() !== "");
           const responseProgresos = await axios.get("/registro-actividad", {
             params: { userSub, moduloId },
           });
@@ -82,7 +78,7 @@ function ModuloDetailsStudent() {
     };
 
     fetchProgresos();
-  }, [userSub, moduloId]);
+  }, [userSub, moduloId, modulo]);
 
   useEffect(() => {
     const fetchRespuestasUsuario = async () => {
@@ -102,7 +98,6 @@ function ModuloDetailsStudent() {
               {}
             );
             setRespuestas(formattedRespuestas);
-            //console.log('Respuestas del usuario: ', respuestasData)
           }
         } catch (error) {
           console.error("Error al obtener las respuestas del usuario:", error);
@@ -221,9 +216,12 @@ function ModuloDetailsStudent() {
     );
   }
 
+  // Función para verificar si los primeros dos caracteres son números
+  const tituloModulo = /^\d{2}/.test(modulo.titulo) ? modulo.titulo.substring(2) : modulo.titulo;
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-gray-900">{modulo.titulo}</h1>
+      <h1 className="text-3xl font-bold mb-6 text-gray-900">{tituloModulo}</h1>
       <p className="text-gray-700 mb-6">{modulo.contenido}</p>
 
       <nav className="bg-blue-500 p-4 shadow-md border-t-4 border-blue-100 mb-4">

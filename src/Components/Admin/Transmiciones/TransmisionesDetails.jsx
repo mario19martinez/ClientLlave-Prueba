@@ -35,10 +35,19 @@ export default function TransmisionDetails({ id }) {
         };
     }, [id]);
 
+    const extractYouTubeId = (url) => {
+        const regExp =
+            /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/;
+        const match = url.match(regExp);
+        return match && match[1] ? match[1] : null;
+    };
+
     if (loading) {
-        return <div className="flex justify-center items-center h-screen">
-            <div className="text-lg">Cargando detalles de la transmisión...</div>
-        </div>;
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="text-lg">Cargando detalles de la transmisión...</div>
+            </div>
+        );
     }
 
     if (error) {
@@ -49,7 +58,7 @@ export default function TransmisionDetails({ id }) {
         return <div className="text-center text-lg mt-4">No se encontraron detalles de la transmisión.</div>;
     }
 
-    const videoId = transmision.urltransmision.split('v=')[1];
+    const videoId = extractYouTubeId(transmision.urltransmision);
     const youtubeUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
 
     return (
@@ -77,5 +86,5 @@ export default function TransmisionDetails({ id }) {
 }
 
 TransmisionDetails.propTypes = {
-    id: PropTypes.string.isRequired // Define que el prop 'id' debe ser una cadena y es requerido
+    id: PropTypes.string.isRequired 
 };
