@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import PropTypes from "prop-types";
 import ClaseDetailUser from "../Estudiante/EstudianteNiveles/ClasesDetailUser";
-import { FaChevronDown, FaChevronUp, FaCheckCircle, FaClock, FaInfoCircle } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaCheckCircle, FaClock, FaInfoCircle, FaFilePdf } from "react-icons/fa";
 
 function NivelClases() {
   const [clases, setClases] = useState([]);
@@ -77,6 +77,10 @@ function NivelClases() {
     );
   }
 
+  // Filtrar las clases y talleres
+  const clasesNormales = clases.filter(clase => clase.url && clase.url.trim() !== "");
+  const talleres = clases.filter(clase => !clase.url || clase.url.trim() === "");
+
   return (
     <div className="flex flex-col md:flex-row w-full">
       <div className="w-full md:w-1/3 p-4">
@@ -99,13 +103,13 @@ function NivelClases() {
         <div className={`transition-all duration-500 ease-in-out ${showClasses ? 'block' : 'hidden md:block'}`}>
           <h2 className="text-2xl font-bold mb-6 text-gray-800">Clases</h2>
           <ul className="grid gap-4">
-            {clases.map((clase) => {
+            {clasesNormales.map((clase) => {
               const progreso = progresos[clase.id] || 0;
               let borderColor, bgColor, icon;
 
               if (progreso === 0) {
-                borderColor = "border-blue-500";
-                icon = null;
+                borderColor = "border-gray-500";
+                bgColor = selectedClassId === clase.id ? "bg-gray-200" : "";
               } else if (progreso > 80) {
                 borderColor = "border-green-500";
                 icon = <FaCheckCircle className="text-green-500 w-6 h-6" />;
@@ -119,28 +123,51 @@ function NivelClases() {
               return (
                 <li
                   key={clase.id}
-                  className={`shadow-lg shadow-blue-500/50 rounded-lg p-6 border-b-4 ${borderColor} ${bgColor} flex items-center justify-between transition duration-500 transform hover:scale-105 cursor-pointer ${
+                  className={`shadow-lg rounded-lg p-6 border-b-4 ${borderColor} ${bgColor} flex items-center justify-between transition duration-500 transform hover:scale-105 cursor-pointer ${
                     selectedClassId === clase.id ? "border-gray-500" : ""
                   }`}
                   onClick={() => handleClassSelect(clase.id)}
                 >
                   <p className="text-lg font-semibold">{clase.name.length > 20 ? `${clase.name.substring(0, 20)}...` : clase.name}</p>
                   <div className="flex items-center">
+                    {clase.url && (
+                      <svg
+                        className="w-8 h-8 text-blue-500 ml-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    )}
                     {icon}
-                    <svg
-                      className="w-8 h-8 text-blue-500 ml-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
                   </div>
                 </li>
               );
             })}
           </ul>
+
+          {/* Lista de Talleres */}
+          {talleres.length > 0 && (
+            <div className="mt-8">
+              <h2 className="text-2xl font-bold mb-4 text-gray-800">Talleres</h2>
+              <ul className="grid gap-4">
+                {talleres.map((clase) => (
+                  <li
+                    key={clase.id}
+                    className="shadow-lg rounded-lg p-6 border-b-4 border-blue-500/50 flex items-center justify-between transition duration-500 transform hover:scale-105 cursor-pointer"
+                    onClick={() => handleClassSelect(clase.id)}
+                  >
+                    <p className="text-lg font-semibold">{clase.name.length > 20 ? `${clase.name.substring(0, 20)}...` : clase.name}</p>
+                    <div className="flex items-center">
+                      <FaFilePdf className="w-6 h-6 text-blue-500" />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
       <div className="flex-1 p-4">

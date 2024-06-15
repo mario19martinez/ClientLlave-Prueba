@@ -173,35 +173,37 @@ function ClaseDetailUser({ claseId }) {
   return (
     <div className="max-w-3xl p-4">
       <h2 className="text-3xl font-bold mb-6 text-gray-800">{clase.name}</h2>
-      <div className="relative pt-1 mb-6">
-        <div className="flex mb-2 items-center justify-between">
-          <div className="flex items-center">
-            <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200">
-              Progreso
-            </span>
-            <span className="ml-2">{progressIcon}</span>
+      {clase.url && (
+        <div className="relative pt-1 mb-6">
+          <div className="flex mb-2 items-center justify-between">
+            <div className="flex items-center">
+              <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200">
+                Progreso
+              </span>
+              <span className="ml-2">{progressIcon}</span>
+            </div>
+            <div className="text-right">
+              <span className="text-xs font-semibold inline-block text-blue-600">
+                {Math.round(progreso[claseId] || 0)}%
+              </span>
+            </div>
           </div>
-          <div className="text-right">
-            <span className="text-xs font-semibold inline-block text-blue-600">
-              {Math.round(progreso[claseId] || 0)}%
-            </span>
+          <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-200">
+            <div
+              style={{ width: `${Math.round(progreso[claseId] || 0)}%` }}
+              className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center ${progressColor}`}
+            ></div>
           </div>
         </div>
-        <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-200">
-          <div
-            style={{ width: `${Math.round(progreso[claseId] || 0)}%` }}
-            className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center ${progressColor}`}
-          ></div>
-        </div>
-      </div>
-      <div className="mb-8 relative" style={{ paddingTop: "56.25%", width: "100%", maxWidth: "800px", margin: "0 auto" }}>
-        {clase.url && (
+      )}
+      {clase.url && (
+        <div className="mb-8 relative" style={{ paddingTop: "56.25%", width: "100%", maxWidth: "800px", margin: "0 auto" }}>
           <div
             id={`youtubePlayer-${claseId}`}
             className="absolute top-0 left-0 w-full h-full"
           />
-        )}
-      </div>
+        </div>
+      )}
       <div className="mb-6">
         <h3 className="text-xl font-bold mb-2 text-gray-800">
           Lectura de la clase:
