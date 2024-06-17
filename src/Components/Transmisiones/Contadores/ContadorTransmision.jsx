@@ -66,6 +66,7 @@ export default function ContadorTransmision() {
     const match = url.match(regExp);
     return match && match[7].length === 11 ? match[7] : null;
   };
+  //console.log('datos transmisiones: ', transmision);
 
   return (
     <div className="flex flex-col px-10">

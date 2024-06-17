@@ -5,6 +5,10 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import ModuloCreate from "./ModuloCreate";
 import CancelIcon from "@mui/icons-material/Cancel";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import AddIcon from "@mui/icons-material/Add";
+import SortIcon from "@mui/icons-material/Sort";
 
 function ModuloAdmin({ nivelId }) {
   const [modulos, setModulos] = useState([]);
@@ -98,19 +102,19 @@ function ModuloAdmin({ nivelId }) {
   });
 
   return (
-    <div className="p-8 bg-gray-200 rounded-md shadow-md w-3/4 translate-x-24">
-      <div className="flex space-x-3">
+    <div className="p-8 bg-gray-200 rounded-md shadow-md w-full max-w-4xl mx-auto">
+      <div className="flex space-x-3 mb-4">
         <button
           onClick={toggleModal}
-          className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md mb-4 hover:bg-blue-600 transition duration-300"
+          className="flex items-center bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
         >
-          Agregar Módulo
+          <AddIcon className="mr-2" /> Agregar Módulo
         </button>
         <button
           onClick={toggleSortOrder}
-          className="bg-gray-500 text-gray-800 font-semibold py-2 px-4 rounded-md mb-4 hover:bg-gray-400 transition duration-300"
+          className="flex items-center bg-gray-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300"
         >
-          {sortOrder === "asc" ? "Ordenar Descendente" : "Ordenar Ascendente"}
+          <SortIcon className="mr-2" /> {sortOrder === "asc" ? "Ordenar Descendente" : "Ordenar Ascendente"}
         </button>
       </div>
       <Modal
@@ -141,31 +145,31 @@ function ModuloAdmin({ nivelId }) {
           {sortedModulos.map((modulo, index) => (
             <li
               key={modulo.id}
-              className={`my-4 p-4 bg-white rounded-md shadow-md transition-transform ease-in-out duration-300 hover:translate-y-2 ${highlightedIndex === index ? "bg-yellow-200" : ""}`}
+              className={`my-4 p-4 bg-white rounded-md shadow-md transition-transform ease-in-out duration-300 ${highlightedIndex === index ? "bg-yellow-200" : ""}`}
             >
-              <Link to={`/nivel/${nivelId}/modulo/${modulo.id}`}>
-                <h3 className="text-xl font-bold text-gray-800">
-                  {modulo.titulo}
-                </h3>
-                <p className="text-gray-600">
-                  {modulo.contenido.length > 100
-                    ? `${modulo.contenido.substring(0, 100)}...`
-                    : modulo.contenido}
-                </p>
-              </Link>
-              <div className="mt-2 space-x-2">
-                <button
-                  onClick={() => handleMove(index, "up")}
-                  className="bg-green-500 text-white font-semibold py-1 px-2 rounded-md hover:bg-green-600 transition duration-300"
-                >
-                  Subir
-                </button>
-                <button
-                  onClick={() => handleMove(index, "down")}
-                  className="bg-yellow-500 text-white font-semibold py-1 px-2 rounded-md hover:bg-yellow-600 transition duration-300"
-                >
-                  Bajar
-                </button>
+              <div className="flex justify-between items-center">
+                <Link to={`/nivel/${nivelId}/modulo/${modulo.id}`} className="flex-1">
+                  <h3 className="text-xl font-bold text-gray-800">{modulo.titulo}</h3>
+                  <p className="text-gray-600">
+                    {modulo.contenido.length > 100
+                      ? `${modulo.contenido.substring(0, 100)}...`
+                      : modulo.contenido}
+                  </p>
+                </Link>
+                <div className="flex flex-col ml-4 space-y-2">
+                  <button
+                    onClick={() => handleMove(index, "up")}
+                    className="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition duration-300"
+                  >
+                    <ArrowUpwardIcon />
+                  </button>
+                  <button
+                    onClick={() => handleMove(index, "down")}
+                    className="bg-yellow-500 text-white p-2 rounded-md hover:bg-yellow-600 transition duration-300"
+                  >
+                    <ArrowDownwardIcon />
+                  </button>
+                </div>
               </div>
             </li>
           ))}
