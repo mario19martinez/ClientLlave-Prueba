@@ -8,48 +8,72 @@ function RegistroActividad() {
   const [niveles, setNiveles] = useState([]);
   const [selectedGrupo, setSelectedGrupo] = useState("");
   const [selectedNivel, setSelectedNivel] = useState("");
+  const [filteredGrupos, setFilteredGrupos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 20;
 
   useEffect(() => {
-    const fetchRegistros = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get("/registros-actividad");
-        setRegistros(response.data);
+        const [registrosResponse, nivelesResponse] = await Promise.all([
+          axios.get("/registros-actividad"),
+          axios.get("/all-niveles"),
+        ]);
+
+        const sortedRegistros = registrosResponse.data.sort(
+          (a, b) => new Date(b.inicio) - new Date(a.inicio)
+        );
+        console.log("Fetched Registros:", sortedRegistros);
+
+        setRegistros(sortedRegistros);
+        setNiveles(nivelesResponse.data);
       } catch (error) {
         setError(error.message);
-        console.error("Error al traer los registros:", error);
+        console.error("Error al cargar datos iniciales:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    const fetchNiveles = async () => {
-      try {
-        const responseNivel = await axios.get("/all-niveles");
-        setNiveles(responseNivel.data);
-      } catch (error) {
-        setError(error.message);
-        console.error("Error al cargar los niveles:", error);
-      }
-    };
+    fetchData();
+  }, []);
 
+  useEffect(() => {
     const fetchGrupos = async () => {
       try {
         const response = await axios.get("/grupos");
+        //console.log("Fetched Grupos:", response.data);
         setGrupos(response.data);
+        setFilteredGrupos(response.data);
       } catch (error) {
         setError(error.message);
-        console.error("Error al obtener los cursos:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchRegistros();
-    fetchNiveles();
     fetchGrupos();
   }, []);
+
+  useEffect(() => {
+    const fetchGruposPorNivel = async () => {
+      try {
+        if (selectedNivel === "") {
+          setFilteredGrupos(grupos); // Mostrar todos los grupos cuando no hay nivel seleccionado
+        } else {
+          const response = await axios.get(`/niveles/${selectedNivel}/grupos`);
+          //console.log("Fetched Grupos por Nivel:", response.data);
+          setFilteredGrupos(response.data);
+        }
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchGruposPorNivel();
+  }, [selectedNivel, grupos]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -58,11 +82,39 @@ function RegistroActividad() {
   const handleNivelChange = (e) => {
     const selectedValue = e.target.value;
     setSelectedNivel(selectedValue);
+    setSelectedGrupo("");
+    //console.log("Selected Nivel Changed:", selectedValue);
   };
 
   const handleGrupoChange = (e) => {
-    setSelectedGrupo(e.target.value);
+    const selectedValueGrupo = e.target.value;
+    setSelectedGrupo(selectedValueGrupo);
+    //console.log('Selected Grupo Changed:', selectedValueGrupo)
   };
+
+  const handleResetFilters = () => {
+    setSelectedNivel("");
+    setSelectedGrupo("")
+    setFilteredGrupos(grupos);
+    // console.log("Filtros reset:", {
+    //   selectedNivel,
+    //   selectedGrupo,
+    //   filteredGrupos: grupos,
+    // });
+  };
+
+  // const handleResetFilters = () => {
+  //   setSelectedNivel("");
+  //   //setSelectedGrupo("");
+  //   setFilteredGrupos(grupos);
+  //   console.log("Filtros reset:", {
+  //     selectedNivel,
+  //     selectedGrupo,
+  //     filteredGrupos: grupos,
+  //   });
+  // };
+
+  //console.log("Grupos disponibles:", grupos);
 
   const filteredRegistros = registros.filter((registro) => {
     const userMatch =
@@ -84,22 +136,41 @@ function RegistroActividad() {
         ?.toLowerCase()
         .includes(searchTerm.toLowerCase()) ?? false;
 
+    // const selectedNivelMatch =
+    //   !selectedNivel ||
+    //   (registro.modulo?.grupos &&
+    //     registro.modulo.grupos.some(
+    //       (grupo) => grupo.nivel.id === selectedNivel
+    //     ));
     const selectedNivelMatch =
-      !selectedNivel || registro.modulo.grupos.some((grupo) => grupo.nivel.id === selectedNivel);
+      !selectedNivel ||
+      (registro.modulo?.grupos &&
+        registro.modulo.grupos.some(
+          (grupo) => grupo.nivel.id === selectedNivel
+        ));
 
-    const selectedGrupoMatch = selectedGrupo
-      ? registro.modulo &&
-        registro.modulo.grupos.some((grupo) => {
-          const groupIdString = grupo?.GrupoModulo?.grupoId?.toString();
-          const selectedGroupIdString = selectedGrupo.toString();
-          return groupIdString === selectedGroupIdString;
-        })
-      : true;
+        const selectedGrupoMatch =
+      !selectedGrupo ||
+      (registro.user?.grupos &&
+        registro.user.grupos.some((grupo) => grupo.id === selectedGrupo));
+
+    // const selectedGrupoMatch = selectedGrupo
+    //   ? registro.modulo &&
+    //     registro.modulo.grupos.some((grupo) => {
+    //       const groupIdString = grupo?.GrupoModulo?.grupoId?.toString();
+    //       const selectedGroupIdString = selectedGrupo.toString();
+    //       console.log("Comparing Grupo IDs:", {
+    //         groupIdString,
+    //         selectedGroupIdString,
+    //       });
+    //       return groupIdString === selectedGroupIdString;
+    //     })
+    //   : true;
 
     return (
       (userMatch || grupoMatch || moduloMatch || claseMatch) &&
       selectedGrupoMatch &&
-     selectedNivelMatch
+      selectedNivelMatch
     );
   });
 
@@ -141,37 +212,52 @@ function RegistroActividad() {
       <h1 className="text-xl font-bold mb-6 text-gray-700">
         Registros de Actividad
       </h1>
-      <input
-        type="text"
-        placeholder="Buscar..."
-        value={searchTerm}
-        onChange={handleSearchChange}
-        className="border-2 border-gray-400 p-2 mb-4 focus:border-blue-800 focus:outline-none rounded-lg"
-      />
-      <select
-        value={selectedNivel}
-        onChange={handleNivelChange}
-        className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
-      >
-        <option value="">Todos los cursos</option>
-        {niveles.map((nivel) => (
-          <option key={nivel.id} value={nivel.id}>
-            {nivel.name}
-          </option>
-        ))}
-      </select>
-      <select
-        value={selectedGrupo}
-        onChange={handleGrupoChange}
-        className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
-      >
-        <option value="">Todos los cursos</option>
-        {grupos.map((grupo) => (
-          <option key={grupo.id} value={grupo.id}>
-            {grupo.name}
-          </option>
-        ))}
-      </select>
+      <div className="flex gap-4 mb-4">
+        <input
+          type="text"
+          placeholder="Buscar..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
+        />
+        <select
+          value={selectedNivel}
+          onChange={handleNivelChange}
+          // onChange={(e) => setSelectedNivel(e.target.value)}
+          className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
+        >
+          <option value="">Todos los cursos</option>
+          {niveles.map((nivel) => (
+            <option key={nivel.id} value={nivel.id}>
+              {nivel.name}
+            </option>
+          ))}
+        </select>
+        <select
+          value={selectedGrupo}
+          onChange={handleGrupoChange}
+          className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
+        >
+          <option value="">Todos los grupos</option>
+          {selectedNivel === ""
+            ? grupos.map((grupo) => (
+                <option key={grupo.id} value={grupo.id}>
+                  {grupo.name}
+                </option>
+              ))
+            : filteredGrupos.map((grupo) => (
+                <option key={grupo.id} value={grupo.id}>
+                  {grupo.name}
+                </option>
+              ))}
+        </select>
+        <button
+          onClick={handleResetFilters}
+          className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none"
+        >
+          Reiniciar Filtros
+        </button>
+      </div>
       {currentRegistros.length === 0 ? (
         <p>No hay registros disponibles.</p>
       ) : (
@@ -189,53 +275,57 @@ function RegistroActividad() {
               </tr>
             </thead>
             <tbody className="text-gray-700 text-sm font-mono divide-y divide-gray-200">
-              {currentRegistros.map((registro) => (
-                <tr
-                  key={registro.id}
-                  className="border-b border-gray-200 hover:bg-gray-100"
-                >
-                  <td className="py-3 px-6 text-left whitespace-nowrap">
-                    {registro.user
-                      ? `${registro.user.name} ${registro.user.last_name}`
-                      : ""}
-                  </td>
-                  <td className="py-3 px-6 text-left whitespace-nowrap">
-                    {registro.modulo &&
-                    registro.modulo.grupos &&
-                    registro.modulo.grupos[0] &&
-                    registro.modulo.grupos[0].nivel
-                      ? registro.modulo.grupos[0].nivel.name
-                      : ""}
-                  </td>
-                  <td className="py-3 px-6 text-left whitespace-nowrap">
-                    {registro.modulo &&
-                    registro.modulo.grupos &&
-                    registro.modulo.grupos[0]
-                      ? registro.modulo.grupos[0].name
-                      : ""}
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    {registro.modulo ? registro.modulo.titulo : ""}
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    {registro.nivelclase ? registro.nivelclase.name : ""}
-                  </td>
-                  <td className="py-3 px-6 text-left">
-                    {registro.inicio
-                      ? new Date(registro.inicio).toLocaleDateString()
-                      : ""}
-                  </td>
-                  <td
-                    className={`py-3 px-6 text-left font-semibold w-0 ${
-                      registro.progreso >= 80
-                        ? "bg-green-500 text-white"
-                        : "bg-yellow-300 text-black"
-                    }`}
+              {currentRegistros.map((registro) => {
+
+                return (
+                  <tr
+                    key={registro.id}
+                    className="border-b border-gray-200 hover:bg-gray-100"
                   >
-                    {registro.progreso.toFixed(1)}%
-                  </td>
-                </tr>
-              ))}
+                    <td className="py-3 px-6 text-left whitespace-nowrap">
+                      {registro.user
+                        ? `${registro.user.name} ${registro.user.last_name}`
+                        : ""}
+                    </td>
+                    <td className="py-3 px-6 text-left whitespace-nowrap">
+                      {registro.modulo &&
+                      registro.modulo.grupos &&
+                      registro.modulo.grupos[0] &&
+                      registro.modulo.grupos[0].nivel
+                        ? registro.modulo.grupos[0].nivel.name
+                        : ""}
+                    </td>
+                    <td className="py-3 px-6 text-left whitespace-nowrap">
+                      {registro.user &&
+                      registro.user.grupos &&
+                      registro.user.grupos[0] &&
+                      registro.user.grupos[0].name
+                        ? registro.user.grupos[0].name
+                        : ""}
+                    </td>
+                    <td className="py-3 px-6 text-left">
+                      {registro.modulo ? registro.modulo.titulo : ""}
+                    </td>
+                    <td className="py-3 px-6 text-left">
+                      {registro.nivelclase ? registro.nivelclase.name : ""}
+                    </td>
+                    <td className="py-3 px-6 text-left">
+                      {registro.inicio
+                        ? new Date(registro.inicio).toLocaleDateString()
+                        : ""}
+                    </td>
+                    <td
+                      className={`py-3 px-6 text-left font-semibold w-0 ${
+                        registro.progreso >= 80
+                          ? "bg-green-500 text-white"
+                          : "bg-yellow-300 text-black"
+                      }`}
+                    >
+                      {registro.progreso.toFixed(1)}%
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
