@@ -67,32 +67,32 @@ const CardAdminBlogs = ({ imageUrl, title, blogId, estado }) => {
   const estadoText = estado ? estado : "Estado no definido";
 
   return (
-    <div className="border bg-gray-100 rounded-lg p-4 m-2 flex items-center hover:shadow-lg transition duration-300">
+    <div className="bg-white border rounded-lg p-4 m-2 flex flex-col md:flex-row items-center hover:shadow-lg transition-shadow duration-300 w-full md:w-80 lg:w-96 max-w-full">
       <img
         src={imageUrl || img}
         alt="Blog"
-        className="w-24 h-24 object-cover mr-4"
+        className="w-24 h-24 object-cover rounded-lg mr-0 md:mr-4 mb-4 md:mb-0"
       />
       <div className="flex flex-col flex-grow">
-        <h3 className="text-lg font-semibold">{truncatedTitle}</h3>
-        <div>
+        <h3 className="text-lg font-semibold mb-1">{truncatedTitle}</h3>
+        <div className="mb-2">
           <p className={`font-semibold ${estadoColorClass()}`}>{estadoText}</p>
         </div>
-        <div className="flex mt-2 space-x-2">
+        <div className="flex mt-2 space-x-2 justify-center md:justify-start">
           <button
-            className="text-blue-500 px-3 py-1 rounded-full flex items-center transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+            className="text-blue-500 px-3 py-1 rounded-full flex items-center transition-transform duration-300 ease-in-out hover:scale-105 focus:outline-none"
             onClick={handleEditBlog}
           >
             <EditIcon />
           </button>
           <button
-            className="text-green-500 px-3 py-1 rounded-full flex items-center transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+            className="text-green-500 px-3 py-1 rounded-full flex items-center transition-transform duration-300 ease-in-out hover:scale-105 focus:outline-none"
             onClick={handleCardClick}
           >
             <VisibilityIcon />
           </button>
           <button
-            className="text-red-500 px-3 py-1 rounded-full flex items-center transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+            className="text-red-500 px-3 py-1 rounded-full flex items-center transition-transform duration-300 ease-in-out hover:scale-105 focus:outline-none"
             onClick={() => setDeleteDialogOpen(true)} // Abrir el diálogo de confirmación
           >
             <DeleteIcon />

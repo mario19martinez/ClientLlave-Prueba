@@ -12,8 +12,8 @@ const CrearBlog = () => {
     imageUrl: "",
     embeddedElement: "",
     estado: "",
-    autor: "", // Nuevo campo de autor
-    Lectura: "", // Nuevo campo de lectura
+    autor: "", 
+    Lectura: "", 
   });
 
   const handleChange = (name, value) => {
@@ -112,32 +112,23 @@ const CrearBlog = () => {
             className="w-full p-3 border rounded-md focus:outline-none focus:border-blue-400 bg-white"
           />
         </div>
-        <div>
-          <label className="block text-gray-800 mb-1">
-            Elemento incrustado de Soundcloud:
-          </label>
+        <div className="mb-4">
+          <label className="block mb-1">Elemento incrustado:</label>
           <textarea
             name="embeddedElement"
             value={formData.embeddedElement}
             onChange={(e) => handleChange("embeddedElement", e.target.value)}
-            className="w-full p-3 border rounded-md focus:outline-none focus:border-blue-400 bg-white"
-            rows="4"
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
+            rows="3"
           />
-          {/* Previsualización del elemento incrustado de Soundcloud */}
+          {/* Aquí puedes mostrar la previsualización del elemento incrustado */}
           <div className="mt-4">
-            <h2>Previsualización:</h2>
-            <iframe
-              title="Embedded Soundcloud"
-              width="100%"
-              height="300"
-              scrolling="no"
-              frameBorder="no"
-              allow="autoplay"
-              src={formData.embeddedElement}
+            <h2>Previsualización del incrustado:</h2>
+            <div
+              dangerouslySetInnerHTML={{ __html: formData.embeddedElement }}
             />
           </div>
         </div>
-
         <div>
           <label className="block text-gray-800 mb-1">Autor:</label>
           <select
@@ -149,12 +140,11 @@ const CrearBlog = () => {
           >
             <option value="">Selecciona un autor</option>
             <option value="Profeta Petra Montecino">
-              Profeta Petra Montecino{" "}
+              Profeta Petra Montecino
             </option>
             <option value="Apóstol Diego Rullier">Apóstol Diego Rullier</option>
           </select>
         </div>
-
         <div>
           <label className="block text-gray-800 mb-1">Tempo de lectura:</label>
           <input
@@ -166,7 +156,6 @@ const CrearBlog = () => {
             required
           />
         </div>
-
         <div className="flex py-4">
           <button
             type="button"

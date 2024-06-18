@@ -94,8 +94,9 @@ function ModuloAdmin({ nivelId }) {
   };
 
   return (
-    <div className="p-8 bg-gray-200 rounded-md shadow-md w-full max-w-4xl mx-auto">
-      <div className="flex space-x-3 mb-4">
+    <div className="p-8 bg-gray-100 rounded-md shadow-lg w-full max-w-4xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-semibold text-gray-700">Administrar Módulos</h2>
         <button
           onClick={toggleModal}
           className="flex items-center bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
@@ -110,28 +111,28 @@ function ModuloAdmin({ nivelId }) {
         overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         contentLabel="Agregar Módulo"
       >
-        <div className="bg-opacity-25 p-4 rounded-lg shadow-lg max-w-3xl w-full h-full overflow-y-auto flex flex-col justify-center items-center">
-          <ModuloCreate
-            nivelId={nivelId}
-            closeModalAndReload={closeModalAndReload}
-          />
+        <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full h-full overflow-y-auto">
           <button
             onClick={toggleModal}
             className="absolute top-2 right-2 text-red-500"
           >
             <CancelIcon fontSize="large" />
           </button>
+          <ModuloCreate
+            nivelId={nivelId}
+            closeModalAndReload={closeModalAndReload}
+          />
         </div>
       </Modal>
 
-      {loading && <div className="text-center">Cargando módulos...</div>}
+      {loading && <div className="text-center text-gray-500">Cargando módulos...</div>}
       {error && <div className="text-center text-red-500">Error: {error}</div>}
       {modulos.length > 0 ? (
         <ul>
           {modulos.map((modulo, index) => (
             <li
               key={modulo.id}
-              className={`my-4 p-4 bg-white rounded-md shadow-md transition-transform ease-in-out duration-300 ${highlightedIndex === index ? "bg-yellow-200" : ""}`}
+              className={`my-4 p-4 bg-white border border-gray-300 rounded-lg shadow-md transition-transform ease-in-out duration-300 ${highlightedIndex === index ? "bg-yellow-100" : ""}`}
             >
               <div className="flex justify-between items-center">
                 <Link to={`/nivel/${nivelId}/modulo/${modulo.id}`} className="flex-1">
@@ -139,7 +140,7 @@ function ModuloAdmin({ nivelId }) {
                     <span className="text-blue-500">{modulo.titulo.substring(0, 3)}</span>
                     {modulo.titulo.substring(3)}
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 mt-2">
                     {modulo.contenido.length > 100
                       ? `${modulo.contenido.substring(0, 100)}...`
                       : modulo.contenido}
@@ -166,7 +167,7 @@ function ModuloAdmin({ nivelId }) {
           ))}
         </ul>
       ) : (
-        <p className="text-center">Este nivel aún no tiene módulos.</p>
+        <p className="text-center text-gray-500">Este nivel aún no tiene módulos.</p>
       )}
     </div>
   );

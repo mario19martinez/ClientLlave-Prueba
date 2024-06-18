@@ -1,10 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const BlogHome = () => {
   const navigate = useNavigate();
@@ -17,7 +20,9 @@ const BlogHome = () => {
       try {
         const response = await axios.get("/blogs");
         const sortedBlogs = response.data.sort((a, b) => b.id - a.id);
-        const publishedBlogs = sortedBlogs.filter(blog => blog.estado === "publicado" || !blog.estado);
+        const publishedBlogs = sortedBlogs.filter(
+          (blog) => blog.estado === "publicado" || !blog.estado
+        );
         const latestBlogs = publishedBlogs.slice(0, 5);
         setBlogs(latestBlogs);
       } catch (error) {
@@ -47,6 +52,8 @@ const BlogHome = () => {
     autoplaySpeed: 3000,
     cssEase: "linear",
     variableWidth: false,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
     responsive: [
       {
         breakpoint: 1024,
@@ -75,16 +82,16 @@ const BlogHome = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="max-w-screen-xl mx-auto pt-5" style={{ width: "95%" }}>
+    <div className="max-w-screen-xl mx-auto pt-5 px-4">
       <h1 className="text-center text-3xl font-bold text-blue-900 my-8">
         Últimos Blogs
       </h1>
-      <div className="blog-slider" style={{ maxWidth: "calc(100% - 5px)" }}>
+      <div className="relative">
         <Slider {...settings}>
           {blogs.map((blog) => (
             <div
               key={blog.id}
-              className="blog-card cursor-pointer rounded overflow-hidden shadow-lg"
+              className="blog-card cursor-pointer rounded-lg overflow-hidden shadow-lg mx-2 transition-transform transform hover:scale-105"
               onClick={() => handleViewBlog(blog.id)}
             >
               <img
@@ -92,8 +99,8 @@ const BlogHome = () => {
                 src={blog.imageUrl}
                 alt={blog.title}
               />
-              <div className="p-4">
-                <h2 className="text-xl font-semibold mb-2">
+              <div className="p-4 bg-white">
+                <h2 className="text-xl font-semibold mb-2 text-gray-800 line-clamp-2">
                   {blog.title.length > 24
                     ? blog.title.slice(0, 24) + "..."
                     : blog.title}
@@ -105,6 +112,48 @@ const BlogHome = () => {
       </div>
     </div>
   );
+};
+
+const NextArrow = ({ onClick }) => {
+  return (
+    <div
+      className="absolute top-1/2 transform -translate-y-1/2 right-4 bg-blue-500 bg-opacity-75 text-white p-2 rounded-full cursor-pointer hover:bg-blue-600 transition duration-300 z-10"
+      onClick={onClick}
+    >
+      <ArrowForwardIosIcon className="h-6 w-6" />
+    </div>
+  );
+};
+
+const PrevArrow = ({ onClick }) => {
+  return (
+    <div
+      className="absolute top-1/2 transform -translate-y-1/2 left-4 bg-blue-500 bg-opacity-75 text-white p-2 rounded-full cursor-pointer hover:bg-blue-600 transition duration-300 z-10"
+      onClick={onClick}
+    >
+      <ArrowBackIosNewIcon className="h-6 w-6" />
+    </div>
+  );
+};
+
+// Validación de PropTypes
+NextArrow.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
+
+PrevArrow.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
+
+BlogHome.propTypes = {
+  blogs: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      imageUrl: PropTypes.string,
+      title: PropTypes.string.isRequired,
+      estado: PropTypes.string,
+    })
+  ),
 };
 
 export default BlogHome;
