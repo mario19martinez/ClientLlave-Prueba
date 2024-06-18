@@ -6,8 +6,10 @@ function RegistroActividad() {
   const [searchTerm, setSearchTerm] = useState("");
   const [grupos, setGrupos] = useState([]);
   const [niveles, setNiveles] = useState([]);
+  const [modulos, setModulos] = useState([]);
   const [selectedGrupo, setSelectedGrupo] = useState("");
   const [selectedNivel, setSelectedNivel] = useState("");
+  const [selectedModulo, setSelectedModulo] = useState("");
   const [filteredGrupos, setFilteredGrupos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,10 +19,12 @@ function RegistroActividad() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [registrosResponse, nivelesResponse] = await Promise.all([
-          axios.get("/registros-actividad"),
-          axios.get("/all-niveles"),
-        ]);
+        const [registrosResponse, nivelesResponse, modulosResponse] =
+          await Promise.all([
+            axios.get("/registros-actividad"),
+            axios.get("/all-niveles"),
+            axios.get("/modulos"),
+          ]);
 
         const sortedRegistros = registrosResponse.data.sort(
           (a, b) => new Date(b.inicio) - new Date(a.inicio)
@@ -29,6 +33,7 @@ function RegistroActividad() {
 
         setRegistros(sortedRegistros);
         setNiveles(nivelesResponse.data);
+        setModulos(modulosResponse.data);
       } catch (error) {
         setError(error.message);
         console.error("Error al cargar datos iniciales:", error);
@@ -44,7 +49,6 @@ function RegistroActividad() {
     const fetchGrupos = async () => {
       try {
         const response = await axios.get("/grupos");
-        //console.log("Fetched Grupos:", response.data);
         setGrupos(response.data);
         setFilteredGrupos(response.data);
       } catch (error) {
@@ -64,7 +68,6 @@ function RegistroActividad() {
           setFilteredGrupos(grupos); // Mostrar todos los grupos cuando no hay nivel seleccionado
         } else {
           const response = await axios.get(`/niveles/${selectedNivel}/grupos`);
-          //console.log("Fetched Grupos por Nivel:", response.data);
           setFilteredGrupos(response.data);
         }
       } catch (error) {
@@ -83,38 +86,24 @@ function RegistroActividad() {
     const selectedValue = e.target.value;
     setSelectedNivel(selectedValue);
     setSelectedGrupo("");
-    //console.log("Selected Nivel Changed:", selectedValue);
   };
 
   const handleGrupoChange = (e) => {
     const selectedValueGrupo = e.target.value;
     setSelectedGrupo(selectedValueGrupo);
-    //console.log('Selected Grupo Changed:', selectedValueGrupo)
+  };
+
+  const handleModuloChange = (e) => {
+    const selectedValueModulo = e.target.value;
+    setSelectedModulo(selectedValueModulo);
   };
 
   const handleResetFilters = () => {
     setSelectedNivel("");
-    setSelectedGrupo("")
+    setSelectedGrupo("");
+    setSelectedModulo("");
     setFilteredGrupos(grupos);
-    // console.log("Filtros reset:", {
-    //   selectedNivel,
-    //   selectedGrupo,
-    //   filteredGrupos: grupos,
-    // });
   };
-
-  // const handleResetFilters = () => {
-  //   setSelectedNivel("");
-  //   //setSelectedGrupo("");
-  //   setFilteredGrupos(grupos);
-  //   console.log("Filtros reset:", {
-  //     selectedNivel,
-  //     selectedGrupo,
-  //     filteredGrupos: grupos,
-  //   });
-  // };
-
-  //console.log("Grupos disponibles:", grupos);
 
   const filteredRegistros = registros.filter((registro) => {
     const userMatch =
@@ -136,12 +125,6 @@ function RegistroActividad() {
         ?.toLowerCase()
         .includes(searchTerm.toLowerCase()) ?? false;
 
-    // const selectedNivelMatch =
-    //   !selectedNivel ||
-    //   (registro.modulo?.grupos &&
-    //     registro.modulo.grupos.some(
-    //       (grupo) => grupo.nivel.id === selectedNivel
-    //     ));
     const selectedNivelMatch =
       !selectedNivel ||
       (registro.modulo?.grupos &&
@@ -149,28 +132,19 @@ function RegistroActividad() {
           (grupo) => grupo.nivel.id === selectedNivel
         ));
 
-        const selectedGrupoMatch =
+    const selectedGrupoMatch =
       !selectedGrupo ||
       (registro.user?.grupos &&
         registro.user.grupos.some((grupo) => grupo.id === selectedGrupo));
 
-    // const selectedGrupoMatch = selectedGrupo
-    //   ? registro.modulo &&
-    //     registro.modulo.grupos.some((grupo) => {
-    //       const groupIdString = grupo?.GrupoModulo?.grupoId?.toString();
-    //       const selectedGroupIdString = selectedGrupo.toString();
-    //       console.log("Comparing Grupo IDs:", {
-    //         groupIdString,
-    //         selectedGroupIdString,
-    //       });
-    //       return groupIdString === selectedGroupIdString;
-    //     })
-    //   : true;
+    const selectedModuloMatch =
+      !selectedModulo || registro.modulo?.id === selectedModulo;
 
     return (
       (userMatch || grupoMatch || moduloMatch || claseMatch) &&
       selectedGrupoMatch &&
-      selectedNivelMatch
+      selectedNivelMatch &&
+      selectedModuloMatch
     );
   });
 
@@ -223,7 +197,6 @@ function RegistroActividad() {
         <select
           value={selectedNivel}
           onChange={handleNivelChange}
-          // onChange={(e) => setSelectedNivel(e.target.value)}
           className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
         >
           <option value="">Todos los cursos</option>
@@ -251,6 +224,18 @@ function RegistroActividad() {
                 </option>
               ))}
         </select>
+        <select
+          value={selectedModulo}
+          onChange={handleModuloChange}
+          className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
+        >
+          <option value="">Todos los modulos</option>
+          {modulos.map((modulo) => (
+            <option key={modulo.id} value={modulo.id}>
+              {modulo.titulo}
+            </option>
+          ))}
+        </select>
         <button
           onClick={handleResetFilters}
           className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none"
@@ -276,7 +261,6 @@ function RegistroActividad() {
             </thead>
             <tbody className="text-gray-700 text-sm font-mono divide-y divide-gray-200">
               {currentRegistros.map((registro) => {
-
                 return (
                   <tr
                     key={registro.id}
