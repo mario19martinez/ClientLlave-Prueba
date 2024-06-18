@@ -20,7 +20,8 @@ function ModuloAdmin({ nivelId }) {
     const fetchModulos = async () => {
       try {
         const response = await axios.get(`/niveles/${nivelId}/modulos`);
-        setModulos(response.data);
+        const sortedModulos = sortModulos(response.data);
+        setModulos(sortedModulos);
         setLoading(false);
       } catch (error) {
         console.error("Error al obtener los módulos:", error);
@@ -30,12 +31,21 @@ function ModuloAdmin({ nivelId }) {
     fetchModulos();
   }, [nivelId]);
 
+  const sortModulos = (modulos) => {
+    return modulos.sort((a, b) => {
+      const aNumero = parseInt(a.titulo.match(/^\d+/) || "Infinity", 10);
+      const bNumero = parseInt(b.titulo.match(/^\d+/) || "Infinity", 10);
+      return aNumero - bNumero;
+    });
+  };
+
   const closeModalAndReload = async () => {
     setShowModal(false);
     setLoading(true);
     try {
       const response = await axios.get(`/niveles/${nivelId}/modulos`);
-      setModulos(response.data);
+      const sortedModulos = sortModulos(response.data);
+      setModulos(sortedModulos);
     } catch (error) {
       console.error("Error al obtener los módulos:", error);
     } finally {
@@ -64,7 +74,7 @@ function ModuloAdmin({ nivelId }) {
       }
     }
 
-    setModulos(updatedModulos);
+    setModulos(sortModulos(updatedModulos));
   };
 
   const handleMove = async (index, direction) => {
@@ -126,7 +136,7 @@ function ModuloAdmin({ nivelId }) {
               <div className="flex justify-between items-center">
                 <Link to={`/nivel/${nivelId}/modulo/${modulo.id}`} className="flex-1">
                   <h3 className="text-xl font-bold text-gray-800">
-                    <span className="text-blue-900">{modulo.titulo.substring(0, 3)}</span>
+                    <span className="text-blue-500">{modulo.titulo.substring(0, 3)}</span>
                     {modulo.titulo.substring(3)}
                   </h3>
                   <p className="text-gray-600">
