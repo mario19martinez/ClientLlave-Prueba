@@ -8,14 +8,12 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import AddIcon from "@mui/icons-material/Add";
-import SortIcon from "@mui/icons-material/Sort";
 
 function ModuloAdmin({ nivelId }) {
   const [modulos, setModulos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [sortOrder, setSortOrder] = useState("asc");
   const [highlightedIndex, setHighlightedIndex] = useState(null);
 
   useEffect(() => {
@@ -47,11 +45,6 @@ function ModuloAdmin({ nivelId }) {
 
   const toggleModal = () => {
     setShowModal(!showModal);
-  };
-
-  const toggleSortOrder = () => {
-    const newOrder = sortOrder === "asc" ? "desc" : "asc";
-    setSortOrder(newOrder);
   };
 
   const updateModuloTitles = async (modulos) => {
@@ -90,17 +83,6 @@ function ModuloAdmin({ nivelId }) {
     setTimeout(() => setHighlightedIndex(null), 2000); // Remove highlight after 2 seconds
   };
 
-  const sortedModulos = [...modulos].sort((a, b) => {
-    const numA = parseInt(a.titulo.substring(0, 2));
-    const numB = parseInt(b.titulo.substring(0, 2));
-
-    if (sortOrder === "asc") {
-      return numA - numB;
-    } else {
-      return numB - numA;
-    }
-  });
-
   return (
     <div className="p-8 bg-gray-200 rounded-md shadow-md w-full max-w-4xl mx-auto">
       <div className="flex space-x-3 mb-4">
@@ -109,12 +91,6 @@ function ModuloAdmin({ nivelId }) {
           className="flex items-center bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
         >
           <AddIcon className="mr-2" /> Agregar Módulo
-        </button>
-        <button
-          onClick={toggleSortOrder}
-          className="flex items-center bg-gray-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300"
-        >
-          <SortIcon className="mr-2" /> {sortOrder === "asc" ? "Ordenar Descendente" : "Ordenar Ascendente"}
         </button>
       </div>
       <Modal
@@ -140,16 +116,19 @@ function ModuloAdmin({ nivelId }) {
 
       {loading && <div className="text-center">Cargando módulos...</div>}
       {error && <div className="text-center text-red-500">Error: {error}</div>}
-      {sortedModulos.length > 0 ? (
+      {modulos.length > 0 ? (
         <ul>
-          {sortedModulos.map((modulo, index) => (
+          {modulos.map((modulo, index) => (
             <li
               key={modulo.id}
               className={`my-4 p-4 bg-white rounded-md shadow-md transition-transform ease-in-out duration-300 ${highlightedIndex === index ? "bg-yellow-200" : ""}`}
             >
               <div className="flex justify-between items-center">
                 <Link to={`/nivel/${nivelId}/modulo/${modulo.id}`} className="flex-1">
-                  <h3 className="text-xl font-bold text-gray-800">{modulo.titulo}</h3>
+                  <h3 className="text-xl font-bold text-gray-800">
+                    <span className="text-blue-900">{modulo.titulo.substring(0, 3)}</span>
+                    {modulo.titulo.substring(3)}
+                  </h3>
                   <p className="text-gray-600">
                     {modulo.contenido.length > 100
                       ? `${modulo.contenido.substring(0, 100)}...`
@@ -159,13 +138,15 @@ function ModuloAdmin({ nivelId }) {
                 <div className="flex flex-col ml-4 space-y-2">
                   <button
                     onClick={() => handleMove(index, "up")}
-                    className="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition duration-300"
+                    className={`bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition duration-300 ${index === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+                    disabled={index === 0}
                   >
                     <ArrowUpwardIcon />
                   </button>
                   <button
                     onClick={() => handleMove(index, "down")}
-                    className="bg-yellow-500 text-white p-2 rounded-md hover:bg-yellow-600 transition duration-300"
+                    className={`bg-yellow-500 text-white p-2 rounded-md hover:bg-yellow-600 transition duration-300 ${index === modulos.length - 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+                    disabled={index === modulos.length - 1}
                   >
                     <ArrowDownwardIcon />
                   </button>

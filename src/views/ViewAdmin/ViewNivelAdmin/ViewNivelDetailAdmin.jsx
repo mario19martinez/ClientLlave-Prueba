@@ -7,7 +7,9 @@ export default function ViewNivelDetailAdmin() {
     <div>
       <NavAdmin />
       <div className="flex">
-        <SidebarAdmin selectedTab="defaultTab" />
+        <div className="sticky top-0 h-screen">
+          <SidebarAdmin selectedTab="defaultTab" />
+        </div>
         <NivelDetailAdmin />
       </div>
     </div>
