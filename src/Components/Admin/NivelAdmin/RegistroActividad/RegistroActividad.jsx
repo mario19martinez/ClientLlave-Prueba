@@ -11,6 +11,7 @@ function RegistroActividad() {
   const [selectedNivel, setSelectedNivel] = useState("");
   const [selectedModulo, setSelectedModulo] = useState("");
   const [filteredGrupos, setFilteredGrupos] = useState([]);
+  const [filteredModulos, setFilteredModulos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,11 +20,10 @@ function RegistroActividad() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [registrosResponse, nivelesResponse, modulosResponse] =
+        const [registrosResponse, nivelesResponse] =
           await Promise.all([
             axios.get("/registros-actividad"),
             axios.get("/all-niveles"),
-            axios.get("/modulos"),
           ]);
 
         const sortedRegistros = registrosResponse.data.sort(
@@ -33,7 +33,6 @@ function RegistroActividad() {
 
         setRegistros(sortedRegistros);
         setNiveles(nivelesResponse.data);
-        setModulos(modulosResponse.data);
       } catch (error) {
         setError(error.message);
         console.error("Error al cargar datos iniciales:", error);
@@ -62,6 +61,21 @@ function RegistroActividad() {
   }, []);
 
   useEffect(() => {
+    const fetchModulos = async () => {
+      try {
+        const response = await axios.get("/modulos");
+        setModulos(response.data)
+        setFilteredModulos(response.data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchModulos();
+  }, []);
+
+  useEffect(() => {
     const fetchGruposPorNivel = async () => {
       try {
         if (selectedNivel === "") {
@@ -78,6 +92,22 @@ function RegistroActividad() {
     fetchGruposPorNivel();
   }, [selectedNivel, grupos]);
 
+  useEffect(() => {
+    const fetchModulosPorGrupo = async () => {
+      try {
+        if (selectedGrupo !== "") {
+          const response = await axios.get(`/grupo/${selectedGrupo}/modulos`);
+          setModulos(response.data.modulos);
+        }
+      } catch (error) {
+        setError(error.message);
+        console.error('Error al traer los modulos del grupo:', error)
+      }
+    };
+
+    fetchModulosPorGrupo();
+  }, [selectedGrupo]);
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -86,6 +116,7 @@ function RegistroActividad() {
     const selectedValue = e.target.value;
     setSelectedNivel(selectedValue);
     setSelectedGrupo("");
+    setModulos([])
   };
 
   const handleGrupoChange = (e) => {
@@ -103,6 +134,7 @@ function RegistroActividad() {
     setSelectedGrupo("");
     setSelectedModulo("");
     setFilteredGrupos(grupos);
+    setModulos(filteredModulos);
   };
 
   const filteredRegistros = registros.filter((registro) => {
