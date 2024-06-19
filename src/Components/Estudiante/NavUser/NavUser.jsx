@@ -54,7 +54,7 @@ export default function NavUser() {
           <a
             href=""
             className="hover:text-gray-300 transition-colors"
-            onClick={() => navigate("/Error404")}
+            onClick={() => navigate("/Blogs")}
           >
             Blog
           </a>
