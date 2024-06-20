@@ -2,10 +2,18 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { FaFilePdf, FaDownload, FaCheckCircle, FaClock } from "react-icons/fa";
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  useMediaQuery,
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 function ClaseDetailUser({ claseId }) {
   const [clase, setClase] = useState(null);
@@ -19,7 +27,7 @@ function ClaseDetailUser({ claseId }) {
   const [open, setOpen] = useState(false);
 
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -61,12 +69,12 @@ function ClaseDetailUser({ claseId }) {
     if (userInfo && userInfo.sub && moduloId) {
       const fetchRegistro = async () => {
         try {
-          const response = await axios.get('/registro-actividad', {
+          const response = await axios.get("/registro-actividad", {
             params: { userSub: userInfo.sub, moduloId: moduloId },
           });
           setProgreso(response.data);
         } catch (error) {
-          console.error('error al obtener el progreso:', error);
+          console.error("error al obtener el progreso:", error);
         }
       };
       fetchRegistro();
@@ -155,13 +163,13 @@ function ClaseDetailUser({ claseId }) {
 
   const handleDownloadPdf = async () => {
     try {
-      const container = document.createElement('div');
-      container.style.position = 'absolute';
-      container.style.top = '-9999px';
-      container.style.left = '-9999px';
-      container.style.width = 'auto';
-      container.style.height = 'auto';
-      container.style.whiteSpace = 'nowrap'; // Evita que el contenido se quiebre
+      const container = document.createElement("div");
+      container.style.position = "absolute";
+      container.style.top = "-9999px";
+      container.style.left = "-9999px";
+      container.style.width = "auto";
+      container.style.height = "auto";
+      container.style.whiteSpace = "nowrap"; // Evita que el contenido se quiebre
       container.innerHTML = clase.pdfURL;
       document.body.appendChild(container);
 
@@ -179,35 +187,34 @@ function ClaseDetailUser({ claseId }) {
 
       // Crear una instancia de jsPDF
       const doc = new jsPDF({
-          orientation: 'portrait',
-          unit: 'pt',
-          format: [pdfWidth, pdfHeight]
+        orientation: "portrait",
+        unit: "pt",
+        format: [pdfWidth, pdfHeight],
       });
 
       // Convertir el HTML a canvas y agregarlo al PDF
       const canvas = await html2canvas(container, { useCORS: true, scale: 2 });
-      const imgData = canvas.toDataURL('image/jpeg', 1.0);
-      doc.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+      const imgData = canvas.toDataURL("image/jpeg", 1.0);
+      doc.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
 
       // Eliminar el contenedor temporal del DOM
       document.body.removeChild(container);
 
-  
       // Guardar el PDF
       doc.save(`Material_de_apoyo_${clase.name}.pdf`);
     } catch (error) {
-      console.error('Error al generar el PDF:', error);
+      console.error("Error al generar el PDF:", error);
     }
   };
-  
+
   const handleClickOpen = () => {
     setOpen(true);
   };
-  
+
   const handleClose = () => {
     setOpen(false);
   };
-  
+
   const handleConfirmDownload = () => {
     handleDownloadPdf();
     setOpen(false);
@@ -235,8 +242,14 @@ function ClaseDetailUser({ claseId }) {
   const textoAbreviado = clase.texto.slice(0, caracteresIniciales);
   const mostrarBoton = clase.texto.length > caracteresIniciales;
 
-  const progressColor = (progreso[claseId] || 0) > 80 ? "bg-green-500" : "bg-yellow-500";
-  const progressIcon = (progreso[claseId] || 0) > 80 ? <FaCheckCircle className="text-green-500" /> : <FaClock className="text-blue-500" />;
+  const progressColor =
+    (progreso[claseId] || 0) > 80 ? "bg-green-500" : "bg-yellow-500";
+  const progressIcon =
+    (progreso[claseId] || 0) > 80 ? (
+      <FaCheckCircle className="text-green-500" />
+    ) : (
+      <FaClock className="text-blue-500" />
+    );
 
   return (
     <div className="max-w-3xl p-4">
@@ -265,7 +278,15 @@ function ClaseDetailUser({ claseId }) {
         </div>
       )}
       {clase.url && (
-        <div className="mb-8 relative" style={{ paddingTop: "56.25%", width: "100%", maxWidth: "800px", margin: "0 auto" }}>
+        <div
+          className="mb-8 relative"
+          style={{
+            paddingTop: "56.25%",
+            width: "100%",
+            maxWidth: "800px",
+            margin: "0 auto",
+          }}
+        >
           <div
             id={`youtubePlayer-${claseId}`}
             className="absolute top-0 left-0 w-full h-full"
@@ -309,14 +330,20 @@ function ClaseDetailUser({ claseId }) {
       )}
 
       <div className="mt-6 text-center">
-        <Button
-          onClick={handleClickOpen}
-          className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-transform duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300"
-        >
-          <FaFilePdf className="inline-block mr-2" />
-          Material de apoyo
-          <FaDownload className="inline-block mr-2" />
-        </Button>
+      <Button
+      onClick={handleClickOpen}
+      variant="contained"
+      color="primary"
+      className="inline-flex items-center space-x-2"
+      style={{
+        borderRadius: '500px', 
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', 
+      }}
+    >
+      <FaFilePdf className="text-xl" />
+      <span className="font-semibold text-sm">Material de apoyo</span>
+      <FaDownload className="text-xl" />
+    </Button>
       </div>
 
       <Dialog
@@ -330,17 +357,41 @@ function ClaseDetailUser({ claseId }) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Estás a punto de descargar un PDF con el material de apoyo de la clase. 
-            En dispositivos móviles, revisa tu carpeta de descargas. 
-            En computadoras de escritorio, el archivo se descargará automáticamente 
-            en la carpeta de descargas.
+            Estás a punto de descargar un PDF con el material de apoyo de la
+            clase <strong>{clase.name}</strong>.
+            <br />
+            <br />
+            <strong>Dependiendo de tu dispositivo:</strong>
+            <br />
+            <ul>
+              <li>
+                <div className="flex space-x-1">
+                  {" "}
+                  <strong>1. </strong>
+                  En dispositivos móviles, revisa tu carpeta de descargas.
+                </div>
+              </li>
+              <li>
+                <div className="flex space-x-1">
+                  {" "}
+                  <strong>2. </strong>
+                  En computadoras de escritorio, el archivo se descargará
+                  automáticamente en la carpeta de descargas.
+                </div>
+              </li>
+            </ul>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
+          <Button autoFocus onClick={handleClose} color="secondary">
             Cancelar
           </Button>
-          <Button onClick={handleConfirmDownload} color="primary" autoFocus>
+          <Button
+            onClick={handleConfirmDownload}
+            color="primary"
+            variant="contained"
+            autoFocus
+          >
             Descargar
           </Button>
         </DialogActions>
