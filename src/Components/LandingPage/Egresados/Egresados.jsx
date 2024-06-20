@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import egresados from './egresados.png'; 
 
@@ -8,7 +6,7 @@ const Egresados = () => {
 
   return (
     <div className="container mx-auto px-4 py-10 flex flex-col items-center justify-center">
-      <h2 className="text-4xl md:text-5xl font-semibold mb-4 mt-8 text-center">Egresados</h2>
+      <h2 className="text-4xl text-gray-800 md:text-5xl font-semibold mb-4 mt-8 text-center">Egresados</h2>
       <div className="flex flex-col md:flex-row items-center justify-center py-8">
         <div className="w-full md:w-3/5 mt-8 md:mt-0 flex justify-center pr-3">
           <img

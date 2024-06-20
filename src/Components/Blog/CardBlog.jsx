@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import { FaClock } from "react-icons/fa";
 import img from "../../assets/cardBlog.png";
 
 const CardBlog = ({ blog }) => {
@@ -55,8 +56,15 @@ const CardBlog = ({ blog }) => {
         <div className="flex justify-between items-center mt-4">
           <p className="text-gray-500 text-sm">{formatDate(blog.createdAt)}</p>
         </div>
-        <div className="flex justify-end mt-2">
-          <p className="text-blue-500 text-sm">Click para leer más</p>
+        <div className="flex space-x-10">
+          <div className="flex justify-start space-x-2 items-center text-gray-500 text-sm mt-2">
+            <p>Tiempo de lectura:</p>
+            <span>{blog.Lectura}</span>
+            <FaClock className="mr-1" />
+          </div>
+          <div className="flex justify-end mt-2">
+            <p className="text-blue-500 text-sm">Click para leer más</p>
+          </div>
         </div>
       </div>
     </div>
@@ -71,6 +79,7 @@ CardBlog.propTypes = {
     id: PropTypes.number.isRequired,
     createdAt: PropTypes.string.isRequired,
     autor: PropTypes.string,
+    Lectura: PropTypes.number.isRequired,
   }).isRequired,
 };
 

@@ -60,6 +60,10 @@ function ClaseEditAdmin() {
     });
   };
 
+  const handlePdfChange = (value) => {
+    setClaseData({ ...claseData, pdfURL: value});
+  }
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -161,22 +165,21 @@ function ClaseEditAdmin() {
                 />
               </div>
 
-              <div className="mb-2">
-                <label
-                  htmlFor="pdfURL"
-                  className="block text-gray-800 text-sm font-bold mb-2"
-                >
-                  PDF URL:
-                </label>
-                <input
-                  type="text"
-                  id="pdfURL"
-                  name="pdfURL"
-                  value={claseData.pdfURL}
-                  onChange={handleInputChange}
-                  className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
-                />
-              </div>
+              <div className="mb-4">
+              <label
+                htmlFor="pdfURL"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                Materias de apoyo (sera un archivo descargable):
+              </label>
+              <ReactQuill
+                id="texto"
+                value={claseData.pdfURL}
+                onChange={handlePdfChange}
+                modules={quillModules}
+                className="border-2 border-blue-600 rounded-md focus:border-blue-500 bg-white"
+              />
+            </div>
 
               <div className="mb-2">
                 <label

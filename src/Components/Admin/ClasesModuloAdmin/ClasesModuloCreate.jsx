@@ -29,6 +29,10 @@ function ClaseModuloCreate() {
     setFormData({ ...formData, texto: value });
   };
 
+  const handlePdfChange = (value) => {
+    setFormData({ ...formData, pdfURL: value});
+  }
+
   const handleResumenChange = (value) => {
     setFormData({ ...formData, resumen: value });
   };
@@ -126,15 +130,14 @@ function ClaseModuloCreate() {
                 htmlFor="pdfURL"
                 className="block text-gray-700 text-sm font-bold mb-2"
               >
-                URL del PDF:
+                Materias de apoyo (sera un archivo descargable):
               </label>
-              <input
-                type="text"
-                id="pdfURL"
-                name="pdfURL"
+              <ReactQuill
+                id="texto"
                 value={formData.pdfURL}
-                onChange={handleChange}
-                className="border-2 border-blue-600 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
+                onChange={handlePdfChange}
+                modules={quillModules}
+                className="border-2 border-blue-600 rounded-md focus:border-blue-500 bg-white"
               />
             </div>
             <div className="mb-4">

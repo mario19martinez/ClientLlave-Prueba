@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
@@ -47,7 +46,7 @@ function Testimonios() {
 
   return (
     <div className="mx-auto my-8 pt-10 pl-2 pr-6 text-center" style={{ width: "95%" }}>
-      <h1 className="text-3xl font-bold mb-6" style={{ color: "#012677" }}>
+      <h1 className="text-4xl text-gray-800 md:text-5xl font-semibold mb-10 mt-8 text-center">
         Testimonios
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
