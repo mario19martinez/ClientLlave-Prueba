@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { FaFilePdf, FaCheckCircle, FaClock } from "react-icons/fa";
+import html2pdf from "html2pdf.js";
 
 function ClaseDetailUser({ claseId }) {
   const [clase, setClase] = useState(null);
@@ -145,6 +146,15 @@ function ClaseDetailUser({ claseId }) {
     setMostrarTexto(!mostrarTexto);
   };
 
+  const handleDownloadPdf = async () => {
+    const htmlContent = clase.pdfURL;
+    html2pdf(htmlContent, {
+      filename: 'Material_de_apoyo.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { dpi: 192, letterRendering: true },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    });
+  };
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -241,15 +251,13 @@ function ClaseDetailUser({ claseId }) {
       )}
 
       <div className="mt-6 text-center">
-        <a
-          href={clase.pdfURL}
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={handleDownloadPdf}
           className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-transform duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300"
         >
           <FaFilePdf className="inline-block mr-2" />
           Material de apoyo
-        </a>
+        </button>
       </div>
     </div>
   );

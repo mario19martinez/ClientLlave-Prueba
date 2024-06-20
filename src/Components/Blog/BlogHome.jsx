@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -83,7 +82,7 @@ const BlogHome = () => {
 
   return (
     <div className="max-w-screen-xl mx-auto pt-5 px-4">
-      <h1 className="text-center text-3xl font-bold text-blue-900 my-8">
+      <h1 className="text-4xl text-gray-800 md:text-5xl font-semibold mb-10 mt-8 text-center">
         Últimos Blogs
       </h1>
       <div className="relative">

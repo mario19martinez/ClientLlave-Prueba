@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import BackupIcon from "@mui/icons-material/Backup";
@@ -82,15 +80,6 @@ const ComponentesProfeticos = () => {
     },
   ];
 
-  const h1Styles = {
-    textAlign: 'center',
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    color: '#012677',
-    marginTop: '20px',
-    marginBottom: '20px',
-  };
-
   const handleCardClick = (route) => {
     navigate(route);
   };
@@ -98,7 +87,7 @@ const ComponentesProfeticos = () => {
   return (
     <div className="flex justify-center items-center h-full text-center">
       <div>
-        <h1 style={h1Styles}>
+        <h1 className="text-4xl text-gray-800 md:text-5xl font-semibold mb-10 mt-8 text-center" >
           Entrenándote para conquistar
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-x-4 sm:gap-y-6">

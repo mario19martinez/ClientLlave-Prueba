@@ -9,7 +9,7 @@ const Empresas = () => {
   return (
     <div className="py-8 bg-gray-200 pt-32">
       <div className="container mx-auto">
-        <h1 className="text-4xl md:text-5xl font-bold text-center mb-4 md:mb-6">
+        <h1 className="text-4xl text-gray-800 md:text-5xl font-semibold mb-4 mt-8 text-center">
           Empresas que nos respaldan:
         </h1>
 

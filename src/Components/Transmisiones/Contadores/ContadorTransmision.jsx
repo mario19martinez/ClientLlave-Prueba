@@ -70,6 +70,7 @@ export default function ContadorTransmision() {
 
   return (
     <div className="flex flex-col px-10">
+      <h1 className="text-4xl text-gray-800 md:text-5xl font-semibold mb-10 mt-8 text-center">Transmisiones en vivo</h1>
       {transmision ? (
         eventoActivo ? (
           <div className="text-center">
@@ -90,7 +91,7 @@ export default function ContadorTransmision() {
                 <div className="flex items-center gap-4">
                   <svg
                     stroke="currentColor"
-                    fill="currentColor"
+                    fill="currentColor" 
                     strokeWidth="0"
                     viewBox="0 0 24 24"
                     className="text-5xl text-indigo-500"
