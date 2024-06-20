@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { FaFilePdf, FaCheckCircle, FaClock } from "react-icons/fa";
-import html2pdf from "html2pdf.js";
+import { FaFilePdf, FaDownload, FaCheckCircle, FaClock } from "react-icons/fa";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 function ClaseDetailUser({ claseId }) {
   const [clase, setClase] = useState(null);
@@ -13,6 +16,10 @@ function ClaseDetailUser({ claseId }) {
   const [youtubePlayer, setYoutubePlayer] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [moduloId, setModuloId] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -147,14 +154,65 @@ function ClaseDetailUser({ claseId }) {
   };
 
   const handleDownloadPdf = async () => {
-    const htmlContent = clase.pdfURL;
-    html2pdf(htmlContent, {
-      filename: 'Material_de_apoyo.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { dpi: 192, letterRendering: true },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    });
+    try {
+      const container = document.createElement('div');
+      container.style.position = 'absolute';
+      container.style.top = '-9999px';
+      container.style.left = '-9999px';
+      container.style.width = 'auto';
+      container.style.height = 'auto';
+      container.style.whiteSpace = 'nowrap'; // Evita que el contenido se quiebre
+      container.innerHTML = clase.pdfURL;
+      document.body.appendChild(container);
+
+      // Obtener las dimensiones del contenido HTML
+      const { width, height } = container.getBoundingClientRect();
+
+      // Definir las dimensiones de la página en el PDF
+      const a4Width = 595.28; // A4 width in points
+      const a4Height = 841.89; // A4 height in points
+
+      // Escalar las dimensiones del contenido para que quepa en una página A4
+      const scale = Math.min(a4Width / width, a4Height / height);
+      const pdfWidth = width * scale;
+      const pdfHeight = height * scale;
+
+      // Crear una instancia de jsPDF
+      const doc = new jsPDF({
+          orientation: 'portrait',
+          unit: 'pt',
+          format: [pdfWidth, pdfHeight]
+      });
+
+      // Convertir el HTML a canvas y agregarlo al PDF
+      const canvas = await html2canvas(container, { useCORS: true, scale: 2 });
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
+      doc.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+
+      // Eliminar el contenedor temporal del DOM
+      document.body.removeChild(container);
+
+  
+      // Guardar el PDF
+      doc.save(`Material_de_apoyo_${clase.name}.pdf`);
+    } catch (error) {
+      console.error('Error al generar el PDF:', error);
+    }
   };
+  
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  
+  const handleClose = () => {
+    setOpen(false);
+  };
+  
+  const handleConfirmDownload = () => {
+    handleDownloadPdf();
+    setOpen(false);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -251,14 +309,42 @@ function ClaseDetailUser({ claseId }) {
       )}
 
       <div className="mt-6 text-center">
-        <button
-          onClick={handleDownloadPdf}
+        <Button
+          onClick={handleClickOpen}
           className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-transform duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300"
         >
           <FaFilePdf className="inline-block mr-2" />
           Material de apoyo
-        </button>
+          <FaDownload className="inline-block mr-2" />
+        </Button>
       </div>
+
+      <Dialog
+        fullScreen={fullScreen}
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle id="responsive-dialog-title">
+          {"Descargar Material de Apoyo"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Estás a punto de descargar un PDF con el material de apoyo de la clase. 
+            En dispositivos móviles, revisa tu carpeta de descargas. 
+            En computadoras de escritorio, el archivo se descargará automáticamente 
+            en la carpeta de descargas.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleConfirmDownload} color="primary" autoFocus>
+            Descargar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
