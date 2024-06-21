@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { FaFilePdf, FaDownload, FaCheckCircle, FaClock } from "react-icons/fa";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import html2pdf from "html2pdf.js";
 import {
   Button,
   Dialog,
@@ -162,49 +161,35 @@ function ClaseDetailUser({ claseId }) {
   };
 
   const handleDownloadPdf = async () => {
-    try {
-      const container = document.createElement("div");
-      container.style.position = "absolute";
-      container.style.top = "-9999px";
-      container.style.left = "-9999px";
-      container.style.width = "auto";
-      container.style.height = "auto";
-      container.style.whiteSpace = "nowrap"; // Evita que el contenido se quiebre
-      container.innerHTML = clase.pdfURL;
-      document.body.appendChild(container);
+    const htmlContent = clase.pdfURL;
+    const opt = {
+      margin: 0,
+      filename: `Material_de_apoyo_${clase.name}.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2, letterRendering: true },
+      jsPDF: { unit: "pt", format: "a4", orientation: "portrait" },
+      pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+    };
 
-      // Obtener las dimensiones del contenido HTML
-      const { width, height } = container.getBoundingClientRect();
-
-      // Definir las dimensiones de la página en el PDF
-      const a4Width = 595.28; // A4 width in points
-      const a4Height = 841.89; // A4 height in points
-
-      // Escalar las dimensiones del contenido para que quepa en una página A4
-      const scale = Math.min(a4Width / width, a4Height / height);
-      const pdfWidth = width * scale;
-      const pdfHeight = height * scale;
-
-      // Crear una instancia de jsPDF
-      const doc = new jsPDF({
-        orientation: "portrait",
-        unit: "pt",
-        format: [pdfWidth, pdfHeight],
-      });
-
-      // Convertir el HTML a canvas y agregarlo al PDF
-      const canvas = await html2canvas(container, { useCORS: true, scale: 2 });
-      const imgData = canvas.toDataURL("image/jpeg", 1.0);
-      doc.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
-
-      // Eliminar el contenedor temporal del DOM
-      document.body.removeChild(container);
-
-      // Guardar el PDF
-      doc.save(`Material_de_apoyo_${clase.name}.pdf`);
-    } catch (error) {
-      console.error("Error al generar el PDF:", error);
-    }
+    const worker = html2pdf().from(htmlContent).set(opt);
+    worker
+      .toPdf()
+      .get("pdf")
+      .then(function (pdf) {
+        const totalPages = pdf.internal.getNumberOfPages();
+        for (let i = 1; i <= totalPages; i++) {
+          pdf.setPage(i);
+          pdf.setPage(i).setFontSize(10);
+          pdf
+            .setPage(i)
+            .text(
+              `Page ${i} of ${totalPages}`,
+              pdf.internal.pageSize.getWidth() / 2 - 40,
+              pdf.internal.pageSize.getHeight() - 30
+            );
+        }
+      })
+      .save();
   };
 
   const handleClickOpen = () => {
@@ -218,6 +203,17 @@ function ClaseDetailUser({ claseId }) {
   const handleConfirmDownload = () => {
     handleDownloadPdf();
     setOpen(false);
+  };
+
+  const handleViewInBrowser = () => {
+    if (clase.pdfURL) {
+      const newWindow = window.open();
+      newWindow.document.open();
+      newWindow.document.write(clase.pdfURL);
+      newWindow.document.close();
+    } else {
+      console.error("No se encontró el contenido HTML.");
+    }
   };
 
   if (loading) {
@@ -330,20 +326,20 @@ function ClaseDetailUser({ claseId }) {
       )}
 
       <div className="mt-6 text-center">
-      <Button
-      onClick={handleClickOpen}
-      variant="contained"
-      color="primary"
-      className="inline-flex items-center space-x-2"
-      style={{
-        borderRadius: '500px', 
-        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', 
-      }}
-    >
-      <FaFilePdf className="text-xl" />
-      <span className="font-semibold text-sm">Material de apoyo</span>
-      <FaDownload className="text-xl" />
-    </Button>
+        <Button
+          onClick={handleClickOpen}
+          variant="contained"
+          color="primary"
+          className="inline-flex items-center space-x-2"
+          style={{
+            borderRadius: "500px",
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <FaFilePdf className="text-xl" />
+          <span className="font-semibold text-sm">Material de apoyo</span>
+          <FaDownload className="text-xl" />
+        </Button>
       </div>
 
       <Dialog
@@ -361,19 +357,28 @@ function ClaseDetailUser({ claseId }) {
             clase <strong>{clase.name}</strong>.
             <br />
             <br />
-            <strong>Dependiendo de tu dispositivo:</strong>
+            <strong>Si prefieres verlo en tu navegador:</strong>
+            <ul>
+              <li>
+                <div className="flex space-x-1">
+                  <strong>1. </strong>
+                  Se abrirá en una nueva pestaña de tu navegador.
+                </div>
+              </li>
+            </ul>
+            <br />
+            <br />
+            <strong>Si decides descargar el PDF:</strong>
             <br />
             <ul>
               <li>
                 <div className="flex space-x-1">
-                  {" "}
                   <strong>1. </strong>
                   En dispositivos móviles, revisa tu carpeta de descargas.
                 </div>
               </li>
               <li>
                 <div className="flex space-x-1">
-                  {" "}
                   <strong>2. </strong>
                   En computadoras de escritorio, el archivo se descargará
                   automáticamente en la carpeta de descargas.
@@ -386,6 +391,7 @@ function ClaseDetailUser({ claseId }) {
           <Button autoFocus onClick={handleClose} color="secondary">
             Cancelar
           </Button>
+          <Button onClick={handleViewInBrowser}>Ver en navegador</Button>
           <Button
             onClick={handleConfirmDownload}
             color="primary"
