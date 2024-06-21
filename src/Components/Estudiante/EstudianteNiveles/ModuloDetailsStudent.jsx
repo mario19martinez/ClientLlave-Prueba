@@ -383,7 +383,7 @@ function ModuloDetailsStudent() {
         overlayClassName="fixed inset-0 bg-gray-800 bg-opacity-75"
       >
         <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full text-center">
-          <h2 className="text-3xl font-bold mb-4 text-red-600">Advertencia</h2>
+          <h2 className="text-3xl font-bold mb-4 text-red-600 uppercase">ADVERTENCIA</h2>
           <p className="text-gray-700 mb-6">
             Debes ver todas las clases al 80% o más para poder ver y responder
             las preguntas.
