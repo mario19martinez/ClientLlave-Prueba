@@ -1,13 +1,29 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Loading from "../Loading";
 
 function Error404() {
   const navigate = useNavigate();
+  const [showError, setShowError] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowError(true);
+    }, 10000);
+
+    // Limpia el temporizador si el componente se desmonta antes de que se complete
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login");
     window.location.reload();
   };
+
+  if (!showError) {
+    return <Loading />;
+  }
 
   return (
     <main className="h-screen w-screen grid place-items-center bg-gradient-to-r from-blue-400 to-indigo-950 px-6 py-24 sm:py-32 lg:px-8 text-white">

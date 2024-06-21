@@ -47,16 +47,15 @@ const CardBlog = ({ blog }) => {
         )}
       </div>
       <div className="px-6 py-4">
+      <div className="flex justify-between items-center mt-4">
+          <p className="text-gray-500 text-sm">{formatDate(blog.createdAt)}</p>
+        </div>
         <div className="font-semibold text-xl mb-2 text-gray-800 line-clamp-2">
           {blog.title}
         </div>
         <div className="text-gray-600 line-clamp-3 mb-4">
           {stripHtmlTags(blog.content)}
         </div>
-        <div className="flex justify-between items-center mt-4">
-          <p className="text-gray-500 text-sm">{formatDate(blog.createdAt)}</p>
-        </div>
-        <div className="flex space-x-10">
           <div className="flex justify-start space-x-2 items-center text-gray-500 text-sm mt-2">
             <p>Tiempo de lectura:</p>
             <span>{blog.Lectura}</span>
@@ -65,7 +64,6 @@ const CardBlog = ({ blog }) => {
           <div className="flex justify-end mt-2">
             <p className="text-blue-500 text-sm">Click para leer más</p>
           </div>
-        </div>
       </div>
     </div>
   );

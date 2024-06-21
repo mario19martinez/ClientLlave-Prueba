@@ -12,7 +12,7 @@ const Blogs = () => {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get("/blogs");
-        const sortedBlogs = response.data.sort((a, b) => b.id - a.id); // Ordenar blogs por ID descendente
+        const sortedBlogs = response.data.sort((a, b) => b.id - a.id);
         setBlogs(sortedBlogs);
         setLoading(false);
       } catch (error) {
@@ -23,14 +23,18 @@ const Blogs = () => {
     fetchBlogs();
   }, []);
 
-  // Filtrar los blogs para mostrar solo los blogs con estado "publicado" o estado vacío, null o indefinido
-  const filteredBlogs = blogs.filter(blog => blog.estado === "publicado" || !blog.estado);
+  const filteredBlogs = blogs.filter(
+    (blog) => blog.estado === "publicado" || !blog.estado
+  );
 
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
   const currentBlogs = filteredBlogs.slice(indexOfFirstBlog, indexOfLastBlog);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -41,22 +45,22 @@ const Blogs = () => {
         </div>
       ) : (
         <div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-6 transition-transform duration-500">
             {currentBlogs.map((blog) => (
               <CardBlog key={blog.id} blog={blog} />
             ))}
           </div>
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-center mt-6 space-x-2">
             {Array.from(
               { length: Math.ceil(filteredBlogs.length / blogsPerPage) },
               (_, i) => (
                 <button
                   key={i}
                   onClick={() => paginate(i + 1)}
-                  className={`mx-2 px-3 py-1 rounded ${
+                  className={`mx-1 px-3 py-2 rounded-full transition-colors duration-300 ${
                     i + 1 === currentPage
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-300 text-gray-600"
+                      ? "bg-blue-600 text-white shadow-lg"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                   }`}
                 >
                   {i + 1}
