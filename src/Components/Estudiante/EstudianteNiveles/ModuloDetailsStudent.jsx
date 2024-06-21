@@ -367,7 +367,7 @@ function ModuloDetailsStudent() {
 
       {quizCompletado && (
         <div className="text-center mt-4 text-green-600 text-xl font-semibold">
-          ¡Felicitaciones! Has completado el quizz correctamente.
+          ¡Felicitaciones! Has respondido todas las preguntas correctamente.
         </div>
       )}
       {!quizCompletado && respuestasUsuario.length > 0 && (
