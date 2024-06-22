@@ -163,13 +163,9 @@ function App() {
 
     useEffect(() => {
         const fetchUserRole = async () => {
-            // Simula una llamada a la API para obtener el rol del usuario
             setLoading(true);
             try {
-                // Aquí puedes hacer una solicitud a tu API para obtener el rol del usuario
-                // Por ahora, usaremos localStorage como un ejemplo
-                const storedRole = localStorage.getItem("userRole");
-                setRole(storedRole);
+                setRole(userRole);
             } catch (error) {
                 console.error("Error fetching user role:", error);
             } finally {
@@ -178,6 +174,7 @@ function App() {
         };
 
         fetchUserRole();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (loading) {
