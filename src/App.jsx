@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -140,6 +141,8 @@ import ViewClasesUser from "./views/ViewCursoUser/ViewCursoUser";
 import Viewdetailsentrenamiento from "./views/Viewdetailsentrenamiento/Viewdetailsentrenamiento";
 import ViewFormProfetico from "./views/ViewCompProfeticos/ViewFormProfetico";
 
+import Loading from "./Components/Loading";
+
 //import Cursos from "./Components/Admin/Cursos/Cursos";
 //import Entrenamiento from "./Components/Entrenamiento/Entrenamiento";
 //import ClaseDetail from "./Components/Admin/Clases/ClaseDetail";
@@ -155,6 +158,32 @@ const isLoggedIn = localStorage.getItem("isLoggedIn");
 const userRole = localStorage.getItem("userRole");
 
 function App() {
+    const [loading, setLoading] = useState(true);
+    const [setRole] = useState(null);
+
+    useEffect(() => {
+        const fetchUserRole = async () => {
+            // Simula una llamada a la API para obtener el rol del usuario
+            setLoading(true);
+            try {
+                // Aquí puedes hacer una solicitud a tu API para obtener el rol del usuario
+                // Por ahora, usaremos localStorage como un ejemplo
+                const storedRole = localStorage.getItem("userRole");
+                setRole(storedRole);
+            } catch (error) {
+                console.error("Error fetching user role:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserRole();
+    }, []);
+
+    if (loading) {
+        return <Loading />;
+    }
+
   return (
     <Router>
       <Routes>
