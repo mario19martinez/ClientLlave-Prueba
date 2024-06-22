@@ -202,39 +202,63 @@ function AllUsersAdmin() {
         <div className="flex space-x-4 items-center">
           <button
             onClick={openRegistrationModal}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="relative bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group"
+            title="Agregar un nuevo usuario"
           >
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm text-white bg-black bg-opacity-75 rounded-lg px-2 py-1">
+              Agregar usuario
+            </span>
             Agregar usuario
           </button>
           <button
             onClick={() => navigate("/admin/usersDeleted")}
-            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 flex items-center"
+            className="relative bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 group flex items-center"
+            title="Ver usuarios eliminados"
           >
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm text-white bg-black bg-opacity-75 rounded-lg px-2 py-1">
+              Usuarios eliminados
+            </span>
             <DeleteIcon className="mr-2" />
             Eliminados
           </button>
           <button
             onClick={() => navigate("/admin/AnalyticsUser")}
-            className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+            className="relative bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 group flex items-center"
+            title="Ver analíticas de usuarios"
           >
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm text-white bg-black bg-opacity-75 rounded-lg px-2 py-1">
+              Analíticas
+            </span>
             <BarChartIcon className="text-green-400" />
           </button>
           <button
             onClick={() => navigate("/admin/seguimiento")}
-            className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+            className="relative bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 group"
+            title="Ver seguimiento de usuarios"
           >
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm text-white bg-black bg-opacity-75 rounded-lg px-2 py-1">
+              Seguimiento
+            </span>
             Seguimiento
           </button>
           <button
             onClick={() => navigate("/admin/registro-actividades")}
-            className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+            className="relative bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 group"
+            title="Registrar actividades y niveles"
           >
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm text-white bg-black bg-opacity-75 rounded-lg px-2 py-1">
+              Registro de actividades
+            </span>
             Act Niveles
           </button>
           <button
             onClick={() => navigate("/Admin/datos")}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="relative bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group"
+            title="Ver datos de usuarios en España"
           >
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm text-white bg-black bg-opacity-75 rounded-lg px-2 py-1">
+              Datos/España
+            </span>
             Datos/España
           </button>
         </div>
@@ -382,129 +406,137 @@ function AllUsersAdmin() {
         </div>
       )}
       {isModalOpen && (
-       <Modal
-       isOpen={isModalOpen}
-       onRequestClose={handleCloseModal}
-       contentLabel="Detalles del usuario"
-       className="Modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-8 shadow-2xl z-50 w-11/12 max-w-2xl"
-       overlayClassName="Overlay fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50"
-     >
-       <button
-         onClick={handleCloseModal}
-         className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none"
-       >
-         <svg
-           xmlns="http://www.w3.org/2000/svg"
-           fill="none"
-           viewBox="0 0 24 24"
-           stroke="currentColor"
-           className="w-6 h-6"
-         >
-           <path
-             strokeLinecap="round"
-             strokeLinejoin="round"
-             strokeWidth="2"
-             d="M6 18L18 6M6 6l12 12"
-           ></path>
-         </svg>
-       </button>
-       <div className="rounded-lg p-8">
-         <p className="text-center text-2xl font-bold mb-4 text-gray-800">
-           Detalles del usuario
-         </p>
-         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-           <div>
-             <p className="text-gray-700">Nombre:</p>
-             <p className="font-semibold text-gray-800">
-               {selectedUser.name}
-             </p>
-           </div>
-           <div>
-             <p className="text-gray-700">Apellido:</p>
-             <p className="font-semibold text-gray-800">
-               {selectedUser.last_name}
-             </p>
-           </div>
-           <div>
-             <p className="text-gray-700">Correo:</p>
-             <p className="font-semibold text-gray-800">
-               {selectedUser.email}
-             </p>
-           </div>
-           <div>
-             <p className="text-gray-700">País:</p>
-             <p className="font-semibold text-gray-800">
-               {selectedUser.pais}
-             </p>
-           </div>
-           <div>
-             <p className="text-gray-700">Teléfono:</p>
-             <p className="font-semibold text-gray-800">
-               {selectedUser.telefono}
-             </p>
-           </div>
-           {selectedUser.grupo && (
-             <div>
-               <p className="text-gray-700">Grupo:</p>
-               <p className="font-semibold text-gray-800">
-                 {selectedUser.grupo.name}
-               </p>
-             </div>
-           )}
-           {selectedUser.grupo && selectedUser.grupo.nivel && (
-             <div>
-               <p className="text-gray-700">Nivel:</p>
-               <p className="font-semibold text-gray-800">
-                 {selectedUser.grupo.nivel.name}
-               </p>
-             </div>
-           )}
-         </div>
-         {selectedUser.cursos && selectedUser.cursos.length > 0 ? (
-           <div className="mt-4 flex space-x-20">
-            <div>
-            <h3 className="text-lg font-bold text-gray-800">Cursos</h3>
-             <ul className="list-disc list-inside">
-               {(showAllCourses ? selectedUser.cursos : selectedUser.cursos.slice(0, 3)).map((curso) => (
-                 <li key={curso.id} className="font-semibold text-gray-800">
-                   {curso.name}
-                 </li>
-               ))}
-             </ul>
-             {selectedUser.cursos.length > 3 && (
-               <button
-                 className="mt-2 text-blue-500 hover:underline focus:outline-none"
-                 onClick={() => setShowAllCourses(!showAllCourses)}
-               >
-                 {showAllCourses ? "Ver menos" : "Ver más"}
-               </button>
-             )}
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={handleCloseModal}
+          contentLabel="Detalles del usuario"
+          className="Modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-8 shadow-2xl z-50 w-11/12 max-w-2xl"
+          overlayClassName="Overlay fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50"
+        >
+          <button
+            onClick={handleCloseModal}
+            className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+          <div className="rounded-lg p-8">
+            <p className="text-center text-2xl font-bold mb-4 text-gray-800">
+              Detalles del usuario
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <p className="text-gray-700">Nombre:</p>
+                <p className="font-semibold text-gray-800">
+                  {selectedUser.name}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-700">Apellido:</p>
+                <p className="font-semibold text-gray-800">
+                  {selectedUser.last_name}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-700">Correo:</p>
+                <p className="font-semibold text-gray-800">
+                  {selectedUser.email}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-700">País:</p>
+                <p className="font-semibold text-gray-800">
+                  {selectedUser.pais}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-700">Teléfono:</p>
+                <p className="font-semibold text-gray-800">
+                  {selectedUser.telefono}
+                </p>
+              </div>
+              {selectedUser.grupo && (
+                <div>
+                  <p className="text-gray-700">Grupo:</p>
+                  <p className="font-semibold text-gray-800">
+                    {selectedUser.grupo.name}
+                  </p>
+                </div>
+              )}
+              {selectedUser.grupo && selectedUser.grupo.nivel && (
+                <div>
+                  <p className="text-gray-700">Nivel:</p>
+                  <p className="font-semibold text-gray-800">
+                    {selectedUser.grupo.nivel.name}
+                  </p>
+                </div>
+              )}
             </div>
-             <div className="mt-4">
-               <h3 className="text-lg font-bold text-gray-800">Curso Actual</h3>
-               <p className="font-semibold text-gray-800">
-                 {selectedUser.cursos[selectedUser.cursos.length - 1].name}
-               </p>
-             </div>
-           </div>
-         ) : (
-           <p className="mt-4 text-red-500 font-semibold">
-             El usuario no está inscrito en ningún curso.
-           </p>
-         )}
-         <div className="flex justify-center mt-6">
-           <button
-             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none mr-4"
-             onClick={() => handleEditUser(selectedUser.email)}
-           >
-             Editar
-           </button>
-           <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none">
-             Novedad
-           </button>
-         </div>
-       </div>
-     </Modal>
+            {selectedUser.cursos && selectedUser.cursos.length > 0 ? (
+              <div className="mt-4 flex space-x-20">
+                <div>
+                  <h3 className="text-lg font-bold text-gray-800">Cursos</h3>
+                  <ul className="list-disc list-inside">
+                    {(showAllCourses
+                      ? selectedUser.cursos
+                      : selectedUser.cursos.slice(0, 3)
+                    ).map((curso) => (
+                      <li
+                        key={curso.id}
+                        className="font-semibold text-gray-800"
+                      >
+                        {curso.name}
+                      </li>
+                    ))}
+                  </ul>
+                  {selectedUser.cursos.length > 3 && (
+                    <button
+                      className="mt-2 text-blue-500 hover:underline focus:outline-none"
+                      onClick={() => setShowAllCourses(!showAllCourses)}
+                    >
+                      {showAllCourses ? "Ver menos" : "Ver más"}
+                    </button>
+                  )}
+                </div>
+                <div className="mt-4">
+                  <h3 className="text-lg font-bold text-gray-800">
+                    Curso Actual
+                  </h3>
+                  <p className="font-semibold text-gray-800">
+                    {selectedUser.cursos[selectedUser.cursos.length - 1].name}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <p className="mt-4 text-red-500 font-semibold">
+                El usuario no está inscrito en ningún curso.
+              </p>
+            )}
+            <div className="flex justify-center mt-6">
+              <button
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none mr-4"
+                onClick={() => handleEditUser(selectedUser.email)}
+              >
+                Editar
+              </button>
+              <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none">
+                Novedad
+              </button>
+            </div>
+          </div>
+        </Modal>
       )}
 
       {isEditModalOpen && selectedUserEmail && (
