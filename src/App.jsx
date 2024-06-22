@@ -114,6 +114,7 @@ import UserDetail from "./Components/Admin/UserDetail/UserDetail";
 import AgregarClases from "./Components/Admin/Clases/AgregarClases";
 import ViewRegistroActividad from "./views/ViewAdmin/ViewRegistroActividad/ViewRegistroActividad";
 import ViewSelectedCertificado from "./views/ViewAdmin/ViewCertificacion/ViewSelectedCertificados";
+import ViewUserSinActividad from './views/ViewAdmin/ViewRegistroActividad/ViewUserSinActividad';
 
 //imports editor
 import ViewEscritorioEditor from "./views/ViewEditor/ViewEscritorioEditor";
@@ -255,6 +256,7 @@ function App() {
             <Route path="/Admin/Certificado/Curso/:idCurso" element={isLoggedIn ? <ViewUsersCertificados /> : <Navigate to="/login" />} />
             <Route path="/admin/registro-actividades" element={<ViewRegistroActividad />} />
             <Route path="/admin/selectedCertificado" element={isLoggedIn? <ViewSelectedCertificado /> : <Navigate to="/login" />} />
+            <Route path="/admin/registros-sin-actividad" element={isLoggedIn? <ViewUserSinActividad /> : <Navigate to="/login" />} />
           </>
         )}
         
