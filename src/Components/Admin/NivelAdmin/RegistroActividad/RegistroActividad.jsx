@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 
 function RegistroActividad() {
   const [registros, setRegistros] = useState([]);
@@ -16,20 +19,20 @@ function RegistroActividad() {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 20;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [registrosResponse, nivelesResponse] =
-          await Promise.all([
-            axios.get("/registros-actividad"),
-            axios.get("/all-niveles"),
-          ]);
+        const [registrosResponse, nivelesResponse] = await Promise.all([
+          axios.get("/registros-actividad"),
+          axios.get("/all-niveles"),
+        ]);
 
         const sortedRegistros = registrosResponse.data.sort(
           (a, b) => new Date(b.inicio) - new Date(a.inicio)
         );
-        console.log("Fetched Registros:", sortedRegistros);
+        //console.log("Fetched Registros:", sortedRegistros);
 
         setRegistros(sortedRegistros);
         setNiveles(nivelesResponse.data);
@@ -64,14 +67,14 @@ function RegistroActividad() {
     const fetchModulos = async () => {
       try {
         const response = await axios.get("/modulos");
-        setModulos(response.data)
+        setModulos(response.data);
         setFilteredModulos(response.data);
       } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
-    }
+    };
     fetchModulos();
   }, []);
 
@@ -80,9 +83,11 @@ function RegistroActividad() {
       try {
         if (selectedNivel === "") {
           setFilteredGrupos(grupos); // Mostrar todos los grupos cuando no hay nivel seleccionado
+          //console.log("Filtered grupos reset to all grupos.");
         } else {
           const response = await axios.get(`/niveles/${selectedNivel}/grupos`);
           setFilteredGrupos(response.data);
+          //console.log("response grupo:", response.data);
         }
       } catch (error) {
         setError(error.message);
@@ -101,7 +106,7 @@ function RegistroActividad() {
         }
       } catch (error) {
         setError(error.message);
-        console.error('Error al traer los modulos del grupo:', error)
+        console.error("Error al traer los modulos del grupo:", error);
       }
     };
 
@@ -116,17 +121,20 @@ function RegistroActividad() {
     const selectedValue = e.target.value;
     setSelectedNivel(selectedValue);
     setSelectedGrupo("");
-    setModulos([])
+    setModulos([]);
+    //console.log("Select Nivel:", selectedNivel);
   };
 
   const handleGrupoChange = (e) => {
     const selectedValueGrupo = e.target.value;
     setSelectedGrupo(selectedValueGrupo);
+    //console.log("Select grupo:", selectedValueGrupo);
   };
 
   const handleModuloChange = (e) => {
     const selectedValueModulo = e.target.value;
     setSelectedModulo(selectedValueModulo);
+    //console.log("Selected Modulo:", selectedValueModulo);
   };
 
   const handleResetFilters = () => {
@@ -198,6 +206,10 @@ function RegistroActividad() {
     pageNumbers.push(i);
   }
 
+  const goBack = () => {
+    navigate(-1);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -215,6 +227,13 @@ function RegistroActividad() {
 
   return (
     <div className="py-5 px-10 p-8 ">
+      <button
+          onClick={goBack}
+          className="flex items-center bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300 mb-4"
+        >
+          <KeyboardBackspaceIcon fontSize="large" className="mr-2" />
+          Volver
+        </button>
       <h1 className="text-xl font-bold mb-6 text-gray-700">
         Registros de Actividad
       </h1>
@@ -229,7 +248,7 @@ function RegistroActividad() {
         <select
           value={selectedNivel}
           onChange={handleNivelChange}
-          className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
+          className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg cursor-pointer"
         >
           <option value="">Todos los cursos</option>
           {niveles.map((nivel) => (
@@ -241,7 +260,7 @@ function RegistroActividad() {
         <select
           value={selectedGrupo}
           onChange={handleGrupoChange}
-          className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
+          className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg cursor-pointer"
         >
           <option value="">Todos los grupos</option>
           {selectedNivel === ""
@@ -259,7 +278,7 @@ function RegistroActividad() {
         <select
           value={selectedModulo}
           onChange={handleModuloChange}
-          className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
+          className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg cursor-pointer"
         >
           <option value="">Todos los modulos</option>
           {modulos.map((modulo) => (
@@ -270,16 +289,23 @@ function RegistroActividad() {
         </select>
         <button
           onClick={handleResetFilters}
+          title="Delete"
           className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none"
         >
-          Reiniciar Filtros
+         <RotateLeftIcon fontSize="large"/>
+        </button>
+        <button
+          onClick={() => navigate('/admin/registros-sin-actividad')}
+          className="bg-blue-600 hover:bg-blue-900 text-white font-semibold py-2 px-4 rounded"
+        >
+          No Activos
         </button>
       </div>
       {currentRegistros.length === 0 ? (
-        <p>No hay registros disponibles.</p>
+        <p className="text-gray-600 font-semibold">No hay registros disponibles.</p>
       ) : (
         <div className="overflow-x-auto border border-gray-400 rounded-lg shadow-md">
-          <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+          <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg border-separate border-spacing-2">
             <thead className="bg-blue-200 border-b border-gray-300">
               <tr className="bg-blue-100 text-gray-700 uppercase text-xs leading-normal">
                 <th className="py-3 px-6 text-left">Usuario</th>
@@ -292,11 +318,17 @@ function RegistroActividad() {
               </tr>
             </thead>
             <tbody className="text-gray-700 text-sm font-mono divide-y divide-gray-200">
-              {currentRegistros.map((registro) => {
-                return (
+              {currentRegistros.length === 0 ? (
+                <tr>
+                  <td colSpan="7" className="py-3 px-6 text-center">
+                    No hay registros disponibles.
+                  </td>
+                </tr>
+              ) : (
+                currentRegistros.map((registro) => (
                   <tr
                     key={registro.id}
-                    className="border-b border-gray-200 hover:bg-gray-100"
+                    className="border-b border-gray-200 hover:bg-gray-100 bg-slate-100"
                   >
                     <td className="py-3 px-6 text-left whitespace-nowrap">
                       {registro.user
@@ -313,11 +345,12 @@ function RegistroActividad() {
                     </td>
                     <td className="py-3 px-6 text-left whitespace-nowrap">
                       {registro.user &&
-                      registro.user.grupos &&
-                      registro.user.grupos[0] &&
-                      registro.user.grupos[0].name
-                        ? registro.user.grupos[0].name
-                        : ""}
+                        registro.user.grupos &&
+                        (selectedGrupo !== ""
+                          ? registro.user.grupos.find(
+                              (grupo) => grupo.id === selectedGrupo
+                            )?.name
+                          : registro.modulo?.grupos[0]?.name)}
                     </td>
                     <td className="py-3 px-6 text-left">
                       {registro.modulo ? registro.modulo.titulo : ""}
@@ -340,8 +373,8 @@ function RegistroActividad() {
                       {registro.progreso.toFixed(1)}%
                     </td>
                   </tr>
-                );
-              })}
+                ))
+              )}
             </tbody>
           </table>
         </div>

@@ -43,13 +43,13 @@ function ModulosDelGrupo() {
         {modulos.map((modulo) => (
           <li key={modulo.id} className="border-b border-gray-200 py-4">
             <p className="text-lg font-semibold mb-2 text-gray-700">{modulo.titulo}</p>
+            <p className="text-sm text-gray-600 mb-1">Agregado: {new Date(modulo.createdAt).toLocaleDateString()}</p>
             <button
             onClick={() => handleDeleteModulo(modulo.id)}
             className="text-red-500 hover:text-white hover:bg-red-500 rounded"
             >
               <DeleteIcon />
             </button>
-            {/* <p className="text-w mb-1">{modulo.descripcion.substring(0, 20)}</p> */}
           </li>
         ))}
       </ul>
