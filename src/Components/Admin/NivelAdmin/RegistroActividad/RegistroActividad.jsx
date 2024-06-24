@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import RotateLeftIcon from '@mui/icons-material/RotateLeft';
-import Tooltip from '@mui/material/Tooltip';
+import RotateLeftIcon from "@mui/icons-material/RotateLeft";
+import Tooltip from "@mui/material/Tooltip";
 
 function RegistroActividad() {
   const [registros, setRegistros] = useState([]);
@@ -229,12 +229,12 @@ function RegistroActividad() {
   return (
     <div className="py-5 px-10 p-8 ">
       <button
-          onClick={goBack}
-          className="flex items-center bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300 mb-4"
-        >
-          <KeyboardBackspaceIcon fontSize="large" className="mr-2" />
-          Volver
-        </button>
+        onClick={goBack}
+        className="flex items-center bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300 mb-4"
+      >
+        <KeyboardBackspaceIcon fontSize="large" className="mr-2" />
+        Volver
+      </button>
       <h1 className="text-xl font-bold mb-6 text-gray-700">
         Registros de Actividad
       </h1>
@@ -288,23 +288,59 @@ function RegistroActividad() {
             </option>
           ))}
         </select>
-      <Tooltip title="Reset Filtros" arrow placement="top">
-        <button
-        onClick={handleResetFilters}
-        className="bg-blue-500 text-white py-2 px-2 rounded-full hover:bg-blue-700 focus:outline-none"
+        <Tooltip
+          title="Reset Filtros"
+          arrow
+          placement="top"
+          slotProps={{
+            popper: {
+              modifiers: [
+                {
+                  name: "offset",
+                  options: {
+                    offset: [0, -6],
+                  },
+                },
+              ],
+            },
+          }}
         >
-          <RotateLeftIcon fontSize="large"/>
-        </button>
-      </Tooltip>
-        <button
-          onClick={() => navigate('/admin/registros-sin-actividad')}
-          className="bg-blue-600 hover:bg-blue-900 text-white font-semibold py-2 px-4 rounded"
+          <button
+            onClick={handleResetFilters}
+            className="bg-blue-500 text-white py-2 px-2 rounded-full hover:bg-blue-700 focus:outline-none"
+          >
+            <RotateLeftIcon fontSize="large" />
+          </button>
+        </Tooltip>
+        <Tooltip
+          title="Usuarios No Activos"
+          arrow
+          placement="top"
+          slotProps={{
+            popper: {
+              modifiers: [
+                {
+                  name: "offset",
+                  options: {
+                    offset: [0, -6],
+                  },
+                },
+              ],
+            },
+          }}
         >
-          No Activos
-        </button>
+          <button
+            onClick={() => navigate("/admin/registros-sin-actividad")}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+          >
+            No Activos
+          </button>
+        </Tooltip>
       </div>
       {currentRegistros.length === 0 ? (
-        <p className="text-gray-600 font-semibold">No hay registros disponibles.</p>
+        <p className="text-gray-600 font-semibold">
+          No hay registros disponibles.
+        </p>
       ) : (
         <div className="overflow-x-auto border border-gray-400 rounded-lg shadow-md">
           <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg border-separate border-spacing-2">
