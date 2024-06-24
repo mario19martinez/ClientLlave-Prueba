@@ -1,103 +1,103 @@
-import { useState, useEffect } from "react";
-import * as Yup from "yup";
-import { useFormik } from "formik";
-import paisesData from "../FormResgistro/Paises.json";
-import axios from "axios";
-import { toast } from "react-toastify";
+// import { useState, useEffect } from "react";
+// import * as Yup from "yup";
+// import { useFormik } from "formik";
+// import paisesData from "../FormResgistro/Paises.json";
+// import axios from "axios";
+// import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import backgroundImage from "../../assets/fondo.png";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  IconButton,
-} from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
+// import {
+//   Dialog,
+//   DialogTitle,
+//   DialogContent,
+//   DialogActions,
+//   Button,
+//   //IconButton,
+// } from "@mui/material";
+//import CloseIcon from '@mui/icons-material/Close';
 
-const initialValues = {
-  name: "",
-  last_name: "",
-  identificacion: "",
-  email: "",
-  telefono: "",
-  pais: "",
-  privacyPolicy: false,
-  dataTreatmentPolicy: false,
-  campaña: "Pagina Inicio",
-};
+// const initialValues = {
+//   name: "",
+//   last_name: "",
+//   identificacion: "",
+//   email: "",
+//   telefono: "",
+//   pais: "",
+//   privacyPolicy: false,
+//   dataTreatmentPolicy: false,
+//   campaña: "Pagina Inicio",
+// };
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required("El nombre es requerido"),
-  last_name: Yup.string().required("El apellido es requerido"),
-  email: Yup.string()
-    .email("Ingresa un email válido")
-    .required("El email es requerido"),
-  telefono: Yup.string().required("El teléfono es requerido"),
-  pais: Yup.string().required("El país es requerido"),
-  privacyPolicy: Yup.boolean().oneOf(
-    [true],
-    "Debes aceptar la política de privacidad"
-  ),
-  dataTreatmentPolicy: Yup.boolean().oneOf(
-    [true],
-    "Debes aceptar la política de tratamiento de datos"
-  ),
-});
+// const validationSchema = Yup.object().shape({
+//   name: Yup.string().required("El nombre es requerido"),
+//   last_name: Yup.string().required("El apellido es requerido"),
+//   email: Yup.string()
+//     .email("Ingresa un email válido")
+//     .required("El email es requerido"),
+//   telefono: Yup.string().required("El teléfono es requerido"),
+//   pais: Yup.string().required("El país es requerido"),
+//   privacyPolicy: Yup.boolean().oneOf(
+//     [true],
+//     "Debes aceptar la política de privacidad"
+//   ),
+//   dataTreatmentPolicy: Yup.boolean().oneOf(
+//     [true],
+//     "Debes aceptar la política de tratamiento de datos"
+//   ),
+// });
 
 export default function LandingPage() {
-  const [fullPhoneNumber, setFullPhoneNumber] = useState("");
-  const [selectedCountryCode, setSelectedCountryCode] = useState("");
-  const [openDialog, setOpenDialog] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  // const [fullPhoneNumber, setFullPhoneNumber] = useState("");
+  // const [selectedCountryCode, setSelectedCountryCode] = useState("");
+  // const [openDialog, setOpenDialog] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   const isLoggedIn = localStorage.getItem("isLoggedIn");
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowModal(true);
-    }, 30000);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setShowModal(true);
+  //   }, 30000);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: async (values) => {
-      values.telefono = `${selectedCountryCode} ${values.telefono}`;
-      if (!values.privacyPolicy || !values.dataTreatmentPolicy) {
-        setOpenDialog(true);
-        return;
-      }
-      try {
-        const response = await axios.post("/useriniciado", values);
-        const { token, message } = response.data;
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("email", values.email);
-        toast.success(message, {
-          position: "top-center",
-          autoClose: 2000,
-          closeOnClick: true,
-          pauseOnHover: false,
-          theme: "colored",
-        });
-        localStorage.setItem("token", token);
-        navigate("/curso/2");
-      } catch (error) {
-        console.error("Error al registrar al usuario:", error);
-        toast.error("Error al registrar el usuario.", {
-          position: "top-center",
-          autoClose: 5000,
-          closeOnClick: true,
-          pauseOnHover: false,
-          theme: "colored",
-        });
-      }
-    },
-  });
+  // const formik = useFormik({
+  //   initialValues,
+  //   validationSchema,
+  //   onSubmit: async (values) => {
+  //     values.telefono = `${selectedCountryCode} ${values.telefono}`;
+  //     if (!values.privacyPolicy || !values.dataTreatmentPolicy) {
+  //       setOpenDialog(true);
+  //       return;
+  //     }
+  //     try {
+  //       const response = await axios.post("/useriniciado", values);
+  //       const { token, message } = response.data;
+  //       localStorage.setItem("isLoggedIn", "true");
+  //       localStorage.setItem("email", values.email);
+  //       toast.success(message, {
+  //         position: "top-center",
+  //         autoClose: 2000,
+  //         closeOnClick: true,
+  //         pauseOnHover: false,
+  //         theme: "colored",
+  //       });
+  //       localStorage.setItem("token", token);
+  //       navigate("/curso/2");
+  //     } catch (error) {
+  //       console.error("Error al registrar al usuario:", error);
+  //       toast.error("Error al registrar el usuario.", {
+  //         position: "top-center",
+  //         autoClose: 5000,
+  //         closeOnClick: true,
+  //         pauseOnHover: false,
+  //         theme: "colored",
+  //       });
+  //     }
+  //   },
+  // });
 
   return (
     <div
@@ -132,7 +132,7 @@ export default function LandingPage() {
                 Iniciar sesión
               </button>
               <button
-                onClick={() => setShowModal(true)}
+                onClick={() => navigate("/RegistroUser")}
                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
                 Regístrate
@@ -141,7 +141,7 @@ export default function LandingPage() {
           )}
         </div>
       </div>
-      <Dialog open={showModal} onClose={() => setShowModal(false)} maxWidth="md" fullWidth>
+      {/* <Dialog open={showModal} onClose={() => setShowModal(false)} maxWidth="md" fullWidth>
         <DialogTitle>
           {"Formulario de Registro"}
           <IconButton
@@ -253,12 +253,9 @@ export default function LandingPage() {
                   type="text"
                   id="telefono"
                   name="telefono"
-                  onChange={(e) => {
-                    formik.handleChange(e);
-                    setFullPhoneNumber(e.target.value);
-                  }}
+                  onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={fullPhoneNumber}
+                  value={formik.values.telefono}
                   className="form-input mt-1 block w-full border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500 text-black"
                 />
                 {formik.touched.telefono && formik.errors.telefono && (
@@ -287,104 +284,79 @@ export default function LandingPage() {
                 </p>
               )}
             </div>
-            <div className="mb-4">
-              {formik.touched.privacyPolicy && !formik.values.privacyPolicy && (
-                <p className="text-red-500 text-sm mt-1">
-                  Debes aceptar las políticas de privacidad
-                </p>
-              )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="mb-4">
-                <div className="flex items-center text-black">
+                <label htmlFor="privacyPolicy" className="block text-black">
                   <input
                     type="checkbox"
+                    id="privacyPolicy"
                     name="privacyPolicy"
-                    checked={formik.values.privacyPolicy}
-                    onChange={(e) =>
-                      formik.setFieldValue("privacyPolicy", e.target.checked)
-                    }
+                    onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className="mr-2"
+                    checked={formik.values.privacyPolicy}
+                    className="form-checkbox h-5 w-5 text-blue-500"
                   />
-                  <span className="pr-1">
-                    He leído y acepto las{" "}
-                    <a
-                      href="/PoliticasPrivacidad"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500"
-                    >
-                      políticas de privacidad
-                    </a>
+                  <span className="ml-2">Acepto la política de privacidad</span>
+                </label>
+                {formik.touched.privacyPolicy && formik.errors.privacyPolicy && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {formik.errors.privacyPolicy}
+                  </p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="dataTreatmentPolicy"
+                  className="block text-black"
+                >
+                  <input
+                    type="checkbox"
+                    id="dataTreatmentPolicy"
+                    name="dataTreatmentPolicy"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    checked={formik.values.dataTreatmentPolicy}
+                    className="form-checkbox h-5 w-5 text-blue-500"
+                  />
+                  <span className="ml-2">
+                    Acepto la política de tratamiento de datos
                   </span>
-                </div>
-                {formik.touched.privacyPolicy &&
-                  !formik.values.privacyPolicy && (
+                </label>
+                {formik.touched.dataTreatmentPolicy &&
+                  formik.errors.dataTreatmentPolicy && (
                     <p className="text-red-500 text-sm mt-1">
-                      Debes aceptar las políticas de privacidad
+                      {formik.errors.dataTreatmentPolicy}
                     </p>
                   )}
               </div>
-              <div className="flex items-center text-black mt-2">
-                <input
-                  type="checkbox"
-                  name="dataTreatmentPolicy"
-                  checked={formik.values.dataTreatmentPolicy}
-                  onChange={(e) =>
-                    formik.setFieldValue(
-                      "dataTreatmentPolicy",
-                      e.target.checked
-                    )
-                  }
-                  onBlur={formik.handleBlur}
-                  className="mr-2"
-                />
-                <span className="pr-1">
-                  He leído y acepto las políticas de{" "}
-                  <a
-                    href="/TratamientoDeDatos"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500"
-                  >
-                    tratamiento de datos
-                  </a>
-                </span>
-              </div>
-              {formik.touched.dataTreatmentPolicy &&
-                !formik.values.dataTreatmentPolicy && (
-                  <p className="text-red-500 text-sm mt-1">
-                    Debes aceptar las políticas de tratamiento de datos
-                  </p>
-                )}
             </div>
-            <button
-              type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              disabled={
-                !formik.isValid ||
-                !formik.values.privacyPolicy ||
-                !formik.values.dataTreatmentPolicy
-              }
-            >
-              Regístrate
-            </button>
+            <div className="mb-4">
+              <button
+                type="submit"
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+              >
+                Registrarse
+              </button>
+            </div>
           </form>
         </DialogContent>
-      </Dialog>
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>{"Aviso"}</DialogTitle>
+        <DialogActions>
+          <Button onClick={() => setShowModal(false)} color="primary">
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog> */}
+      {/* <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Aviso</DialogTitle>
         <DialogContent>
-          <p>
-            Debe aceptar las políticas de privacidad y tratamiento de datos para
-            continuar.
-          </p>
+          Por favor, acepta las políticas para continuar.
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)} color="primary">
-            Entendido
+            Cerrar
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 }

@@ -159,28 +159,6 @@ const isLoggedIn = localStorage.getItem("isLoggedIn");
 const userRole = localStorage.getItem("userRole");
 
 function App() {
-  const [loading, setLoading] = useState(true);
-  const [setRole] = useState(null);
-
-  useEffect(() => {
-      const fetchUserRole = async () => {
-          setLoading(true);
-          try {
-              setRole(userRole);
-          } catch (error) {
-              console.error("Error fetching user role:", error);
-          } finally {
-              setLoading(false);
-          }
-      };
-
-      fetchUserRole();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (loading) {
-      return <Loading />;
-  }
 
   return (
     <Router>
