@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import Tooltip from '@mui/material/Tooltip';
 
 function SeguimientoClases() {
   const [seguimientos, setSeguimientos] = useState([]);
@@ -102,12 +103,27 @@ function SeguimientoClases() {
 
   return (
     <div className="py-5 px-10 ">
+      <Tooltip title="Volver" arrow placement="bottom"
+      slotProps={{
+        popper: {
+          modifiers: [
+            {
+              name: 'offset',
+              options: {
+                offset: [0, -6],
+              },
+            },
+          ],
+        },
+      }}
+      >
       <button
         onClick={goBack}
         className="bg-blue-500 text-white w-20 h-10 mb-8 font-semibold py-0 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-1"
       >
         <KeyboardBackspaceIcon fontSize="large" />
       </button>
+      </Tooltip>
       <h1 className="text-xl font-bold mb-6 text-gray-700">
         Seguimiento de Clases
       </h1>

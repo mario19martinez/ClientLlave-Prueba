@@ -17,6 +17,7 @@ import {
   deleteUser as deleteUserAction,
 } from "../../../Redux/features/AdminUsers/AdminUsersSlices";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import Tooltip from "@mui/material/Tooltip";
 import EditarUsuarioAdmin from "./EditarUsuarioAdmin";
 import axios from "axios";
 
@@ -200,67 +201,151 @@ function AllUsersAdmin() {
       <h1 className="text-2xl font-bold mb-4 text-gray-700">Usuarios</h1>
       <div className="flex items-center justify-between mb-4">
         <div className="flex space-x-4 items-center">
-          <button
-            onClick={openRegistrationModal}
-            className="relative bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group"
-            title="Agregar un nuevo usuario"
+          <Tooltip
+            title="Agregar usuario"
+            arrow
+            placement="top"
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [0, -6],
+                    },
+                  },
+                ],
+              },
+            }}
           >
-            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm text-white bg-black bg-opacity-75 rounded-lg px-2 py-1">
+            <button
+              onClick={openRegistrationModal}
+              className="relative bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group"
+            >
               Agregar usuario
-            </span>
-            Agregar usuario
-          </button>
-          <button
-            onClick={() => navigate("/admin/usersDeleted")}
-            className="relative bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 group flex items-center"
-            title="Ver usuarios eliminados"
+            </button>
+          </Tooltip>
+          <Tooltip
+            title="Usuarios eliminados"
+            arrow
+            placement="top"
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [0, -6],
+                    },
+                  },
+                ],
+              },
+            }}
           >
-            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm text-white bg-black bg-opacity-75 rounded-lg px-2 py-1">
-              Usuarios eliminados
-            </span>
-            <DeleteIcon className="mr-2" />
-            Eliminados
-          </button>
-          <button
-            onClick={() => navigate("/admin/AnalyticsUser")}
-            className="relative bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 group flex items-center"
-            title="Ver analíticas de usuarios"
+            <button
+              onClick={() => navigate("/admin/usersDeleted")}
+              className="relative bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 group flex items-center"
+            >
+              <DeleteIcon className="mr-2" />
+              Eliminados
+            </button>
+          </Tooltip>
+          <Tooltip
+            title="Analíticas"
+            arrow
+            placement="top"
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [0, -6],
+                    },
+                  },
+                ],
+              },
+            }}
           >
-            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm text-white bg-black bg-opacity-75 rounded-lg px-2 py-1">
-              Analíticas
-            </span>
-            <BarChartIcon className="text-green-400" />
-          </button>
-          <button
-            onClick={() => navigate("/admin/seguimiento")}
-            className="relative bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 group"
-            title="Ver seguimiento de usuarios"
+            <button
+              onClick={() => navigate("/admin/AnalyticsUser")}
+              className="relative bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 group flex items-center"
+            >
+              <BarChartIcon className="text-green-400" />
+            </button>
+          </Tooltip>
+          <Tooltip
+            title="Seguimiento De Clases"
+            arrow
+            placement="top"
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [0, -6],
+                    },
+                  },
+                ],
+              },
+            }}
           >
-            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm text-white bg-black bg-opacity-75 rounded-lg px-2 py-1">
+            <button
+              onClick={() => navigate("/admin/seguimiento")}
+              className="relative bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 group"
+            >
               Seguimiento
-            </span>
-            Seguimiento
-          </button>
-          <button
-            onClick={() => navigate("/admin/registro-actividades")}
-            className="relative bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 group"
-            title="Registrar actividades y niveles"
+            </button>
+          </Tooltip>
+          <Tooltip
+            title="Actividad De Niveles"
+            arrow
+            placement="top"
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [0, -6],
+                    },
+                  },
+                ],
+              },
+            }}
           >
-            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm text-white bg-black bg-opacity-75 rounded-lg px-2 py-1">
-              Registro de actividades
-            </span>
-            Act Niveles
-          </button>
-          <button
-            onClick={() => navigate("/Admin/datos")}
-            className="relative bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group"
-            title="Ver datos de usuarios en España"
+            <button
+              onClick={() => navigate("/admin/registro-actividades")}
+              className="relative bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 group"
+            >
+              Act Niveles
+            </button>
+          </Tooltip>
+          <Tooltip
+            title="Datos de España"
+            arrow
+            placement="top"
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [0, -6],
+                    },
+                  },
+                ],
+              },
+            }}
           >
-            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm text-white bg-black bg-opacity-75 rounded-lg px-2 py-1">
+            <button
+              onClick={() => navigate("/Admin/datos")}
+              className="relative bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group"
+            >
               Datos/España
-            </span>
-            Datos/España
-          </button>
+            </button>
+          </Tooltip>
         </div>
         <div className="mt-4">
           <p className="text-gray-600 text-sm">
@@ -316,12 +401,30 @@ function AllUsersAdmin() {
           onChange={handleEndDateFilterChange}
           className="border-2 p-2 mr-2 focus:border-blue-500 focus:outline-none rounded-lg"
         />
-        <button
-          onClick={resetFilters}
-          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg ml-2"
+        <Tooltip
+          title="Reiniciar Filtros"
+          arrow
+          placement="right"
+          slotProps={{
+            popper: {
+              modifiers: [
+                {
+                  name: "offset",
+                  options: {
+                    offset: [0, -6],
+                  },
+                },
+              ],
+            },
+          }}
         >
-          <RotateLeftIcon />
-        </button>
+          <button
+            onClick={resetFilters}
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg ml-2"
+          >
+            <RotateLeftIcon />
+          </button>
+        </Tooltip>
       </div>
       {userNotFound ? (
         <p className="text-red-500">El usuario no existe.</p>
