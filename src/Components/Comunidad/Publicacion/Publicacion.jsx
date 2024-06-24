@@ -57,7 +57,7 @@ const Publicacion = () => {
   };
 
   return (
-    <div className="shadow-lg rounded-lg bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 mb-8 mx-4 md:mx-auto md:max-w-2xl">
+    <div className="shadow-lg rounded-lg bg-white text-gray-800 dark:text-gray-200 mb-8 mx-4 md:mx-auto md:max-w-2xl">
       <div className="p-5">
         <div className="flex items-center gap-4">
           <img
@@ -73,7 +73,7 @@ const Publicacion = () => {
             placeholder={`¿Quieres publicar algo, ${userData?.name || ""}?`}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="border-none outline-none bg-transparent w-full text-gray-800 dark:text-gray-200"
+            className="border-none outline-none bg-transparent w-full text-gray-800"
           />
         </div>
         {imagePreview && (
@@ -85,7 +85,7 @@ const Publicacion = () => {
             />
           </div>
         )}
-        <hr className="my-4 border-t border-gray-300 dark:border-gray-700" />
+        <hr className="my-4 border-t border-gray-300" />
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2 cursor-pointer">
             <UploadWidget onImageUpload={handleImageUpload} />

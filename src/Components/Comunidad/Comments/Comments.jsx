@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import ModeCommentOutlinedIcon from "@mui/icons-material/ModeCommentOutlined";
+import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
 
 const Comments = ({ postId }) => {
   const [comments, setComments] = useState([]);
@@ -58,29 +60,50 @@ const Comments = ({ postId }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg mt-6">
-      <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-200">Comentarios</h2>
+    <div className="bg-white  p-4 rounded-lg shadow-lg mt-6">
+      <h2 className="text-base font-bold mb-4 text-gray-900 ">
+        Comentarios
+      </h2>
       <div className="flex items-center mb-4">
         <button
           onClick={toggleComments}
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200"
+          className={`bg-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-600 transition duration-200 ${
+            showComments ? "bg-gray-500 hover:bg-gray-600" : ""
+          }`}
         >
-          {showComments ? "Ocultar" : "Ver Comentarios"}
+          {showComments ? (
+            <>
+              <InsertCommentOutlinedIcon className="mr-2" />
+              Ocultar Comentarios
+            </>
+          ) : (
+            <>
+              <ModeCommentOutlinedIcon className="mr-2" />
+              Ver Comentarios
+            </>
+          )}
         </button>
         <p className="text-gray-500 ml-4">
-          {comments.length === 1 ? "1 comentario" : `${comments.length} comentarios`}
+          {comments.length === 1
+            ? "1 comentario"
+            : `${comments.length} comentarios`}
         </p>
       </div>
       {showComments && (
         <ul className="list-none p-0 max-h-64 overflow-y-auto">
           {comments.map((comment) => (
-            <li key={comment.id} className="mb-4 p-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-700">
+            <li
+              key={comment.id}
+              className="mb-4 p-4 border border-gray-300  rounded-lg bg-gray-50 "
+            >
               {comment.user && (
-                <p className="text-gray-800 dark:text-gray-300 font-semibold mb-2">
+                <p className="text-gray-800  font-semibold mb-2">
                   {comment.user.name} {comment.user.last_name}
                 </p>
               )}
-              <p className="text-gray-800 dark:text-gray-300">{comment.content}</p>
+              <p className="text-gray-800 ">
+                {comment.content}
+              </p>
             </li>
           ))}
         </ul>
@@ -90,12 +113,13 @@ const Comments = ({ postId }) => {
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Agrega un comentario..."
-          className="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-200"
+          className="w-full p-3 border border-gray-300  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 "
         ></textarea>
         <button
           onClick={handleAddComment}
           className="bg-blue-500 text-white py-2 px-4 rounded mt-2 hover:bg-blue-700 transition duration-200"
         >
+          <ModeCommentOutlinedIcon />
           Comentar
         </button>
       </div>

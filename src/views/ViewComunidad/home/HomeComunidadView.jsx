@@ -7,7 +7,7 @@ import Posts from "../../../Components/Comunidad/posts/Posts";
 
 export default function HomeComunidadView () {
     return (
-        <div>
+        <div className="bg-gray-200">
             <NavSocial />
             <ContadorHome />
             <Publicacion />
