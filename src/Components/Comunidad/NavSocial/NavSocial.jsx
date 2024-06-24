@@ -40,7 +40,7 @@ const NavSocial = () => {
   };
 
   return (
-    <nav className="bg-blue-600 dark:bg-gray-800 text-white sticky top-0 z-50 border-b-2 px-4 py-2">
+    <nav className="bg-blue-600 text-white sticky top-0 z-50 border-b-2 px-4 py-2">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center gap-4 md:gap-8">
           <Link to="/Comunidad" className="text-xl font-bold">
@@ -51,7 +51,7 @@ const NavSocial = () => {
             onClick={() => navigate("/estudiante/Escritorio")}
           />
           <GridViewOutlinedIcon className="cursor-pointer" />
-          <div className="hidden md:flex items-center border rounded-md bg-white dark:bg-gray-700 p-2">
+          <div className="hidden md:flex items-center border rounded-md bg-white p-2">
             <SearchOutlinedIcon className="text-blue-600 dark:text-whitesmoke" />
             <input
               type="text"
@@ -77,32 +77,32 @@ const NavSocial = () => {
             <ExpandMoreIcon />
           </div>
           {showMenu && (
-            <div className="absolute right-0 mt-2 w-48 bg-blue-600 dark:bg-gray-800 border rounded-md shadow-md">
+            <div className="absolute right-0 mt-2 w-48 bg-blue-600 border rounded-md shadow-md">
               <div className="py-2">
                 <Link
                   to="/estudiante/profile"
-                  className="flex items-center gap-2 px-4 py-2 hover:bg-blue-700 dark:hover:bg-gray-900"
+                  className="flex items-center gap-2 px-4 py-2 hover:bg-blue-700 "
                 >
                   <PersonOutlinedIcon />
                   <span>Ver Perfil</span>
                 </Link>
                 <Link
                   to="/my-posts"
-                  className="flex items-center gap-2 px-4 py-2 hover:bg-blue-700 dark:hover:bg-gray-900"
+                  className="flex items-center gap-2 px-4 py-2 hover:bg-blue-700 "
                 >
                   <EmailOutlinedIcon />
                   <span>Mis Publicaciones</span>
                 </Link>
                 <Link
                   to="/estudiante/Ajustes"
-                  className="flex items-center gap-2 px-4 py-2 hover:bg-blue-700 dark:hover:bg-gray-900"
+                  className="flex items-center gap-2 px-4 py-2 hover:bg-blue-700 "
                 >
                   <NotificationsOutlinedIcon />
                   <span>Editar Perfil</span>
                 </Link>
                 <div
                   onClick={handleLogout}
-                  className="flex items-center gap-2 px-4 py-2 hover:bg-blue-700 dark:hover:bg-gray-900 cursor-pointer"
+                  className="flex items-center gap-2 px-4 py-2 hover:bg-blue-700 cursor-pointer"
                 >
                   <LogoutIcon />
                   <span>Salir</span>

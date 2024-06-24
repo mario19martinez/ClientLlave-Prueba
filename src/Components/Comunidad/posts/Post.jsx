@@ -69,7 +69,7 @@ const Post = ({ username, userImg, content, imageSrc, initialLikes, postId, crea
 
   return (
     <div className="flex justify-center my-6">
-      <Card className="w-full md:w-2/3 lg:w-1/2 shadow-lg rounded-lg p-4 bg-white dark:bg-gray-900 transition duration-300 ease-in-out">
+      <Card className="w-full md:w-2/3 lg:w-1/2 shadow-lg rounded-lg p-4 bg-white  transition duration-300 ease-in-out">
         <CardContent>
           <div className="flex items-center mb-4">
             <Avatar className="mr-3" alt={username} src={userImg} />
@@ -82,7 +82,7 @@ const Post = ({ username, userImg, content, imageSrc, initialLikes, postId, crea
               </Typography>
             </div>
           </div>
-          <Typography variant="body1" component="p" className="mb-4 text-gray-800 dark:text-gray-200">
+          <Typography variant="body1" component="p" className="mb-4 text-gray-800 ">
             {content}
           </Typography>
           {imageSrc && (
@@ -101,7 +101,7 @@ const Post = ({ username, userImg, content, imageSrc, initialLikes, postId, crea
             aria-label="add to favorites"
             onClick={handleLike}
             disabled={hasLiked}
-            className={`transition-colors duration-300 ${hasLiked ? "text-red-600" : "text-gray-600 dark:text-gray-400"}`}
+            className={`transition-colors duration-300 ${hasLiked ? "text-red-600" : "text-gray-600"}`}
           >
             <FavoriteIcon />
             <Typography variant="caption" className="ml-2">
@@ -109,10 +109,10 @@ const Post = ({ username, userImg, content, imageSrc, initialLikes, postId, crea
             </Typography>
           </IconButton>
           <div className="flex gap-4">
-            <IconButton aria-label="comment" className="text-gray-600 dark:text-gray-400 transition-colors duration-300 hover:text-blue-500">
+            <IconButton aria-label="comment" className="text-gray-600 transition-colors duration-300 hover:text-blue-500">
               <ChatBubbleOutlineIcon />
             </IconButton>
-            <IconButton aria-label="share" className="text-gray-600 dark:text-gray-400 transition-colors duration-300 hover:text-blue-500">
+            <IconButton aria-label="share" className="text-gray-600  transition-colors duration-300 hover:text-blue-500">
               <ShareIcon />
             </IconButton>
           </div>
