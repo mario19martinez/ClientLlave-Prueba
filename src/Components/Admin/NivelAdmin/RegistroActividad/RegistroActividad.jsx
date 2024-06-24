@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import Tooltip from '@mui/material/Tooltip';
 
 function RegistroActividad() {
   const [registros, setRegistros] = useState([]);
@@ -287,13 +288,14 @@ function RegistroActividad() {
             </option>
           ))}
         </select>
+      <Tooltip title="Reset Filtros" arrow placement="top">
         <button
-          onClick={handleResetFilters}
-          title="Delete"
-          className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none"
+        onClick={handleResetFilters}
+        className="bg-blue-500 text-white py-2 px-2 rounded-full hover:bg-blue-700 focus:outline-none"
         >
-         <RotateLeftIcon fontSize="large"/>
+          <RotateLeftIcon fontSize="large"/>
         </button>
+      </Tooltip>
         <button
           onClick={() => navigate('/admin/registros-sin-actividad')}
           className="bg-blue-600 hover:bg-blue-900 text-white font-semibold py-2 px-4 rounded"

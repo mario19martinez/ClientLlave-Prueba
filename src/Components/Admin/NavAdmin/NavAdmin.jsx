@@ -15,7 +15,7 @@ export default function NavAdmin() {
     <div className="bg-blue-700 py-2 lg:py-3 px-8 lg:px-12 shadow-md w-screen top-0 z-50">
       <div className="flex items-center justify-between max-w-screen-lg mx-auto">
         <div className="w-1/4 lg:w-2/12">
-          <img src={llave} alt="logo" className="h-auto" />
+          <img src={llave} alt="logo" className="h-auto translate-x-10" />
         </div>
 
         <div className="w-1/4 lg:hidden flex justify-end">
@@ -45,32 +45,34 @@ export default function NavAdmin() {
           <a
             href="#"
             onClick={() => navigate("/")}
-            className="hover:text-gray-300 transition-colors px-4 py-2 rounded"
+            className="hover:text-gray-300 transition-colors px-4 py-2 rounded cursor-pointer"
           >
             Inicio
           </a>
           <a
             href="#"
-            className="hover:text-gray-300 transition-colors px-4 py-2 rounded"
+            onClick={() => navigate("/Blogs")}
+            className="hover:text-gray-300 transition-colors px-4 py-2 rounded cursor-pointer"
           >
             Blog
           </a>
           <a
             href="#"
             onClick={() => navigate("/entrenamiento")}
-            className="hover:text-gray-300 transition-colors px-4 py-2 rounded"
+            className="hover:text-gray-300 transition-colors px-4 py-2 rounded cursor-pointer"
           >
             Entrenamiento
           </a>
-          <a
+          {/* <a
             href="#"
             className="hover:text-gray-300 transition-colors px-4 py-2 rounded"
           >
             Miembros
-          </a>
+          </a> */}
           <a
             href="#"
-            className="hover:text-gray-300 transition-colors px-4 py-2 rounded"
+            onClick={() => navigate("/Nosotros")}
+            className="hover:text-gray-300 transition-colors px-4 py-2 rounded cursor-pointer"
           >
             Nosotros
           </a>
