@@ -16,8 +16,6 @@ function MyPost() {
           },
         });
 
-        console.log(response.data); // Agrega esto para verificar la estructura de los datos
-
         setUserPosts(response.data);
         setLoading(false);
       } catch (error) {
@@ -44,19 +42,20 @@ function MyPost() {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
-        <p className="ml-4 text-gray-700 text-lg">Cargando...</p>
+        <p className="ml-4 text-blue-700 text-lg">Cargando...</p>
       </div>
     );
   }
 
   return (
-    <div className="px-4 py-10 md:px-20 lg:px-40">
+    <div className="px-4 py-10 md:px-20 lg:px-40 bg-gray-200">
       <div className="mb-8 flex flex-col items-center justify-center">
-        <h2 className="text-2xl font-bold">Mis Publicaciones</h2>
+        <h2 className="text-2xl font-bold text-gray-800">Mis Publicaciones</h2>
       </div>
-      <ul>
+      <ul className="flex flex-col items-center justify-center">
         {userPosts.map((post) => (
-          <li key={post.id} className="bg-white shadow-md mb-4 p-6 rounded-md">
+          <li key={post.id} className="bg-white shadow-md mb-8 p-6 rounded-md md:w-1/2 md:h-auto">
+            <p className="text-sm text-gray-500">{new Date(post.createdAt).toLocaleDateString()}</p>
             {post.content && (
               <p className="text-xl font-semibold mb-2">{post.content}</p>
             )}
