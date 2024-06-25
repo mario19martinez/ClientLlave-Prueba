@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -141,8 +140,6 @@ import ViewChat from "./views/ViewComunidad/chat/ViewChat";
 import ViewClasesUser from "./views/ViewCursoUser/ViewCursoUser";
 import Viewdetailsentrenamiento from "./views/Viewdetailsentrenamiento/Viewdetailsentrenamiento";
 import ViewFormProfetico from "./views/ViewCompProfeticos/ViewFormProfetico";
-
-import Loading from "./Components/Loading";
 
 //import Cursos from "./Components/Admin/Cursos/Cursos";
 //import Entrenamiento from "./Components/Entrenamiento/Entrenamiento";
