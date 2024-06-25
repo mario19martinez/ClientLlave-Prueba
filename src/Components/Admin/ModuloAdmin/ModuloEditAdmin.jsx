@@ -5,6 +5,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import NavAdmin from "../NavAdmin/NavAdmin";
 import SidebarAdmin from "../SidebarAdmin/SidebarAdmin";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ModuloEditAdmin() {
   const params = useParams();
@@ -119,13 +120,15 @@ function ModuloEditAdmin() {
       const preguntasFormateadas = formData.preguntas.map((pregunta) => ({
         tipo: pregunta.tipo,
         pregunta: pregunta.pregunta,
-        opciones: pregunta.tipo === "opcion_multiple" ? pregunta.opciones.map((opcion, idx) => `${String.fromCharCode(97 + idx)}. ${opcion}`) : undefined,
+        opciones: pregunta.tipo === "opcion_multiple" ? pregunta.opciones : undefined,
         respuestaCorrecta: pregunta.respuestaCorrecta,
       }));
 
       await axios.put(`/nivel/${nivelId}/modulo/${moduloId}`, {
         ...formData,
         preguntas: preguntasFormateadas,
+        updateAt: new Date().toISOString(),
+        createAt: undefined,
       });
       toast.success("Módulo actualizado exitosamente!", {
         position: "bottom-center",
@@ -276,94 +279,58 @@ function ModuloEditAdmin() {
                     type="text"
                     id={`pregunta-${index}`}
                     name="pregunta"
-                    className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
                     value={pregunta.pregunta}
-                    placeholder={`Ingrese la pregunta ${index + 1}`}
                     onChange={(e) => handlePreguntasChange(index, e)}
-                    required
+                    className="mb-2 border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
+                    placeholder="Escribe la pregunta aquí"
                   />
-                  {pregunta.tipo === "opcion_multiple" && pregunta.opciones.map((opcion, idx) => (
-                    <div key={idx} className="flex items-center mb-2">
-                      <span className="mr-2 text-gray-700 font-semibold">
-                        {String.fromCharCode(97 + idx)}.
-                      </span>
+                  {pregunta.tipo === "opcion_multiple" &&
+                    pregunta.opciones.map((opcion, opcionIndex) => (
                       <input
+                        key={opcionIndex}
                         type="text"
-                        className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
+                        name={`opcion${opcionIndex}`}
                         value={opcion}
-                        onChange={(e) =>
-                          handlePreguntasChange(index, {
-                            target: {
-                              name: `opcion${idx}`,
-                              value: e.target.value,
-                            },
-                          })
-                        }
-                        placeholder={`Opción ${String.fromCharCode(97 + idx)}`}
-                        required
+                        onChange={(e) => handlePreguntasChange(index, e)}
+                        className="mb-2 border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
+                        placeholder={`Opción ${opcionIndex + 1}`}
                       />
-                    </div>
-                  ))}
-                  <label
-                    className="block text-gray-700 font-bold mb-2"
-                    htmlFor={`respuesta-${index}`}
-                  >
-                    Respuesta Correcta:
-                  </label>
-                  {pregunta.tipo === "opcion_multiple" ? (
-                    <select
-                      id={`respuesta-${index}`}
-                      name="respuestaCorrecta"
-                      className="border-2 border-gray-400 rounded-md p-2 w-full mt-2 focus:outline-none focus:border-blue-500"
-                      value={pregunta.respuestaCorrecta}
-                      onChange={(e) => handlePreguntasChange(index, e)}
-                      required
-                    >
-                      <option value="">Seleccione una respuesta</option>
-                      {pregunta.opciones.map((opcion, idx) => (
-                        <option key={idx} value={String.fromCharCode(97 + idx)}>
-                          {String.fromCharCode(97 + idx)}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    <select
-                      id={`respuesta-${index}`}
-                      name="respuestaCorrecta"
-                      className="border-2 border-gray-400 rounded-md p-2 w-full mt-2 focus:outline-none focus:border-blue-500"
-                      value={pregunta.respuestaCorrecta}
-                      onChange={(e) => handlePreguntasChange(index, e)}
-                      required
-                    >
-                      <option value="">Seleccione una respuesta</option>
-                      <option value="verdadero">Verdadero</option>
-                      <option value="falso">Falso</option>
-                    </select>
-                  )}
+                    ))}
+                  <input
+                    type="text"
+                    name="respuestaCorrecta"
+                    value={pregunta.respuestaCorrecta}
+                    onChange={(e) => handlePreguntasChange(index, e)}
+                    className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
+                    placeholder={
+                      pregunta.tipo === "opcion_multiple"
+                        ? "Respuesta correcta"
+                        : "Verdadero o Falso"
+                    }
+                  />
                 </div>
               ))}
+              <button
+                type="button"
+                onClick={agregarPregunta}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+              >
+                Agregar Pregunta
+              </button>
             </div>
 
-            <button
-              type="button"
-              onClick={agregarPregunta}
-              className="bg-blue-900 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mb-4 font-semibold"
-            >
-              Agregar Pregunta
-            </button>
-
-            <div className="mt-4">
+            <div className="text-center">
               <button
                 type="submit"
-                className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300"
               >
                 Guardar Cambios
               </button>
             </div>
           </form>
+          <ToastContainer />
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 }
