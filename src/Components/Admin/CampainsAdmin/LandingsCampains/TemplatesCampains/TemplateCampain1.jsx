@@ -33,11 +33,25 @@ export default function TemplateCampain1({ campeinId, landingId }) {
     setIsModalOpen(false);
   };
 
+  const scrollToForm = () => {
+    document
+      .getElementById("form-section")
+      .scrollIntoView({ behavior: "smooth" });
+  };
+
+  const renderContent = (content) => {
+    return typeof content === "string" && content.startsWith("<") ? (
+      <div dangerouslySetInnerHTML={{ __html: content }} />
+    ) : (
+      content
+    );
+  };
+
   return (
     <div className="font-sans">
       {landingData && (
         <>
-          <section className="relative flex flex-col items-center lg:flex-row py-8 lg:py-16 bg-white">
+          <section className="relative flex flex-col items-center justify-center lg:flex-row py-8 lg:py-16 bg-white">
             <div className="w-full lg:w-1/2 mb-6 lg:mb-0">
               <img
                 className="object-cover w-full h-64 sm:h-96 lg:h-full rounded-lg shadow-lg"
@@ -48,7 +62,7 @@ export default function TemplateCampain1({ campeinId, landingId }) {
                 alt=""
               />
             </div>
-            <div className="max-w-xl mx-auto lg:mx-0 lg:mr-8 lg:pl-4 lg:pr-8">
+            <div className="max-w-xl mx-auto lg:mx-0 lg:mr-8 lg:pl-4 lg:pr-8 text-center lg:text-left">
               <div className="max-w-xl mb-6 lg:mb-10">
                 <p className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-teal-900 uppercase rounded-full bg-teal-400">
                   Llave Para Las Naciones
@@ -56,14 +70,18 @@ export default function TemplateCampain1({ campeinId, landingId }) {
                 <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none">
                   {landingData.titulo || "Aquí va el título de la landing"}
                 </h2>
-                <p className="text-base text-gray-700 md:text-lg">
-                  {landingData.contenido || "Aquí va el contenido"}
-                </p>
+                <div className="text-base text-gray-700 md:text-lg">
+                  {renderContent(landingData.contenido) ||
+                    "Aquí va el contenido"}
+                </div>
               </div>
-                <p className="mb-4 font-medium">Haz clic aquí para registrarte y nos pondremos en contacto contigo.</p>
-              <div className="flex items-center">
+              <p className="mb-4 font-medium">
+                Haz clic aquí para registrarte y nos pondremos en contacto
+                contigo.
+              </p>
+              <div className="flex justify-center">
                 <button
-                  onClick={openModal}
+                  onClick={scrollToForm}
                   className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base leading-6 font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition-colors duration-300 ease-in-out"
                 >
                   Formulario de Registro
@@ -72,7 +90,10 @@ export default function TemplateCampain1({ campeinId, landingId }) {
             </div>
           </section>
 
-          <section className="overflow-hidden bg-gray-900 text-white py-16">
+          <section
+            id="form-section"
+            className="overflow-hidden bg-gray-900 text-white py-16"
+          >
             <div className="container mx-auto px-4 md:px-24 lg:px-8">
               <div className="flex flex-col items-center justify-between xl:flex-row">
                 <div className="w-full max-w-xl mb-12 xl:pr-16 xl:mb-0 xl:w-7/12">
@@ -80,9 +101,10 @@ export default function TemplateCampain1({ campeinId, landingId }) {
                     {landingData.subtitulo ||
                       "Aquí va el subtítulo de la campaña"}
                   </h2>
-                  <p className="max-w-xl mb-4 text-base md:text-lg">
-                    {landingData.contenido2 || "Aquí va el contenido2"}
-                  </p>
+                  <div className="max-w-xl mb-4 text-base md:text-lg">
+                    {renderContent(landingData.contenido2) ||
+                      "Aquí va el contenido2"}
+                  </div>
                 </div>
                 <div className="w-full max-w-xl xl:px-8 xl:w-5/12">
                   <div className="relative">

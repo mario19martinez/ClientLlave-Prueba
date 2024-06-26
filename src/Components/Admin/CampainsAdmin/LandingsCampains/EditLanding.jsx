@@ -6,7 +6,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import UploadWidget from "../../../UploadWidget/UploadWidget";
 
-export default function CreateLanding({ campeinId, templateProp }) {
+export default function EditLanding({ campeinId, landingId }) {
   const [titulo, setTitulo] = useState("");
   const [subtitulo, setSubtitulo] = useState("");
   const [contenido, setContenido] = useState("");
@@ -19,13 +19,40 @@ export default function CreateLanding({ campeinId, templateProp }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTemplate(templateProp);
-  }, [templateProp]);
+    const fetchLanding = async () => {
+      try {
+        const response = await axios.get(
+          `/campein/${campeinId}/landingcampein/${landingId}`
+        );
+        const {
+          titulo,
+          subtitulo,
+          contenido,
+          template,
+          contenido2,
+          img,
+          formulario,
+        } = response.data;
+        setTitulo(titulo);
+        setSubtitulo(subtitulo);
+        setContenido(contenido);
+        setTemplate(template);
+        setContenido2(contenido2);
+        setImg(img);
+        setFormulario(formulario);
+      } catch (error) {
+        console.error("Error al obtener la landing:", error);
+        setError("Error al obtener la landing. Por favor, inténtalo de nuevo.");
+      }
+    };
 
-  const handleSubmit = async () => {
+    fetchLanding();
+  }, [campeinId, landingId]);
+
+  const handleUpdate = async () => {
     try {
-      const response = await axios.post(
-        `/campein/${campeinId}/landingcampein`,
+      const response = await axios.put(
+        `/campein/${campeinId}/landingcampein/${landingId}`,
         {
           titulo,
           subtitulo,
@@ -36,12 +63,12 @@ export default function CreateLanding({ campeinId, templateProp }) {
           formulario,
         }
       );
-      console.log("Landing creada:", response.data);
-      alert("La landing ha sido creada con éxito.");
+      console.log("Landing actualizada:", response.data);
+      alert("La landing ha sido actualizada con éxito.");
       navigate("/admin/campain");
     } catch (error) {
-      console.error("Error al crear la landing:", error);
-      setError("Error al crear la landing. Por favor, inténtalo de nuevo.");
+      console.error("Error al actualizar la landing:", error);
+      setError("Error al actualizar la landing. Por favor, inténtalo de nuevo.");
     }
   };
 
@@ -51,7 +78,7 @@ export default function CreateLanding({ campeinId, templateProp }) {
 
   return (
     <div className="w-full max-w-4xl mx-auto px-8 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">Crear Landing Page</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Editar Landing Page</h1>
       {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
       <div className="space-y-6">
         <div>
@@ -114,17 +141,17 @@ export default function CreateLanding({ campeinId, templateProp }) {
         </div>
         <button
           type="button"
-          onClick={handleSubmit}
+          onClick={handleUpdate}
           className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md w-full"
         >
-          Crear Landing
+          Actualizar Landing
         </button>
       </div>
     </div>
   );
 }
 
-CreateLanding.propTypes = {
+EditLanding.propTypes = {
   campeinId: PropTypes.string.isRequired,
-  templateProp: PropTypes.string.isRequired,
+  landingId: PropTypes.string.isRequired,
 };

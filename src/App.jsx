@@ -114,6 +114,7 @@ import AgregarClases from "./Components/Admin/Clases/AgregarClases";
 import ViewRegistroActividad from "./views/ViewAdmin/ViewRegistroActividad/ViewRegistroActividad";
 import ViewSelectedCertificado from "./views/ViewAdmin/ViewCertificacion/ViewSelectedCertificados";
 import ViewUserSinActividad from './views/ViewAdmin/ViewRegistroActividad/ViewUserSinActividad';
+import ViewEditLanding from "./views/ViewAdmin/ViewCampain&Landings/ViewEditLanding";
 
 //imports editor
 import ViewEscritorioEditor from "./views/ViewEditor/ViewEscritorioEditor";
@@ -221,6 +222,7 @@ function App() {
             <Route path="/Admin/campain/landing/selectPlantilla/curso/:campeinId" element={isLoggedIn ? <ViewPlatillaCurso /> : <Navigate to="/login" />} />
             <Route path="/Admin/campain/landing/selectPlantilla/:campeinId" element={isLoggedIn ? <ViewPlantillaCampain /> : <Navigate to="/login" />} />
             <Route path="/Admin/campain/createLanding/cursos/:campeinId/:template" element={isLoggedIn ? <ViewCreateLandingCursos /> : <Navigate to="/login" />}/>
+            <Route path="/admin/campain/editLanding/:campeinId/:landingId" element={isLoggedIn ? <ViewEditLanding /> : <Navigate to="/login" /> } />
             <Route path="/admin/videos" element={isLoggedIn ? <Viewadminvideo /> : <Navigate to="/login" /> } />
             <Route path="/Admin/datos" element={isLoggedIn ?<ViewUserDatos /> : <Navigate to="/login" /> } />
             <Route path="/admin/seguimiento" element={isLoggedIn ? <ViewSeguimientoClases /> : <Navigate to="/login" />} />
