@@ -1,9 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CrearTestimonios from "./CrearTestimonios";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import ReactPaginate from "react-paginate";
 import Modal from "react-modal";
 import EditarTestimonio from "./EditarTestimonio";
@@ -13,6 +15,7 @@ function TestimoniosAdmin() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [crearModalIsOpen, setCrearModalIsOpen] = useState(false);
   const [testimonioId, setTestimonioId] = useState(null);
+  const navigate = useNavigate();
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -59,9 +62,18 @@ function TestimoniosAdmin() {
     openModal();
   };
 
+  const goBack = () => {
+    navigate(-1);
+  };
   return (
-    <div className="container mx-auto my-8 text-gray-800 pl-10">
-      <h1 className="text-3xl font-bold mb-4">Lista de Testimonios</h1>
+    <div className="container mx-auto my-8 text-gray-800 pl-10 p-4">
+      <button
+      onClick={goBack}
+      className="flex items-center bg-blue-500 text-white font-semibold h-10 py-2 px-4 rounded-md hover:bg-gray-300 transition duration-300 mb-8"
+      >
+        <KeyboardBackspaceIcon fontSize="large" className="mr-2" />
+      </button>
+      <h1 className="text-2xl font-bold mt-4">Lista de Testimonios</h1>
       <div className="pt-5 pb-5">
         <button
           onClick={openCrearModal}

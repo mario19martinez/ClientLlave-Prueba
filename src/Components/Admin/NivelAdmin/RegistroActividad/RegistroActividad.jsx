@@ -232,7 +232,7 @@ function RegistroActividad() {
         onClick={goBack}
         className="flex items-center bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300 mb-4"
       >
-        <KeyboardBackspaceIcon fontSize="large" className="mr-2" />
+        <KeyboardBackspaceIcon fontSize="medium" className="mr-2" />
         Volver
       </button>
       <h1 className="text-xl font-bold mb-6 text-gray-700">
@@ -307,9 +307,9 @@ function RegistroActividad() {
         >
           <button
             onClick={handleResetFilters}
-            className="bg-blue-500 text-white py-2 px-2 rounded-full hover:bg-blue-700 focus:outline-none"
+            className="bg-blue-500 text-white px-4 rounded hover:bg-blue-700 focus:outline-none"
           >
-            <RotateLeftIcon fontSize="large" />
+            <RotateLeftIcon />
           </button>
         </Tooltip>
         <Tooltip
@@ -331,7 +331,7 @@ function RegistroActividad() {
         >
           <button
             onClick={() => navigate("/admin/registros-sin-actividad")}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-0 px-4 rounded"
           >
             No Activos
           </button>
