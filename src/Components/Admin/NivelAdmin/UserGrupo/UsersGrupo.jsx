@@ -5,7 +5,9 @@ import PropTypes from "prop-types";
 import AddUserGrupo from "./AddUserGrupo";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
-import PreviewIcon from '@mui/icons-material/Preview';
+import PreviewIcon from "@mui/icons-material/Preview";
+import Tooltip from "@mui/material/Tooltip";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import UserActivity from "./UserActivity";
 
 function UsersGrupo({ nivelId, grupoId }) {
@@ -84,12 +86,31 @@ function UsersGrupo({ nivelId, grupoId }) {
 
   return (
     <div className="overflow-x-auto translate-y-4 w-3/4">
-      <button
-        className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mb-4 font-bold"
-        onClick={openModal}
+      <Tooltip
+        title="Agregar Usuario"
+        arrow
+        placement="right"
+        slotProps={{
+          popper: {
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, -6],
+                },
+              },
+            ],
+          },
+        }}
       >
-        Agregar Usuario
-      </button>
+        <button
+          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mb-4 font-bold"
+          onClick={openModal}
+        >
+          <PersonAddIcon />
+          Usuario
+        </button>
+      </Tooltip>
 
       <Modal
         isOpen={modalIsOpen}
@@ -97,12 +118,30 @@ function UsersGrupo({ nivelId, grupoId }) {
         className="flex justify-center items-center w-1/2 h-full"
         overlayClassName="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-75"
       >
-        <button
-          className="absolute top-2 right-2 text-gray-100 hover:text-gray-900"
-          onClick={closeModal}
+        <Tooltip
+          title="Haz clic para cerrar"
+          arrow
+          placement="left"
+          slotProps={{
+            popper: {
+              modifiers: [
+                {
+                  name: "offset",
+                  options: {
+                    offset: [0, -6],
+                  },
+                },
+              ],
+            },
+          }}
         >
-          <CancelIcon fontSize="large" />
-        </button>
+          <button
+            className="absolute top-2 right-2 text-gray-100 hover:text-gray-900"
+            onClick={closeModal}
+          >
+            <CancelIcon fontSize="large" />
+          </button>
+        </Tooltip>
         <AddUserGrupo
           nivelId={nivelId}
           grupoId={grupoId}
@@ -110,12 +149,18 @@ function UsersGrupo({ nivelId, grupoId }) {
         />
       </Modal>
       <Modal
-      isOpen={activityModalIsOpen}
-      onRequestClose={closeActivityModal}
-      className="flex justify-center items-center"
-      overlayClassName="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-75"
+        isOpen={activityModalIsOpen}
+        onRequestClose={closeActivityModal}
+        className="flex justify-center items-center"
+        overlayClassName="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-75"
       >
-        {selectedUserId && <UserActivity userSub={selectedUserId} grupoId={grupoId} closeModal={closeActivityModal} />}
+        {selectedUserId && (
+          <UserActivity
+            userSub={selectedUserId}
+            grupoId={grupoId}
+            closeModal={closeActivityModal}
+          />
+        )}
       </Modal>
       {usuarios.length === 0 ? (
         <div className="text-center mt-4 text-gray-600">
@@ -145,18 +190,56 @@ function UsersGrupo({ nivelId, grupoId }) {
                 <td className="py-2 px-3 font-mono">{usuario.email}</td>
                 <td className="py-2 px-3 font-mono">{usuario.telefono}</td>
                 <td className="py-2 px-3 font-mono ">
-                  <button
-                    onClick={() => handleDeleteUser(usuario.sub, usuario.name)}
-                    className="text-red-500 hover:bg-red-600 hover:text-white"
+                  <Tooltip
+                    title="Eliminar del Grupo"
+                    arrow
+                    placement="top"
+                    slotProps={{
+                      popper: {
+                        modifiers: [
+                          {
+                            name: "offset",
+                            options: {
+                              offset: [0, -6],
+                            },
+                          },
+                        ],
+                      },
+                    }}
                   >
-                    <DeleteIcon fontSize="large" />
-                  </button>
-                  <button
-                    onClick={() => openActivityModal(usuario.sub)}
-                    className="text-blue-500 hover:bg-blue-600 hover:text-white"
+                    <button
+                      onClick={() =>
+                        handleDeleteUser(usuario.sub, usuario.name)
+                      }
+                      className="text-red-500 hover:bg-red-600 hover:text-white"
+                    >
+                      <DeleteIcon fontSize="large" />
+                    </button>
+                  </Tooltip>
+                  <Tooltip
+                    title="Ver Registro"
+                    arrow
+                    placement="top"
+                    slotProps={{
+                      popper: {
+                        modifiers: [
+                          {
+                            name: "offset",
+                            options: {
+                              offset: [0, -6],
+                            },
+                          },
+                        ],
+                      },
+                    }}
                   >
-                    <PreviewIcon fontSize="large" />
-                  </button>
+                    <button
+                      onClick={() => openActivityModal(usuario.sub)}
+                      className="text-blue-500 hover:bg-blue-600 hover:text-white"
+                    >
+                      <PreviewIcon fontSize="large" />
+                    </button>
+                  </Tooltip>
                 </td>
               </tr>
             ))}

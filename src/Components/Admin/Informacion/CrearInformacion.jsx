@@ -23,34 +23,34 @@ const CrearInformacion = () => {
   };
 
   return (
-    <div className="container mx-auto mt-8">
-      <h1 className="text-2xl font-bold mb-4 text-white">Crear Nueva Información</h1>
+    <div className=" mx-auto mt-8 p-4 bg-blue-400 h-96 min-w-xl w-3/5 translate-y-0 rounded">
+      <h1 className="text-2xl font-bold mb-4 text-gray-100 ml-6">Crear Nueva Información</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="titulo" className="block text-white font-bold mb-2">Título:</label>
+          <label htmlFor="titulo" className="block text-gray-100 font-bold mb-2 ml-6">Título:</label>
           <input
             type="text"
             id="titulo"
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            className="border-2 border-gray-300 rounded-md p-2 w-11/12 ml-6"
             required
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="content" className="block text-white font-bold mb-2">Contenido:</label>
+          <label htmlFor="content" className="block text-gray-100 font-bold mb-2 ml-6">Contenido:</label>
           <textarea
             id="content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            className="border-2 border-gray-300 rounded-md p-2 w-11/12 ml-6"
             rows="4"
             required
           ></textarea>
         </div>
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-800 text-white py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed font-bold"
+          className="bg-blue-600 hover:bg-blue-800 text-white py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed font-bold ml-6"
           disabled={loading}
         >
           {loading ? "Creando..." : "Crear"}

@@ -19,7 +19,7 @@ function GrupoCreate({ closeModalAndReload }) {
         name,
         image,
         descripcion,
-        fechaInicio
+        fechaInicio: fechaInicio || null
       });
       toast.success("Grupo creado exitosamente!", {
         position: "top-center",

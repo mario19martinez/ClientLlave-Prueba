@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const CrearProfeticos = () => {
   const [titulo, setTitulo] = useState("");
@@ -107,21 +108,22 @@ const CrearProfeticos = () => {
   };
 
   return (
-    <div>
-      <div className="justify-start py-5">
+    <div className="min-h-screen flex items-center justify-center p-6">
+    <div className="rounded-lg shadow-xl w-full max-w-xl p- bg-gray-100 border-2 translate-x-48">
+      <div className="mb-5">
         <button
           onClick={() => navigate("/admin/profetico/")}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-blue-500 text-white w-20 h-10 mb-0 font-semibold py-0 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-1"
         >
-          Atras
+          <KeyboardBackspaceIcon />
         </button>
       </div>
-      <div className="px-72 py-10">
-        <h1 className="text-3xl font-bold mb-4">Crear Clase Profética</h1>
+      {/* <div className="px-72 py-10"> */}
+        <h1 className="text-2xl font-bold mb-4 text-gray-700 text-center">Crear Clase Profética</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
-              className="block text-gray-700 font-bold mb-2"
+              className="block text-gray-700 font-bold mb-2 ml-6"
               htmlFor="titulo"
             >
               Título:
@@ -129,7 +131,7 @@ const CrearProfeticos = () => {
             <input
               type="text"
               id="titulo"
-              className="border-2 border-gray-300 rounded-md p-2 w-full"
+              className="border-2 border-gray-300 rounded-md p-2 w-11/12 ml-6"
               value={titulo}
               onChange={(e) => setTitulo(e.target.value)}
               required
@@ -137,14 +139,14 @@ const CrearProfeticos = () => {
           </div>
           <div className="mb-4">
             <label
-              className="block text-gray-700 font-bold mb-2"
+              className="block text-gray-700 font-bold mb-2 ml-6"
               htmlFor="descripcion"
             >
               Descripción:
             </label>
             <textarea
               id="descripcion"
-              className="border-2 border-gray-300 rounded-md p-2 w-full"
+              className="border-2 border-gray-300 rounded-md p-2 w-11/12 ml-6"
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
               required
@@ -152,7 +154,7 @@ const CrearProfeticos = () => {
           </div>
           <div className="mb-4">
             <label
-              className="block text-gray-700 font-bold mb-2"
+              className="block text-gray-700 font-bold mb-2 ml-6"
               htmlFor="taller"
             >
               Contenido Teorico:
@@ -162,11 +164,12 @@ const CrearProfeticos = () => {
               value={contenido}
               onChange={setContenido}
               modules={{ toolbar: true }}
+              className="border-2 border-gray-300 rounded-md p-2 w-11/12 ml-6 bg-white"
             />
           </div>
           <div className="mb-4">
             <label
-              className="block text-gray-700 font-bold mb-2"
+              className="block text-gray-700 font-bold mb-2 ml-6"
               htmlFor="video"
             >
               Video (URL):
@@ -174,21 +177,21 @@ const CrearProfeticos = () => {
             <input
               type="text"
               id="video"
-              className="border-2 border-gray-300 rounded-md p-2 w-full"
+              className="border-2 border-gray-300 rounded-md p-2 w-11/12 ml-6"
               value={video}
               onChange={(e) => setVideo(e.target.value)}
             />
           </div>
           <div className="mb-4">
             <label
-              className="block text-gray-700 font-bold mb-2"
+              className="block text-gray-700 font-bold mb-2 ml-6"
               htmlFor="tipo"
             >
               Tipo:
             </label>
             <select
               id="tipo"
-              className="border-2 border-gray-300 rounded-md p-2 w-full"
+              className="border-2 border-gray-300 rounded-md p-2 w-11/12 ml-6"
               value={tipo}
               onChange={(e) => setTipo(e.target.value)}
               required
@@ -204,7 +207,7 @@ const CrearProfeticos = () => {
             <div key={index} className="mb-4">
               <label
                 htmlFor={`pregunta-${index}`}
-                className="block text-gray-700 font-bold mb-2"
+                className="block text-gray-700 font-bold mb-2 ml-6"
               >
                 Pregunta {index + 1}
               </label>
@@ -212,7 +215,7 @@ const CrearProfeticos = () => {
                 type="text"
                 id={`pregunta-${index}`}
                 name="pregunta"
-                className="border-2 border-gray-300 rounded-md p-2 w-full mb-2"
+                className="border-2 border-gray-300 rounded-md p-2 w-11/12 ml-6 mb-2"
                 value={pregunta.pregunta}
                 onChange={(e) => handleChangePregunta(index, e)}
               />
@@ -220,21 +223,21 @@ const CrearProfeticos = () => {
                 <input
                   key={idx}
                   type="text"
-                  className="border-2 border-gray-300 rounded-md p-2 w-full mb-2"
+                  className="border-2 border-gray-300 rounded-md p-2 w-11/12 ml-6 mb-2 "
                   value={opcion}
                   onChange={(e) => handleChangeOpcion(index, idx, e)}
                   placeholder={`Opción ${String.fromCharCode(97 + idx)}`}
                 />
               ))}
               <label
-                className="block text-gray-700 font-bold  mb-2"
+                className="block text-gray-700 font-bold  mb-2 ml-6"
                 htmlFor={`respuesta-${index}`}
               >
                 Respuesta Correcta:
               </label>
               <select
                 id={`respuesta-${index}`}
-                className="border-2 border-gray-300 rounded-md p-2 w-full"
+                className="border-2 border-gray-300 rounded-md p-2 w-11/12 ml-6"
                 value={pregunta.respuestaCorrecta}
                 onChange={(e) => handleChangeRespuesta(index, e)}
               >
@@ -252,7 +255,7 @@ const CrearProfeticos = () => {
               <button
                 type="button"
                 onClick={agregarPregunta}
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mb-4"
+                className="bg-blue-500 font-semibold text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 mb-4 ml-6"
               >
                 Agregar Pregunta
               </button>
@@ -260,7 +263,7 @@ const CrearProfeticos = () => {
             <div className="pr-2 pl-2">
               <button
                 type="submit"
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
+                className="bg-blue-500 font-semibold text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300 ml-0"
               >
                 Crear
               </button>
@@ -269,6 +272,7 @@ const CrearProfeticos = () => {
         </form>
       </div>
     </div>
+    // </div>
   );
 };
 
