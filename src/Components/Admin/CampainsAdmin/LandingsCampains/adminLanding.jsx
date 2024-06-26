@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import CampaignIcon from "@mui/icons-material/Campaign";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, CircularProgress } from "@mui/material";
+import { Campaign as CampaignIcon, Delete as DeleteIcon, Visibility as VisibilityIcon, Edit as EditIcon } from "@mui/icons-material";
 
 export default function AdminLanding({ campeinId }) {
   const [landings, setLandings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [selectedLanding, setSelectedLanding] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,14 +29,25 @@ export default function AdminLanding({ campeinId }) {
     fetchLandings();
   }, [campeinId]);
 
-  const handleDelete = async (landingId) => {
+  const handleDelete = async () => {
     try {
-      await axios.delete(`/campein/${campeinId}/landingcampein/${landingId}`);
-      setLandings(landings.filter((landing) => landing.id !== landingId));
+      await axios.delete(`/campein/${campeinId}/landingcampein/${selectedLanding}`);
+      setLandings(landings.filter((landing) => landing.id !== selectedLanding));
+      setOpen(false);
       console.log("Landing eliminada con éxito");
     } catch (error) {
       console.error("Error al eliminar la landing:", error);
     }
+  };
+
+  const handleOpenDialog = (landingId) => {
+    setSelectedLanding(landingId);
+    setOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+    setSelectedLanding(null);
   };
 
   const redirectToLanding = (landing) => {
@@ -51,61 +63,87 @@ export default function AdminLanding({ campeinId }) {
   };
 
   return (
-    <div>
-      <h1 className="text-3xl font-semibold mb-4">Landings campaña</h1>
-      <div className="flex mb-4">
-        <button
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4 flex items-center"
-          onClick={() =>
-            navigate(`/Admin/campain/landing/SelecForm/${campeinId}`)
-          }
-        >
-          Crear LandigPage <CampaignIcon />
-        </button>
-      </div>
+    <div className="px-10 py-5 w-full">
+      <Typography variant="h4" component="h1" gutterBottom>
+        Landings campaña
+      </Typography>
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<CampaignIcon />}
+        onClick={() =>
+          navigate(`/Admin/campain/landing/SelecForm/${campeinId}`)
+        }
+        style={{ marginBottom: "16px" }}
+      >
+        Crear LandingPage
+      </Button>
       {loading ? (
-        <p>Cargando...</p>
+        <CircularProgress />
       ) : landings.length === 0 ? (
-        <p>Por el momento esta campaña no tiene ninguna landingPage.</p>
+        <Typography>No hay landings disponibles para esta campaña.</Typography>
       ) : (
-        <table className="min-w-full">
-          <thead>
-            <tr>
-              <th className="px-4 py-2">Título</th>
-              <th className="px-4 py-2">Contenido</th>
-              <th className="px-4 py-2">Template</th>
-              <th className="px-4 py-2">idCurso</th>
-              <th className="px-4 py-2">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {landings.map((landing) => (
-              <tr key={landing.id}>
-                <td className="border px-4 py-2">{landing.titulo}</td>
-                <td className="border px-4 py-2">{landing.contenido}</td>
-                <td className="border px-4 py-2">{landing.template}</td>
-                <td className="border px-4 py-2">
-                  {landing.idcurso || "Curso no asociado"}
-                </td>
-                <td className="border px-4 py-2">
-                  <button
-                    className="mr-2 text-red-500 hover:text-red-700"
-                    onClick={() => handleDelete(landing.id)}
-                  >
-                    <DeleteIcon />
-                  </button>
-                  <button
-                    className="text-green-500 hover:text-green-700"
-                    onClick={() => redirectToLanding(landing)}
-                  >
-                    <VisibilityIcon />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Título</TableCell>
+                <TableCell>Template</TableCell>
+                <TableCell>idCurso</TableCell>
+                <TableCell>Acciones</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {landings.map((landing) => (
+                <TableRow key={landing.id}>
+                  <TableCell>{landing.titulo}</TableCell>
+                  <TableCell>{landing.template}</TableCell>
+                  <TableCell>{landing.idcurso || "Curso no asociado"}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      color="primary"
+                      onClick={() => redirectToLanding(landing)}
+                    >
+                      <VisibilityIcon />
+                    </IconButton>
+                    <IconButton
+                      color="secondary"
+                      onClick={() => navigate(`/admin/campain/editLanding/${campeinId}/${landing.id}`)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      color="error"
+                      onClick={() => handleOpenDialog(landing.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
+      <Dialog
+        open={open}
+        onClose={handleCloseDialog}
+      >
+        <DialogTitle>Confirmar eliminación</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            ¿Está seguro que desea eliminar esta landing?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleDelete} color="error">
+            Eliminar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
