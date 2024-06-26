@@ -27,12 +27,18 @@ function ModuloEditAdmin() {
       try {
         const response = await axios.get(`/nivel/${nivelId}/modulo/${moduloId}`);
         const moduloData = response.data;
-        
-        const preguntas = moduloData.preguntas ? moduloData.preguntas.map((pregunta) => ({
-          ...pregunta,
-          opciones: pregunta.opciones || ["", "", "", ""],
-          tipo: pregunta.opciones ? "opcion_multiple" : "verdadero_falso",
-        })) : [];
+
+        const preguntas = moduloData.preguntas
+          ? moduloData.preguntas.map((pregunta) => ({
+              ...pregunta,
+              opciones: pregunta.opciones
+                ? pregunta.opciones.map((opcion) =>
+                    opcion.replace(/^[a-d]\.\s*/, "")
+                  )
+                : ["", "", "", ""],
+              tipo: pregunta.opciones ? "opcion_multiple" : "verdadero_falso",
+            }))
+          : [];
 
         setFormData({
           titulo: moduloData.titulo || "",
@@ -78,7 +84,8 @@ function ModuloEditAdmin() {
       newPreguntas[index].respuestaCorrecta = value;
     } else if (name === "tipo") {
       newPreguntas[index].tipo = value;
-      newPreguntas[index].opciones = value === "opcion_multiple" ? ["", "", "", ""] : [];
+      newPreguntas[index].opciones =
+        value === "opcion_multiple" ? ["", "", "", ""] : [];
       newPreguntas[index].respuestaCorrecta = "";
     }
 
@@ -120,15 +127,16 @@ function ModuloEditAdmin() {
       const preguntasFormateadas = formData.preguntas.map((pregunta) => ({
         tipo: pregunta.tipo,
         pregunta: pregunta.pregunta,
-        opciones: pregunta.tipo === "opcion_multiple" ? pregunta.opciones : undefined,
+        opciones:
+          pregunta.tipo === "opcion_multiple"
+            ? pregunta.opciones.map((opcion, idx) => `${String.fromCharCode(97 + idx)}. ${opcion}`)
+            : undefined,
         respuestaCorrecta: pregunta.respuestaCorrecta,
       }));
 
       await axios.put(`/nivel/${nivelId}/modulo/${moduloId}`, {
         ...formData,
         preguntas: preguntasFormateadas,
-        updateAt: new Date().toISOString(),
-        createAt: undefined,
       });
       toast.success("Módulo actualizado exitosamente!", {
         position: "bottom-center",
@@ -275,58 +283,88 @@ function ModuloEditAdmin() {
                     <option value="opcion_multiple">Opción Múltiple</option>
                     <option value="verdadero_falso">Verdadero/Falso</option>
                   </select>
-                  <input
-                    type="text"
+                  <textarea
                     id={`pregunta-${index}`}
                     name="pregunta"
                     value={pregunta.pregunta}
                     onChange={(e) => handlePreguntasChange(index, e)}
-                    className="mb-2 border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
-                    placeholder="Escribe la pregunta aquí"
+                    className="border p-2 rounded-md w-full mb-2"
+                    rows="3"
+                    required
                   />
                   {pregunta.tipo === "opcion_multiple" &&
                     pregunta.opciones.map((opcion, opcionIndex) => (
-                      <input
-                        key={opcionIndex}
-                        type="text"
-                        name={`opcion${opcionIndex}`}
-                        value={opcion}
-                        onChange={(e) => handlePreguntasChange(index, e)}
-                        className="mb-2 border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
-                        placeholder={`Opción ${opcionIndex + 1}`}
-                      />
+                      <div key={opcionIndex} className="mb-2">
+                        <label
+                          htmlFor={`opcion-${index}-${opcionIndex}`}
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Opción {String.fromCharCode(97 + opcionIndex)}
+                        </label>
+                        <input
+                          type="text"
+                          id={`opcion-${index}-${opcionIndex}`}
+                          name={`opcion-${opcionIndex}`}
+                          value={opcion}
+                          onChange={(e) => handlePreguntasChange(index, e)}
+                          className="mt-1 p-2 border rounded-md w-full"
+                          required
+                        />
+                      </div>
                     ))}
-                  <input
-                    type="text"
-                    name="respuestaCorrecta"
-                    value={pregunta.respuestaCorrecta}
-                    onChange={(e) => handlePreguntasChange(index, e)}
-                    className="border-2 border-gray-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
-                    placeholder={
-                      pregunta.tipo === "opcion_multiple"
-                        ? "Respuesta correcta"
-                        : "Verdadero o Falso"
-                    }
-                  />
+                  <div className="mb-4">
+                    <label
+                      htmlFor={`respuestaCorrecta-${index}`}
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Respuesta Correcta
+                    </label>
+                    {pregunta.tipo === "opcion_multiple" ? (
+                      <select
+                        id={`respuestaCorrecta-${index}`}
+                        name="respuestaCorrecta"
+                        value={pregunta.respuestaCorrecta}
+                        onChange={(e) => handlePreguntasChange(index, e)}
+                        className="mt-1 p-2 border rounded-md w-full"
+                        required
+                      >
+                        {pregunta.opciones.map((_, opcionIndex) => (
+                          <option key={opcionIndex} value={String.fromCharCode(97 + opcionIndex)}>
+                            Opción {String.fromCharCode(97 + opcionIndex)}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <select
+                        id={`respuestaCorrecta-${index}`}
+                        name="respuestaCorrecta"
+                        value={pregunta.respuestaCorrecta}
+                        onChange={(e) => handlePreguntasChange(index, e)}
+                        className="mt-1 p-2 border rounded-md w-full"
+                        required
+                      >
+                        <option value="verdadero">Verdadero</option>
+                        <option value="falso">Falso</option>
+                      </select>
+                    )}
+                  </div>
                 </div>
               ))}
               <button
                 type="button"
                 onClick={agregarPregunta}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
               >
                 Agregar Pregunta
               </button>
             </div>
 
-            <div className="text-center">
-              <button
-                type="submit"
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300"
-              >
-                Guardar Cambios
-              </button>
-            </div>
+            <button
+              type="submit"
+              className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300"
+            >
+              Guardar Cambios
+            </button>
           </form>
           <ToastContainer />
         </div>
