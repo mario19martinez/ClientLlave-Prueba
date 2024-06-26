@@ -53,7 +53,7 @@ function GrupoDetailUser() {
           >
             <Card className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 ease-in-out h-full">
               <CardContent className="p-8 bg-gradient-to-r from-blue-50 to-blue-100 h-full">
-                <Typography variant="h5" component="div" className="font-semibold text-gray-800 mb-4">
+                <Typography variant="h5" component="div" className="font-bold text-gray-800 mb-4">
                   {modulo.titulo.replace(/^\d{2}\s*/, "")}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
@@ -61,8 +61,8 @@ function GrupoDetailUser() {
                     ? `${modulo.contenido.substring(0, 100)}...`
                     : modulo.contenido}
                 </Typography>
-                <Typography variant="body2" color="textPrimary" className="mt-4 text-blue-600">
-                  Haga clic en el módulo para ver más detalles.
+                <Typography variant="body2" color="textPrimary" className="py-5 text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                  Click Para Ver detalles
                 </Typography>
               </CardContent>
             </Card>
