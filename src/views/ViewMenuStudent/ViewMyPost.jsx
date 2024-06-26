@@ -6,7 +6,7 @@ import { useState } from "react";
 export default function ViewMyPost() {
   const [selectedTab] = useState("Publicaciones");
   return (
-    <div>
+    <div className="bg-gray-200">
       <NavUser />
       <div className="flex">
         <SidebarUser selectedTab={selectedTab} />

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { FiPlus } from "react-icons/fi";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const Egresados = () => {
   const [egresados, setEgresados] = useState([]);
@@ -178,12 +179,12 @@ const Egresados = () => {
       <div className="pb-5 justify-start">
         <button
           onClick={() => navigate("/AdminPage")}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-blue-500 text-white w-20 h-10 mb-8 font-semibold py-0 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-1"
         >
-          Atras
+          <KeyboardBackspaceIcon fontSize="large" />
         </button>
       </div>
-      <h1 className="text-3xl font-bold text-center mb-8">
+      <h1 className="text-2xl font-bold text-center mb-8 text-gray-700">
         Nuestros Egresados
       </h1>
       <div className="container mx-auto">

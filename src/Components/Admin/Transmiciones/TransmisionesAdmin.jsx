@@ -10,6 +10,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 export default function TransmisionAdmin() {
   const navigate = useNavigate();
@@ -142,15 +143,15 @@ export default function TransmisionAdmin() {
       <div className="py-3 justify-start">
         <button
           onClick={() => navigate("/AdminPage")}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold h-10 py-0 px-4 ml-6 mt-6 rounded-md focus:outline-none focus:shadow-outline"
         >
-          Atras
+          <KeyboardBackspaceIcon fontSize="large" />
         </button>
       </div>
       <div className="flex flex-col my-4 mx-6">
-        <h2 className="text-2xl font-bold pb-2">Listado de Transmisiones</h2>
+        <h2 className="text-2xl font-bold pb-2 text-gray-700">Listado de Transmisiones</h2>
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-48 h-12"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-6 rounded w-48 h-12"
           onClick={handleNewTransmisionClick}
         >
           Nueva Transmisión

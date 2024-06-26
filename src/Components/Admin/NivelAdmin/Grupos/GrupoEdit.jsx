@@ -64,11 +64,11 @@ function GrupoEdit({ nivelId, grupoId }) {
   }
 
   return (
-    <div className="max-w-full mx-auto mt-8 bg-gray-100 p-4 rounded-lg shadow-lg translate-y-0">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">Modificar Grupo</h2>
+    <div className="max-w-full mx-auto mt-8 bg-gray-100 p-4 rounded-lg shadow-lg translate-y-2">
+      <h2 className="text-2xl font-bold mb-2 text-gray-800">Modificar Grupo</h2>
       {successMessage && <div className="text-green-600 mb-4">{successMessage}</div>}
       <form onSubmit={handleSubmit}>
-        <div className="mb-4 pt-6">
+        <div className="mb-2 pt-4">
           <label htmlFor="name" className="block text-base font-medium text-gray-700 mb-1">Nombre:</label>
           <input
             type="text"
@@ -79,7 +79,7 @@ function GrupoEdit({ nivelId, grupoId }) {
             className="w-full h-10 border-blue-500 border-2 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
-        <div className="mb-4 pt-6">
+        <div className="mb-2 pt-4">
           <label htmlFor="descripcion" className="block text-base font-medium text-gray-700 mb-1">Descripcion:</label>
           <input
             type="text"
@@ -90,7 +90,7 @@ function GrupoEdit({ nivelId, grupoId }) {
             className="w-full h-10 border-blue-500 border-2 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
-        <div className="mb-4 pt-6">
+        <div className="mb-2 pt-4">
           <label htmlFor="fechaInicio" className="block text-base font-medium text-gray-700 mb-1">Fecha de Inicio:</label>
           <input
             type="date"
@@ -101,7 +101,7 @@ function GrupoEdit({ nivelId, grupoId }) {
             className="w-full h-10 border-blue-500 border-2 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
-        <div className="mb-4 pt-6">
+        <div className="mb-2 pt-4">
           <label htmlFor="image" className="block text-base font-medium text-gray-700 mb-1">URL de la Imagen:</label>
           <input
             type="text"
@@ -119,7 +119,7 @@ function GrupoEdit({ nivelId, grupoId }) {
           </div>
         )} */}
         <button type="submit"
-        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+        className="w-full bg-blue-500 mt-4 font-semibold text-white py-2 px-4 rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
         >Guardar</button>
       </form>
     </div>

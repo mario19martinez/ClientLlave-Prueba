@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import CardAdminBlogs from "./CardAdminBlogs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const AdminBlogs = () => {
   const navigate = useNavigate();
@@ -30,9 +31,19 @@ const AdminBlogs = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const goBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="p-8">
-      <h2 className="text-2xl font-bold mb-4">Administrar Blogs</h2>
+      <button
+        onClick={goBack}
+        className="flex items-center bg-blue-500 text-white font-semibold h-10 py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300 mb-4"
+      >
+        <KeyboardBackspaceIcon fontSize="large" className="mr-2" />
+      </button>
+      <h2 className="text-2xl font-bold mb-4 text-gray-700">Administrar Blogs</h2>
       <button
         onClick={() => navigate("/blog/CrearBlog")}
         className="bg-green-500 text-white px-4 py-2 rounded-md mb-4"

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
 import { Modal, Button } from "@mui/material";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 export default function ProfeticoAdmin() {
   const [profeticos, setProfeticos] = useState([]);
@@ -154,20 +155,20 @@ export default function ProfeticoAdmin() {
 
   return (
     <div className="container mx-auto mt-10 justify-center">
-      <div className="justify-start py-1">
+      <div className="justify-start py-0 translate-x-28">
         <button
           onClick={() => navigate("/AdminPage")}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-blue-500 text-white w-20 h-10 mb-0 font-semibold py-0 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-1"
         >
-          Atras
+          <KeyboardBackspaceIcon fontSize="large" />
         </button>
       </div>
-      <div className="text-center mb-8 justify-center items-center flex flex-col">
-        <h1 className="text-3xl font-bold text-blue-900 pb-5">
+      <div className="mb-8 flex flex-col translate-x-28 mt-8">
+        <h1 className="text-2xl font-bold text-gray-700 pb-5">
           Entrenándote para conquistar
         </h1>
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 flex items-center"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 flex items-center w-56"
           onClick={() => navigate("/CrearProfetico")}
         >
           <FiPlus className="mr-2" />
