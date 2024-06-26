@@ -60,30 +60,25 @@ const Comments = ({ postId }) => {
   };
 
   return (
-    <div className="bg-white  p-4 rounded-lg shadow-lg mt-6">
-      <h2 className="text-base font-bold mb-4 text-gray-900 ">
-        Comentarios
-      </h2>
+    <div className="bg-white p-2 mt-6">
       <div className="flex items-center mb-4">
         <button
           onClick={toggleComments}
-          className={`bg-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-600 transition duration-200 ${
-            showComments ? "bg-gray-500 hover:bg-gray-600" : ""
+          className={` text-blue-500 py-0 px-0 transition duration-200 ${
+            showComments ? "" : ""
           }`}
         >
           {showComments ? (
             <>
-              <InsertCommentOutlinedIcon className="mr-2" />
-              Ocultar Comentarios
+              <ModeCommentOutlinedIcon className="mr-2" />
             </>
           ) : (
             <>
-              <ModeCommentOutlinedIcon className="mr-2" />
-              Ver Comentarios
+              <InsertCommentOutlinedIcon className="mr-2" />
             </>
           )}
         </button>
-        <p className="text-gray-500 ml-4">
+        <p className="text-gray-500 ml-0">
           {comments.length === 1
             ? "1 comentario"
             : `${comments.length} comentarios`}
@@ -101,9 +96,7 @@ const Comments = ({ postId }) => {
                   {comment.user.name} {comment.user.last_name}
                 </p>
               )}
-              <p className="text-gray-800 ">
-                {comment.content}
-              </p>
+              <p className="text-gray-800 ">{comment.content}</p>
             </li>
           ))}
         </ul>
@@ -119,7 +112,7 @@ const Comments = ({ postId }) => {
           onClick={handleAddComment}
           className="bg-blue-500 text-white py-2 px-4 rounded mt-2 hover:bg-blue-700 transition duration-200"
         >
-          <ModeCommentOutlinedIcon />
+          <ModeCommentOutlinedIcon className="mr-2" />
           Comentar
         </button>
       </div>

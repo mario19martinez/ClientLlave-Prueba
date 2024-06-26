@@ -70,7 +70,7 @@ const AdminAbout = () => {
       >
         Crear Nueva Sección
       </Button>
-      <Typography variant="h3" gutterBottom>
+      <Typography variant="h3" gutterBottom className="text-gray-700">
         Nosotros
       </Typography>
       <div>
