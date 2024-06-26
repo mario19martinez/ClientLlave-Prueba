@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -58,8 +59,18 @@ const AdminAbout = () => {
     navigate(`/Admin/EditarNosotros/${id}`); // Envía el ID a la ruta de edición
   };
 
+  const goBack = () => {
+    navigate(-1);
+  }
+
   return (
     <div style={{ padding: "20px", width: "70%", margin: "0 auto" }}>
+      <button
+      onClick={goBack}
+      className="flex items-center bg-blue-500 text-white font-semibold h-10 py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300 mb-4"
+      >
+        <KeyboardBackspaceIcon fontSize="large" className="mr-2"/>
+      </button>
       <Button
         onClick={() => navigate("/Admin/CrearNosostros")}
         variant="contained"
