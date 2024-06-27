@@ -5,6 +5,8 @@ import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import UploadWidget from "../../../UploadWidget/UploadWidget";
+import { Button } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function EditLanding({ campeinId, landingId }) {
   const [titulo, setTitulo] = useState("");
@@ -78,7 +80,17 @@ export default function EditLanding({ campeinId, landingId }) {
 
   return (
     <div className="w-full max-w-4xl mx-auto px-8 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">Editar Landing Page</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-center">Editar Landing Page</h1>
+        <Button
+          onClick={() => navigate(-1)}
+          variant="contained"
+          color="primary"
+          startIcon={<ArrowBackIcon />}
+        >
+          Volver
+        </Button>
+      </div>
       {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
       <div className="space-y-6">
         <div>

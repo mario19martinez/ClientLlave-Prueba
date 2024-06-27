@@ -2,14 +2,17 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, CircularProgress } from "@mui/material";
-import { Campaign as CampaignIcon, Delete as DeleteIcon, Visibility as VisibilityIcon, Edit as EditIcon } from "@mui/icons-material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, CircularProgress, TextField, Tooltip, Snackbar, Alert } from "@mui/material";
+import { Campaign as CampaignIcon, Delete as DeleteIcon, Visibility as VisibilityIcon, Edit as EditIcon, Share as ShareIcon, ContentCopy as ContentCopyIcon, CheckCircle as CheckCircleIcon } from "@mui/icons-material";
 
 export default function AdminLanding({ campeinId }) {
   const [landings, setLandings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [selectedLanding, setSelectedLanding] = useState(null);
+  const [shareUrl, setShareUrl] = useState("");
+  const [copySuccess, setCopySuccess] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,6 +63,24 @@ export default function AdminLanding({ campeinId }) {
         `/campain/${landing.id}/Landing/${campeinId}/${landing.template}`
       );
     }
+  };
+
+  const handleShare = (landing) => {
+    const url = `${window.location.origin}/campain/${landing.id}/Landing/${campeinId}/${landing.template}`;
+    setShareUrl(url);
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(shareUrl);
+    setCopySuccess(true);
+    setSnackbarOpen(true);
+    setTimeout(() => {
+      setCopySuccess(false);
+    }, 5000);
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
   };
 
   return (
@@ -118,6 +139,12 @@ export default function AdminLanding({ campeinId }) {
                     >
                       <DeleteIcon />
                     </IconButton>
+                    <IconButton
+                      color="default"
+                      onClick={() => handleShare(landing)}
+                    >
+                      <ShareIcon />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
@@ -125,6 +152,33 @@ export default function AdminLanding({ campeinId }) {
           </Table>
         </TableContainer>
       )}
+      {shareUrl && (
+        <div className="mt-4 flex items-center space-x-2">
+          <TextField
+            label="URL de Compartir"
+            value={shareUrl}
+            fullWidth
+            InputProps={{
+              readOnly: true,
+            }}
+            variant="outlined"
+          />
+          <Tooltip title="Copiar URL">
+            <IconButton color="primary" onClick={handleCopy}>
+              {copySuccess ? <CheckCircleIcon /> : <ContentCopyIcon />}
+            </IconButton>
+          </Tooltip>
+        </div>
+      )}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+          URL copiada al portapapeles
+        </Alert>
+      </Snackbar>
       <Dialog
         open={open}
         onClose={handleCloseDialog}
