@@ -6,6 +6,12 @@ import {
   CardContent,
   CardActions,
   Typography,
+  Modal,
+  Box,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
@@ -17,28 +23,29 @@ import axios from "axios";
 const Post = ({ username, userImg, content, imageSrc, initialLikes, postId, createdAt }) => {
   const [likes, setLikes] = useState(initialLikes || 0);
   const [hasLiked, setHasLiked] = useState(false);
+  const [lastLiker, setLastLiker] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [likers, setLikers] = useState([]);
 
   useEffect(() => {
     getLikesCount();
+    checkIfUserLiked();
   }, []);
 
   const handleLike = async () => {
     try {
-      if (!hasLiked) {
-        const authToken = localStorage.getItem("token");
-        const config = {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        };
+      const authToken = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      };
 
-        const response = await axios.post("/newLike", { postId }, config);
-        setLikes(response.data.likes);
-
-        setHasLiked(true);
-      }
+      await axios.post("/toggleLike", { postId }, config);
+      getLikesCount();
+      setHasLiked(!hasLiked);
     } catch (error) {
-      console.error("Error al dar like:", error);
+      console.error("Error al gestionar el like:", error);
     }
   };
 
@@ -50,9 +57,26 @@ const Post = ({ username, userImg, content, imageSrc, initialLikes, postId, crea
           Authorization: `Bearer ${authToken}`,
         },
       });
+
       setLikes(response.data.likesCount);
+      setLastLiker(response.data.lastLiker);
+      setLikers(response.data.likers || []);
     } catch (error) {
       console.error("Error al obtener la cantidad de likes:", error);
+    }
+  };
+
+  const checkIfUserLiked = async () => {
+    try {
+      const authToken = localStorage.getItem("token");
+      const response = await axios.get(`/userLikesPost/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      setHasLiked(response.data.hasLiked);
+    } catch (error) {
+      console.error("Error al verificar si el usuario ha dado like:", error);
     }
   };
 
@@ -67,9 +91,12 @@ const Post = ({ username, userImg, content, imageSrc, initialLikes, postId, crea
     return new Date(dateString).toLocaleString(undefined, options);
   };
 
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
   return (
     <div className="flex justify-center my-6">
-      <Card className="w-full md:w-2/3 lg:w-1/2 shadow-lg rounded-lg p-4 bg-white  transition duration-300 ease-in-out">
+      <Card className="w-full md:w-2/3 lg:w-1/2 shadow-lg rounded-lg p-4 bg-white transition duration-300 ease-in-out">
         <CardContent>
           <div className="flex items-center mb-4">
             <Avatar className="mr-3" alt={username} src={userImg} />
@@ -100,7 +127,6 @@ const Post = ({ username, userImg, content, imageSrc, initialLikes, postId, crea
           <IconButton
             aria-label="add to favorites"
             onClick={handleLike}
-            disabled={hasLiked}
             className={`transition-colors duration-300 ${hasLiked ? "text-red-600" : "text-gray-600"}`}
           >
             <FavoriteIcon />
@@ -108,16 +134,42 @@ const Post = ({ username, userImg, content, imageSrc, initialLikes, postId, crea
               {likes}
             </Typography>
           </IconButton>
+          <Typography variant="body2" component="div" className="ml-2 cursor-pointer" onClick={handleOpenModal}>
+            {lastLiker ? `${lastLiker} y otras ${likes - 1} personas les gusta esto` : `${likes} personas les gusta esto`}
+          </Typography>
           <div className="flex gap-4">
             <IconButton aria-label="comment" className="text-gray-600 transition-colors duration-300 hover:text-blue-500">
               <ChatBubbleOutlineIcon />
             </IconButton>
-            <IconButton aria-label="share" className="text-gray-600  transition-colors duration-300 hover:text-blue-500">
+            <IconButton aria-label="share" className="text-gray-600 transition-colors duration-300 hover:text-blue-500">
               <ShareIcon />
             </IconButton>
           </div>
         </CardActions>
       </Card>
+
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/3">
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Personas a las que les gusta esto
+          </Typography>
+          <List>
+            {likers.map((liker) => (
+              <ListItem key={liker.sub}>
+                <ListItemAvatar>
+                  <Avatar src={liker.image} alt={liker.name} />
+                </ListItemAvatar>
+                <ListItemText primary={liker.name} />
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Modal>
     </div>
   );
 };
