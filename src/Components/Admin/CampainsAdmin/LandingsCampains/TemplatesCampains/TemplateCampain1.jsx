@@ -33,11 +33,11 @@ export default function TemplateCampain1({ campeinId, landingId }) {
     setIsModalOpen(false);
   };
 
-  const scrollToForm = () => {
-    document
-      .getElementById("form-section")
-      .scrollIntoView({ behavior: "smooth" });
-  };
+  // const scrollToForm = () => {
+  //   document
+  //     .getElementById("form-section")
+  //     .scrollIntoView({ behavior: "smooth" });
+  // };
 
   const renderContent = (content) => {
     return typeof content === "string" && content.startsWith("<") ? (
@@ -51,7 +51,7 @@ export default function TemplateCampain1({ campeinId, landingId }) {
     <div className="font-sans">
       {landingData && (
         <>
-          <section className="relative flex flex-col items-center justify-center lg:flex-row py-8 lg:py-16 bg-white">
+          <section className="relative space-x-2 flex flex-col items-center justify-center lg:flex-row py-8 lg:py-16 bg-white">
             <div className="w-full lg:w-1/2 mb-6 lg:mb-0">
               <img
                 className="object-cover w-full h-64 sm:h-96 lg:h-full rounded-lg shadow-lg"
@@ -81,7 +81,7 @@ export default function TemplateCampain1({ campeinId, landingId }) {
               </p>
               <div className="flex justify-center">
                 <button
-                  onClick={scrollToForm}
+                  onClick={openModal}
                   className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base leading-6 font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition-colors duration-300 ease-in-out"
                 >
                   Formulario de Registro
