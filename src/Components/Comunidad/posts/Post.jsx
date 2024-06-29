@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import ShareIcon from "@mui/icons-material/Share";
 import PropTypes from "prop-types";
 import Comments from '../Comments/Comments';
 import axios from "axios";
@@ -96,12 +95,12 @@ const Post = ({ username, userImg, content, imageSrc, initialLikes, postId, crea
 
   return (
     <div className="flex justify-center my-6">
-      <Card className="w-full md:w-2/3 lg:w-1/2 shadow-lg rounded-lg p-4 bg-white transition duration-300 ease-in-out">
+      <Card className="w-full md:w-2/3 lg:w-1/2 shadow-lg rounded-lg p-6 bg-white transition duration-300 ease-in-out transform hover:shadow-xl">
         <CardContent>
           <div className="flex items-center mb-4">
             <Avatar className="mr-3" alt={username} src={userImg} />
             <div>
-              <Typography variant="subtitle1" component="div" className="font-semibold">
+              <Typography variant="subtitle1" component="div" className="font-semibold text-gray-900">
                 {username}
               </Typography>
               <Typography variant="caption" color="textSecondary" component="div">
@@ -109,7 +108,7 @@ const Post = ({ username, userImg, content, imageSrc, initialLikes, postId, crea
               </Typography>
             </div>
           </div>
-          <Typography variant="body1" component="p" className="mb-4 text-gray-800 ">
+          <Typography variant="body1" component="p" className="mb-4 text-gray-800 leading-relaxed">
             {content}
           </Typography>
           {imageSrc && (
@@ -117,35 +116,30 @@ const Post = ({ username, userImg, content, imageSrc, initialLikes, postId, crea
               <img
                 src={imageSrc}
                 alt="Post"
-                className="w-full md:w-auto h-auto rounded-lg object-cover"
+                className="w-full md:w-auto h-auto rounded-lg object-cover shadow-md"
               />
             </div>
           )}
-          <Comments postId={postId} />
         </CardContent>
         <CardActions className="flex justify-between">
           <IconButton
             aria-label="add to favorites"
             onClick={handleLike}
-            className={`transition-colors duration-300 ${hasLiked ? "text-red-600" : "text-gray-600"}`}
+            className={`transition-colors duration-300 transform hover:scale-125 ${hasLiked ? "text-red-600" : "text-gray-600"}`}
           >
             <FavoriteIcon />
             <Typography variant="caption" className="ml-2">
               {likes}
             </Typography>
           </IconButton>
-          <Typography variant="body2" component="div" className="ml-2 cursor-pointer" onClick={handleOpenModal}>
+          <Typography variant="body2" component="div" className="ml-2 cursor-pointer hover:underline" onClick={handleOpenModal}>
             {lastLiker ? `${lastLiker} y otras ${likes - 1} personas les gusta esto` : `${likes} personas les gusta esto`}
           </Typography>
-          <div className="flex gap-4">
-            <IconButton aria-label="comment" className="text-gray-600 transition-colors duration-300 hover:text-blue-500">
-              <ChatBubbleOutlineIcon />
-            </IconButton>
-            <IconButton aria-label="share" className="text-gray-600 transition-colors duration-300 hover:text-blue-500">
-              <ShareIcon />
-            </IconButton>
-          </div>
+          <IconButton aria-label="comment" className="text-gray-600 transition-colors duration-300 hover:text-blue-500">
+            <ChatBubbleOutlineIcon />
+          </IconButton>
         </CardActions>
+        <Comments postId={postId} />
       </Card>
 
       <Modal
@@ -154,13 +148,13 @@ const Post = ({ username, userImg, content, imageSrc, initialLikes, postId, crea
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/3">
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+        <Box className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/3">
+          <Typography id="modal-modal-title" variant="h6" component="h2" className="mb-4 text-gray-900">
             Personas a las que les gusta esto
           </Typography>
           <List>
             {likers.map((liker) => (
-              <ListItem key={liker.sub}>
+              <ListItem key={liker.sub} className="hover:bg-gray-100 rounded-lg">
                 <ListItemAvatar>
                   <Avatar src={liker.image} alt={liker.name} />
                 </ListItemAvatar>
@@ -178,7 +172,6 @@ Post.propTypes = {
   username: PropTypes.string.isRequired,
   userImg: PropTypes.string,
   createdAt: PropTypes.string,
-  date: PropTypes.string,
   content: PropTypes.string,
   imageSrc: PropTypes.string,
   initialLikes: PropTypes.number,
