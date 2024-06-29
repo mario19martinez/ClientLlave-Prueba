@@ -41,14 +41,14 @@ const CursosList = ({ onSelectCurso, cursoSeleccionado }) => {
 
   if (error) {
     return (
-      <div className="text-center text-red-500">
+      <div className="flex items-center justify-center h-full text-red-500 text-xl">
         Error al cargar cursos: {error}
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col bg-slate-50">
+    <div className="flex flex-col bg-slate-50 min-h-screen">
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
@@ -56,7 +56,7 @@ const CursosList = ({ onSelectCurso, cursoSeleccionado }) => {
         overlayClassName="overlay"
         contentLabel="Agregar Curso"
       >
-        <div className="modal-content p-6 w-3/5 mx-auto rounded-lg shadow-lg">
+        <div className="modal-content p-6 w-3/5 mx-auto rounded-lg shadow-lg bg-white">
           <AgregarCurso closeModal={() => setModalIsOpen(false)} />
           <button
             onClick={() => setModalIsOpen(false)}
@@ -69,7 +69,7 @@ const CursosList = ({ onSelectCurso, cursoSeleccionado }) => {
 
       <div className="flex bg-slate-50">
         <div className="flex flex-col items-center justify-between mb-4 px-16 py-12">
-          <h2 className="text-2xl font-gabarito mb-4 text-gray-700">
+          <h2 className="text-2xl font-bold mb-4 text-gray-700">
             Lista de Cursos
           </h2>
           <ul className="list-none p-0">
