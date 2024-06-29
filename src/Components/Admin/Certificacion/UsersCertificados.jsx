@@ -7,6 +7,8 @@ import { Preview, /*print*/ } from 'react-html2pdf';
 import CardMembershipIcon from "@mui/icons-material/CardMembership";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import AgregarDocumentos from "./AgregarDocumento";
 import Certificado from "../../Estudiante/Certificado/Certificado";
 
@@ -211,6 +213,28 @@ export default function UserCertificados({ cursoId }) {
     }
   };
 
+  const visto = (documento) => {
+    if (documento) {
+      return (
+        <div className="relative group">
+          <CheckCircleIcon className="text-green-600" />
+          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-80 shadow-lg">
+            Descargado o visto
+          </span>
+        </div>
+      );
+    } else {
+      return (
+        <div className="relative group">
+          <VisibilityOffIcon className="text-red-600" />
+          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-80 shadow-lg">
+            No_visto
+          </span>
+        </div>
+      );
+    }
+  };
+
   const openModal = (certificadoId, userSub) => {
     setSelectedCertificadoId(certificadoId);
     setSelectedUserSub(userSub);
@@ -306,6 +330,9 @@ export default function UserCertificados({ cursoId }) {
               <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-center text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 Seleccionar
               </th>
+              <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-center text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+                Visto
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -383,6 +410,9 @@ export default function UserCertificados({ cursoId }) {
                       </span>
                     </button>
                   )}
+                </td>
+                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-center">
+                {visto(usuario.documento)}
                 </td>
               </tr>
             ))}

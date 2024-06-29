@@ -115,6 +115,10 @@ import ViewRegistroActividad from "./views/ViewAdmin/ViewRegistroActividad/ViewR
 import ViewSelectedCertificado from "./views/ViewAdmin/ViewCertificacion/ViewSelectedCertificados";
 import ViewUserSinActividad from './views/ViewAdmin/ViewRegistroActividad/ViewUserSinActividad';
 import ViewEditLanding from "./views/ViewAdmin/ViewCampain&Landings/ViewEditLanding";
+import ViewCursoOrUser from "./views/ViewAdmin/ViewCertificacion/ViewCursoOrUser";
+import ViewSelectedNivel from "./views/ViewAdmin/ViewCertificacion/ViewSelectedNivel";
+import ViewSelectedGrupoNivel from "./views/ViewAdmin/ViewCertificacion/ViewSelectedGrupoNivel";
+import ViewCertificadoNivel from "./views/ViewAdmin/ViewCertificacion/ViewCertificadoNivel";
 
 //imports editor
 import ViewEscritorioEditor from "./views/ViewEditor/ViewEscritorioEditor";
@@ -150,8 +154,8 @@ import ViewFormProfetico from "./views/ViewCompProfeticos/ViewFormProfetico";
 
 import axios from "axios";
 
-//axios.defaults.baseURL = "http://localhost:3001";
-axios.defaults.baseURL = "https://apillave-ebd57605aa78.herokuapp.com/";  
+axios.defaults.baseURL = "http://localhost:3001";
+//axios.defaults.baseURL = "https://apillave-ebd57605aa78.herokuapp.com/";  
 
 const isLoggedIn = localStorage.getItem("isLoggedIn");
 const userRole = localStorage.getItem("userRole");
@@ -231,6 +235,10 @@ function App() {
             <Route path="/admin/registro-actividades" element={<ViewRegistroActividad />} />
             <Route path="/admin/selectedCertificado" element={isLoggedIn? <ViewSelectedCertificado /> : <Navigate to="/login" />} />
             <Route path="/admin/registros-sin-actividad" element={isLoggedIn? <ViewUserSinActividad /> : <Navigate to="/login" />} />
+            <Route path="/admin/certificacion" element={isLoggedIn? <ViewCursoOrUser /> : <Navigate to="/login" /> } />
+            <Route path="/admin/certificado/selectedNivel" element={isLoggedIn? <ViewSelectedNivel /> : <Navigate to="/login" /> } />
+            <Route path="/admin/certificado/:nivelId/selectedGrupo"  element={isLoggedIn? <ViewSelectedGrupoNivel /> : <Navigate to="/login" /> } />
+            <Route path="/admin/certificado/:nivelId/:grupoId" element={isLoggedIn? <ViewCertificadoNivel /> : <Navigate to="/login" /> } />
           </>
         )}
         

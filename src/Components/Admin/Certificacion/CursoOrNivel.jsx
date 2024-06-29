@@ -29,7 +29,9 @@ export default function CursoOrNivel() {
           </p>
         </div>
       </div>
-      <div className="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out">
+      <div 
+      onClick={() => navigate("/admin/certificado/selectedNivel")}
+      className="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out">
         <div className="flex items-center justify-center p-4 bg-green-500">
           <FontAwesomeIcon
             icon={faGraduationCap}
