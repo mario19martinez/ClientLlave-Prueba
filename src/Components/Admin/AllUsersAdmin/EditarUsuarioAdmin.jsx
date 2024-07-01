@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getUserData,
@@ -33,6 +32,8 @@ export default function EditarUsuarioAdmin({ userEmail }) {
     email: "",
   });
 
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false); 
+
   useEffect(() => {
     if (userEmail) {
       dispatch(getUserData(userEmail));
@@ -58,7 +59,7 @@ export default function EditarUsuarioAdmin({ userEmail }) {
   };
 
   const handleEditableChange = (e, campo) => {
-    const valor = e.target.innerText;
+    const valor = e.target.value;
 
     setUsuario((prevUsuario) => ({
       ...prevUsuario,
@@ -121,17 +122,21 @@ export default function EditarUsuarioAdmin({ userEmail }) {
     };
 
     try {
-      const response = await dispatch(
+      await dispatch(
         updateUser({
           id: userData.identificacion,
           userData: usuarioActualizado,
         })
       );
-      console.log("Respuesta del servidor:", response);
-      // Muestra un mensaje de éxito o actualiza solo los componentes necesarios
+      setShowSuccessAlert(true); // Mostrar alerta de éxito
+      setTimeout(() => {
+        setShowSuccessAlert(false); // Ocultar alerta después de cierto tiempo (opcional)
+      }, 3000); // Por ejemplo, ocultar después de 3 segundos
+      window.alert("Usuario actualizado correctamente."); // Mostrar alerta
+      window.location.reload(); // Recargar la página
     } catch (error) {
       console.error("Error al actualizar usuario:", error);
-      // Muestra un mensaje de error al usuario
+      // Muestra un mensaje de error al usuario si es necesario
     }
   };
 
@@ -141,6 +146,12 @@ export default function EditarUsuarioAdmin({ userEmail }) {
 
   return (
     <div className="py-2 flex flex-col items-center justify-center">
+      {showSuccessAlert && (
+        <div className="bg-green-200 border-green-600 border-l-4 w-full p-4 mb-4">
+          <p className="text-green-800">Usuario actualizado correctamente.</p>
+        </div>
+      )}
+
       <div className="flex flex-col lg:flex-row items-center justify-center">
         <button
           className={`mx-2 md:mx-4 px-4 py-2 ${
@@ -246,7 +257,7 @@ export default function EditarUsuarioAdmin({ userEmail }) {
           </div>
           <div className="py-2 justify-center items-center">
             <button
-              className="w-24 md:w-32 font-gabarito mt-4 bg-blue-500 hover:bg-blue-800 text-white rounded-md p-2 transform hover:scale-105 transition duration-300 ease-in-out"
+              className="w-24 md:w-32 font-gabarito mt-4 bg-blue-500 hover:bg-blue-800 text-white rounded-md p-2 transform              hover:scale-105 transition duration-300 ease-in-out"
               onClick={() => {
                 if (validarCampos()) {
                   guardarCambios();
