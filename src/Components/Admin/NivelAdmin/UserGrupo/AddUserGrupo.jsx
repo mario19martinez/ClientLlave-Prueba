@@ -11,6 +11,7 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
   const [resultados, setResultados] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userNotFound, setUserNotFound] = useState(false);
+  const [hasPaid, setHasPaid] = useState(false)
 
   const handleBuscar = async () => {
     try {
@@ -62,6 +63,7 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
           userSub: userSub,
           grupoId: grupoId,
           nivelId: nivelId,
+          hasPaid: hasPaid,
         }
       );
       setMessage(response.data.message);
@@ -75,6 +77,7 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
         closeModalAndReload();
       }, 1500);
       setUserSub(""); // Limpiar el estado después de la operación exitosa
+      setHasPaid(false);
     } catch (error) {
       setError(error.response.data.error);
       toast.warning('El usuario ya esta inscrito en un Grupo!', {
@@ -134,6 +137,14 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
                       (En grupo: {user.grupoName})
                     </span>
                   )}
+                </div>
+                <div className="flex items-center">
+                  <label htmlFor="" className="mr-2">¿Pagó?</label>
+                  <input type="checkbox"
+                  checked={hasPaid}
+                  onChange={(e) => setHasPaid(e.target.checked)}
+                  className="form-checkbox h-5 w-5 text-blue-500"
+                   />
                 </div>
                 <button
                   onClick={(e) => handleSubmit(e, user.userSub)}
