@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import CardMembershipIcon from "@mui/icons-material/CardMembership";
+import DoDisturbOnIcon from "@mui/icons-material/DoDisturbOn";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 
 export default function CertificadoNivel({ nivelId, grupoId }) {
   const [usuarios, setUsuarios] = useState([]);
@@ -23,7 +26,6 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
         fetchCertificados(response.data);
       } catch (error) {
         setError("Error al obtener los usuarios");
-      } finally {
         setLoading(false);
       }
     };
@@ -33,34 +35,29 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
         const response = await axios.get(`/nivel/${nivelId}`);
         setNumeroNivel(response.data.numero);
       } catch (error) {
-        console.error("Error al obtener el nivel:", error);
+        setError("Error al obtener el nivel");
+        setLoading(false);
       }
     };
 
     const fetchCertificados = async (usuarios) => {
       try {
         const certificadosPromises = usuarios.map(async (user) => {
-          console.log(
-            `Fetching certificado for user ${user.sub} and nivelId ${nivelId}`
-          );
           try {
             const response = await axios.get(
               `/certificados/${user.sub}/${nivelId}`
             );
-            console.log(
-              `Certificado response for user ${user.sub}:`,
-              response.data
-            );
             return {
               userSub: user.sub,
               certificado: response.data.certificado,
+              certificadoId: response.data.id || null,
             };
           } catch (error) {
-            console.error(
-              `Error fetching certificado for user ${user.sub}:`,
-              error
-            );
-            return { userSub: user.sub, certificado: null }; // Manejo de error: devuelve certificado como null
+            return {
+              userSub: user.sub,
+              certificado: null,
+              certificadoId: null,
+            };
           }
         });
 
@@ -72,12 +69,22 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
               (cert) => cert.userSub === usuario.sub
             );
             return certificadoInfo && certificadoInfo.certificado !== null
-              ? { ...usuario, certificacion: "Certificado" }
-              : { ...usuario, certificacion: "No certificado" };
+              ? {
+                  ...usuario,
+                  certificacion: "Certificado",
+                  certificadoId: certificadoInfo.certificadoId,
+                }
+              : {
+                  ...usuario,
+                  certificacion: "No certificado",
+                  certificadoId: null,
+                };
           })
         );
       } catch (error) {
-        console.error("Error al obtener los certificados:", error);
+        setError("Error al obtener los certificados");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -121,22 +128,42 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
 
       setUsuarios((prevUsuarios) =>
         prevUsuarios.map((user) =>
-          user.sub === userId ? { ...user, certificacion: "Certificado" } : user
+          user.sub === userId
+            ? {
+                ...user,
+                certificacion: "Certificado",
+                certificadoId: response.data.id,
+              }
+            : user
         )
       );
     } catch (error) {
-      console.error("Error al certificar el usuario:", error);
       setError("Error al certificar el usuario");
     } finally {
       setCertificando(false);
     }
   };
 
-  const handleQuitarCertificado = async (userId) => {
+  const handleQuitarCertificado = async (certificadoId) => {
+    if (!certificadoId) {
+      setError("Certificado ID is null or undefined.");
+      return;
+    }
+
     try {
-      console.log("Función de eliminar no tiene ruta");
+      await axios.delete(`/certificado/${certificadoId}`);
+      setUsuarios((prevUsuarios) =>
+        prevUsuarios.map((user) =>
+          user.certificadoId === certificadoId
+            ? {
+                ...user,
+                certificacion: "No certificado",
+                certificadoId: null,
+              }
+            : user
+        )
+      );
     } catch (error) {
-      console.error("Error al quitar el certificado:", error);
       setError("Error al quitar el certificado");
     }
   };
@@ -225,25 +252,42 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-center">
-                  {usuario.certificacion !== "Certificado" ? (
+                  {usuario.certificacion === "No certificado" ? (
                     <button
                       onClick={() => handleCertificar(usuario.sub)}
-                      className={`px-4 py-2 text-white ${
-                        certificando
-                          ? "bg-gray-400"
-                          : "bg-blue-600 hover:bg-blue-700"
-                      } rounded-md focus:outline-none`}
+                      className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md focus:outline-none"
                       disabled={certificando}
                     >
                       {certificando ? "Certificando..." : "Certificar"}
                     </button>
                   ) : (
-                    <button
-                      onClick={() => handleQuitarCertificado(usuario.sub)}
-                      className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-md focus:outline-none"
-                    >
-                      Quitar Certificado
-                    </button>
+                    <div className="space-x-2">
+                      <button className="relative group bg-transparent hover:bg-green-100 text-green-500 font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <CardMembershipIcon className="text-green-500" />
+                        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-80 shadow-lg">
+                          Ver certificado
+                        </span>
+                      </button>
+
+                      <button
+                        onClick={() =>
+                          handleQuitarCertificado(usuario.certificadoId)
+                        }
+                        className="relative group bg-transparent hover:bg-red-100 text-red-500 font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500"
+                      >
+                        <DoDisturbOnIcon className="text-red-500" />
+                        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-80 shadow-lg">
+                          Quitar certificado
+                        </span>
+                      </button>
+
+                      <button className="relative group bg-transparent hover:bg-blue-100 text-blue-500 font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <EditNoteIcon className="text-blue-500" />
+                        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-80 shadow-lg">
+                          Editar Documentos
+                        </span>
+                      </button>
+                    </div>
                   )}
                 </td>
               </tr>
