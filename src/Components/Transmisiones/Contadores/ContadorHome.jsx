@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FiRadio } from "react-icons/fi";
+import "./ContadorHome.css"; // Importa el archivo CSS para los estilos
 
 export default function ContadorHome() {
   const [transmision, setTransmision] = useState(null);
@@ -54,19 +55,13 @@ export default function ContadorHome() {
     return () => clearInterval(interval);
   }, [transmision, eventoActivo]);
 
-  // Estilos para la animación del icono
-  const iconStyle = {
-    animation: "blink 2s infinite",
-    color: "red",
-  };
-
   if (!transmision) {
     console.log("No hay transmisión activa para mostrar.");
     return null;
   }
 
   return (
-    <div className="bg-gray-200 text-gray-800 py-3 px-4 w-full">
+    <div className="contador-home bg-gray-200 text-gray-800 py-3 px-4 w-full">
       <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
         <div>
           <h2 className="text-lg sm:text-xl font-bold">
@@ -76,67 +71,30 @@ export default function ContadorHome() {
         </div>
         {!eventoActivo && (
           <div className="flex flex-wrap justify-center sm:justify-start gap-4 mt-2 sm:mt-0">
-            <div className="flex flex-col justify-center items-center">
-              <div className="text-blue-600">
-                <span className="text-lg sm:text-2xl font-semibold">
-                  {tiempoRestante.dias}
+            {['dias', 'horas', 'minutos', 'segundos'].map((unidad) => (
+              <div key={unidad} className="flex flex-col justify-center items-center">
+                <div className="text-blue-600">
+                  <span className={`text-lg sm:text-2xl font-semibold contador-home__numero`}>
+                    {tiempoRestante[unidad]}
+                  </span>
+                </div>
+                <span className="text-xs font-semibold text-gray-700">
+                  {unidad.charAt(0).toUpperCase() + unidad.slice(1)}
                 </span>
               </div>
-              <span className="text-xs font-semibold text-gray-700">Días</span>
-            </div>
-
-            <div className="flex flex-col justify-center items-center">
-              <div className="text-blue-600">
-                <span className="text-lg sm:text-2xl font-semibold">
-                  {tiempoRestante.horas}
-                </span>
-              </div>
-              <span className="text-xs font-semibold text-gray-700">Horas</span>
-            </div>
-
-            <div className="flex flex-col justify-center items-center">
-              <div className="text-blue-600">
-                <span className="text-lg sm:text-2xl font-semibold">
-                  {tiempoRestante.minutos}
-                </span>
-              </div>
-              <span className="text-xs font-semibold text-gray-700">
-                Minutos
-              </span>
-            </div>
-
-            <div className="flex flex-col justify-center items-center">
-              <div className="text-blue-600">
-                <span className="text-lg sm:text-2xl font-semibold">
-                  {tiempoRestante.segundos}
-                </span>
-              </div>
-              <span className="text-xs font-semibold text-gray-700">
-                Segundos
-              </span>
-            </div>
+            ))}
           </div>
         )}
         {eventoActivo && (
           <a
-            href=""
+            href="#"
             onClick={() => navigate("/transmision")}
             className="bg-blue-400 text-white font-medium px-4 py-2 rounded hover:bg-blue-500 transition duration-300 mt-2 sm:mt-0 flex items-center"
           >
-            <FiRadio style={iconStyle} className="mr-2" /> Ver en vivo
+            <FiRadio className="contador-home__icono mr-2" /> Ver en vivo
           </a>
         )}
       </div>
     </div>
   );
 }
-
-// Agregar la animación de blink en un <style> global o en tu archivo CSS
-const style = document.createElement("style");
-style.textContent = `
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-`;
-document.head.append(style);

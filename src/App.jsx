@@ -154,8 +154,8 @@ import ViewFormProfetico from "./views/ViewCompProfeticos/ViewFormProfetico";
 
 import axios from "axios";
 
-//axios.defaults.baseURL = "http://localhost:3001";
-axios.defaults.baseURL = "https://apillave-ebd57605aa78.herokuapp.com/";  
+axios.defaults.baseURL = "http://localhost:3001";
+//axios.defaults.baseURL = "https://apillave-ebd57605aa78.herokuapp.com/";  
 
 const isLoggedIn = localStorage.getItem("isLoggedIn");
 const userRole = localStorage.getItem("userRole");
