@@ -8,6 +8,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PreviewIcon from "@mui/icons-material/Preview";
 import Tooltip from "@mui/material/Tooltip";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+//import CancelIcon from '@mui/icons-material/Cancel';
 import UserActivity from "./UserActivity";
 
 function UsersGrupo({ nivelId, grupoId }) {
@@ -47,6 +49,43 @@ function UsersGrupo({ nivelId, grupoId }) {
       }
     } catch (error) {
       console.error("Error al eliminar el usuario:", error);
+    }
+  };
+
+  const toggleHasPaid = (userSub, grupoId, hasPaid) => {
+    const confirmChange = window.confirm(
+      `¿Estás seguro de cambiar el estado de Pago?`
+    );
+    if (confirmChange) {
+      // Lógica para cambiar hasPaid
+      try {
+        axios.put(`/usuario/${userSub}/grupo/${grupoId}/hasPaid`, {
+          hasPaid,
+        });
+        const updatedUsers = usuarios.map((usuario) => {
+          if (usuario.sub === userSub) {
+            return {
+              ...usuario,
+              grupos: usuario.grupos.map((grupo) => {
+                if (grupo.id === grupoId) {
+                  return {
+                    ...grupo,
+                    usergrupo: {
+                      ...grupo.usergrupo,
+                      hasPaid,
+                    },
+                  };
+                }
+                return grupo;
+              }),
+            };
+          }
+          return usuario;
+        });
+        setUsuarios(updatedUsers);
+      } catch (error) {
+        console.error("Error al actualizar hasPaid:", error);
+      }
     }
   };
 
@@ -174,6 +213,7 @@ function UsersGrupo({ nivelId, grupoId }) {
               <th className="py-2 px-3 font-semibold">Apellido</th>
               <th className="py-2 px-3 font-semibold">Email</th>
               <th className="py-2 px-3 font-semibold">Teléfono</th>
+              <th className="py-2 px-3 font-semibold">Pagó</th>
               <th className="py-2 px-3 font-semibold">Acciones</th>
             </tr>
           </thead>
@@ -189,6 +229,21 @@ function UsersGrupo({ nivelId, grupoId }) {
                 <td className="py-2 px-3 font-mono">{usuario.last_name}</td>
                 <td className="py-2 px-3 font-mono">{usuario.email}</td>
                 <td className="py-2 px-3 font-mono">{usuario.telefono}</td>
+                <td className="py-2 px-3 font-mono ">
+                  {usuario?.grupos[0]?.usergrupo?.hasPaid ? (
+                    <CheckCircleIcon
+                      style={{ color: "green", cursor: "pointer" }}
+                      onClick={() => toggleHasPaid(usuario.sub, grupoId, false)}
+                      className="hover:border-solid hover:border-2 hover:border-green-500 hover:w-8 hover:h-auto"
+                    />
+                  ) : (
+                    <CancelIcon
+                      style={{ color: "red", cursor: "pointer" }}
+                      onClick={() => toggleHasPaid(usuario.sub, grupoId, true)}
+                      className="hover:border-solid hover:border-2 hover:border-red-500 hover:w-8 hover:h-auto"
+                    />
+                  )}
+                </td>
                 <td className="py-2 px-3 font-mono ">
                   <Tooltip
                     title="Eliminar del Grupo"
@@ -240,6 +295,42 @@ function UsersGrupo({ nivelId, grupoId }) {
                       <PreviewIcon fontSize="large" />
                     </button>
                   </Tooltip>
+                  {/* <Tooltip
+                    title="Actualizar Pago"
+                    arrow
+                    placement="top"
+                    slotProps={{
+                      popper: {
+                        modifiers: [
+                          {
+                            name: "offset",
+                            options: {
+                              offset: [0, -6],
+                            },
+                          },
+                        ],
+                      },
+                    }}
+                  >
+                    <button
+                      className="mr-2 focus:outline-none"
+                      onClick={() =>
+                        toggleHasPaid(
+                          usuario.sub,
+                          grupoId,
+                          !usuario.grupos[0]?.usergrupo?.hasPaid // Usa ?. para evitar errores si usergrupo es undefined
+                        )
+                      }
+                    >
+                      <CheckCircleIcon
+                        style={{
+                          color: usuario.grupos[0]?.usergrupo?.hasPaid
+                            ? "green"
+                            : "gray",
+                        }}
+                      />
+                    </button>
+                  </Tooltip> */}
                 </td>
               </tr>
             ))}
