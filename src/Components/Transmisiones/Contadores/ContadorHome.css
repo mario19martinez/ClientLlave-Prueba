@@ -1,0 +1,19 @@
+/* ContadorHome.css */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  
+  .contador-home__numero {
+    animation: pulse 1s infinite;
+  }
+  
+  .contador-home__icono {
+    animation: blink 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }  
