@@ -11,7 +11,7 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
   const [resultados, setResultados] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userNotFound, setUserNotFound] = useState(false);
-  const [hasPaid, setHasPaid] = useState(false)
+  const [hasPaid, setHasPaid] = useState({})
 
   const handleBuscar = async () => {
     try {
@@ -63,7 +63,7 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
           userSub: userSub,
           grupoId: grupoId,
           nivelId: nivelId,
-          hasPaid: hasPaid,
+          hasPaid: hasPaid[userSub], // Utilizamos el valor especifico del usuario
         }
       );
       setMessage(response.data.message);
@@ -77,7 +77,7 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
         closeModalAndReload();
       }, 1500);
       setUserSub(""); // Limpiar el estado después de la operación exitosa
-      setHasPaid(false);
+      setHasPaid((prevHasPaid) => ({ ...prevHasPaid, [userSub]: false}));
     } catch (error) {
       setError(error.response.data.error);
       toast.warning('El usuario ya esta inscrito en un Grupo!', {
@@ -88,6 +88,13 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
       });
     }
   };
+
+  const handlePaidChange = (userSub, value) => {
+    setHasPaid((prevHasPaid) => ({
+      ...prevHasPaid,
+      [userSub]: value,
+    }));
+  }
 
 
   return (
@@ -140,11 +147,12 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
                 </div>
                 <div className="flex items-center">
                   <label htmlFor="" className="mr-2">¿Pagó?</label>
-                  <input type="checkbox"
-                  checked={hasPaid}
-                  onChange={(e) => setHasPaid(e.target.checked)}
-                  className="form-checkbox h-5 w-5 text-blue-500"
-                   />
+                  <input
+                    type="checkbox"
+                    checked={!!hasPaid[user.userSub]} // Usa el valor específico del usuario
+                    onChange={(e) => handlePaidChange(user.userSub, e.target.checked)}
+                    className="form-checkbox h-5 w-5 text-blue-500"
+                  />
                 </div>
                 <button
                   onClick={(e) => handleSubmit(e, user.userSub)}
