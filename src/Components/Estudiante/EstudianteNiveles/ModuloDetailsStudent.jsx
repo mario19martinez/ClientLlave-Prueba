@@ -186,10 +186,12 @@ function ModuloDetailsStudent() {
   };
 
   const toggleMostrarPreguntas = () => {
-    if (checkAllClassesCompleted()) {
-      setMostrarPreguntas(!mostrarPreguntas);
-    } else {
+    if (loading) {
+      setShowModal(true); 
+    } else if (!checkAllClassesCompleted()) {
       setShowModal(true);
+    } else {
+      setMostrarPreguntas(!mostrarPreguntas); 
     }
   };
 

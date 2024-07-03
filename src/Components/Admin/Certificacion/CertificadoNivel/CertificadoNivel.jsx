@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import ReactModal from "react-modal";
+import AgregarDocumentoNivel from "./AgregarDocumentoNivel";
 import CardMembershipIcon from "@mui/icons-material/CardMembership";
 import DoDisturbOnIcon from "@mui/icons-material/DoDisturbOn";
 import EditNoteIcon from "@mui/icons-material/EditNote";
@@ -14,6 +16,9 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [certificando, setCertificando] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedCertificadoId, setSelectedCertificadoId] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   useEffect(() => {
     const fetchUsuarios = async () => {
@@ -24,6 +29,7 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
         setUsuarios(response.data);
         setSearchResults(response.data);
         fetchCertificados(response.data);
+        console.log("Datos Users: ", response.data);
       } catch (error) {
         setError("Error al obtener los usuarios");
         setLoading(false);
@@ -168,6 +174,18 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
     }
   };
 
+  const handleOpenModal = (certificadoId, userId) => {
+    setSelectedCertificadoId(certificadoId);
+    setSelectedUserId(userId);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setSelectedCertificadoId(null);
+    setSelectedUserId(null);
+  };
+
   const filteredUsers = searchResults.filter((usuario) => {
     if (filter === "Todos") return true;
     return usuario.certificacion === filter;
@@ -217,6 +235,9 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
               <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 Email
               </th>
+              <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+                Estado
+              </th>
               <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-center text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 Certificación
               </th>
@@ -237,6 +258,9 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
                   <div className="text-sm leading-5 text-gray-900">
                     {usuario.email}
                   </div>
+                </td>
+                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                  {usuario.hasPaid ? "apto" : "no apto"}
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-center">
                   <div className="text-sm leading-5 text-gray-900">
@@ -281,7 +305,12 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
                         </span>
                       </button>
 
-                      <button className="relative group bg-transparent hover:bg-blue-100 text-blue-500 font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      <button
+                        onClick={() =>
+                          handleOpenModal(usuario.certificadoId, usuario.sub)
+                        }
+                        className="relative group bg-transparent hover:bg-blue-100 text-blue-500 font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
                         <EditNoteIcon className="text-blue-500" />
                         <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-80 shadow-lg">
                           Editar Documentos
@@ -295,6 +324,21 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
           </tbody>
         </table>
       </div>
+      <ReactModal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Agregar Documento Nivel Modal"
+        className="fixed inset-0 flex items-center justify-center z-50"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+      >
+        <div className="bg-white p-8 rounded-lg shadow-lg">
+          <AgregarDocumentoNivel
+            certificadoId={selectedCertificadoId}
+            userId={selectedUserId}
+            closeModal={closeModal}
+          />
+        </div>
+      </ReactModal>
     </div>
   );
 }
