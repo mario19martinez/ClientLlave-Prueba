@@ -130,7 +130,7 @@ function ClaseModuloCreate() {
                 htmlFor="pdfURL"
                 className="block text-gray-700 text-sm font-bold mb-2"
               >
-                Materias de apoyo (sera un archivo descargable):
+                Material de apoyo (sera un archivo descargable):
               </label>
               <ReactQuill
                 id="texto"
