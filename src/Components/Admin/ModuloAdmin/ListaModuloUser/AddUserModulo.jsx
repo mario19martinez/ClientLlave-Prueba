@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 
-function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
+function AddUserModulo({ moduloId }) {
   const [userSub, setUserSub] = useState("");
   const [error, setError] = useState(null);
   const [message, setMessage] = useState("");
@@ -11,7 +11,6 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
   const [resultados, setResultados] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userNotFound, setUserNotFound] = useState(false);
-  const [hasPaid, setHasPaid] = useState({});
 
   const handleBuscar = async () => {
     try {
@@ -24,10 +23,10 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
         return;
       }
 
-      const response = await axios.get(`/search`, {
+      const response = await axios.get("/search-user", {
         params: {
-          nivelId: nivelId,
           name: busqueda.toLowerCase(),
+          moduloId,
         },
       });
 
@@ -40,7 +39,6 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
         const usuariosSub = usuarios.map((usuario) => ({
           ...usuario,
           userSub: usuario.sub,
-          grupoName: usuario.grupo ? usuario.grupo.name : null, // Añadimos el nombre del grupo si existe
         }));
         setResultados(usuariosSub);
       }
@@ -55,30 +53,23 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
   const memoizedResultados = useMemo(() => resultados, [resultados]);
 
   const handleSubmit = async (e, userSub) => {
-    // Eliminar el argumento userSub
     e.preventDefault();
     try {
-      const response = await axios.post(`/add-user-grupo`, {
+      const response = await axios.post("/add-user-to-modulo", {
         userSub: userSub,
-        grupoId: grupoId,
-        nivelId: nivelId,
-        hasPaid: hasPaid[userSub], // Utilizamos el valor especifico del usuario
+        moduloId: moduloId,
       });
       setMessage(response.data.message);
-      toast.success("Usuario agregado con exito!", {
+      toast.success("Usuarios agreagdo con exito!", {
         position: "top-center",
         autoClose: 1200,
         closeOnClick: true,
         theme: "light",
       });
-      setTimeout(() => {
-        closeModalAndReload();
-      }, 1500);
-      setUserSub(""); // Limpiar el estado después de la operación exitosa
-      setHasPaid((prevHasPaid) => ({ ...prevHasPaid, [userSub]: false }));
+      setUserSub("");
     } catch (error) {
       setError(error.response.data.error);
-      toast.warning("El usuario ya esta inscrito en un Grupo!", {
+      toast.warning("El usuario ya esta inscrito en el modulo!", {
         position: "top-center",
         autoClose: 1800,
         closeOnClick: true,
@@ -87,15 +78,8 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
     }
   };
 
-  const handlePaidChange = (userSub, value) => {
-    setHasPaid((prevHasPaid) => ({
-      ...prevHasPaid,
-      [userSub]: value,
-    }));
-  };
-
   return (
-    <div className="mx-auto w-screen p-4 bg-blue-100 rounded-md shadow-md h-auto">
+    <div className="mx-auto w-1/2 p-4 bg-blue-100 rounded-md shadow-md h-auto">
       <h2 className="text-lg font-bold mb-4 text-gray-700">Agregar Usuario</h2>
       <div className="mb-4">
         <label
@@ -138,24 +122,6 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
                   <span>
                     {user.name} {user.last_name}
                   </span>
-                  {user.grupoName && (
-                    <span className="text-sm text-gray-700 ml-2">
-                      (En grupo: {user.grupoName})
-                    </span>
-                  )}
-                </div>
-                <div className="flex items-center">
-                  <label htmlFor="" className="mr-2">
-                    ¿Pagó?
-                  </label>
-                  <input
-                    type="checkbox"
-                    checked={!!hasPaid[user.userSub]} // Usa el valor específico del usuario
-                    onChange={(e) =>
-                      handlePaidChange(user.userSub, e.target.checked)
-                    }
-                    className="form-checkbox h-5 w-5 text-blue-500"
-                  />
                 </div>
                 <button
                   onClick={(e) => handleSubmit(e, user.userSub)}
@@ -174,10 +140,9 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
   );
 }
 
-AddUserGrupo.propTypes = {
-  nivelId: PropTypes.string.isRequired,
-  grupoId: PropTypes.string.isRequired,
+AddUserModulo.propTypes = {
+  moduloId: PropTypes.string.isRequired,
   closeModalAndReload: PropTypes.func.isRequired,
 };
 
-export default AddUserGrupo;
+export default AddUserModulo;

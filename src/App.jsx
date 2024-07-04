@@ -146,6 +146,10 @@ import ViewClasesUser from "./views/ViewCursoUser/ViewCursoUser";
 import Viewdetailsentrenamiento from "./views/Viewdetailsentrenamiento/Viewdetailsentrenamiento";
 import ViewFormProfetico from "./views/ViewCompProfeticos/ViewFormProfetico";
 
+// Es de el componente de modulo de usuario, es provicional
+import ViewModulosUser from "./views/ViewMenuStudent/ViewModulosUser/ViewModulosUser";
+import ViewModuloUserDetail from "./views/ViewMenuStudent/ViewModulosUser/ViewModuloUserDetail";
+
 //import Cursos from "./Components/Admin/Cursos/Cursos";
 //import Entrenamiento from "./Components/Entrenamiento/Entrenamiento";
 //import ClaseDetail from "./Components/Admin/Clases/ClaseDetail";
@@ -321,6 +325,10 @@ function App() {
 
         {/*Ruta de error cuando un rol no pertenece a su ruta */}
         <Route path="*" element={<Navigate to="/error" />} />
+
+        {/* Es de el componente de modulo de usuario, es provicional */}
+        <Route path="/modulos-de-usuario" element={<ViewModulosUser />} />
+        <Route path="/modulo/:moduloId" element={<ViewModuloUserDetail />} />
       </Routes>
     </Router>
   );

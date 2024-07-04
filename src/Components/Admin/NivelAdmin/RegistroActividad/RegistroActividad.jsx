@@ -382,13 +382,13 @@ function RegistroActividad() {
                         : ""}
                     </td>
                     <td className="py-3 px-6 text-left whitespace-nowrap">
-                      {registro.user &&
-                        registro.user.grupos &&
-                        (selectedGrupo !== ""
+                      {registro.user && registro.user.grupos.length > 0
+                        ? selectedGrupo !== ""
                           ? registro.user.grupos.find(
                               (grupo) => grupo.id === selectedGrupo
                             )?.name
-                          : registro.modulo?.grupos[0]?.name)}
+                          : registro.modulo?.grupos[0]?.name
+                        : "Inscrito en Modulo"}
                     </td>
                     <td className="py-3 px-6 text-left">
                       {registro.modulo ? registro.modulo.titulo : ""}
