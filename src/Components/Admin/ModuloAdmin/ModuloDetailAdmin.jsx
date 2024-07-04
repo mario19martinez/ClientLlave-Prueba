@@ -5,11 +5,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ClaseModuloAdmin from "../ClasesModuloAdmin/ClasesModuloAdmin";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+// import UsersInModulo from "./ListaModuloUser/UsersInModulo";
+import AddUserModulo from "./ListaModuloUser/AddUserModulo";
+import Modal from 'react-modal'
 
 function ModuloDetailAdmin() {
   const [modulo, setModulo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
   const { nivelId, moduloId } = useParams();
   const navigate = useNavigate();
 
@@ -40,6 +44,14 @@ function ModuloDetailAdmin() {
   const goBack = () => {
     navigate(-1);
   };
+
+  const openModal = () => {
+    setModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setModalOpen(false);
+  }
 
   if (loading) {
     return (
@@ -125,10 +137,33 @@ function ModuloDetailAdmin() {
           <EditNoteIcon fontSize="large" />
           <h1 className="text-xs text-white">Editar</h1>
         </button>
+        <button
+          onClick={openModal}
+          className="bg-green-500 text-white font-semibold py-2 px-3 rounded-md hover:bg-green-600 transition duration-300 ml-4"
+        >
+          Agregar Usuario
+        </button>
       </div>
       <hr className="my-6" />
       <h3 className="text-2xl font-bold text-gray-800 mb-4">Clases:</h3>
       <ClaseModuloAdmin moduloId={moduloId} />
+      {/* <div>
+        <UsersInModulo moduloId={moduloId} />
+      </div> */}
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Agregar Usuario al Módulo"
+        className="fixed inset-0 flex items-center justify-center p-4 bg-gray-900 bg-opacity-75"
+        overlayClassName="fixed inset-0 bg-gray-900 bg-opacity-75"
+      >
+        <div className="bg-white rounded-lg p-6 w-4/5 mx-auto">
+        <AddUserModulo moduloId={moduloId} closeModalAndReload={closeModal} />
+        <button onClick={closeModal} className="mt-4 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600">
+          Cerrar
+        </button>
+        </div>
+      </Modal>
     </div>
   );
 }

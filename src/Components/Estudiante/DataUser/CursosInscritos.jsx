@@ -65,6 +65,11 @@ export default function CursosInscritos() {
       <div className="mb-8 flex flex-col items-center justify-center">
         <h2 className="text-2xl font-bold text-gray-700">Cursos Inscritos</h2>
       </div>
+      {/* <button
+      onClick={() => navigate('/modulos-de-usuario')}
+      >
+        Modulos Inscritos
+      </button> */}
 
       <div className="font-normal text-center md:text-left">
         {cursosInscritos.length > 0 || nivelesInscritos.length > 0 ? (
