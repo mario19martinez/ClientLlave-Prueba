@@ -30,6 +30,13 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
         setSearchResults(response.data);
         fetchCertificados(response.data);
         console.log("Datos Users: ", response.data);
+        response.data.forEach((user) => {
+          const hasPaid =
+            user.grupos && user.grupos.length > 0 && user.grupos[0].usergrupo
+              ? user.grupos[0].usergrupo.hasPaid
+              : undefined;
+          console.log(`User: ${user.name}, hasPaid: ${hasPaid}`);
+        });
       } catch (error) {
         setError("Error al obtener los usuarios");
         setLoading(false);
@@ -233,9 +240,6 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
                 Nombre
               </th>
               <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                Email
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 Estado
               </th>
               <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-center text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
@@ -247,20 +251,51 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((usuario) => (
+            {filteredUsers.map((usuario, hasPaid) => (
               <tr key={usuario.sub}>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                   <div className="text-sm leading-5 font-medium text-gray-900">
                     {usuario.name} {usuario.last_name}
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                  <div className="text-sm leading-5 text-gray-900">
-                    {usuario.email}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                  {usuario.hasPaid ? "apto" : "no apto"}
+                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-center">
+                  {hasPaid ? (
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800">
+                      <svg
+                        className="w-4 h-4 mr-1"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 13l4 4L19 7"
+                        ></path>
+                      </svg>
+                      Apto
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800">
+                      <svg
+                        className="w-4 h-4 mr-1"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6 18L18 6M6 6l12 12"
+                        ></path>
+                      </svg>
+                      No Apto
+                    </span>
+                  )}
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-center">
                   <div className="text-sm leading-5 text-gray-900">
