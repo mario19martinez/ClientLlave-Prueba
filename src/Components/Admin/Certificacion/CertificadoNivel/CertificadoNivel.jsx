@@ -193,6 +193,10 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
     setSelectedUserId(null);
   };
 
+  const isApto = (user) => {
+    return user.grupos && user.grupos.length > 0 && user.grupos[0].usergrupo && user.grupos[0].usergrupo.hasPaid;
+  };
+
   const filteredUsers = searchResults.filter((usuario) => {
     if (filter === "Todos") return true;
     return usuario.certificacion === filter;
@@ -251,55 +255,32 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((usuario, hasPaid) => (
-              <tr key={usuario.sub}>
+            {filteredUsers.map((user) => (
+              <tr key={user.sub}>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                  <div className="text-sm leading-5 font-medium text-gray-900">
-                    {usuario.name} {usuario.last_name}
+                  <div>
+                    <div className="text-sm leading-5 font-medium text-gray-900">
+                      {user.name} {user.last_name}
+                    </div>
+                    <div className="text-sm leading-5 text-gray-500">
+                      {user.email}
+                    </div>
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-center">
-                  {hasPaid ? (
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800">
-                      <svg
-                        className="w-4 h-4 mr-1"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M5 13l4 4L19 7"
-                        ></path>
-                      </svg>
+                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                  {isApto(user) ? (
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                       Apto
                     </span>
                   ) : (
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800">
-                      <svg
-                        className="w-4 h-4 mr-1"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M6 18L18 6M6 6l12 12"
-                        ></path>
-                      </svg>
-                      No Apto
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                      No apto
                     </span>
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-center">
                   <div className="text-sm leading-5 text-gray-900">
-                    {usuario.certificacion === "Certificado" ? (
+                    {user.certificacion === "Certificado" ? (
                       <span className="bg-green-200 text-green-800 py-1 px-3 rounded-full text-xs">
                         Certificado
                       </span>
@@ -311,9 +292,9 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-center">
-                  {usuario.certificacion === "No certificado" ? (
+                  {user.certificacion === "No certificado" ? (
                     <button
-                      onClick={() => handleCertificar(usuario.sub)}
+                      onClick={() => handleCertificar(user.sub)}
                       className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md focus:outline-none"
                       disabled={certificando}
                     >
@@ -330,7 +311,7 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
 
                       <button
                         onClick={() =>
-                          handleQuitarCertificado(usuario.certificadoId)
+                          handleQuitarCertificado(user.certificadoId)
                         }
                         className="relative group bg-transparent hover:bg-red-100 text-red-500 font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500"
                       >
@@ -342,7 +323,7 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
 
                       <button
                         onClick={() =>
-                          handleOpenModal(usuario.certificadoId, usuario.sub)
+                          handleOpenModal(user.certificadoId, user.sub)
                         }
                         className="relative group bg-transparent hover:bg-blue-100 text-blue-500 font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
@@ -362,17 +343,15 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
       <ReactModal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
-        contentLabel="Agregar Documento Nivel Modal"
-        className="fixed inset-0 flex items-center justify-center z-50"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+        contentLabel="Agregar Documento"
+        className="modal"
+        overlayClassName="modal-overlay"
       >
-        <div className="bg-white p-8 rounded-lg shadow-lg">
-          <AgregarDocumentoNivel
-            certificadoId={selectedCertificadoId}
-            userId={selectedUserId}
-            closeModal={closeModal}
-          />
-        </div>
+        <AgregarDocumentoNivel
+          certificadoId={selectedCertificadoId}
+          userId={selectedUserId}
+          onCloseModal={closeModal}
+        />
       </ReactModal>
     </div>
   );
