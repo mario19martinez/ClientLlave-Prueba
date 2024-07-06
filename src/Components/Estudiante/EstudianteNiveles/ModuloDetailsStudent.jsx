@@ -42,11 +42,10 @@ function ModuloDetailsStudent() {
         const moduloResponse = await axios.get(
           `/nivel/${nivelId}/grupo/${grupoId}/modulo/${moduloId}/detalles`
         );
-        const moduloData = moduloResponse.data.modulo;
-        setModulo(moduloData);
-        setLoading(false);
+        setModulo(moduloResponse.data.modulo);
       } catch (error) {
         console.error("Error al obtener el módulo:", error);
+      } finally {
         setLoading(false);
       }
     };
@@ -59,7 +58,9 @@ function ModuloDetailsStudent() {
       if (userSub && modulo) {
         try {
           const responseClases = await axios.get(`/modulo/${moduloId}/clases`);
-          const clases = responseClases.data.filter(clase => clase.url && clase.url.trim() !== "");
+          const clases = responseClases.data.filter(
+            (clase) => clase.url && clase.url.trim() !== ""
+          );
           const responseProgresos = await axios.get("/registro-actividad", {
             params: { userSub, moduloId },
           });
@@ -126,12 +127,14 @@ function ModuloDetailsStudent() {
           tipo: pregunta.tipo,
         })
       );
+      const aprobado = todasCorrectas();
       const response = await axios.post(
         "/modulo/responder",
         {
           userSub: userSub,
           moduloId,
           preguntas: preguntasConRespuestas,
+          aprobado, // Pasar el estado de aprobado
         },
         {
           headers: {
@@ -140,7 +143,7 @@ function ModuloDetailsStudent() {
         }
       );
       console.log("Respuestas enviadas:", response.data);
-      setQuizCompletado(todasCorrectas());
+      setQuizCompletado(aprobado);
     } catch (error) {
       console.error("Error al enviar respuestas:", error);
     }
@@ -148,13 +151,13 @@ function ModuloDetailsStudent() {
 
   const verificarRespuesta = (preguntaIndex, respuesta) => {
     const pregunta = modulo.preguntas[preguntaIndex];
-    
+
     if (pregunta.tipo === "opcion_multiple") {
       return respuesta.startsWith(pregunta.respuestaCorrecta);
     } else if (pregunta.tipo === "verdadero_falso") {
       return respuesta === pregunta.respuestaCorrecta;
     }
-    
+
     return false; // Si no es un tipo válido, retornar falso
   };
 
@@ -172,12 +175,16 @@ function ModuloDetailsStudent() {
     if (!pregunta || !pregunta.pregunta) {
       return false;
     }
-    if (pregunta.tipo === "opcion_multiple" && !Array.isArray(pregunta.opciones)) {
+    if (
+      pregunta.tipo === "opcion_multiple" &&
+      !Array.isArray(pregunta.opciones)
+    ) {
       return false;
     }
-    const opcionesValidas = pregunta.tipo === "opcion_multiple"
-      ? pregunta.opciones.filter((opcion) => opcion.trim() !== "").length > 0
-      : true;
+    const opcionesValidas =
+      pregunta.tipo === "opcion_multiple"
+        ? pregunta.opciones.filter((opcion) => opcion.trim() !== "").length > 0
+        : true;
     return pregunta.pregunta.trim() !== "" && opcionesValidas;
   };
 
@@ -187,11 +194,11 @@ function ModuloDetailsStudent() {
 
   const toggleMostrarPreguntas = () => {
     if (loading) {
-      setShowModal(true); 
+      setShowModal(true);
     } else if (!checkAllClassesCompleted()) {
       setShowModal(true);
     } else {
-      setMostrarPreguntas(!mostrarPreguntas); 
+      setMostrarPreguntas(!mostrarPreguntas);
     }
   };
 
@@ -218,8 +225,9 @@ function ModuloDetailsStudent() {
     );
   }
 
-  // Función para verificar si los primeros dos caracteres son números
-  const tituloModulo = /^\d{2}/.test(modulo.titulo) ? modulo.titulo.substring(2) : modulo.titulo;
+  const tituloModulo = /^\d{2}/.test(modulo.titulo)
+    ? modulo.titulo.substring(2)
+    : modulo.titulo;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -269,20 +277,24 @@ function ModuloDetailsStudent() {
           </button>
 
           {mostrarPreguntas && (
-            <div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                Preguntas:
+            <div className="p-6 bg-white shadow-md rounded-lg">
+              <h3 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+                Preguntas
               </h3>
               {modulo.preguntas
                 .filter(isPreguntaValida)
                 .map((pregunta, index) => (
                   <div
                     key={index}
-                    className="mb-6 p-4 border border-gray-300 rounded-lg"
+                    className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg"
                   >
-                    <p className="text-gray-700 mb-2 font-bold">
-                      {index + 1}: {pregunta.tipo === "opcion_multiple" ? "Seleccione la respuesta correcta:" : "Determine si es verdadero o falso:"}
-                      <br />
+                    <p className="text-lg text-gray-800 mb-4 font-semibold">
+                      {index + 1}.{" "}
+                      {pregunta.tipo === "opcion_multiple"
+                        ? "Seleccione la respuesta correcta:"
+                        : "Determine si es verdadero o falso:"}
+                    </p>
+                    <p className="text-gray-700 mb-4 italic">
                       {pregunta.pregunta}
                     </p>
                     <div className="space-y-2">
@@ -296,19 +308,19 @@ function ModuloDetailsStudent() {
                               value={opcion}
                               checked={respuestas[index] === opcion}
                               onChange={(e) => handleAnswerChange(index, e)}
-                              className="mr-2"
+                              className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500"
                               disabled={quizCompletado}
                             />
                             <label
                               htmlFor={`opcion-${index}-${opcionIndex}`}
-                              className="text-gray-600"
+                              className="text-gray-700"
                             >
                               {opcion}
                             </label>
                           </div>
                         ))
                       ) : (
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-6">
                           <label className="flex items-center cursor-pointer">
                             <input
                               type="radio"
@@ -316,10 +328,10 @@ function ModuloDetailsStudent() {
                               value="verdadero"
                               checked={respuestas[index] === "verdadero"}
                               onChange={(e) => handleAnswerChange(index, e)}
-                              className="mr-2"
+                              className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500"
                               disabled={quizCompletado}
                             />
-                            <span className="text-gray-600">Verdadero</span>
+                            <span className="text-gray-700">Verdadero</span>
                           </label>
                           <label className="flex items-center cursor-pointer">
                             <input
@@ -328,73 +340,75 @@ function ModuloDetailsStudent() {
                               value="falso"
                               checked={respuestas[index] === "falso"}
                               onChange={(e) => handleAnswerChange(index, e)}
-                              className="mr-2"
+                              className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500"
                               disabled={quizCompletado}
                             />
-                            <span className="text-gray-600">Falso</span>
+                            <span className="text-gray-700">Falso</span>
                           </label>
                         </div>
                       )}
                     </div>
                     {quizCompletado && respuestas[index] && (
                       <div
-                        className={`mt-2 ${
+                        className={`mt-2 text-lg font-semibold ${
                           verificarRespuesta(index, respuestas[index])
                             ? "text-green-600"
                             : "text-red-600"
                         }`}
                       >
                         {verificarRespuesta(index, respuestas[index])
-                          ? "Correcto"
-                          : "Incorrecto. Sigue intentado, no te rindas"}
+                          ? "¡Correcto!"
+                          : "Incorrecto. Sigue intentándolo, no te rindas."}
                       </div>
                     )}
                   </div>
                 ))}
               <button
                 onClick={handleSubmitAnswers}
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4 transition duration-300"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg mt-6 transition duration-300 ease-in-out"
                 disabled={
                   Object.keys(respuestas).length !== modulo.preguntas.length
                 }
               >
-                Responder
+                Enviar Respuestas
               </button>
+            </div>
+          )}
+          {quizCompletado && (
+            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4 mb-8">
+              <span className="block sm:inline">
+                ¡Felicitaciones! Has aprobado el cuestionario.
+              </span>
+            </div>
+          )}
+          {!quizCompletado && respuestasUsuario.length > 0 && (
+            <div className="bg-red-200 text-red-800 p-4 rounded-lg mb-4">
+              Algunas respuestas son incorrectas. Inténtalo de nuevo.
             </div>
           )}
         </>
       ) : (
-        <div className="text-center mt-4"></div>
-      )}
-
-      {quizCompletado && (
-        <div className="text-center mt-4 text-green-600 text-xl font-semibold">
-          ¡Felicitaciones! Has respondido todas las preguntas correctamente.
-        </div>
-      )}
-      {!quizCompletado && respuestasUsuario.length > 0 && (
-        <div className="text-center mt-4 text-red-600 text-xl font-semibold">
-          Algunas respuestas son incorrectas. Inténtalo de nuevo.
+        <div className="bg-blue-100 p-4 rounded-lg shadow-md mt-4">
+          <span className="text-blue-800 font-semibold">
+            Este módulo no tiene preguntas para responder.
+          </span>
         </div>
       )}
 
-      <Modal
-        isOpen={showModal}
-        onRequestClose={() => setShowModal(false)}
-        className="fixed inset-0 flex items-center justify-center z-50 p-4"
-        overlayClassName="fixed inset-0 bg-gray-800 bg-opacity-75"
-      >
-        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full text-center">
-          <h2 className="text-3xl font-bold mb-4 text-red-600 uppercase">ADVERTENCIA</h2>
-          <p className="text-gray-700 mb-6">
-            Debes ver todas las clases al 80% o más para poder ver y responder
-            las preguntas.
-          </p>
+      <Modal isOpen={showModal} onRequestClose={() => setShowModal(false)}>
+        <div className="bg-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold mb-4 text-gray-900">
+            {loading
+              ? "Cargando..."
+              : !checkAllClassesCompleted()
+              ? "Debes completar al menos el 80% de las clases para responder el quiz."
+              : ""}
+          </h2>
           <button
             onClick={() => setShowModal(false)}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
           >
-            Entendido
+            Cerrar
           </button>
         </div>
       </Modal>

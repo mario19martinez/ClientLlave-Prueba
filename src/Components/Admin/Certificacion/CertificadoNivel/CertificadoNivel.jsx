@@ -29,14 +29,7 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
         setUsuarios(response.data);
         setSearchResults(response.data);
         fetchCertificados(response.data);
-        console.log("Datos Users: ", response.data);
-        response.data.forEach((user) => {
-          const hasPaid =
-            user.grupos && user.grupos.length > 0 && user.grupos[0].usergrupo
-              ? user.grupos[0].usergrupo.hasPaid
-              : undefined;
-          console.log(`User: ${user.name}, hasPaid: ${hasPaid}`);
-        });
+        fetchModuloResults(response.data);
       } catch (error) {
         setError("Error al obtener los usuarios");
         setLoading(false);
@@ -98,6 +91,51 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
         setError("Error al obtener los certificados");
       } finally {
         setLoading(false);
+      }
+    };
+
+    const fetchModuloResults = async (usuarios) => {
+      try {
+        const modulosResponse = await axios.get(
+          `/nivel/${nivelId}/grupo/${grupoId}/detalles`
+        );
+        const modulos = modulosResponse.data.modulos;
+        // console.log('Modulos: ', modulos);
+    
+        const resultadosPromises = usuarios.map(async (user) => {
+          const resultados = await Promise.all(
+            modulos.map(async (modulo) => {
+              const resultadoResponse = await axios.get(
+                `/resultados/${user.sub}/${modulo.id}`
+              );
+              // console.log('info respuestas: ', resultadoResponse.data);
+              // Asumiendo que resultadoResponse.data es un array y queremos el primer elemento
+              const aprobado = resultadoResponse.data.length > 0 ? resultadoResponse.data[0].aprobado : false;
+              // console.log('Aprobo ? : ', aprobado);
+              return aprobado;
+            })
+          );
+          return {
+            userSub: user.sub,
+            resultados: resultados,
+          };
+        });
+    
+        const resultados = await Promise.all(resultadosPromises);
+    
+        setUsuarios((prevUsuarios) =>
+          prevUsuarios.map((usuario) => {
+            const resultadoInfo = resultados.find(
+              (res) => res.userSub === usuario.sub
+            );
+            return {
+              ...usuario,
+              resultados: resultadoInfo ? resultadoInfo.resultados : [],
+            };
+          })
+        );
+      } catch (error) {
+        setError("Error al obtener los resultados de los módulos");
       }
     };
 
@@ -194,7 +232,9 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
   };
 
   const isApto = (user) => {
-    return user.grupos && user.grupos.length > 0 && user.grupos[0].usergrupo && user.grupos[0].usergrupo.hasPaid;
+    const hasPaid = user.grupos && user.grupos.length > 0 && user.grupos[0].usergrupo && user.grupos[0].usergrupo.hasPaid;
+    const allModulesApproved = user.resultados && user.resultados.every((aprobado) => aprobado === true);
+    return hasPaid && allModulesApproved;
   };
 
   const filteredUsers = searchResults.filter((usuario) => {
@@ -202,6 +242,22 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
     return usuario.certificacion === filter;
   });
 
+  const getUserState = (user) => {
+    const hasPaid = user.grupos && user.grupos.length > 0 && user.grupos[0].usergrupo && user.grupos[0].usergrupo.hasPaid;
+    const allModulesApproved = user.resultados && user.resultados.every((aprobado) => aprobado === true);
+  
+    if (hasPaid && allModulesApproved) {
+      return 'completo';
+    } else if (!hasPaid && allModulesApproved) {
+      console.log('pago: ', hasPaid);
+      return 'faltaPago';
+    } else if (hasPaid && !allModulesApproved) {
+      return 'modulosNoCompletados';
+    } else if (!hasPaid && !allModulesApproved) {
+      return 'noCompletado';
+    }
+  };
+  
   if (loading)
     return (
       <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75 z-50">
@@ -243,7 +299,7 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
               <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
                 Nombre
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider text-center">
                 Estado
               </th>
               <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-center text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
@@ -267,17 +323,25 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                  {isApto(user) ? (
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                      Apto
-                    </span>
-                  ) : (
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                      No apto
-                    </span>
-                  )}
-                </td>
+                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-center">
+                {getUserState(user) === 'completo' ? (
+                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                    Completo
+                  </span>
+                ) : getUserState(user) === 'noCompletado' ? (
+                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                    No completado
+                  </span>
+                ) : getUserState(user) === 'faltaPago' ? (
+                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
+                    Falta pago
+                  </span>
+                ) : (
+                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                    Módulos no completados
+                  </span>
+                )}
+              </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-center">
                   <div className="text-sm leading-5 text-gray-900">
                     {user.certificacion === "Certificado" ? (
