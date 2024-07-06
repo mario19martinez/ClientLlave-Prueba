@@ -26,6 +26,15 @@ export default function CreateLanding({ campeinId, templateProp }) {
 
   const handleSubmit = async () => {
     try {
+      console.log("Enviando datos:", {
+        titulo,
+        subtitulo,
+        contenido,
+        template,
+        contenido2,
+        img,
+        formulario,
+      });
       const response = await axios.post(
         `/campein/${campeinId}/landingcampein`,
         {
@@ -48,6 +57,7 @@ export default function CreateLanding({ campeinId, templateProp }) {
   };
 
   const handleImageUpload = (url) => {
+    console.log("URL de la imagen recibida:", url);
     setImg(url);
   };
 
@@ -104,7 +114,7 @@ export default function CreateLanding({ campeinId, templateProp }) {
         </div>
         <div>
           <label htmlFor="img" className="block font-semibold mb-2">Imagen:</label>
-          <UploadWidget onUpload={handleImageUpload} />
+          <UploadWidget onImageUpload={handleImageUpload} />
           {img && (
             <div className="mt-4">
               <img src={img} alt="Vista previa" className="max-w-full h-auto rounded-md" />

@@ -297,7 +297,7 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
           <thead>
             <tr>
               <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                Nombre
+                Usuario
               </th>
               <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider text-center">
                 Estado
