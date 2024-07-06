@@ -40,7 +40,7 @@ export default function EditLanding({ campeinId, landingId }) {
         setContenido(contenido);
         setTemplate(template);
         setContenido2(contenido2);
-        setImg(img);
+        setImg(img); // Set the initial image URL if available
         setFormulario(formulario);
       } catch (error) {
         console.error("Error al obtener la landing:", error);
@@ -53,6 +53,15 @@ export default function EditLanding({ campeinId, landingId }) {
 
   const handleUpdate = async () => {
     try {
+      console.log("Datos a actualizar:", {
+        titulo,
+        subtitulo,
+        contenido,
+        template,
+        contenido2,
+        img,
+        formulario,
+      });
       const response = await axios.put(
         `/campein/${campeinId}/landingcampein/${landingId}`,
         {
@@ -75,6 +84,7 @@ export default function EditLanding({ campeinId, landingId }) {
   };
 
   const handleImageUpload = (url) => {
+    console.log("URL de la imagen recibida:", url);
     setImg(url);
   };
 
@@ -131,7 +141,7 @@ export default function EditLanding({ campeinId, landingId }) {
         </div>
         <div>
           <label htmlFor="img" className="block font-semibold mb-2">Imagen:</label>
-          <UploadWidget onUpload={handleImageUpload} />
+          <UploadWidget onImageUpload={handleImageUpload} />
           {img && (
             <div className="mt-4">
               <img src={img} alt="Vista previa" className="max-w-full h-auto rounded-md" />
