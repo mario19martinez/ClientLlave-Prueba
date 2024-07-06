@@ -48,7 +48,8 @@ export default function FormModal({ idCampain }) {
   const [fullPhoneNumber, setFullPhoneNumber] = useState("");
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
-  const [initialValuesWithCampaign, setInitialValuesWithCampaign] = useState(initialValues);
+  const [initialValuesWithCampaign, setInitialValuesWithCampaign] =
+    useState(initialValues);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -100,9 +101,7 @@ export default function FormModal({ idCampain }) {
       className=" p-8 bg-white bg-opacity-80 shadow-md rounded-lg"
       style={{ position: "relative", zIndex: 2 }}
     >
-      <h1 className="text-xl font-bold text-center mb-6">
-        Regístrate ahora para obtener 10 Clases de Obsequio
-      </h1>
+      <h1 className="text-xl font-bold text-center mb-6">Regístrate ahora</h1>
 
       <form onSubmit={formik.handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
