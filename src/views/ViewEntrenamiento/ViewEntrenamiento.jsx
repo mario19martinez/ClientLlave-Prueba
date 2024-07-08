@@ -11,8 +11,8 @@ export default function ViewEntrenamiento() {
             <ContadorHome />
             <Nav />
             {/* <Entrenamiento /> */}
-            {/* <Niveles /> */}
             <Banners />
+            {/* <Niveles /> */}
             <Footer /> 
         </div>
     )
