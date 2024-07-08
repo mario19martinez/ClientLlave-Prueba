@@ -4,44 +4,44 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 //import { Link } from "react-router-dom";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
-//import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 function NivelesCard({ id, image, name, costo }) {
   const navigate = useNavigate();
-  //const epaycoButtonRef = useRef(null); // Esto comentado se usa para el boton de epayco
+  const epaycoButtonRef = useRef(null); // Esto comentado se usa para el boton de epayco
 
   const redirect = () => {
     navigate(`/niveldetail/${id}`);
     window.location.reload();
   };
 
-  // useEffect(() => { // Esto comentado se usa para el boton de epayco
-  //   if (epaycoButtonRef.current) {
-  //     // Limpiar el contenido antes de agregar el script
-  //     epaycoButtonRef.current.innerHTML = "";
+  useEffect(() => { // Esto comentado se usa para el boton de epayco
+    if (epaycoButtonRef.current) {
+      // Limpiar el contenido antes de agregar el script
+      epaycoButtonRef.current.innerHTML = "";
       
-  //     const script = document.createElement("script");
-  //     script.src = "https://checkout.epayco.co/checkout.js";
-  //     script.setAttribute("data-epayco-key", "71e21621508a9e6b107778f67e08860e");
-  //     script.className = "epayco-button";
-  //     script.setAttribute("data-epayco-amount", costo.toString());
-  //     script.setAttribute("data-epayco-tax", "0.00");
-  //     script.setAttribute("data-epayco-tax-ico", "0.00");
-  //     script.setAttribute("data-epayco-tax-base", costo.toString());
-  //     script.setAttribute("data-epayco-name", name);
-  //     script.setAttribute("data-epayco-description", name);
-  //     script.setAttribute("data-epayco-currency", "cop");
-  //     script.setAttribute("data-epayco-country", "CO");
-  //     script.setAttribute("data-epayco-test", "true");
-  //     script.setAttribute("data-epayco-external", "false");
-  //     // Opcional: Puedes agregar las URLs de respuesta y confirmación si las tienes
-  //     script.setAttribute("data-epayco-response", "http://localhost:3001/epayco/response");
-  //     script.setAttribute("data-epayco-confirmation", "http://localhost:3001/epayco/confirmation");
-  //     script.setAttribute("data-epayco-button", "https://multimedia.epayco.co/dashboard/btns/btn6.png");
+      const script = document.createElement("script");
+      script.src = "https://checkout.epayco.co/checkout.js";
+      script.setAttribute("data-epayco-key", "71e21621508a9e6b107778f67e08860e");
+      script.className = "epayco-button";
+      script.setAttribute("data-epayco-amount", costo.toString());
+      script.setAttribute("data-epayco-tax", "0.00");
+      script.setAttribute("data-epayco-tax-ico", "0.00");
+      script.setAttribute("data-epayco-tax-base", costo.toString());
+      script.setAttribute("data-epayco-name", name);
+      script.setAttribute("data-epayco-description", name);
+      script.setAttribute("data-epayco-currency", "cop");
+      script.setAttribute("data-epayco-country", "CO");
+      script.setAttribute("data-epayco-test", "true");
+      script.setAttribute("data-epayco-external", "false");
+      // Opcional: Puedes agregar las URLs de respuesta y confirmación si las tienes
+      script.setAttribute("data-epayco-response", "https://apillave-ebd57605aa78.herokuapp.com/epayco/response");
+      script.setAttribute("data-epayco-confirmation", "https://apillave-ebd57605aa78.herokuapp.com/epayco/confirmation' ");
+      script.setAttribute("data-epayco-button", "https://multimedia.epayco.co/dashboard/btns/btn6.png");
       
-  //     epaycoButtonRef.current.appendChild(script);
-  //   }
-  // }, [costo, name]);
+      epaycoButtonRef.current.appendChild(script);
+    }
+  }, [costo, name]);
 
   return (
     <div className="max-w-xs bg-white shadow-lg rounded-md overflow-hidden mx-auto border-2 border-blue-400">
@@ -60,7 +60,7 @@ function NivelesCard({ id, image, name, costo }) {
           Comprar Nivel
         </button>
          {/* Esto comentado se usa para el boton de epayco */}
-        {/* <div ref={epaycoButtonRef} className="w-full flex items-center justify-center mt-4"></div> */} 
+        <div ref={epaycoButtonRef} className="w-full flex items-center justify-center mt-4"></div> 
       </div>
     </div>
   );
