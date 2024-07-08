@@ -5,6 +5,7 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import NavAdmin from "../NavAdmin/NavAdmin";
 import SidebarAdmin from "../SidebarAdmin/SidebarAdmin";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import CircularProgress from '@mui/material/CircularProgress';
 
 function ClasesDetailModulo() {
   const { nivelId, moduloId, claseId } = useParams();
@@ -45,8 +46,8 @@ function ClasesDetailModulo() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900"></div>
-        <span className="ml-4 text-xl font-semibold text-gray-900">
+       <CircularProgress size={70} />
+        <span className="ml-4 text-xl font-semibold text-blue-500">
           Cargando...
         </span>
       </div>

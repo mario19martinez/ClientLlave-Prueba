@@ -11,6 +11,7 @@ function AddUserModulo({ moduloId }) {
   const [resultados, setResultados] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userNotFound, setUserNotFound] = useState(false);
+  const [hasPaid, setHasPaid] = useState({});
 
   const handleBuscar = async () => {
     try {
@@ -58,6 +59,7 @@ function AddUserModulo({ moduloId }) {
       const response = await axios.post("/add-user-to-modulo", {
         userSub: userSub,
         moduloId: moduloId,
+        hasPaid: hasPaid[userSub],
       });
       setMessage(response.data.message);
       toast.success("Usuarios agreagdo con exito!", {
@@ -76,6 +78,13 @@ function AddUserModulo({ moduloId }) {
         theme: "light",
       });
     }
+  };
+
+  const handlePaidChange = (userSub, value) => {
+    setHasPaid((prevHasPaid) => ({
+      ...prevHasPaid,
+      [userSub]: value,
+    }));
   };
 
   return (
@@ -122,6 +131,19 @@ function AddUserModulo({ moduloId }) {
                   <span>
                     {user.name} {user.last_name}
                   </span>
+                </div>
+                <div className="flex items-center">
+                  <label htmlFor="" className="mr-2">
+                    ¿Pagó?
+                  </label>
+                  <input
+                    type="checkbox"
+                    checked={!!hasPaid[user.userSub]} // Usa el valor específico del usuario
+                    onChange={(e) =>
+                      handlePaidChange(user.userSub, e.target.checked)
+                    }
+                    className="form-checkbox h-5 w-5 text-blue-500"
+                  />
                 </div>
                 <button
                   onClick={(e) => handleSubmit(e, user.userSub)}
