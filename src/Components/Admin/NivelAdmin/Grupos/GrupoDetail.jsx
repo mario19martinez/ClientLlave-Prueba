@@ -103,7 +103,7 @@ function GrupoDetail() {
   }
 
   return (
-    <div className="absolute top-0 right-36 mt-28 ml-96 p-4 w-3/4 h-auto rounded translate-x-14 translate-y-4">
+    <div className="px-2 py-2 w-full">
       <ToastContainer />
       <Tooltip
         title="Haz clic para volver atrás"

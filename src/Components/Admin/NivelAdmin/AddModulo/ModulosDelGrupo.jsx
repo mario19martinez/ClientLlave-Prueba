@@ -37,7 +37,7 @@ function ModulosDelGrupo() {
   };
 
   return (
-    <div className="bg-gray-100 border-2 border-gray-300 shadow-md rounded-md p-6 translate-x-16 translate-y-10 w-64 h-svh absolute top-0 right-36 mt-28 ml-96">
+    <div className="bg-gray-100 border-2 border-gray-300 shadow-md rounded-md px-5 py-5 w-64">
       <h2 className="text-xl font-bold text-gray-700 mb-4">Modulos ({modulos.length})</h2>
       {error && <p className="text-red-500">Error: {error}</p>}
       <div className="h-5/6 overflow-y-auto">
