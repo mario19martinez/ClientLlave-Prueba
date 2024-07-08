@@ -30,6 +30,7 @@ import ViewTratamientoDeDatos from "./views/ViewTratamientoDeDatos/ViewTratamien
 import ViewFormObsequioCampain from "./views/ViewCampainObsequio/ViewFormObsequioCampain";
 import ViewErrorPaginaConstruccion from "./views/ViewErrores/ViewErrorPaginaConstruccion";
 import ViewFormRegistroUsersIglesia from "./views/ViewRigistro/ViewFormRegistroUsersIglesia";
+import ViewPlanes from "./views/ViewPlanes/ViewPlanes";
 
 //Imports de estudiantes
 import ViewMenuStudent from "./views/ViewMenuStudent/ViewMenuStudent";
@@ -287,6 +288,7 @@ function App() {
         <Route path="/transmisiones" element={<ViewTransmisiones />} />
         <Route path="/transmisionDetails/:id" element={<ViewTransmisionDetails/>} /> 
         <Route path="/RegistroDatos" element={<ViewFormRegistroUsersIglesia />}/>
+        <Route path="/Planes" element={<ViewPlanes/>} />
         {/*<Route path="/cursos" element={<Cursos />} />*/}
     
         {/*Rutas pagina no asociadas */}
