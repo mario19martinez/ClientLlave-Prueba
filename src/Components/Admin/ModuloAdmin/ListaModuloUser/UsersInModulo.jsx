@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 import CircularProgress from "@mui/material/CircularProgress";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 function UsersInModulo({ moduloId }) {
   const [users, setUsers] = useState([]);
@@ -28,18 +31,40 @@ function UsersInModulo({ moduloId }) {
     try {
       await axios.delete(`/usuario/${userSub}/${moduloId}`);
       // Actualizar la lista de usuarios después de eliminar
-      const updatedUsers = users.filter((user) => user.sub !== userSub);
-      setUsers(updatedUsers);
+      setUsers((prevUsers) => prevUsers.filter((user) => user.sub !== userSub));
     } catch (error) {
       console.error("Error al eliminar usuario del módulo:", error);
       setError(error.message);
     }
   };
 
+  const handleTogglePaidStatus = async (userSub, currentStatus) => {
+    try {
+      const newStatus = !currentStatus;
+      await axios.put(`/usuario/${userSub}/modulo/${moduloId}/hasPaid`, {
+        hasPaid: newStatus,
+      });
+      // Actualizar el estado del usuario localmente después de la actualización
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.sub === userSub
+            ? {
+                ...user,
+                usermodulo: { ...user.usermodulo, hasPaid: newStatus },
+              }
+            : user
+        )
+      );
+    } catch (error) {
+      console.error("Error al actualizar estado de pago:", error);
+      setError(error.message);
+    }
+  };
+
   if (loading) {
     return (
-      <div>
-        <p>Cargando Usuarios...</p>
+      <div className="flex flex-col items-center">
+        <p className="mb-2 text-gray-500 text-xl">Cargando Usuarios...</p>
         <CircularProgress />
       </div>
     );
@@ -47,11 +72,15 @@ function UsersInModulo({ moduloId }) {
 
   if (error) {
     return (
-      <div>
-        <p>Error: {error}</p>
+      <div className="flex items-center">
+        <p className="text-red-600">Error: {error}</p>
       </div>
     );
   }
+ 
+
+  
+
 
   return (
     <div className="container mt-8">
@@ -94,6 +123,12 @@ function UsersInModulo({ moduloId }) {
               </th>
               <th
                 scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+              >
+                Pagó
+              </th>
+              <th
+                scope="col"
                 className="px-6 py-3 text-right text-xs font-medium text-gray-600 uppercase tracking-wider"
               >
                 Acciones
@@ -117,6 +152,29 @@ function UsersInModulo({ moduloId }) {
                   {user.usermodulo
                     ? new Date(user.usermodulo.createdAt).toLocaleString()
                     : "N/A"}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <Tooltip title="Estado de Pago" arrow placement="top">
+                    <button
+                      onClick={() =>
+                        handleTogglePaidStatus(
+                          user.sub,
+                          user.usermodulo.hasPaid
+                        )
+                      }
+                      className={`px-0 py-0 rounded-md focus:outline-none ${
+                        user.usermodulo.hasPaid
+                          ? "text-green-500 hover:border-solid hover:border-2 hover:border-green-500 hover:w-8 hover:h-auto"
+                          : "text-red-500 hover:border-solid hover:border-2 hover:border-red-500 hover:w-8 hover:h-auto"
+                      }`}
+                    >
+                      {user.usermodulo.hasPaid ? (
+                        <CheckCircleIcon />
+                      ) : (
+                        <CancelIcon />
+                      )}
+                    </button>
+                  </Tooltip>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <Tooltip
@@ -152,5 +210,9 @@ function UsersInModulo({ moduloId }) {
     </div>
   );
 }
+
+UsersInModulo.propTypes = {
+  moduloId: PropTypes.string.isRequired,
+};
 
 export default UsersInModulo;

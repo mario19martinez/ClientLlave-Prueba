@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import NavAdmin from "../NavAdmin/NavAdmin";
 import SidebarAdmin from "../SidebarAdmin/SidebarAdmin";
+import CircularProgress from '@mui/material/CircularProgress';
 
 function ClaseEditAdmin() {
   const { nivelId, moduloId, claseId } = useParams();
@@ -61,14 +62,17 @@ function ClaseEditAdmin() {
   };
 
   const handlePdfChange = (value) => {
-    setClaseData({ ...claseData, pdfURL: value});
-  }
+    setClaseData({ ...claseData, pdfURL: value });
+  };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.put(`/nivel/${nivelId}/modulo/${moduloId}/clase/${claseId}`, claseData);
+      await axios.put(
+        `/nivel/${nivelId}/modulo/${moduloId}/clase/${claseId}`,
+        claseData
+      );
       setSuccessAlert(true);
 
       toast.success("Clase modificada exitosamente!", {
@@ -90,7 +94,12 @@ function ClaseEditAdmin() {
       [{ header: "1" }, { header: "2" }, { font: [] }],
       [{ size: [] }],
       ["bold", "italic", "underline", "strike", "blockquote"],
-      [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
       ["link", "image", "video"],
       ["clean"],
       [{ align: [] }],
@@ -101,8 +110,8 @@ function ClaseEditAdmin() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900"></div>
-        <span className="ml-4 text-xl font-semibold text-gray-900">
+          <CircularProgress size={70} />
+        <span className="ml-4 text-xl font-bold text-blue-500">
           Cargando...
         </span>
       </div>
@@ -118,7 +127,7 @@ function ClaseEditAdmin() {
       <NavAdmin />
       <div className="flex">
         <SidebarAdmin />
-        <div className="bg-gray-100 min-h-screen flex justify-center items-center w-1/2">
+        <div className="bg-gray-100 min-h-screen flex justify-center items-center w-1/2 translate-x-40">
           <div className="max-w-3xl w-full p-8 bg-white rounded-lg shadow-lg">
             {successAlert && (
               <div className="bg-green-500 text-white p-2 rounded-md mb-4">
@@ -166,20 +175,20 @@ function ClaseEditAdmin() {
               </div>
 
               <div className="mb-4">
-              <label
-                htmlFor="pdfURL"
-                className="block text-gray-700 text-sm font-bold mb-2"
-              >
-                Materias de apoyo (sera un archivo descargable):
-              </label>
-              <ReactQuill
-                id="texto"
-                value={claseData.pdfURL}
-                onChange={handlePdfChange}
-                modules={quillModules}
-                className="border-2 border-blue-600 rounded-md focus:border-blue-500 bg-white"
-              />
-            </div>
+                <label
+                  htmlFor="pdfURL"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Materias de apoyo (sera un archivo descargable):
+                </label>
+                <ReactQuill
+                  id="texto"
+                  value={claseData.pdfURL}
+                  onChange={handlePdfChange}
+                  modules={quillModules}
+                  className="border-2 border-blue-600 rounded-md focus:border-blue-500 bg-white"
+                />
+              </div>
 
               <div className="mb-2">
                 <label
