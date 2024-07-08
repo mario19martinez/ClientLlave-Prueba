@@ -3,7 +3,7 @@ import Nav from "../../Components/Nav/Nav";
 import Footer from "../../Components/Footer/Footer";
 import Banners from "../../Components/Entrenamiento/Banners";
 import ContadorHome from "../../Components/Transmisiones/Contadores/ContadorHome";
-//import Niveles from "../../Components/Niveles/Niveles";
+import Niveles from "../../Components/Niveles/Niveles";
 
 export default function ViewEntrenamiento() {
     return(
@@ -11,8 +11,8 @@ export default function ViewEntrenamiento() {
             <ContadorHome />
             <Nav />
             {/* <Entrenamiento /> */}
-            {/* <Niveles /> */}
             <Banners />
+            <Niveles />
             <Footer /> 
         </div>
     )
