@@ -9,15 +9,30 @@ import PreviewIcon from "@mui/icons-material/Preview";
 import Tooltip from "@mui/material/Tooltip";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-//import CancelIcon from '@mui/icons-material/Cancel';
 import UserActivity from "./UserActivity";
+import Pagination from "@mui/material/Pagination";
+import {
+  TextField,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
+import { format } from "date-fns";
 
 function UsersGrupo({ nivelId, grupoId }) {
   const [usuarios, setUsuarios] = useState([]);
+  const [filteredUsuarios, setFilteredUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [activityModalIsOpen, setActivityModalIsOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [dateFilter, setDateFilter] = useState("all"); // "all", "today", "thisWeek", "thisMonth", "custom"
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [page, setPage] = useState(1);
+  const usersPerPage = 10;
 
   useEffect(() => {
     const fetchUsuarios = async () => {
@@ -34,6 +49,67 @@ function UsersGrupo({ nivelId, grupoId }) {
 
     fetchUsuarios();
   }, [nivelId, grupoId]);
+
+  useEffect(() => {
+    setFilteredUsuarios(usuarios);
+  }, [usuarios]);
+
+  useEffect(() => {
+    filterUsuarios();
+  }, [searchTerm, dateFilter, startDate, endDate]);
+
+  const filterUsuarios = () => {
+    let filteredData = usuarios;
+
+    // Filter by search term
+    if (searchTerm.trim() !== "") {
+      filteredData = filteredData.filter(
+        (usuario) =>
+          usuario.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          usuario.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          usuario.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          usuario.telefono.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Filter by date range
+    if (dateFilter === "today") {
+      filteredData = filteredData.filter((usuario) => {
+        const createdAt = new Date(usuario.grupos[0]?.usergrupo?.createdAt);
+        const today = new Date();
+        return (
+          createdAt.getDate() === today.getDate() &&
+          createdAt.getMonth() === today.getMonth() &&
+          createdAt.getFullYear() === today.getFullYear()
+        );
+      });
+    } else if (dateFilter === "thisWeek") {
+      filteredData = filteredData.filter((usuario) => {
+        const createdAt = new Date(usuario.grupos[0]?.usergrupo?.createdAt);
+        const today = new Date();
+        const startOfWeek = new Date(
+          today.setDate(today.getDate() - today.getDay())
+        );
+        return createdAt >= startOfWeek;
+      });
+    } else if (dateFilter === "thisMonth") {
+      filteredData = filteredData.filter((usuario) => {
+        const createdAt = new Date(usuario.grupos[0]?.usergrupo?.createdAt);
+        const today = new Date();
+        return (
+          createdAt.getMonth() === today.getMonth() &&
+          createdAt.getFullYear() === today.getFullYear()
+        );
+      });
+    } else if (dateFilter === "custom" && startDate && endDate) {
+      filteredData = filteredData.filter((usuario) => {
+        const createdAt = new Date(usuario.grupos[0]?.usergrupo?.createdAt);
+        return createdAt >= startDate && createdAt <= endDate;
+      });
+    }
+
+    setFilteredUsuarios(filteredData);
+  };
 
   const handleDeleteUser = async (userSub, userName) => {
     try {
@@ -52,14 +128,13 @@ function UsersGrupo({ nivelId, grupoId }) {
     }
   };
 
-  const toggleHasPaid = (userSub, grupoId, hasPaid) => {
+  const toggleHasPaid = async (userSub, grupoId, hasPaid) => {
     const confirmChange = window.confirm(
       `¿Estás seguro de cambiar el estado de Pago?`
     );
     if (confirmChange) {
-      // Lógica para cambiar hasPaid
       try {
-        axios.put(`/usuario/${userSub}/grupo/${grupoId}/hasPaid`, {
+        await axios.put(`/usuario/${userSub}/grupo/${grupoId}/hasPaid`, {
           hasPaid,
         });
         const updatedUsers = usuarios.map((usuario) => {
@@ -119,12 +194,39 @@ function UsersGrupo({ nivelId, grupoId }) {
     setActivityModalIsOpen(false);
   };
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
+  const handleDateFilterChange = (event) => {
+    const value = event.target.value;
+    setDateFilter(value);
+  };
+
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+  };
+
+  const handleEndDateChange = (date) => {
+    setEndDate(date);
+  };
+
+  const clearDateFilter = () => {
+    setDateFilter("all");
+    setStartDate(null);
+    setEndDate(null);
+  };
+
+  const startIndex = (page - 1) * usersPerPage;
+  const endIndex = startIndex + usersPerPage;
+  const currentUsers = filteredUsuarios.slice(startIndex, endIndex);
+
   if (loading) {
     return <div>Cargando Usuarios...</div>;
   }
 
   return (
-    <div className="overflow-x-auto translate-y-4 w-3/4">
+    <div className="overflow-x-auto translate-y-4 w-full">
       <Tooltip
         title="Agregar Usuario"
         arrow
@@ -201,142 +303,157 @@ function UsersGrupo({ nivelId, grupoId }) {
           />
         )}
       </Modal>
-      {usuarios.length === 0 ? (
-        <div className="text-center mt-4 text-gray-600">
-          Aún no hay usuarios agregados al grupo.
-        </div>
-      ) : (
-        <table className="w-full bg-white shadow-md rounded">
-          <thead>
-            <tr className="text-left bg-blue-200 text-gray-800">
-              <th className="py-2 px-3 font-semibold">Nombre</th>
-              <th className="py-2 px-3 font-semibold">Apellido</th>
-              <th className="py-2 px-3 font-semibold">Email</th>
-              <th className="py-2 px-3 font-semibold">Teléfono</th>
-              <th className="py-2 px-3 font-semibold">Pagó</th>
-              <th className="py-2 px-3 font-semibold">Acciones</th>
+
+      <div className="flex space-x-4 mb-4">
+        <TextField
+          label="Buscar por Nombre, Apellido, Correo o Teléfono"
+          variant="outlined"
+          className="flex-1"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+
+        <FormControl variant="outlined" className="flex-1">
+          <InputLabel>Filtrar por Fecha de Registro</InputLabel>
+          <Select
+            value={dateFilter}
+            onChange={handleDateFilterChange}
+            label="Filtrar por Fecha de Registro"
+          >
+            <MenuItem value="all">Todo</MenuItem>
+            <MenuItem value="today">Hoy</MenuItem>
+            <MenuItem value="thisWeek">Esta Semana</MenuItem>
+            <MenuItem value="thisMonth">Este Mes</MenuItem>
+            <MenuItem value="custom">Personalizado</MenuItem>
+          </Select>
+        </FormControl>
+
+        {dateFilter === "custom" && (
+          <>
+            <TextField
+              label="Fecha de Inicio"
+              type="date"
+              variant="outlined"
+              className="flex-1"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={startDate ? format(startDate, "yyyy-MM-dd") : ""}
+              onChange={(e) => handleStartDateChange(new Date(e.target.value))}
+            />
+
+            <TextField
+              label="Fecha de Fin"
+              type="date"
+              variant="outlined"
+              className="flex-1"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={endDate ? format(endDate, "yyyy-MM-dd") : ""}
+              onChange={(e) => handleEndDateChange(new Date(e.target.value))}
+            />
+
+            <button
+              className="bg-gray-200 text-gray-700 py-2 px-4 rounded-md ml-4"
+              onClick={clearDateFilter}
+            >
+              Limpiar
+            </button>
+          </>
+        )}
+      </div>
+
+      <table className="min-w-full bg-white">
+        <thead>
+          <tr>
+            <th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Usuario
+            </th>
+            <th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Correo Electrónico
+            </th>
+            <th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Teléfono
+            </th>
+            <th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Fecha Inscripcion
+            </th>
+            <th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Acciones
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentUsers.map((usuario) => (
+            <tr key={usuario.sub}>
+              <td className="py-3 px-4 border-b border-gray-200 text-sm">
+                {usuario.name} {usuario.last_name}
+              </td>
+              <td className="py-3 px-4 border-b border-gray-200 text-sm">
+                {usuario.email}
+              </td>
+              <td className="py-3 px-4 border-b border-gray-200 text-sm">
+                {usuario.telefono}
+              </td>
+              <td className="py-3 px-4 border-b border-gray-200 text-sm">
+                {usuario?.grupos[0]?.usergrupo?.createdAt
+                  ? new Date(
+                      usuario.grupos[0].usergrupo.createdAt
+                    ).toLocaleDateString()
+                  : "Fecha no disponible"}
+              </td>
+              <td className="py-3 px-4 border-b border-gray-200 text-sm">
+                <Tooltip title="Ver Actividad" arrow>
+                  <button
+                    className="text-blue-500 hover:text-blue-700 mr-2"
+                    onClick={() => openActivityModal(usuario.sub)}
+                  >
+                    <PreviewIcon />
+                  </button>
+                </Tooltip>
+                <Tooltip title="Eliminar Usuario" arrow>
+                  <button
+                    className="text-red-500 hover:text-red-700 mr-2"
+                    onClick={() => handleDeleteUser(usuario.sub, usuario.name)}
+                  >
+                    <DeleteIcon />
+                  </button>
+                </Tooltip>
+                <Tooltip title="Marcar como Pagado/No Pagado" arrow>
+                  <button
+                    className={`${
+                      usuario.grupos[0]?.usergrupo?.hasPaid
+                        ? "text-green-500 hover:text-green-700"
+                        : "text-gray-500 hover:text-gray-700"
+                    }`}
+                    onClick={() =>
+                      toggleHasPaid(
+                        usuario.sub,
+                        usuario.grupos[0]?.id,
+                        !usuario.grupos[0]?.usergrupo?.hasPaid
+                      )
+                    }
+                  >
+                    {usuario.grupos[0]?.usergrupo?.hasPaid ? (
+                      <CheckCircleIcon />
+                    ) : (
+                      <CancelIcon />
+                    )}
+                  </button>
+                </Tooltip>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {usuarios.map((usuario, index) => (
-              <tr
-                key={index}
-                className={
-                  (index % 2 === 0 ? "bg-gray-100 " : "bg-white ") + "text-left"
-                }
-              >
-                <td className="py-2 px-3 font-mono">{usuario.name}</td>
-                <td className="py-2 px-3 font-mono">{usuario.last_name}</td>
-                <td className="py-2 px-3 font-mono">{usuario.email}</td>
-                <td className="py-2 px-3 font-mono">{usuario.telefono}</td>
-                <td className="py-2 px-3 font-mono ">
-                  {usuario?.grupos[0]?.usergrupo?.hasPaid ? (
-                    <CheckCircleIcon
-                      style={{ color: "green", cursor: "pointer" }}
-                      onClick={() => toggleHasPaid(usuario.sub, grupoId, false)}
-                      className="hover:border-solid hover:border-2 hover:border-green-500 hover:w-8 hover:h-auto"
-                    />
-                  ) : (
-                    <CancelIcon
-                      style={{ color: "red", cursor: "pointer" }}
-                      onClick={() => toggleHasPaid(usuario.sub, grupoId, true)}
-                      className="hover:border-solid hover:border-2 hover:border-red-500 hover:w-8 hover:h-auto"
-                    />
-                  )}
-                </td>
-                <td className="py-2 px-3 font-mono ">
-                  <Tooltip
-                    title="Eliminar del Grupo"
-                    arrow
-                    placement="top"
-                    slotProps={{
-                      popper: {
-                        modifiers: [
-                          {
-                            name: "offset",
-                            options: {
-                              offset: [0, -6],
-                            },
-                          },
-                        ],
-                      },
-                    }}
-                  >
-                    <button
-                      onClick={() =>
-                        handleDeleteUser(usuario.sub, usuario.name)
-                      }
-                      className="text-red-500 hover:bg-red-600 hover:text-white"
-                    >
-                      <DeleteIcon fontSize="large" />
-                    </button>
-                  </Tooltip>
-                  <Tooltip
-                    title="Ver Registro"
-                    arrow
-                    placement="top"
-                    slotProps={{
-                      popper: {
-                        modifiers: [
-                          {
-                            name: "offset",
-                            options: {
-                              offset: [0, -6],
-                            },
-                          },
-                        ],
-                      },
-                    }}
-                  >
-                    <button
-                      onClick={() => openActivityModal(usuario.sub)}
-                      className="text-blue-500 hover:bg-blue-600 hover:text-white"
-                    >
-                      <PreviewIcon fontSize="large" />
-                    </button>
-                  </Tooltip>
-                  {/* <Tooltip
-                    title="Actualizar Pago"
-                    arrow
-                    placement="top"
-                    slotProps={{
-                      popper: {
-                        modifiers: [
-                          {
-                            name: "offset",
-                            options: {
-                              offset: [0, -6],
-                            },
-                          },
-                        ],
-                      },
-                    }}
-                  >
-                    <button
-                      className="mr-2 focus:outline-none"
-                      onClick={() =>
-                        toggleHasPaid(
-                          usuario.sub,
-                          grupoId,
-                          !usuario.grupos[0]?.usergrupo?.hasPaid // Usa ?. para evitar errores si usergrupo es undefined
-                        )
-                      }
-                    >
-                      <CheckCircleIcon
-                        style={{
-                          color: usuario.grupos[0]?.usergrupo?.hasPaid
-                            ? "green"
-                            : "gray",
-                        }}
-                      />
-                    </button>
-                  </Tooltip> */}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+          ))}
+        </tbody>
+      </table>
+
+      <Pagination
+        count={Math.ceil(filteredUsuarios.length / usersPerPage)}
+        page={page}
+        onChange={handlePageChange}
+        className="my-4"
+      />
     </div>
   );
 }
