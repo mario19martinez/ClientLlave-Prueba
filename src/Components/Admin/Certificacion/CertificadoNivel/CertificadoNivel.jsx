@@ -101,7 +101,7 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
         );
         const modulos = modulosResponse.data.modulos;
         // console.log('Modulos: ', modulos);
-    
+
         const resultadosPromises = usuarios.map(async (user) => {
           const resultados = await Promise.all(
             modulos.map(async (modulo) => {
@@ -110,7 +110,10 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
               );
               // console.log('info respuestas: ', resultadoResponse.data);
               // Asumiendo que resultadoResponse.data es un array y queremos el primer elemento
-              const aprobado = resultadoResponse.data.length > 0 ? resultadoResponse.data[0].aprobado : false;
+              const aprobado =
+                resultadoResponse.data.length > 0
+                  ? resultadoResponse.data[0].aprobado
+                  : false;
               // console.log('Aprobo ? : ', aprobado);
               return aprobado;
             })
@@ -120,9 +123,9 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
             resultados: resultados,
           };
         });
-    
+
         const resultados = await Promise.all(resultadosPromises);
-    
+
         setUsuarios((prevUsuarios) =>
           prevUsuarios.map((usuario) => {
             const resultadoInfo = resultados.find(
@@ -232,8 +235,13 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
   };
 
   const isApto = (user) => {
-    const hasPaid = user.grupos && user.grupos.length > 0 && user.grupos[0].usergrupo && user.grupos[0].usergrupo.hasPaid;
-    const allModulesApproved = user.resultados && user.resultados.every((aprobado) => aprobado === true);
+    const hasPaid =
+      user.grupos &&
+      user.grupos.length > 0 &&
+      user.grupos[0].usergrupo &&
+      user.grupos[0].usergrupo.hasPaid;
+    const allModulesApproved =
+      user.resultados && user.resultados.every((aprobado) => aprobado === true);
     return hasPaid && allModulesApproved;
   };
 
@@ -243,21 +251,26 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
   });
 
   const getUserState = (user) => {
-    const hasPaid = user.grupos && user.grupos.length > 0 && user.grupos[0].usergrupo && user.grupos[0].usergrupo.hasPaid;
-    const allModulesApproved = user.resultados && user.resultados.every((aprobado) => aprobado === true);
-  
+    const hasPaid =
+      user.grupos &&
+      user.grupos.length > 0 &&
+      user.grupos[0].usergrupo &&
+      user.grupos[0].usergrupo.hasPaid;
+    const allModulesApproved =
+      user.resultados && user.resultados.every((aprobado) => aprobado === true);
+
     if (hasPaid && allModulesApproved) {
-      return 'completo';
+      return "completo";
     } else if (!hasPaid && allModulesApproved) {
-      console.log('pago: ', hasPaid);
-      return 'faltaPago';
+      console.log("pago: ", hasPaid);
+      return "faltaPago";
     } else if (hasPaid && !allModulesApproved) {
-      return 'modulosNoCompletados';
+      return "modulosNoCompletados";
     } else if (!hasPaid && !allModulesApproved) {
-      return 'noCompletado';
+      return "noCompletado";
     }
   };
-  
+
   if (loading)
     return (
       <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75 z-50">
@@ -324,24 +337,24 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-center">
-                {getUserState(user) === 'completo' ? (
-                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                    Completo
-                  </span>
-                ) : getUserState(user) === 'noCompletado' ? (
-                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                    No completado
-                  </span>
-                ) : getUserState(user) === 'faltaPago' ? (
-                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
-                    Falta pago
-                  </span>
-                ) : (
-                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                    Módulos no completados
-                  </span>
-                )}
-              </td>
+                  {getUserState(user) === "completo" ? (
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      Completo
+                    </span>
+                  ) : getUserState(user) === "noCompletado" ? (
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                      No completado
+                    </span>
+                  ) : getUserState(user) === "faltaPago" ? (
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
+                      Falta pago
+                    </span>
+                  ) : (
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                      Módulos no completados
+                    </span>
+                  )}
+                </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-center">
                   <div className="text-sm leading-5 text-gray-900">
                     {user.certificacion === "Certificado" ? (
@@ -408,12 +421,30 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Agregar Documento"
-        className="modal"
         overlayClassName="modal-overlay"
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 1000,
+          },
+          content: {
+            top: "40%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            maxWidth: "90vw",
+            width: "400px",
+            height: "auto",
+            padding: "20px",
+            borderRadius: "8px",
+            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
+            backgroundColor: "white",
+            overflow: "hidden",
+          },
+        }}
       >
         <AgregarDocumentoNivel
           certificadoId={selectedCertificadoId}
-          userId={selectedUserId}
+          idUser={selectedUserId}
           onCloseModal={closeModal}
         />
       </ReactModal>

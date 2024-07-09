@@ -77,7 +77,7 @@ export default function Planes() {
             },
             {
               title: "Completo",
-              price: "$1,104",
+              price: "$1,100",
               moneda: "/ USD",
               features: [
                 "4 niveles",
