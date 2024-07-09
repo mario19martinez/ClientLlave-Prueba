@@ -132,6 +132,8 @@ import ViewCursosDetailsEditor from "./views/ViewEditor/ViewCursosDetailsEditor"
 import ViewTransmisionEditor from "./views/ViewEditor/ViewTransmisionEditor";
 import ViewEditorAjustes from "./views/ViewEditor/ViewEditorAjustes";
 import ViewAsisteciaEditor from "./views/ViewEditor/ViewAsisteciaEditor";
+import ViewSelectAsistencia from "./views/ViewEditor/ViewSelectAsistecia";
+import ViewAsisteciaNiveleseditor from "./views/ViewEditor/ViewAsisteciaNiveleseditor";
 
 //imports componentes
 import Clases from "./Components/Cursos/Cursos";
@@ -259,7 +261,9 @@ function App() {
             <Route path="/Editor/Cursos/CursoDetails/:id" element={isLoggedIn ? <ViewCursosDetailsEditor /> : <Navigate to="/login" />} />
             <Route path="/Editor/Transmision" element={isLoggedIn ? <ViewTransmisionEditor /> : <Navigate to="/login" />} />
             <Route path="/Editor/Ajustes" element={isLoggedIn ? <ViewEditorAjustes /> : <Navigate to="/login" /> }/>
+            <Route path="/Editor/SelectAsistencia" element={isLoggedIn ? <ViewSelectAsistencia /> : <Navigate to="/login" />} />
             <Route path="/Editor/Asistencia" element={isLoggedIn ? <ViewAsisteciaEditor /> : <Navigate to="/login" />} />
+            <Route path="/Editor/AsistenciaNiveles" element={isLoggedIn ? <ViewAsisteciaNiveleseditor /> : <Navigate to="/login" />} />
           </>
         )}
 

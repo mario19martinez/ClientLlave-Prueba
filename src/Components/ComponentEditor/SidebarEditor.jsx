@@ -97,7 +97,7 @@ function SidebarEditor({ selectedTab }) {
                   ? "bg-blue-400 text-white"
                   : "hover:bg-blue-500 hover:text-white"
               }`}
-              onClick={() => navigate("/Editor/Asistencia")}
+              onClick={() => navigate("/Editor/SelectAsistencia")}
             >
               <HowToRegIcon
                 className={`${selectedTab === "Asistencia" ? "text-white" : ""} mr-2`}
