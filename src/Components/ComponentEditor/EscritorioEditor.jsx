@@ -37,11 +37,11 @@ export default function EscritorioEditor() {
           </div>
         </div>
       </Link>
-      <Link to="/Editor/Asistencia" className="card-link transform transition-transform hover:scale-105">
+      <Link to="/Editor/SelectAsistencia" className="card-link transform transition-transform hover:scale-105">
         <div className="flex flex-col items-center justify-center bg-gray-100 rounded-lg p-8 shadow-lg hover:shadow-xl min-h-[250px]">
           <RiCheckboxLine className="text-7xl text-purple-500 mb-4" />
           <div className="text-center">
-            <h2 className="text-3xl font-semibold">Asistencias a Clases</h2>
+            <h2 className="text-3xl font-semibold">Asistencias</h2>
             <p className="text-lg text-gray-600">
               Registra la asistencia de los estudiantes en las clases.
             </p>
