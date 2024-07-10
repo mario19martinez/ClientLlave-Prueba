@@ -99,7 +99,7 @@ export default function CursosInscritos() {
                   <span className="inline-block bg-green-500 text-white text-xs px-2 py-1 rounded-full mb-2">Nivel</span>
                   <p className="text-lg font-semibold text-gray-700">{grupo.name}</p>
                   <p className="text-gray-500 mb-2">{grupo.descripcion}</p>
-                  <Link to={`/nivel/${grupo.nivel.id}/grupo/${grupo.id}/detalles`}>
+                  <Link to={`/nivel/${grupo.nivel.id}/grupo/${grupo.id}/detalles/${userData.sub}`}>
                     <button
                       className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
