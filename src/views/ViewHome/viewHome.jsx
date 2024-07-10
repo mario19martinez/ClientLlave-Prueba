@@ -11,6 +11,7 @@ import Empresas from "../../Components/Empresas/Empresas";
 import styles from "./animate.module.css";
 import ContadorHome from "../../Components/Transmisiones/Contadores/ContadorHome";
 import ContadorTransmision from "../../Components/Transmisiones/Contadores/ContadorTransmision";
+import PlanesHome from "../../Components/Planes/PlanesHome";
 
 export default function ViewHome() {
   return (
@@ -26,6 +27,10 @@ export default function ViewHome() {
       <div className="bg-gradient-to-b from-gray-200 white flex-grow">
         <div className={`${styles.component}`}>
           <ContadorTransmision className="mt-8" />
+        </div>
+
+        <div className={`${styles.component}`}>
+          <PlanesHome className="mt-8" />
         </div>
 
         <div className={`${styles.component}`}>
