@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Card, CardContent, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 
 function GrupoDetailUser() {
@@ -17,7 +16,6 @@ function GrupoDetailUser() {
         const response = await axios.get(`/nivel/${nivelId}/grupo/${grupoId}/detalles`);
         setGrupo(response.data.grupo);
 
-        // Ordenar los módulos por createdAt
         const sortedModulos = response.data.modulos.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
         setModulos(sortedModulos);
       } catch (error) {
@@ -51,21 +49,21 @@ function GrupoDetailUser() {
             onClick={() => handleCardClick(modulo.id)}
             className="cursor-pointer"
           >
-            <Card className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 ease-in-out h-full">
-              <CardContent className="p-8 bg-gradient-to-r from-blue-50 to-blue-100 h-full">
-                <Typography variant="h5" component="div" className="font-bold text-gray-800 mb-4">
+            <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 ease-in-out h-full">
+              <div className="p-8 bg-gradient-to-r from-blue-50 to-blue-100 h-full">
+                <h5 className="font-bold text-gray-800 mb-4 text-2xl lg:text-3xl">
                   {modulo.titulo.replace(/^\d{2}\s*/, "")}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
+                </h5>
+                <p className="text-gray-700 mb-4">
                   {modulo.contenido && modulo.contenido.length > 100
                     ? `${modulo.contenido.substring(0, 100)}...`
                     : modulo.contenido}
-                </Typography>
-                <Typography variant="body2" color="textPrimary" className="py-5 text-blue-600 hover:text-blue-800 transition-colors duration-200">
+                </p>
+                <p className="py-5 text-blue-600 hover:text-blue-800 transition-colors duration-200">
                   Click Para Ver detalles
-                </Typography>
-              </CardContent>
-            </Card>
+                </p>
+              </div>
+            </div>
           </motion.div>
         ))}
       </div>
