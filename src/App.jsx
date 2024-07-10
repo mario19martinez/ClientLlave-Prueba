@@ -322,7 +322,7 @@ function App() {
         <Route path="/nivel/:nivelId/modulo/:moduloId/edit" element={<ModuloEditAdmin />} />
         <Route path="/home/nivel/:nivelId/modulo/:moduloId" element={<ModuloDetail />} />
         <Route path="/modulo/:moduloId/clase/:claseId" element={<NivelClasesDetail />} />
-        <Route path="/nivel/:nivelId/grupo/:grupoId/detalles" element={<ViewGrupoDetailUser/>} />
+        <Route path="/nivel/:nivelId/grupo/:grupoId/detalles/:userSub" element={<ViewGrupoDetailUser/>} />
         <Route path="/nivel/:nivelId/grupo/:grupoId/modulo/:moduloId/detalles" element={<ViewModuloClases/>} />
         <Route path="/Template" element={<TemplateCampain1 />} />
         <Route path="/campain/:landingId/Landing/:campeinId/:template" element={<ViewLanding />} />
