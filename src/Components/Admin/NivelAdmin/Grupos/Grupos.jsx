@@ -10,6 +10,8 @@ function Grupos() {
   const [grupos, setGrupos] = useState([]);
   const [error, setError] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [groupsPerPage] = useState(6);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -20,7 +22,7 @@ function Grupos() {
         setGrupos(response.data);
       } catch (error) {
         setError(error.response.data.error);
-        console.error("Ocurrio un error al traer los grupos:", error);
+        console.error("Ocurrió un error al traer los grupos:", error);
       }
     };
 
@@ -49,24 +51,25 @@ function Grupos() {
     navigate(-1);
   };
 
-  const groupedGrupos = [];
-  for (let i = 0; i < grupos.length; i += 3) {
-    groupedGrupos.push(grupos.slice(i, i + 3));
-  }
+  const indexOfLastGroup = currentPage * groupsPerPage;
+  const indexOfFirstGroup = indexOfLastGroup - groupsPerPage;
+  const currentGroups = grupos.slice(indexOfFirstGroup, indexOfLastGroup);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="absolute top-0 right-36 mt-28 ml-96 p-4 w-1/2 h-auto -translate-x-32">
+    <div className="p-6 max-w-7xl mx-auto">
       <button
         onClick={goBack}
         className="bg-blue-500 text-white w-20 h-10 mb-8 font-semibold py-0 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-1"
       >
         <KeyboardBackspaceIcon fontSize="large" />
       </button>
-      <h2 className="text-xl font-bold mb-4 text-gray-800">Grupos en Nivel</h2>
-      {error && <p className="text-red-500">Error: {error}</p>}
+      <h2 className="text-3xl font-bold mb-6 text-gray-800">Grupos en Nivel</h2>
+      {error && <p className="text-red-500 mb-4">Error: {error}</p>}
       <button
         onClick={openModal}
-        className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition-transform ease-in-out duration-300 hover:translate-y-1"
+        className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition-transform duration-300 ease-in-out mb-6"
       >
         Crear Grupo
       </button>
@@ -74,9 +77,9 @@ function Grupos() {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         className="modal"
-        overlayClassName=""
+        overlayClassName="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center"
       >
-        <div className=" p-4 rounded-lg max-w-1xl overflow-y-auto flex flex-col justify-center items-center">
+        <div className="p-6 rounded-lg shadow-lg max-w-2xl w-full relative">
           <button
             onClick={closeModal}
             className="absolute top-4 right-4 text-gray-800 hover:text-gray-600"
@@ -90,37 +93,48 @@ function Grupos() {
           />
         </div>
       </Modal>
-      {groupedGrupos.map((row, rowIndex) => (
-        <div key={rowIndex} className="flex justify-between mb-4 translate-y-4">
-          {row.map((grupo) => (
-            <div key={grupo.id} className="flex flex-col items-center">
-              <Link
-                to={`/niveles/${id}/grupos/${grupo.id}`}
-                className="bg-gray-100 w-44 h-64 rounded-md border-b-4 border-blue-600 hover:border-blue-800 transition-transform ease-in-out duration-300 hover:translate-y-2 flex flex-col justify-center items-center"
-              >
-                <img
-                  src={grupo.image}
-                  alt={grupo.name}
-                  className="w-40 h-auto mb-0" // Ajustar tamaño de imagen
-                />
-                <p className="text-gray-700 font-hammersmithOne p-2 text-center">
-                  {grupo.name}
-                </p>
-                <p className="text-gray-700 font-hammersmithOne p-2 text-center">
-                 Inicia: {grupo.fechaInicio}
-                </p>
-                <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-800 transition-transform ease-in-out duration-300 hover:translate-y-1 mt-0">
-                  Ver Grupo
-                </button>
-              </Link>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {currentGroups.map((grupo) => (
+          <Link
+            key={grupo.id}
+            to={`/niveles/${id}/grupos/${grupo.id}`}
+            className="bg-white shadow-lg rounded-lg overflow-hidden transform transition-transform duration-300 hover:scale-105"
+          >
+            <img
+              src={grupo.image}
+              alt={grupo.name}
+              className="w-full h-32 object-cover"
+            />
+            <div className="p-4">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                {grupo.name}
+              </h3>
+              <p className="text-gray-600 mb-4">Inicia: {grupo.fechaInicio}</p>
+              <button className="bg-blue-600 text-white font-semibold py-1 px-4 rounded-lg hover:bg-blue-700 transition-transform duration-300 ease-in-out">
+                Ver Grupo
+              </button>
             </div>
-          ))}
-          {/* Asegurarse de que haya suficientes espacios vacíos para mantener la distribución */}
-          {[...Array(3 - row.length)].map((_, index) => (
-            <div key={index} className="w-40"></div>
-          ))}
-        </div>
-      ))}
+          </Link>
+        ))}
+      </div>
+      <div className="flex justify-center mt-8">
+        <nav>
+          <ul className="flex list-none p-0">
+            {Array.from({ length: Math.ceil(grupos.length / groupsPerPage) }, (_, i) => (
+              <li key={i + 1} className="mx-1">
+                <button
+                  onClick={() => paginate(i + 1)}
+                  className={`px-3 py-2 rounded-lg border ${
+                    currentPage === i + 1 ? "bg-blue-600 text-white" : "bg-white text-blue-600"
+                  } hover:bg-blue-700 hover:text-white transition-colors duration-300`}
+                >
+                  {i + 1}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
     </div>
   );
 }
