@@ -123,7 +123,7 @@ export default function Nav() {
         <div className="hidden lg:flex justify-center items-center gap-8 text-white font-medium">
           {renderNavLink("/", "Inicio")}
           {renderNavLink("/Blogs", "Blog")}
-          {renderNavLink("/entrenamiento", "Entrenamiento")}
+          {renderNavLink("/Planes", "Planes")}
           {renderNavLink("/Comunidad", "Comunidad")}
           {renderNavLink("/Nosotros", "Nosotros")}
         </div>
@@ -163,7 +163,7 @@ export default function Nav() {
           <nav className="flex flex-col text-white font-medium space-y-2">
             {renderNavLink("/", "Inicio")}
             {renderNavLink("/Blogs", "Blog")}
-            {renderNavLink("/entrenamiento", "Entrenamiento")}
+            {renderNavLink("/Planes", "Planes")}
             {renderNavLink("/Comunidad", "Comunidad")}
             {renderNavLink("/Nosotros", "Nosotros")}
           </nav>
