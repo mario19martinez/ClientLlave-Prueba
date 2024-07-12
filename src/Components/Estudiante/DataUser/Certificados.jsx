@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getUserData } from "../../../Redux/features/Users/usersSlice";
 import axios from "axios";
 import { FaEye, FaDownload } from "react-icons/fa";
-import { FiFileText } from "react-icons/fi"; // Icono para "sin certificados"
+import { FiFileText } from "react-icons/fi";
 import CertificadoStudent from "../Certificado/CertificadoStudent";
 import AgregarDocumentos from "../../Admin/Certificacion/AgregarDocumento";
 import html2pdf from "html2pdf.js";

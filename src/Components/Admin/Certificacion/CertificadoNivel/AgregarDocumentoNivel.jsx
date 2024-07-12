@@ -45,8 +45,9 @@ export default function AgregarDocumentos({ certificadoId, idUser }) {
           alert("Certificado de curso no encontrado");
         } else {
           const certificado = response.data;
-          setTipoDocumento(certificado.tipoDocumento || "");
-          setDocumento(certificado.documento || "");
+          setTipoDocumento(certificado.tipoDocumento || ""); 
+          setDocumento(certificado.documento || ""); 
+          console.log('info certificado: ', certificado);
         }
       } catch (error) {
         console.error("Error al verificar el certificado:", error);
@@ -72,13 +73,10 @@ export default function AgregarDocumentos({ certificadoId, idUser }) {
       }
     } catch (error) {
       if (error.response) {
-        // La respuesta fue hecha y el servidor respondió con un status distinto de 2xx
         alert(`Error: ${error.response.status} ${error.response.data.message}`);
       } else if (error.request) {
-        // La petición fue hecha pero no se recibió respuesta
         alert("Error: No se recibió respuesta del servidor");
       } else {
-        // Algo sucedió al configurar la petición que desencadenó un Error
         alert(`Error: ${error.message}`);
       }
     }
@@ -89,7 +87,7 @@ export default function AgregarDocumentos({ certificadoId, idUser }) {
       {userInfo && (
         <div className="mb-4">
           <h2 className="text-xl font-bold mb-4 text-center">
-            Actualizar Documento de {userInfo.name} {userInfo.last_name}{" "}
+            Actualizar Documento de {userInfo.name} {userInfo.last_name}
           </h2>
         </div>
       )}
