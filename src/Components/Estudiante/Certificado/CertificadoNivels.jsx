@@ -1,5 +1,5 @@
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
 import axios from "axios";
 import imgCertificado from "../../../assets/fondoCertificado.png";
 import Nivel1 from "../../../assets/Nivel1.png";
@@ -49,89 +49,35 @@ const convertirNumeroRomano = (valor) => {
   }
 };
 
-const convertirHorasEnPalabras = (horas) => {
-  const unidades = [
-    "",
-    "uno",
-    "dos",
-    "tres",
-    "cuatro",
-    "cinco",
-    "seis",
-    "siete",
-    "ocho",
-    "nueve",
-  ];
-  const especiales = ["diez", "once", "doce", "trece", "catorce", "quince"];
-  const decenas = [
-    "",
-    "dieci",
-    "veinti",
-    "treinta",
-    "cuarenta",
-    "cincuenta",
-    "sesenta",
-    "setenta",
-    "ochenta",
-    "noventa",
-  ];
-  const centenas = [
-    "",
-    "ciento",
-    "doscientos",
-    "trescientos",
-    "cuatrocientos",
-    "quinientos",
-    "seiscientos",
-    "setecientos",
-    "ochocientos",
-    "novecientos",
-  ];
-
-  let palabras = "";
-
-  if (horas >= 100) {
-    palabras += centenas[Math.floor(horas / 100)] + " ";
-    horas %= 100;
-  }
-
-  if (horas >= 20) {
-    palabras += decenas[Math.floor(horas / 10)] + " ";
-    horas %= 10;
-  }
-
-  if (horas >= 10) {
-    palabras += especiales[horas - 10] + " ";
-  } else if (horas >= 1) {
-    palabras += unidades[horas] + " ";
-  }
-
-  palabras += "horas";
-
-  return palabras.trim();
-};
-
-export default function CertificadoNivels({ usuario, certificado }) {
-  const [curso, setCurso] = useState(null);
+export default function CertificadoNivels({ certificadoId }) {
+  const [certificado, setCertificado] = useState(null);
+  const [nivel, setNivel] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const fetchCurso = async () => {
+    const fetchCertificado = async () => {
       try {
-        const response = await axios.get(`/cursos/${certificado.cursoId}`);
-        setCurso(response.data);
+        const response = await axios.get(`/certificado/${certificadoId}`);
+        console.log('datos: ', response.data);
+        const certificadoData = response.data.certificado;
+        setCertificado(certificadoData);
+        const nivelResponse = await axios.get(`/nivel/${certificadoData.nivelId}`);
+        setNivel(nivelResponse.data);
+        const userResponse = await axios.get(`/user/${certificadoData.userSub}`);
+        setUserData(userResponse.data);
       } catch (error) {
-        console.error("Error fetching curso:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    fetchCurso();
-  }, [certificado.cursoId]);
+    if (certificadoId) {
+      fetchCertificado();
+    }
+  }, [certificadoId]);
 
-  if (!curso) {
-    return <div>Cargando...</div>; // O cualquier indicador de carga
+  if (!certificado || !nivel || !userData) {
+    return <p>Cargando...</p>;
   }
-
-  console.log(curso);
 
   const formattedDate = format(
     new Date(certificado.createdAt),
@@ -139,12 +85,8 @@ export default function CertificadoNivels({ usuario, certificado }) {
     { locale: es }
   );
 
-  const nombreCurso = convertirNumeroRomano(curso.nivel);
-  const horasEnPalabras = convertirHorasEnPalabras(
-    parseInt(curso.horas_catedra)
-  );
+  const nombreCurso = convertirNumeroRomano(nivel.numero);
 
-  // Seleccionar la imagen de fondo según el nivel del curso
   let imagenFondo;
   switch (nombreCurso) {
     case "Nivel I":
@@ -163,8 +105,6 @@ export default function CertificadoNivels({ usuario, certificado }) {
       imagenFondo = imgCertificado;
   }
 
-  console.log("id de curso: ", certificado.cursoId);
-
   return (
     <div
       className="relative bg-cover bg-center bg-no-repeat flex justify-center items-center text-center"
@@ -179,15 +119,12 @@ export default function CertificadoNivels({ usuario, certificado }) {
     >
       <div className="absolute p-8">
         <div className="max-w-4xl mx-auto">
-          {" "}
-          {/* Ajusta la clase max-w-3xl a max-w-4xl */}
           <img
             src={Logo}
             alt="Logo Llave Para Las Naciones"
             style={{ maxWidth: "200px", marginBottom: "20px" }}
             className="mx-auto"
-          />{" "}
-          {/* Agregado mx-auto para centrar el logo */}
+          />
           <h3 className="text-lg mb-4 font-bold">
             Fundación Llave Para Las Naciones
           </h3>
@@ -199,14 +136,14 @@ export default function CertificadoNivels({ usuario, certificado }) {
             Hace constar que:
           </h4>
           <h2 className="text-3xl font-bold mb-6">
-            {usuario.name} {usuario.last_name}
+            {userData.name} {userData.last_name}
           </h2>
           <p
             className="text-lg mb-4"
             style={{ fontFamily: "'Arial', sans-serif", fontSize: "1.2rem" }}
           >
             Identificado con {certificado.tipoDocumento} {certificado.documento}{" "}
-            de {usuario.pais}
+            de {userData.pais}
           </p>
           <p
             className="text-lg mb-4"
@@ -214,13 +151,6 @@ export default function CertificadoNivels({ usuario, certificado }) {
           >
             Ha completado satisfactoriamente el {nombreCurso} de <br />
             Teología con orientación profética
-          </p>
-          <p
-            className="text-lg mb-4"
-            style={{ fontFamily: "'Arial', sans-serif", fontSize: "0.9rem" }}
-          >
-            Con una intensidad horaria de {horasEnPalabras} (
-            {curso.horas_catedra})
           </p>
           <p
             className="text-lg mb-4"
@@ -294,7 +224,6 @@ export default function CertificadoNivels({ usuario, certificado }) {
               </p>
             </div>
           </div>
-          {/* Mostrar la fecha de expedición */}
           <p
             className="text-base mb-2"
             style={{ fontFamily: "'Arial', sans-serif" }}
@@ -315,11 +244,5 @@ export default function CertificadoNivels({ usuario, certificado }) {
 
 // Validación de PropTypes
 CertificadoNivels.propTypes = {
-  usuario: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    last_name: PropTypes.string.isRequired,
-    pais: PropTypes.string.isRequired,
-  }).isRequired,
-  //cursoNombre: PropTypes.string.isRequired,
-  certificado: PropTypes.string.isRequired,
+  certificadoId: PropTypes.string.isRequired,
 };

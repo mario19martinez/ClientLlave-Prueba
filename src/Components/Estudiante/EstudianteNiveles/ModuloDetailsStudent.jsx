@@ -127,7 +127,7 @@ function ModuloDetailsStudent() {
           tipo: pregunta.tipo,
         })
       );
-  
+
       const aprobado = todasCorrectas();
       const response = await axios.post(
         "/modulo/responder",
@@ -143,10 +143,10 @@ function ModuloDetailsStudent() {
           },
         }
       );
-  
+
       console.log("Respuestas enviadas:", response.data);
       setQuizCompletado(aprobado);
-  
+
       // Verificar respuestas incorrectas y notificar al usuario
       const incorrectas = preguntasConRespuestas
         .map((pregunta, index) => ({
@@ -155,9 +155,13 @@ function ModuloDetailsStudent() {
           esIncorrecta: !verificarRespuesta(index, respuestas[index]),
         }))
         .filter(({ esIncorrecta }) => esIncorrecta);
-  
+
       if (incorrectas.length > 0) {
-        alert(`Respuestas incorrectas. Por favor, verifique las siguientes preguntas: ${incorrectas.map(({ index }) => `número ${index + 1}`).join(", ")}`);
+        alert(
+          `Respuestas incorrectas. Por favor, verifique las siguientes preguntas: ${incorrectas
+            .map(({ index }) => `número ${index + 1}`)
+            .join(", ")}`
+        );
       }
     } catch (error) {
       console.error("Error al enviar respuestas:", error);
@@ -410,8 +414,13 @@ function ModuloDetailsStudent() {
         </div>
       )}
 
-      <Modal isOpen={showModal} onRequestClose={() => setShowModal(false)}>
-        <div className="p-6 rounded-lg shadow-lg">
+      <Modal
+        isOpen={showModal}
+        onRequestClose={() => setShowModal(false)}
+        className="fixed inset-0 flex items-center justify-center p-4"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+      >
+        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
           <h2 className="text-2xl font-bold mb-4 text-gray-900">
             {loading
               ? "Cargando..."
