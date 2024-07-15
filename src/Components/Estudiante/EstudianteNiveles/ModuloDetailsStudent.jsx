@@ -157,7 +157,7 @@ function ModuloDetailsStudent() {
         .filter(({ esIncorrecta }) => esIncorrecta);
   
       if (incorrectas.length > 0) {
-        alert(`Respuestas incorrectas en las preguntas: ${incorrectas.map(({ index }) => index + 1).join(", ")}`);
+        alert(`Respuestas incorrectas. Por favor, verifique las siguientes preguntas: ${incorrectas.map(({ index }) => `número ${index + 1}`).join(", ")}`);
       }
     } catch (error) {
       console.error("Error al enviar respuestas:", error);
