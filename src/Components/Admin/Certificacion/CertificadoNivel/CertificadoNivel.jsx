@@ -6,6 +6,7 @@ import AgregarDocumentoNivel from "./AgregarDocumentoNivel";
 import CardMembershipIcon from "@mui/icons-material/CardMembership";
 import DoDisturbOnIcon from "@mui/icons-material/DoDisturbOn";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import CertificadoNivels from "../../../Estudiante/Certificado/CertificadoNivels";
 
 export default function CertificadoNivel({ nivelId, grupoId }) {
   const [usuarios, setUsuarios] = useState([]);
@@ -19,6 +20,9 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedCertificadoId, setSelectedCertificadoId] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedCertificado, setSelectedCertificado] = useState(null);
+  const [modalIsOpenCertificado, setModalIsOpenCertificado] = useState(false);
 
   useEffect(() => {
     const fetchUsuarios = async () => {
@@ -234,6 +238,11 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
     setSelectedUserId(null);
   };
 
+  const handleOpenModalCertificado = (certificadoId) => {
+    setSelectedCertificadoId(certificadoId);
+    setModalIsOpenCertificado(true);
+  };
+
   const isApto = (user) => {
     const hasPaid =
       user.grupos &&
@@ -379,7 +388,12 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
                     </button>
                   ) : (
                     <div className="space-x-2">
-                      <button className="relative group bg-transparent hover:bg-green-100 text-green-500 font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500">
+                      <button
+                        className="relative group bg-transparent hover:bg-green-100 text-green-500 font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        onClick={() =>
+                          handleOpenModalCertificado(user.certificadoId)
+                        }
+                      >
                         <CardMembershipIcon className="text-green-500" />
                         <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-80 shadow-lg">
                           Ver certificado
@@ -445,9 +459,43 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
         <AgregarDocumentoNivel
           certificadoId={selectedCertificadoId}
           idUser={selectedUserId}
+          nivelId={nivelId}
           onCloseModal={closeModal}
         />
       </ReactModal>
+
+      <ReactModal
+      isOpen={modalIsOpenCertificado}
+      onRequestClose={closeModal}
+      contentLabel="Ver Certificado"
+      overlayClassName="modal-overlay"
+      style={{
+        overlay: {
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          zIndex: 1000,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        },
+        content: {
+          position: "relative",
+          top: "auto",
+          left: "auto",
+          right: "auto",
+          bottom: "auto",
+          maxWidth: "none",
+          width: "1300px",  // Ajusta esto al ancho del certificado
+          height: "914px",  // Ajusta esto a la altura del certificado
+          padding: 0,
+          borderRadius: "8px",
+          boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
+          backgroundColor: "white",
+          overflow: "hidden",
+        },
+      }}
+    >
+      <CertificadoNivels certificadoId={selectedCertificadoId} />
+    </ReactModal>
     </div>
   );
 }
