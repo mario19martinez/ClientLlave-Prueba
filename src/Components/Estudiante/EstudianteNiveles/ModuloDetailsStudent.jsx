@@ -127,6 +127,7 @@ function ModuloDetailsStudent() {
           tipo: pregunta.tipo,
         })
       );
+  
       const aprobado = todasCorrectas();
       const response = await axios.post(
         "/modulo/responder",
@@ -134,7 +135,7 @@ function ModuloDetailsStudent() {
           userSub: userSub,
           moduloId,
           preguntas: preguntasConRespuestas,
-          aprobado, // Pasar el estado de aprobado
+          aprobado,
         },
         {
           headers: {
@@ -142,8 +143,22 @@ function ModuloDetailsStudent() {
           },
         }
       );
+  
       console.log("Respuestas enviadas:", response.data);
       setQuizCompletado(aprobado);
+  
+      // Verificar respuestas incorrectas y notificar al usuario
+      const incorrectas = preguntasConRespuestas
+        .map((pregunta, index) => ({
+          index,
+          pregunta: pregunta.pregunta,
+          esIncorrecta: !verificarRespuesta(index, respuestas[index]),
+        }))
+        .filter(({ esIncorrecta }) => esIncorrecta);
+  
+      if (incorrectas.length > 0) {
+        alert(`Respuestas incorrectas en las preguntas: ${incorrectas.map(({ index }) => index + 1).join(", ")}`);
+      }
     } catch (error) {
       console.error("Error al enviar respuestas:", error);
     }
@@ -396,19 +411,19 @@ function ModuloDetailsStudent() {
       )}
 
       <Modal isOpen={showModal} onRequestClose={() => setShowModal(false)}>
-        <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold mb-4 text-gray-900">
             {loading
               ? "Cargando..."
               : !checkAllClassesCompleted()
-              ? "Debes completar al menos el 80% de las clases para responder el quiz."
+              ? "Debes completar al menos el 80% de las clases para responder las preguntas."
               : ""}
           </h2>
           <button
             onClick={() => setShowModal(false)}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
           >
-            Cerrar
+            Aceptar
           </button>
         </div>
       </Modal>
