@@ -487,11 +487,11 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
             maxWidth: "none",
             width: "1300px",
             height: "914px",
-            padding: "20px", // Añadir padding
+            padding: "20px", 
             borderRadius: "8px",
             boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
             backgroundColor: "white",
-            overflow: "auto", // Asegurarte de que el contenido no se recorte
+            overflow: "auto", 
           },
         }}
       >

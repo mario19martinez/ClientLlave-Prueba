@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Pagination } from "@mui/material";
 
@@ -7,6 +6,7 @@ export default function ComponenteTestimonio() {
   const [testimonios, setTestimonios] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [testimoniosPerPage] = useState(6); 
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
   useEffect(() => {
     async function fetchTestimonios() {
@@ -32,22 +32,31 @@ export default function ComponenteTestimonio() {
     setCurrentPage(newPage);
   };
 
+  const handleCardClick = (videoId) => {
+    setSelectedVideo(videoId);
+  };
+
+  const closeModal = () => {
+    setSelectedVideo(null);
+  };
+
   return (
     <div className="container mx-auto pb-5">
       <h1 className="text-3xl font-bold text-center my-8">Testimonios</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {currentTestimonios.map((testimonio) => (
-          <div key={testimonio.id} className="bg-white shadow-md rounded-lg p-4">
-            {/* Aquí se renderiza cada card de testimonio */}
-            <iframe
-              title={testimonio.descripcion}
-              width="100%"
-              height="200"
-              src={`https://www.youtube.com/embed/${testimonio.video}`}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+          <div
+            key={testimonio.id}
+            className="bg-white shadow-md rounded-lg p-4 cursor-pointer transition-transform transform hover:scale-105"
+            onClick={() => handleCardClick(testimonio.video)}
+          >
+            <div className="relative w-full h-0" style={{ paddingBottom: "56.25%" }}>
+              <img
+                className="absolute top-0 left-0 w-full h-full rounded-lg"
+                src={`https://img.youtube.com/vi/${testimonio.video}/hqdefault.jpg`}
+                alt={`Miniatura de ${testimonio.descripcion}`}
+              />
+            </div>
             <p className="mt-2 text-gray-700">{testimonio.descripcion}</p>
           </div>
         ))}
@@ -62,6 +71,30 @@ export default function ComponenteTestimonio() {
           size="large"
         />
       </div>
+
+      {selectedVideo && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 px-4 sm:px-0">
+          <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-3xl w-full">
+            <div className="p-6">
+              <div className="relative w-full h-0" style={{ paddingBottom: "56.25%" }}>
+                <iframe
+                  title="video"
+                  className="absolute top-0 left-0 w-full h-full rounded-lg"
+                  src={`https://www.youtube.com/embed/${selectedVideo}`}
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <button
+                onClick={closeModal}
+                className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
