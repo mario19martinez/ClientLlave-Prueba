@@ -104,7 +104,6 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
           `/nivel/${nivelId}/grupo/${grupoId}/detalles`
         );
         const modulos = modulosResponse.data.modulos;
-        // console.log('Modulos: ', modulos);
 
         const resultadosPromises = usuarios.map(async (user) => {
           const resultados = await Promise.all(
@@ -112,13 +111,10 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
               const resultadoResponse = await axios.get(
                 `/resultados/${user.sub}/${modulo.id}`
               );
-              // console.log('info respuestas: ', resultadoResponse.data);
-              // Asumiendo que resultadoResponse.data es un array y queremos el primer elemento
               const aprobado =
                 resultadoResponse.data.length > 0
                   ? resultadoResponse.data[0].aprobado
                   : false;
-              // console.log('Aprobo ? : ', aprobado);
               return aprobado;
             })
           );
@@ -241,6 +237,11 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
   const handleOpenModalCertificado = (certificadoId) => {
     setSelectedCertificadoId(certificadoId);
     setModalIsOpenCertificado(true);
+  };
+
+  const handleCloseModalCertificado = () => {
+    setModalIsOpenCertificado(false);
+    setSelectedCertificadoId(null);
   };
 
   const isApto = (user) => {
@@ -465,37 +466,51 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
       </ReactModal>
 
       <ReactModal
-      isOpen={modalIsOpenCertificado}
-      onRequestClose={closeModal}
-      contentLabel="Ver Certificado"
-      overlayClassName="modal-overlay"
-      style={{
-        overlay: {
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          zIndex: 1000,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        },
-        content: {
-          position: "relative",
-          top: "auto",
-          left: "auto",
-          right: "auto",
-          bottom: "auto",
-          maxWidth: "none",
-          width: "1300px",  // Ajusta esto al ancho del certificado
-          height: "914px",  // Ajusta esto a la altura del certificado
-          padding: 0,
-          borderRadius: "8px",
-          boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
-          backgroundColor: "white",
-          overflow: "hidden",
-        },
-      }}
-    >
-      <CertificadoNivels certificadoId={selectedCertificadoId} />
-    </ReactModal>
+        isOpen={modalIsOpenCertificado}
+        onRequestClose={closeModal}
+        contentLabel="Ver Certificado"
+        overlayClassName="modal-overlay"
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 1000,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          },
+          content: {
+            position: "relative",
+            top: "auto",
+            left: "auto",
+            right: "auto",
+            bottom: "auto",
+            maxWidth: "none",
+            width: "1300px",
+            height: "914px",
+            padding: "20px", // Añadir padding
+            borderRadius: "8px",
+            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
+            backgroundColor: "white",
+            overflow: "auto", // Asegurarte de que el contenido no se recorte
+          },
+        }}
+      >
+        <div className="flex flex-col h-full">
+          {" "}
+          {/* Flex columna para llenar el modal */}
+          <CertificadoNivels certificadoId={selectedCertificadoId} />
+          <div className="flex justify-end mt-4">
+            {" "}
+            {/* Alinear botón a la derecha */}
+            <button
+              onClick={handleCloseModalCertificado}
+              className="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition duration-200"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </ReactModal>
     </div>
   );
 }
