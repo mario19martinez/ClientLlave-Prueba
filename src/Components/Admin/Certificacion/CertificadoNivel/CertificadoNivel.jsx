@@ -7,6 +7,8 @@ import CardMembershipIcon from "@mui/icons-material/CardMembership";
 import DoDisturbOnIcon from "@mui/icons-material/DoDisturbOn";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import CertificadoNivels from "../../../Estudiante/Certificado/CertificadoNivels";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 export default function CertificadoNivel({ nivelId, grupoId }) {
   const [usuarios, setUsuarios] = useState([]);
@@ -281,6 +283,22 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
     }
   };
 
+  const handleDownloadPDF = async () => {
+    const input = document.getElementById("certificadoContent");
+
+    if (!input) return;
+
+    const canvas = await html2canvas(input);
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("landscape");
+
+    const imgWidth = 297;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+    pdf.save("certificado.pdf");
+  };
+
   if (loading)
     return (
       <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75 z-50">
@@ -487,28 +505,30 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
             maxWidth: "none",
             width: "1300px",
             height: "914px",
-            padding: "20px", 
+            padding: "20px",
             borderRadius: "8px",
             boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
             backgroundColor: "white",
-            overflow: "auto", 
+            overflow: "auto",
           },
         }}
       >
-        <div className="flex flex-col h-full">
-          {" "}
-          {/* Flex columna para llenar el modal */}
+        <div id="certificadoContent" className="flex flex-col h-full">
           <CertificadoNivels certificadoId={selectedCertificadoId} />
-          <div className="flex justify-end mt-4">
-            {" "}
-            {/* Alinear botón a la derecha */}
-            <button
-              onClick={handleCloseModalCertificado}
-              className="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition duration-200"
-            >
-              Cerrar
-            </button>
-          </div>
+        </div>
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={handleDownloadPDF}
+            className="bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600 transition duration-200"
+          >
+            Descargar PDF
+          </button>
+          <button
+            onClick={handleCloseModalCertificado}
+            className="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition duration-200"
+          >
+            Cerrar
+          </button>
         </div>
       </ReactModal>
     </div>
