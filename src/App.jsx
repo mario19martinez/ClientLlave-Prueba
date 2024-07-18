@@ -135,6 +135,12 @@ import ViewAsisteciaEditor from "./views/ViewEditor/ViewAsisteciaEditor";
 import ViewSelectAsistencia from "./views/ViewEditor/ViewSelectAsistecia";
 import ViewAsisteciaNiveleseditor from "./views/ViewEditor/ViewAsisteciaNiveleseditor";
 
+//imports monitor
+import ViewEscritorioMonitor from "./views/ViewMonitorRol/ViewEscritorioMonitor";
+import ViewAjustesMonitor from "./views/ViewMonitorRol/ViewAjustesMonitor";
+import ViewPublicacionesMonitor from "./views/ViewMonitorRol/ViewPublicacionesMonitor";
+import ViewPerfilMonitor from "./views/ViewMonitorRol/ViewPerfilMonitor";
+
 //imports componentes
 import Clases from "./Components/Cursos/Cursos";
 import ViewClases from "./views/ViewClases/ViewClases";
@@ -264,6 +270,16 @@ function App() {
             <Route path="/Editor/SelectAsistencia" element={isLoggedIn ? <ViewSelectAsistencia /> : <Navigate to="/login" />} />
             <Route path="/Editor/Asistencia" element={isLoggedIn ? <ViewAsisteciaEditor /> : <Navigate to="/login" />} />
             <Route path="/Editor/AsistenciaNiveles" element={isLoggedIn ? <ViewAsisteciaNiveleseditor /> : <Navigate to="/login" />} />
+          </>
+        )}
+        
+        {/*Rutas pagina monitor */}
+        {(userRole === "admin" || userRole === "SuperAdmin" || userRole === "monitor") && (
+          <>
+            <Route path="/Monitor" element={isLoggedIn ? <ViewEscritorioMonitor /> : <Navigate to="/login" /> } />
+            <Route path="/Monitor/Ajustes" element={isLoggedIn ? <ViewAjustesMonitor /> : <Navigate to="/login" /> }/>
+            <Route path="/Monitor/Publicaciones" element={isLoggedIn ? <ViewPublicacionesMonitor /> : <Navigate to="/login" /> }/>
+            <Route path="/Monitor/Profile" element={isLoggedIn ? <ViewPerfilMonitor /> : <Navigate to="/login" /> }/>
           </>
         )}
 

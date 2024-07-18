@@ -79,6 +79,14 @@ export default function Login() {
           localStorage.setItem("email", values.email);
           localStorage.setItem("userRole", userRole);
           navigate("/Editor");
+        }  else if (userRole === "monitor") {
+          // Iniciar sesión para el rol de monitor
+          const token = await dispatch(loginUser(values)).unwrap();
+          isLoggedIn = "true";
+          localStorage.setItem("token", token);
+          localStorage.setItem("email", values.email);
+          localStorage.setItem("userRole", userRole);
+          navigate("/Monitor");
         } else {
           const token = await dispatch(loginUser(values)).unwrap();
           isLoggedIn = "true";

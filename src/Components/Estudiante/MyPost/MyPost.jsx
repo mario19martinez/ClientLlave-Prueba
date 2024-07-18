@@ -50,7 +50,7 @@ function MyPost() {
   }
 
   return (
-    <div className="px-4 py-10 md:px-20 lg:px-40 bg-gray-200">
+    <div className="w-full px-4 py-10 md:px-20 lg:px-40 bg-gray-200">
       <div className="mb-8 flex flex-col items-center justify-center">
         <h2 className="text-2xl font-bold text-gray-700">Mis Publicaciones</h2>
       </div>
