@@ -5,6 +5,7 @@ import { FaUserGraduate } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
 import { FaUserAstronaut } from "react-icons/fa";
 import { FaUserNinja } from "react-icons/fa";
+import { MdEngineering } from "react-icons/md";
 
 function Roles() {
   const [usuarios, setUsuarios] = useState([]);
@@ -13,7 +14,7 @@ function Roles() {
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [usuariosPerPage] = useState(10);
-  const [filtroRol, setFiltroRol] = useState(""); 
+  const [filtroRol, setFiltroRol] = useState("");
   const pageRangeDisplayed = 7;
 
   useEffect(() => {
@@ -68,6 +69,7 @@ function Roles() {
     docente: usuarios.filter((usuario) => usuario.rol === "docente").length,
     client: usuarios.filter((usuario) => usuario.rol === "client").length,
     editor: usuarios.filter((usuario) => usuario.rol === "editor").length,
+    monitor: usuarios.filter((usuario) => usuario.rol === "monitor").length,
   };
 
   const usuariosFiltrados = usuarios.filter((usuario) => {
@@ -140,6 +142,7 @@ function Roles() {
           <option value="docente">Docente</option>
           <option value="client">Estudiante</option>
           <option value="editor">Editor</option>
+          <option value="monitor">Monitor</option>
         </select>
         {/* Contadores de usuarios por rol */}
         <div className="ml-4 flex items-center space-x-4">
@@ -154,6 +157,9 @@ function Roles() {
           </span>
           <span className="text-gray-700">
             Editor: {contadorUsuariosPorRol.editor}
+          </span>
+          <span className="text-gray-700">
+            Monitor: {contadorUsuariosPorRol.monitor}
           </span>
         </div>
       </div>
@@ -276,9 +282,9 @@ function Roles() {
                       <p className="text-sm leading-5 text-gray-500">
                         Selecciona un rol para el usuario:
                       </p>
-                      <div className="mt-4 flex justify-center">
+                      <div className="mt-4 flex flex-wrap justify-center">
                         <button
-                          className="bg-green-500 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded mr-2 flex items-center transition-colors duration-300"
+                          className="bg-green-500 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded mr-2 mb-2 flex items-center transition-colors duration-300"
                           onClick={() => {
                             cambiarRol(usuarioSeleccionado, "admin");
                             cerrarModalRoles();
@@ -288,7 +294,7 @@ function Roles() {
                           Admin
                         </button>
                         <button
-                          className="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded mr-2 flex items-center transition-colors duration-300"
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded mr-2 mb-2 flex items-center transition-colors duration-300"
                           onClick={() => {
                             cambiarRol(usuarioSeleccionado, "docente");
                             cerrarModalRoles();
@@ -298,7 +304,7 @@ function Roles() {
                           Docente
                         </button>
                         <button
-                          className="bg-red-400 hover:bg-red-500 text-white font-semibold px-4 py-2 rounded mr-2 flex items-center transition-colors duration-300"
+                          className="bg-red-500 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded mr-2 mb-2 flex items-center transition-colors duration-300"
                           onClick={() => {
                             cambiarRol(usuarioSeleccionado, "client");
                             cerrarModalRoles();
@@ -308,7 +314,7 @@ function Roles() {
                           Estudiante
                         </button>
                         <button
-                          className="bg-orange-500 hover:bg-orange-700 text-white font-semibold px-4 py-2 rounded mr-2 flex items-center transition-colors duration-300"
+                          className="bg-orange-500 hover:bg-orange-700 text-white font-semibold px-4 py-2 rounded mr-2 mb-2 flex items-center transition-colors duration-300"
                           onClick={() => {
                             cambiarRol(usuarioSeleccionado, "editor");
                             cerrarModalRoles();
@@ -316,6 +322,16 @@ function Roles() {
                         >
                           <FaUserNinja className="mr-1" />
                           Editor
+                        </button>
+                        <button
+                          className="bg-purple-500 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded mr-2 mb-2 flex items-center transition-colors duration-300"
+                          onClick={() => {
+                            cambiarRol(usuarioSeleccionado, "monitor");
+                            cerrarModalRoles();
+                          }}
+                        >
+                          <MdEngineering className="mr-1" />
+                          Monitor
                         </button>
                       </div>
                     </div>

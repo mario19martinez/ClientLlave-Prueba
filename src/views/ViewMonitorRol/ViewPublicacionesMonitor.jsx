@@ -1,15 +1,16 @@
-import SidebarUser from "../../Components/Estudiante/SidebarUser/SidebarUser";
-import NavUser from "../../Components/Estudiante/NavUser/NavUser";
-import MyPost from "../../Components/Estudiante/MyPost/MyPost";
 import { useState } from "react";
+import NavUser from "../../Components/Estudiante/NavUser/NavUser";
+import SidebarMonitor from "../../Components/Monitor/SidebarMonitor";
+import MyPost from "../../Components/Estudiante/MyPost/MyPost";
 
-export default function ViewMyPost() {
+export default function ViewPublicacionesMonitor() {
   const [selectedTab] = useState("Publicaciones");
+
   return (
-    <div className="bg-gray-200">
+    <div>
       <NavUser />
       <div className="flex">
-        <SidebarUser selectedTab={selectedTab} />
+        <SidebarMonitor selectedTab={selectedTab} />
         <MyPost />
       </div>
     </div>
