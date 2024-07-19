@@ -140,6 +140,7 @@ import ViewEscritorioMonitor from "./views/ViewMonitorRol/ViewEscritorioMonitor"
 import ViewAjustesMonitor from "./views/ViewMonitorRol/ViewAjustesMonitor";
 import ViewPublicacionesMonitor from "./views/ViewMonitorRol/ViewPublicacionesMonitor";
 import ViewPerfilMonitor from "./views/ViewMonitorRol/ViewPerfilMonitor";
+import ViewCursos_gruposMonitor from "./views/ViewMonitorRol/ViewCursos_gruposMonitor";
 
 //imports componentes
 import Clases from "./Components/Cursos/Cursos";
@@ -280,6 +281,7 @@ function App() {
             <Route path="/Monitor/Ajustes" element={isLoggedIn ? <ViewAjustesMonitor /> : <Navigate to="/login" /> }/>
             <Route path="/Monitor/Publicaciones" element={isLoggedIn ? <ViewPublicacionesMonitor /> : <Navigate to="/login" /> }/>
             <Route path="/Monitor/Profile" element={isLoggedIn ? <ViewPerfilMonitor /> : <Navigate to="/login" /> }/>
+            <Route path="/Monitor/Cursos" element={isLoggedIn ? <ViewCursos_gruposMonitor /> : <Navigate to="/login" /> }/>
           </>
         )}
 

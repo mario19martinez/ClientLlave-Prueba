@@ -7,7 +7,7 @@ export default function EscritorioMonitor() {
   return (
     <div className="p-6 bg-gray-100 w-full min-h-screen flex justify-center items-center">
       <div className="max-w-7xl mx-auto grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <div onClick={() => navigate("/Cursos")}>
+        <div onClick={() => navigate("/Monitor/Cursos")}>
           <Card
             icon={<FaBook className="text-indigo-500" size={40} />}
             title="Cursos"
