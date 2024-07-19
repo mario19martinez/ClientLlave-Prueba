@@ -7,7 +7,6 @@ export default function ViewDetailGrupo() {
   return (
     <div>
       <NavAdmin />
-
       <div className="flex">
         <div className="sticky top-0 h-screen">
           <SidebarAdmin selectedTab="defaultTab" />
