@@ -48,7 +48,7 @@ export default function SidebarMonitor({ selectedTab }) {
 
   const menuItems = [
     { name: "Escritorio", icon: ComputerIcon, route: "/Monitor" },
-    { name: "Cursos", icon: SchoolIcon, route: "/monitor/cursos" },
+    { name: "Cursos", icon: SchoolIcon, route: "/Monitor/Cursos" },
     { name: "Publicaciones", icon: RateReviewIcon, route: "/Monitor/Publicaciones" },
     { name: "Mi Perfil", icon: PersonIcon, route: "/Monitor/Profile" },
     { name: "Ajustes", icon: SettingsIcon, route: "/Monitor/Ajustes" },
