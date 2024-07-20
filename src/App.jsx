@@ -143,6 +143,7 @@ import ViewPerfilMonitor from "./views/ViewMonitorRol/ViewPerfilMonitor";
 import ViewCursos_gruposMonitor from "./views/ViewMonitorRol/ViewCursos_gruposMonitor";
 import ViewMonitorSelected from "./views/ViewMonitorRol/ViewMonitorSelected";
 import ViewMonitorGrupoDelails from "./views/ViewMonitorRol/ViewMonitorGrupoDetail";
+import ViewMonitorModulos from "./views/ViewMonitorRol/ViewMonitorModulos";
 
 //imports componentes
 import Clases from "./Components/Cursos/Cursos";
@@ -284,8 +285,9 @@ function App() {
             <Route path="/Monitor/Publicaciones" element={isLoggedIn ? <ViewPublicacionesMonitor /> : <Navigate to="/login" /> }/>
             <Route path="/Monitor/Profile" element={isLoggedIn ? <ViewPerfilMonitor /> : <Navigate to="/login" /> }/>
             <Route path="/Monitor/Cursos" element={isLoggedIn ? <ViewCursos_gruposMonitor /> : <Navigate to="/login" /> }/>
-            <Route path="/Monitor/Cursos/Selected/:grupoId/:nivelId" element={isLoggedIn ? <ViewMonitorSelected /> : <Navigate to="/login" /> }/>
+            <Route path="/Monitor/Cursos/Selected/:grupoId/:nivelId/:userSub" element={isLoggedIn ? <ViewMonitorSelected /> : <Navigate to="/login" /> }/>
             <Route path="/Monitor/Cursos/GrupoDetais/:grupoId/:nivelId" element={isLoggedIn ? <ViewMonitorGrupoDelails /> : <Navigate to="/login" /> }/>
+            <Route path="/Monitor/Cursos/Modulos/:nivelId/:grupoId/:userSub" element={isLoggedIn ? <ViewMonitorModulos /> : <Navigate to="/login" /> }/>
           </>
         )}
 

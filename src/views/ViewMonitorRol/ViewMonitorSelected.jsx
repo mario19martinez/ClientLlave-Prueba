@@ -5,14 +5,14 @@ import MonitorSelected from "../../Components/Monitor/MonitorSelected";
 import SidebarMonitor from "../../Components/Monitor/SidebarMonitor";
 
 export default function ViewMonitorSelected() {
-  const { grupoId, nivelId } = useParams();
+  const { grupoId, nivelId, userSub } = useParams();
   const [selectedTab] = useState("Cursos");
   return (
     <div>
       <NavUser />
       <div className="flex">
         <SidebarMonitor selectedTab={selectedTab} />
-        <MonitorSelected grupoId={grupoId} nivelId={nivelId} />
+        <MonitorSelected grupoId={grupoId} nivelId={nivelId} userSub={userSub} />
       </div>
     </div>
   );
