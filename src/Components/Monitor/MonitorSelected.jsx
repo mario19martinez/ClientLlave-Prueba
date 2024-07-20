@@ -2,7 +2,7 @@ import { FaRegChartBar, FaBook, FaArrowLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-export default function MonitorSelected({ grupoId, nivelId }) {
+export default function MonitorSelected({ grupoId, nivelId, userSub }) {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
@@ -26,7 +26,7 @@ export default function MonitorSelected({ grupoId, nivelId }) {
             description="Aquí puedes hacer el seguimiento de tu progreso de los estudiantes en el grupo."
           />
         </div>
-        <div onClick={() => navigate("/Monitor/Clases")}>
+        <div onClick={() => navigate(`/Monitor/Cursos/Modulos/${nivelId}/${grupoId}/${userSub}`)}>
           <Card
             icon={<FaBook className="text-green-500" size={40} />}
             title="Modulos y Clases"
