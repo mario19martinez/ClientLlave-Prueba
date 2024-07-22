@@ -52,7 +52,7 @@ function GrupoDetailUser() {
       <h3 className="text-xl lg:text-2xl text-gray-800 font-semibold mb-4">Módulos:</h3>
       <div className="grid gap-6 lg:grid-cols-2">
         {modulos.map((modulo, index) => {
-          const resultado = resultadosModulos[index]?.[0]; // Obtener el resultado del módulo actual
+          const resultado = resultadosModulos[index]?.[0];
           const aprobado = resultado?.aprobado;
 
           let bgColor = 'from-blue-50 to-blue-100';
