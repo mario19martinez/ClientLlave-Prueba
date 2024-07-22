@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserData } from '../../../Redux/features/Users/usersSlice';
 import { fetchInscripcion } from "../../../Redux/features/UsersCourses/UsersCursesSlices";
@@ -23,38 +22,37 @@ export default function CursosInscritos() {
 
   useEffect(() => {
     if (userData?.sub) {
-      const fetchCourses = async () => {
-        try {
-          const inscripcionResponse = await dispatch(fetchInscripcion(userData.sub));
-          const inscripciones = inscripcionResponse.payload.inscripciones || [];
-          const cursoIds = inscripciones.map((inscripcion) => inscripcion.cursoId);
-          const cursoPromises = cursoIds.map((cursoId) => dispatch(fetchCursoDetail(cursoId)));
-
-          Promise.all(cursoPromises).then((responses) => {
-            const cursos = responses
-              .filter((cursoResponse) => cursoResponse.payload)
-              .map((cursoResponse) => cursoResponse.payload);
-
-            setCursosInscritos(cursos);
-          });
-        } catch (error) {
-          console.error("Error al obtener los cursos:", error);
-        }
-      };
-
-      const fetchNivelesInscritos = async () => {
-        try {
-          const response = await axios.get(`/user/${userData.sub}/grupos-nivel`);
-          setNivelesInscritos(response.data.grupos);
-        } catch (error) {
-          console.error('Error al obtener los niveles inscritos del usuario:', error);
-        }
-      };
-
-      fetchCourses();
-      fetchNivelesInscritos();
+      fetchCourses(userData.sub);
+      fetchNivelesInscritos(userData.sub);
     }
   }, [dispatch, userData]);
+
+  const fetchCourses = async (userId) => {
+    try {
+      const inscripcionResponse = await dispatch(fetchInscripcion(userId));
+      const inscripciones = inscripcionResponse.payload.inscripciones || [];
+      const cursoIds = inscripciones.map((inscripcion) => inscripcion.cursoId);
+      const cursoPromises = cursoIds.map((cursoId) => dispatch(fetchCursoDetail(cursoId)));
+
+      const responses = await Promise.all(cursoPromises);
+      const cursos = responses
+        .filter((cursoResponse) => cursoResponse.payload)
+        .map((cursoResponse) => cursoResponse.payload);
+
+      setCursosInscritos(cursos);
+    } catch (error) {
+      console.error("Error al obtener los cursos:", error);
+    }
+  };
+
+  const fetchNivelesInscritos = async (userId) => {
+    try {
+      const response = await axios.get(`/user/${userId}/grupos-nivel`);
+      setNivelesInscritos(response.data.grupos);
+    } catch (error) {
+      console.error('Error al obtener los niveles inscritos del usuario:', error);
+    }
+  };
 
   const handleCursoClick = (curso) => {
     navigate(`/user/curso/${curso.id}`);
@@ -65,11 +63,6 @@ export default function CursosInscritos() {
       <div className="mb-8 flex flex-col items-center justify-center">
         <h2 className="text-2xl font-bold text-gray-700">Cursos Inscritos</h2>
       </div>
-      {/* <button
-      onClick={() => navigate('/modulos-de-usuario')}
-      >
-        Modulos Inscritos
-      </button> */}
 
       <div className="font-normal text-center md:text-left">
         {cursosInscritos.length > 0 || nivelesInscritos.length > 0 ? (

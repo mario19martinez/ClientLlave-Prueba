@@ -1,12 +1,11 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import { useState } from "react";
 import NavUser from "../../Components/Estudiante/NavUser/NavUser";
 import SidebarUser from "../../Components/Estudiante/SidebarUser/SidebarUser";
 import CursosInscritos from "../../Components/Estudiante/DataUser/CursosInscritos";
 import ContadorHome from "../../Components/Transmisiones/Contadores/ContadorHome";
 
 export default function ViewCursosInscritos() {
-  const [selectedTab /*setSelectedTab*/] = useState("Cursos Inscritos");
+  const [selectedTab] = useState("Cursos Inscritos");
   return (
     <div className="flex flex-col">
       <div>
