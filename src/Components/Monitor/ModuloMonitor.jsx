@@ -42,7 +42,7 @@ function ModuloMonitor() {
   }
 
   const handleCardClick = (moduloId) => {
-    navigate(`/nivel/${nivelId}/grupo/${grupoId}/modulo/${moduloId}/detalles`);
+    navigate(`/Monitor/Cursos/Modulos/Clases/${nivelId}/${grupoId}/${moduloId}`);
   };
 
   return (
