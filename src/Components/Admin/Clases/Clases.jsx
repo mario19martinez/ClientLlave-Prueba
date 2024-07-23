@@ -28,7 +28,13 @@ function Clases() {
     const fetchClases = async () => {
       try {
         const response = await axios.get(`/cursos/${id}/clases`);
-        const sortedClases = response.data.sort((a, b) => a.id - b.id);
+        const sortedClases = response.data
+          .map(clase => ({
+            ...clase,
+            createdAt: clase.createdAt || "2024-01-01T00:00:00Z"  // Asignar fecha predeterminada si no hay fecha
+          }))
+          .sort((a, b) => a.id - b.id);
+
         if (response.status === 200) {
           setClases(sortedClases);
           // Set default start and end dates to cover all clases
@@ -53,7 +59,13 @@ function Clases() {
     setLoading(true);
     try {
       const response = await axios.get(`/cursos/${id}/clases`);
-      const sortedClases = response.data.sort((a, b) => a.id - b.id);
+      const sortedClases = response.data
+        .map(clase => ({
+          ...clase,
+          createdAt: clase.createdAt || "2024-01-01T00:00:00Z"
+        }))
+        .sort((a, b) => a.id - b.id);
+
       setClases(sortedClases);
       setCurrentPage(currentPageBeforeEdit);
     } catch (error) {
@@ -215,15 +227,19 @@ function Clases() {
         contentLabel="Agregar Clase"
         overlayClassName="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40"
       >
-        <AgregarClases id={id} closeModalAndReload={closeModalAndReload} />
+        <AgregarClases
+          cursoId={parseInt(id)}
+          closeModal={() => setModalAgregarClaseIsOpen(false)}
+          closeModalAndReload={closeModalAndReload}
+        />
       </Modal>
 
-      <div className="mb-6 flex space-x-4">
+      <div className="flex justify-between items-center mb-4">
         <button
-          className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg shadow transition ease-in duration-200"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in duration-200"
           onClick={() => setModalAgregarClaseIsOpen(true)}
         >
-          Agregar Taller
+          Agregar Clase
         </button>
       </div>
 
