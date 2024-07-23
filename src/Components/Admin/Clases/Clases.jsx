@@ -15,11 +15,14 @@ function Clases() {
   const [modalAgregarClaseIsOpen, setModalAgregarClaseIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentPageBeforeEdit, setCurrentPageBeforeEdit] = useState(1); 
+  const [currentPageBeforeEdit, setCurrentPageBeforeEdit] = useState(1);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [filterType, setFilterType] = useState("sinFiltro");
   const navigate = useNavigate();
 
-  const clasesPerPage = 10; 
-  const maxPagesToShow = 5; 
+  const clasesPerPage = 10;
+  const maxPagesToShow = 5;
 
   useEffect(() => {
     const fetchClases = async () => {
@@ -27,8 +30,13 @@ function Clases() {
         const response = await axios.get(`/cursos/${id}/clases`);
         const sortedClases = response.data.sort((a, b) => a.id - b.id);
         if (response.status === 200) {
-           await response.data;
-          setClases(sortedClases); 
+          setClases(sortedClases);
+          // Set default start and end dates to cover all clases
+          const allDates = sortedClases.map(clase => new Date(clase.createdAt));
+          if (allDates.length > 0) {
+            setStartDate(new Date(Math.min(...allDates)).toISOString().split('T')[0]);
+            setEndDate(new Date(Math.max(...allDates)).toISOString().split('T')[0]);
+          }
         } else {
           throw new Error("Curso no encontrado");
         }
@@ -46,8 +54,8 @@ function Clases() {
     try {
       const response = await axios.get(`/cursos/${id}/clases`);
       const sortedClases = response.data.sort((a, b) => a.id - b.id);
-      setClases(sortedClases); 
-      setCurrentPage(currentPageBeforeEdit); 
+      setClases(sortedClases);
+      setCurrentPage(currentPageBeforeEdit);
     } catch (error) {
       console.error("Error al obtener las clases:", error);
     } finally {
@@ -92,10 +100,77 @@ function Clases() {
     }
   }, [claseSeleccionada]);
 
+  const handleEditClase = (clase) => {
+    setCurrentPageBeforeEdit(currentPage);
+    setClaseSeleccionada(clase);
+    setModalIsOpen(true);
+  };
+
+  const handleStartDateChange = (e) => {
+    setStartDate(e.target.value);
+  };
+
+  const handleEndDateChange = (e) => {
+    setEndDate(e.target.value);
+  };
+
+  const handleFilterTypeChange = (e) => {
+    setFilterType(e.target.value);
+    if (e.target.value === "personalizado") {
+      // Ensure dates are set for personalizado filter
+      setStartDate(startDate || new Date("1900-01-01").toISOString().split('T')[0]);
+      setEndDate(endDate || new Date().toISOString().split('T')[0]);
+    }
+  };
+
+  const getDateRangeForFilterType = (type) => {
+    const today = new Date();
+    let start;
+    let end;
+
+    switch (type) {
+      case "semana":
+        start = new Date(today.setDate(today.getDate() - today.getDay()));
+        end = new Date(today.setDate(today.getDate() + 6 - today.getDay()));
+        break;
+      case "quincena":
+        const currentDate = new Date();
+        const day = currentDate.getDate();
+        start = new Date(currentDate.getFullYear(), currentDate.getMonth(), day <= 15 ? 1 : 16);
+        end = new Date(currentDate.getFullYear(), currentDate.getMonth(), day <= 15 ? 15 : new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate());
+        break;
+      case "mes":
+        start = new Date(today.getFullYear(), today.getMonth(), 1);
+        end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+        break;
+      case "sinFiltro":
+        return { start: new Date("1900-01-01"), end: new Date() };
+      default:
+        start = new Date(startDate);
+        end = new Date(endDate);
+        break;
+    }
+
+    return { start, end };
+  };
+
+  const filterClasesByDate = (clases) => {
+    const { start, end } = getDateRangeForFilterType(filterType);
+    if (start && end) {
+      return clases.filter((clase) => {
+        const createdAt = new Date(clase.createdAt);
+        return createdAt >= start && createdAt <= end;
+      });
+    }
+    return clases;
+  };
+
+  const filteredClases = filterClasesByDate(clases);
+
   const indexOfLastClase = currentPage * clasesPerPage;
   const indexOfFirstClase = indexOfLastClase - clasesPerPage;
-  const currentClases = clases.slice(indexOfFirstClase, indexOfLastClase);
-  const totalPages = Math.ceil(clases.length / clasesPerPage);
+  const currentClases = filteredClases.slice(indexOfFirstClase, indexOfLastClase);
+  const totalPages = Math.ceil(filteredClases.length / clasesPerPage);
   let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
   let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
@@ -107,12 +182,6 @@ function Clases() {
       startPage = endPage - maxPagesToShow + 1;
     }
   }
-
-  const handleEditClase = (clase) => {
-    setCurrentPageBeforeEdit(currentPage);
-    setClaseSeleccionada(clase);
-    setModalIsOpen(true);
-  };
 
   return (
     <div className="container p-6 w-3/5">
@@ -154,14 +223,43 @@ function Clases() {
           className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg shadow transition ease-in duration-200"
           onClick={() => setModalAgregarClaseIsOpen(true)}
         >
-          Agregar Clase
-        </button>
-        <button
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow transition ease-in duration-200"
-          onClick={() => navigate("/admin/cursos/crearTaller")}
-        >
           Agregar Taller
         </button>
+      </div>
+
+      <div className="mb-4">
+        <label className="block mb-2 text-sm font-medium text-gray-700">
+          Filtrar por:
+        </label>
+        <div className="flex space-x-4">
+          <select
+            value={filterType}
+            onChange={handleFilterTypeChange}
+            className="border border-gray-300 p-2 rounded-md"
+          >
+            <option value="sinFiltro">Sin Filtro</option>
+            <option value="semana">Semana</option>
+            <option value="quincena">Quincena</option>
+            <option value="mes">Mes</option>
+            <option value="personalizado">Personalizado</option>
+          </select>
+          {filterType === "personalizado" && (
+            <>
+              <input
+                type="date"
+                value={startDate}
+                onChange={handleStartDateChange}
+                className="border border-gray-300 p-2 rounded-md"
+              />
+              <input
+                type="date"
+                value={endDate}
+                onChange={handleEndDateChange}
+                className="border border-gray-300 p-2 rounded-md"
+              />
+            </>
+          )}
+        </div>
       </div>
 
       <ul className="space-y-4">
