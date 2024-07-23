@@ -92,31 +92,24 @@ function Clases() {
     }
   }, [claseSeleccionada]);
 
-  // Calcular el índice de la primera y última clase de la página actual
   const indexOfLastClase = currentPage * clasesPerPage;
   const indexOfFirstClase = indexOfLastClase - clasesPerPage;
   const currentClases = clases.slice(indexOfFirstClase, indexOfLastClase);
-
-  // Calcular el número total de páginas
   const totalPages = Math.ceil(clases.length / clasesPerPage);
-
-  // Calcular el rango de páginas a mostrar en la paginación
   let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
   let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
-  // Ajustar el inicio y el final si el número total de páginas es menor que maxPagesToShow
   if (totalPages <= maxPagesToShow) {
     startPage = 1;
     endPage = totalPages;
   } else {
-    // Ajustar el inicio si estamos cerca del final
     if (endPage === totalPages) {
       startPage = endPage - maxPagesToShow + 1;
     }
   }
 
   const handleEditClase = (clase) => {
-    setCurrentPageBeforeEdit(currentPage); // Almacenar la página actual antes de editar
+    setCurrentPageBeforeEdit(currentPage);
     setClaseSeleccionada(clase);
     setModalIsOpen(true);
   };
@@ -128,7 +121,6 @@ function Clases() {
         Clases del Curso
       </h2>
 
-      {/* Modal de edición */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
@@ -147,7 +139,6 @@ function Clases() {
         )}
       </Modal>
 
-      {/* Modal de agregar clase */}
       <Modal
         isOpen={modalAgregarClaseIsOpen}
         onRequestClose={() => setModalAgregarClaseIsOpen(false)}
@@ -187,11 +178,14 @@ function Clases() {
             <div className="flex justify-between items-center">
               <h3
                 className={`text-xl font-semibold mb-2 ${
-                  clase.pdfURL ? "text-blue-700" : "" // Aplicar color rojo si es PDF
+                  clase.pdfURL ? "text-blue-700" : "" 
                 }`}
               >
                 {clase.name}
               </h3>
+              <span className="text-gray-600 text-sm">
+                {new Date(clase.createdAt).toLocaleDateString()}
+              </span>
               <span
                 className={`transition-transform duration-300 ${
                   claseSeleccionada && claseSeleccionada.id === clase.id
@@ -199,7 +193,6 @@ function Clases() {
                     : ""
                 }`}
               >
-                {/* Aquí se puede usar un ícono de una librería como Heroicons, por ejemplo, `ChevronDownIcon` */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5"
@@ -291,7 +284,6 @@ function Clases() {
         ))}
       </ul>
 
-      {/* Paginación */}
       <div className="mt-6 flex justify-center">
         <ul className="flex list-none space-x-2">
           {Array.from({ length: endPage - startPage + 1 }, (_, i) => (
