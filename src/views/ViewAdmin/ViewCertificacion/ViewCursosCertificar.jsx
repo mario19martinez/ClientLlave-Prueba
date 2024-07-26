@@ -4,7 +4,7 @@ import NavAdmin from "../../../Components/Admin/NavAdmin/NavAdmin";
 import SidebarAdmin from "../../../Components/Admin/SidebarAdmin/SidebarAdmin";
 
 export default function ViewCursosCerticar() {
-  const [selectedTab] = useState("Ceritificados");
+  const [selectedTab] = useState("Certificados");
   return (
     <div>
       <NavAdmin />

@@ -1,15 +1,16 @@
 import { useState } from "react";
 import NavAdmin from "../../../Components/Admin/NavAdmin/NavAdmin";
+import PlanesAdmin from "../../../Components/Admin/Planes/PlanesAdmin";
 import SidebarAdmin from "../../../Components/Admin/SidebarAdmin/SidebarAdmin";
-import ModuloDetailAdmin from "../../../Components/Admin/ModuloAdmin/ModuloDetailAdmin";
-export default function ViewModuloDetailAdmin() {
-  const [selectedTab] = useState("Niveles");
+
+export default function ViewPlanesAdmin() {
+  const [selectedTab] = useState("Ventas");
   return (
     <div>
       <NavAdmin />
       <div className="flex">
-        <SidebarAdmin selectedTab={selectedTab}/>
-        <ModuloDetailAdmin />
+        <SidebarAdmin selectedTab={selectedTab} />
+        <PlanesAdmin />
       </div>
     </div>
   );

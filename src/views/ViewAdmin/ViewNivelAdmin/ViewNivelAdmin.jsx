@@ -4,7 +4,7 @@ import NavAdmin from "../../../Components/Admin/NavAdmin/NavAdmin";
 import NivelAdmin from "../../../Components/Admin/NivelAdmin/NivelAdmin";
 
 export default function ViewNivelAdmin() {
-  const [selectedTab] = useState("Nivel");
+  const [selectedTab] = useState("Niveles");
   return (
     <div>
       <NavAdmin />

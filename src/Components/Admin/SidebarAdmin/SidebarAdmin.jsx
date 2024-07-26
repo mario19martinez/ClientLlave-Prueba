@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -11,6 +10,7 @@ import SourceIcon from "@mui/icons-material/Source";
 import VideoFileIcon from "@mui/icons-material/VideoFile";
 import WebIcon from '@mui/icons-material/Web';
 import CardMembershipIcon from '@mui/icons-material/CardMembership';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'; // Icono para "Ventas"
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserData } from "../../../Redux/features/Users/usersSlice";
@@ -19,7 +19,6 @@ function SidebarAdmin({ selectedTab }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.users.userData);
-
   const storedEmail = localStorage.getItem("email");
 
   useEffect(() => {
@@ -29,188 +28,54 @@ function SidebarAdmin({ selectedTab }) {
   }, [dispatch, storedEmail]);
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("userName");
-    localStorage.removeItem("email");
-    // Eliminar la Cache
-    window.localStorage.clear();
+    localStorage.clear();
     navigate("/");
   };
 
+  const menuItems = [
+    { label: 'Usuarios', icon: <GroupsOutlinedIcon />, path: '/admin' },
+    { label: 'Cursos', icon: <SchoolIcon />, path: '/admin/cursos' },
+    { label: 'Niveles', icon: <SchoolIcon />, path: '/niveladmin' },
+    { label: 'Certificados', icon: <CardMembershipIcon />, path: '/admin/certificacion' },
+    { label: 'Campañas', icon: <CampaignIcon />, path: '/admin/campain' },
+    { label: 'Roles', icon: <GroupIcon />, path: '/admin/roles' },
+    { label: 'Ventas', icon: <MonetizationOnIcon />, path: '/admin/planes' }, // Nueva sección de Ventas
+    { label: 'Pagina', icon: <WebIcon />, path: '/AdminPage' },
+    { label: 'Noticias', icon: <SourceIcon />, path: '/admin/noticias' },
+    { label: 'Videos', icon: <VideoFileIcon />, path: '/admin/videos' },
+    { label: 'Ajustes', icon: <SettingsIcon />, path: '/admin/ajustes' }
+  ];
+
   return (
-    <div className="bg-blue-700 text-white w-56 min-h-screen translate-y-0 -translate-x-2 pr-7">
-      <div className="p-4 translate-x-10 translate-y-10">
-        <div className="md:text-2xl font-semibold">
-          <h2>{userData && userData.name}</h2>
+    <div className="bg-blue-700 text-white w-56 min-h-screen pr-7">
+      <div className="p-4">
+        <div className="md:text-2xl font-semibold mb-2">
+          <h2>{userData?.name || "Usuario"}</h2>
         </div>
-        <h3 className="text-2xl font-bold mb-4">ADMIN</h3>
+        <h3 className="text-2xl font-bold mb-6">ADMIN</h3>
         <ul>
+          {menuItems.map((item) => (
+            <li key={item.label} className="mb-4">
+              <button
+                className={`px-2 py-1 rounded w-32 font-medium flex items-center transition-colors ${
+                  selectedTab === item.label
+                    ? "bg-blue-400 text-white"
+                    : "hover:bg-blue-500 hover:text-white"
+                }`}
+                onClick={() => navigate(item.path)}
+              >
+                {item.icon}
+                <span className="ml-2">{item.label}</span>
+              </button>
+            </li>
+          ))}
           <li className="mb-4">
             <button
-              // className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal${
-              //   selectedTab === "Usuarios"
-              //     ? "bg-blue-400 text-white"
-              //     : "hover:bg-blue-500 hover:text-white"
-              // }`}
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Usuarios"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-              onClick={() => navigate("/admin")}
-            >
-              <GroupsOutlinedIcon
-                className={`${selectedTab === "Usuarios" ? "text-white" : ""}`}
-              />{" "}
-              Usuarios
-            </button>
-          </li>
-          <li className="mb-4">
-            <button
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Cursos"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-              onClick={() => navigate("/admin/cursos")}
-            >
-              <SchoolIcon
-                className={`${selectedTab === "Cursos" ? "text-white" : ""}`}
-              />{" "}
-              Cursos
-            </button>
-          </li>
-          <li className="mb-4">
-            <button
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Nivel"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-              onClick={() => navigate("/niveladmin")}
-            >
-              <SchoolIcon
-                className={`${selectedTab === "Nivel" ? "text-white" : ""}`}
-              />{" "}
-              Niveles
-            </button>
-          </li>
-          <li className="mb-4">
-            <button
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Ceritificados"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-              onClick={() => navigate("/Admin/Certificado")}
-            >
-              <CardMembershipIcon
-                className={`${selectedTab === "Ceritificados" ? "text-white" : ""}`}
-              />{" "}
-              Ceritificados
-            </button>
-          </li>
-          <li className="mb-4">
-            <a
-              href=""
-              onClick={() => navigate('/admin/campain')}
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Campañas"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-            >
-              <CampaignIcon
-                className={`${selectedTab === "Campañas" ? "text-white" : ""}`}
-              />{" "}
-              Campañas
-            </a>
-          </li>
-          <li className="mb-4">
-            <button
-              href=""
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Roles"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-              onClick={() => navigate("/admin/roles")}
-            >
-              <GroupIcon
-                className={`${selectedTab === "Roles" ? "text-white" : ""}`}
-              />{" "}
-              Roles
-            </button>
-          </li>
-          <li className="mb-4">
-            <button
-              href=""
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Nosotros"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-              onClick={() => navigate("/AdminPage")}
-            >
-              <WebIcon
-                className={`${selectedTab === "Nosotros" ? "text-white" : ""}`}
-              />{" "}
-              Pagina
-            </button>
-          </li>
-          <li className="mb-4">
-            <button
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Noticias"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-              onClick={() => navigate("/admin/noticias")}
-            >
-              <SourceIcon
-                className={`${selectedTab === "Noticias" ? "text-white" : ""}`}
-              />{" "}
-              Noticias
-            </button>
-          </li>
-
-          <li className="mb-4">
-            <button
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Videos"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-              onClick={() => navigate("/admin/videos")}
-            >
-              <VideoFileIcon
-                className={`${selectedTab === "Videos" ? "text-white" : ""}`}
-              />{" "}
-              Videos
-            </button>
-          </li>
-
-          <li className="mb-4">
-            <button
-              onClick={() => navigate("/admin/ajustes")}
-              className={`hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal ${
-                selectedTab === "Ajustes"
-                  ? "bg-blue-400 text-white"
-                  : "hover:bg-blue-500 hover:text-white"
-              }`}
-            >
-              <SettingsIcon
-                className={`${selectedTab === "Ajustes" ? "text-white" : ""}`}
-              />{" "}
-              Ajustes
-            </button>
-          </li>
-          <li className="mb-4">
-            <button
-              className="hover:bg-blue-300 px-2 py-1 rounded w-32 font-medium flex justify-normal hover:text-white"
+              className="px-2 py-1 rounded w-32 font-medium flex items-center hover:bg-blue-500 hover:text-white transition-colors"
               onClick={handleLogout}
             >
-              <ExitToAppIcon /> Salir
+              <ExitToAppIcon />
+              <span className="ml-2">Salir</span>
             </button>
           </li>
         </ul>
@@ -218,6 +83,7 @@ function SidebarAdmin({ selectedTab }) {
     </div>
   );
 }
+
 SidebarAdmin.propTypes = {
   selectedTab: PropTypes.string.isRequired,
 };
