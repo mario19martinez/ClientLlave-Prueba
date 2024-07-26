@@ -1,20 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function CompraExitosa() {
     const navigate = useNavigate();
 
-    useEffect(() => {
-        // Verificar si el usuario ha iniciado sesión
-        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-        if (isLoggedIn) {
-            // Redirigir al usuario a /estudiante/cursosInscritos si ha iniciado sesión
-            navigate('/estudiante/cursosInscritos');
-        } else {
-            // Redirigir al usuario a /login si no ha iniciado sesión
-            navigate('/login');
-        }
-    }, [navigate]);
+    const handleAceptar = () => {
+        navigate('/estudiante/cursosInscritos');
+    };
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -27,7 +19,7 @@ export default function CompraExitosa() {
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4">¡Compra Exitosa!</h2>
                 <p className="text-gray-600 mb-6">Tu compra se ha completado exitosamente. Gracias por tu compra.</p>
                 <button
-                    onClick={() => navigate('/estudiante/cursosInscritos')}
+                    onClick={handleAceptar}
                     className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-600 transition duration-300"
                 >
                     Aceptar
