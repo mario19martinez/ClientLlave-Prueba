@@ -60,10 +60,10 @@ export default function NavUser() {
           </a>
           <a
             href=""
-            onClick={() => navigate("/Error404")}
+            onClick={() => navigate("/Planes")}
             className="hover:text-gray-300 transition-colors"
           >
-            Entrenamiento
+            Planes
           </a>
           <a
             href=""
@@ -102,10 +102,10 @@ export default function NavUser() {
             </a>
             <a
               href="#"
-              onClick={() => navigate("/Error404")}
+              onClick={() => navigate("/Planes")}
               className="hover:text-gray-300 transition-colors"
             >
-              Entrenamiento
+              Planes
             </a>
             <a
               href=""
