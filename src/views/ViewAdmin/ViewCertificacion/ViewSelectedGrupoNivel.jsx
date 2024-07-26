@@ -5,7 +5,7 @@ import SidebarAdmin from "../../../Components/Admin/SidebarAdmin/SidebarAdmin";
 import SelectedGrupo from "../../../Components/Admin/Certificacion/CertificadoNivel/SelectedGrupo";
 
 export default function ViewSelectedGrupoNivel() {
-  const [selectedTab] = useState("Ceritificados");
+  const [selectedTab] = useState("Certificados");
   const { nivelId } = useParams();
   return (
     <div>

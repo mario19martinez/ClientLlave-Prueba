@@ -31,6 +31,7 @@ import ViewFormObsequioCampain from "./views/ViewCampainObsequio/ViewFormObsequi
 import ViewErrorPaginaConstruccion from "./views/ViewErrores/ViewErrorPaginaConstruccion";
 import ViewFormRegistroUsersIglesia from "./views/ViewRigistro/ViewFormRegistroUsersIglesia";
 import ViewPlanes from "./views/ViewPlanes/ViewPlanes";
+import ViewPlanesDetailsHome from "./views/ViewPlanes/ViewPlanesDetails";
 
 //Imports de estudiantes
 import ViewMenuStudent from "./views/ViewMenuStudent/ViewMenuStudent";
@@ -120,6 +121,10 @@ import ViewCursoOrUser from "./views/ViewAdmin/ViewCertificacion/ViewCursoOrUser
 import ViewSelectedNivel from "./views/ViewAdmin/ViewCertificacion/ViewSelectedNivel";
 import ViewSelectedGrupoNivel from "./views/ViewAdmin/ViewCertificacion/ViewSelectedGrupoNivel";
 import ViewCertificadoNivel from "./views/ViewAdmin/ViewCertificacion/ViewCertificadoNivel";
+import ViewNivelOrModulo from "./views/ViewAdmin/ViewCertificacion/ViewNivelOrModulo";
+import ViewCertficadoModulo from "./views/ViewAdmin/ViewCertificacion/ViewCerificadoModulo";
+import ViewPlanesAdmin from "./views/ViewAdmin/ViewPlanesAdmin/ViewPlanesAdmin";
+import ViewPlanesDetails from "./views/ViewAdmin/ViewPlanesAdmin/ViewPlanesDetails";
 
 //imports editor
 import ViewEscritorioEditor from "./views/ViewEditor/ViewEscritorioEditor";
@@ -257,6 +262,11 @@ function App() {
             <Route path="/admin/certificado/selectedNivel" element={isLoggedIn? <ViewSelectedNivel /> : <Navigate to="/login" /> } />
             <Route path="/admin/certificado/:nivelId/selectedGrupo"  element={isLoggedIn? <ViewSelectedGrupoNivel /> : <Navigate to="/login" /> } />
             <Route path="/admin/certificado/:nivelId/:grupoId" element={isLoggedIn? <ViewCertificadoNivel /> : <Navigate to="/login" /> } />
+            <Route path="/admin/certificado/selectedNivel/selected" element={isLoggedIn? <ViewNivelOrModulo /> : <Navigate to="/login" /> } />
+            <Route path="/admin/certificado/CertificarModulo" element={isLoggedIn? <ViewCertficadoModulo /> : <Navigate to="/login" /> } />
+            <Route path="/admin/planes" element={isLoggedIn? <ViewPlanesAdmin /> : <Navigate to="/login" /> } />
+            <Route path="/admin/planes/:PlanId" element={isLoggedIn? <ViewPlanesDetails /> : <Navigate to="/login" /> } />
+
           </>
         )}
         
@@ -319,6 +329,7 @@ function App() {
         <Route path="/transmisionDetails/:id" element={<ViewTransmisionDetails/>} /> 
         <Route path="/RegistroDatos" element={<ViewFormRegistroUsersIglesia />}/>
         <Route path="/Planes" element={<ViewPlanes/>} />
+        <Route path="/Planes/:idPlan" element={<ViewPlanesDetailsHome/>} />
         {/*<Route path="/cursos" element={<Cursos />} />*/}
     
         {/*Rutas pagina no asociadas */}

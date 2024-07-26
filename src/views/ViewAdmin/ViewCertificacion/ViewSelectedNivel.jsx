@@ -4,7 +4,7 @@ import SidebarAdmin from "../../../Components/Admin/SidebarAdmin/SidebarAdmin";
 import SelectedNivel from "../../../Components/Admin/Certificacion/CertificadoNivel/SelectedNivel";
 
 export default function ViewSelectedNivel() {
-  const [selectedTab] = useState("Ceritificados");
+  const [selectedTab] = useState("Certificados");
   return (
     <div>
       <NavAdmin />
