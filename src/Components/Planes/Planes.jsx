@@ -24,6 +24,15 @@ export default function Planes() {
     fetchPlanes();
   }, []);
 
+  const handleMoreInfo = (id) => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    if (isLoggedIn) {
+      navigate(`/Planes/${id}`);
+    } else {
+      navigate('/login');
+    }
+  };
+
   if (loading) {
     return <div className="text-center py-20">Cargando...</div>;
   }
@@ -143,12 +152,12 @@ export default function Planes() {
                       </li>
                     ))}
                   </ul>
-                  <a
-                  onClick={() => navigate(`/Planes/${plan.id}`)}
+                  <button
+                    onClick={() => handleMoreInfo(plan.id)}
                     className="inline-flex items-center justify-center text-center w-full h-12 px-6 font-medium tracking-wide text-blue-900 transition duration-200 rounded shadow-md bg-teal-400 hover:bg-teal-700 focus:shadow-outline focus:outline-none"
                   >
                     Más Información
-                  </a>
+                  </button>
                 </div>
                 <div className="w-11/12 h-2 mx-auto bg-blue-900 rounded-b opacity-75 mt-2" />
                 <div className="w-10/12 h-2 mx-auto bg-blue-900 rounded-b opacity-50 mt-1" />

@@ -32,6 +32,7 @@ import ViewErrorPaginaConstruccion from "./views/ViewErrores/ViewErrorPaginaCons
 import ViewFormRegistroUsersIglesia from "./views/ViewRigistro/ViewFormRegistroUsersIglesia";
 import ViewPlanes from "./views/ViewPlanes/ViewPlanes";
 import ViewPlanesDetailsHome from "./views/ViewPlanes/ViewPlanesDetails";
+import ViewCompraExitosa from "./views/ViewPlanes/ViewCompraExitosa";
 
 //Imports de estudiantes
 import ViewMenuStudent from "./views/ViewMenuStudent/ViewMenuStudent";
@@ -330,6 +331,7 @@ function App() {
         <Route path="/RegistroDatos" element={<ViewFormRegistroUsersIglesia />}/>
         <Route path="/Planes" element={<ViewPlanes/>} />
         <Route path="/Planes/:idPlan" element={<ViewPlanesDetailsHome/>} />
+        <Route path="/Compra_Exitosa" element={<ViewCompraExitosa/>} />
         {/*<Route path="/cursos" element={<Cursos />} />*/}
     
         {/*Rutas pagina no asociadas */}
