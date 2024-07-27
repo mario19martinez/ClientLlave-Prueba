@@ -11,6 +11,7 @@ import {
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
+import fondo from "../../assets/apostol_profeta.jpg";
 
 const initialValues = {
   name: "",
@@ -98,7 +99,7 @@ const RegistroComponent = () => {
     <div
       className="bg-cover bg-center min-h-screen relative"
       style={{
-        backgroundImage: `url('https://llaveparalasnaciones.online/wp-content/uploads/2023/09/28-2-scaled.jpg')`,
+        backgroundImage: `url(${fondo})`,
       }}
     >
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>

@@ -1,11 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaWhatsapp } from 'react-icons/fa';
 
 export default function CompraExitosa() {
     const navigate = useNavigate();
 
-    const handleAceptar = () => {
+    const handleContinuar = () => {
         navigate('/estudiante/cursosInscritos');
+    };
+
+    const handleHablaConAsesor = () => {
+        window.open('https://api.whatsapp.com/send?phone=573126096603&text=Hola%2C%20Quiero%20mas%20informaci%C3%B3n%20sobre%20Llave%20Para%20Las%20Naciones.', '_blank');
     };
 
     return (
@@ -17,13 +22,23 @@ export default function CompraExitosa() {
                     </svg>
                 </div>
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4">¡Compra Exitosa!</h2>
-                <p className="text-gray-600 mb-6">Tu compra se ha completado exitosamente. Gracias por tu compra.</p>
-                <button
-                    onClick={handleAceptar}
-                    className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-600 transition duration-300"
-                >
-                    Aceptar
-                </button>
+                <p className="text-gray-600 mb-4">Tu compra se ha completado exitosamente. Gracias por tu compra.</p>
+                <p className="text-gray-600 mb-6">Serás redirigido a tu dashboard o perfil de usuario.</p>
+                <div className="flex flex-col items-center space-y-4">
+                    <button
+                        onClick={handleContinuar}
+                        className="bg-blue-500 text-white py-3 px-6 rounded-lg shadow hover:bg-blue-600 transition duration-300 text-lg"
+                    >
+                        Continuar
+                    </button>
+                    <button
+                        onClick={handleHablaConAsesor}
+                        className="bg-green-500 text-white py-2 px-4 rounded-lg shadow flex items-center space-x-2 hover:bg-green-600 transition duration-300"
+                    >
+                        <FaWhatsapp className="w-5 h-5" />
+                        <span>Habla con un asesor</span>
+                    </button>
+                </div>
             </div>
         </div>
     );
