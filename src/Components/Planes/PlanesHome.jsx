@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FaSignInAlt, FaUserPlus } from "react-icons/fa";
+import Modal from "react-modal";
+
+Modal.setAppElement('#root');
 
 export default function Planes() {
   const [planes, setPlanes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPlanes = async () => {
       try {
         const response = await axios.get("/planes");
-        // Filtrar solo los planes activos
-        const activePlans = response.data.filter((plan) => plan.activo);
+        const activePlans = response.data.filter(plan => plan.activo);
         setPlanes(activePlans);
       } catch (error) {
         console.error("Error al obtener los planes:", error);
@@ -29,8 +33,20 @@ export default function Planes() {
     if (isLoggedIn) {
       navigate(`/Planes/${id}`);
     } else {
-      navigate("/login");
+      setIsModalOpen(true);
     }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
+  const handleRegister = () => {
+    navigate('/RegistroUser');
   };
 
   if (loading) {
@@ -39,7 +55,9 @@ export default function Planes() {
 
   if (planes.length === 0) {
     return (
-      <div className="text-center py-20">No se encontraron planes activos.</div>
+      <div className="text-center py-20">
+        No se encontraron planes activos.
+      </div>
     );
   }
 
@@ -75,27 +93,15 @@ export default function Planes() {
             </span>
           </h2>
           <p className="text-base text-gray-800 md:text-lg">
-            Mira los planes que tenemos para ti, escoge el plan que mejor se
-            adapte a tus necesidades.
+            Mira los planes que tenemos para ti, escoge el plan que mejor se adapte a tus necesidades.
           </p>
         </div>
         <div className="grid max-w-screen-lg gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mx-auto">
           {planes.map((plan) => {
-            // Convertir el esquema en un array si es una cadena
-            const esquemaArray =
-              typeof plan.esquema === "string"
-                ? plan.esquema.split(",").map((item) => item.trim())
-                : [];
-
-            // Convertir precios y descuentos
+            const esquemaArray = typeof plan.esquema === 'string' ? plan.esquema.split(',').map(item => item.trim()) : [];
             const precio = parseFloat(plan.Precio);
-            const porcentajeDescuento =
-              parseFloat(plan.porcentaje_descuento) || 0;
-
-            // Calcular el precio con descuento
-            const precioConDescuento = plan.descuento
-              ? precio * (1 - porcentajeDescuento / 100)
-              : precio;
+            const porcentajeDescuento = parseFloat(plan.porcentaje_descuento) || 0;
+            const precioConDescuento = plan.descuento ? precio * (1 - (porcentajeDescuento / 100)) : precio;
 
             return (
               <div
@@ -113,10 +119,7 @@ export default function Planes() {
                           <>
                             {precioConDescuento.toFixed(0)}
                             <span className="text-lg text-blue-500"> USD</span>
-                            <span className="block text-sm text-gray-400">
-                              {" "}
-                              (Antes {precio.toFixed(0)} USD)
-                            </span>
+                            <span className="block text-sm text-gray-400"> (Antes {precio.toFixed(0)} USD)</span>
                           </>
                         ) : (
                           <>
@@ -175,6 +178,39 @@ export default function Planes() {
           })}
         </div>
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        className="fixed inset-0 flex items-center justify-center p-4 bg-black bg-opacity-50"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+      >
+        <div className="relative bg-white rounded-lg shadow-lg p-6 max-w-sm mx-auto text-center">
+          <button
+            onClick={closeModal}
+            className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 transition duration-150"
+          >
+            &times;
+          </button>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Iniciar sesión o registrarse</h2>
+          <p className="text-gray-600 mb-6">Para ver más información sobre el plan, debe iniciar sesión o registrarse. ¡Es totalmente gratis!</p>
+          <div className="flex flex-col space-y-4">
+            <button
+              onClick={handleLogin}
+              className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow flex items-center justify-center space-x-2 hover:bg-blue-600 transition duration-300"
+            >
+              <FaSignInAlt className="w-5 h-5" />
+              <span>Iniciar sesión</span>
+            </button>
+            <button
+              onClick={handleRegister}
+              className="bg-green-500 text-white py-2 px-4 rounded-lg shadow flex items-center justify-center space-x-2 hover:bg-green-600 transition duration-300"
+            >
+              <FaUserPlus className="w-5 h-5" />
+              <span>Registrarse</span>
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
