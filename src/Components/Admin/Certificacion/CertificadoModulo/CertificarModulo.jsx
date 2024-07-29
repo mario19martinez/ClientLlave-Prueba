@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function CertificarModulo() {
@@ -6,9 +7,11 @@ export default function CertificarModulo() {
   const [selectedNivel, setSelectedNivel] = useState(null);
   const [grupos, setGrupos] = useState([]);
   const [selectedGrupo, setSelectedGrupo] = useState(null);
-  const [usuarios, setUsuarios] = useState([]);
   const [modulos, setModulos] = useState([]);
   const [error, setError] = useState('');
+  const [nivelesVisible, setNivelesVisible] = useState(true);
+  const [gruposVisible, setGruposVisible] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchNiveles();
@@ -32,15 +35,6 @@ export default function CertificarModulo() {
     }
   };
 
-  const fetchUsuarios = async (nivelId, grupoId) => {
-    try {
-      const response = await axios.get(`/nivel/${nivelId}/grupos/${grupoId}/usuarios`);
-      setUsuarios(Array.isArray(response.data) ? response.data : []);
-    } catch (err) {
-      setError('Error al cargar los usuarios.');
-    }
-  };
-
   const fetchModulos = async (grupoId) => {
     try {
       const response = await axios.get(`/grupo/${grupoId}/modulos`);
@@ -53,103 +47,115 @@ export default function CertificarModulo() {
   const handleNivelSelect = (nivel) => {
     setSelectedNivel(nivel);
     setSelectedGrupo(null);
-    setUsuarios([]);
     setModulos([]);
     fetchGrupos(nivel.id);
   };
 
   const handleGrupoSelect = (grupo) => {
     setSelectedGrupo(grupo);
-    fetchUsuarios(selectedNivel.id, grupo.id);
     fetchModulos(grupo.id);
   };
 
+  const handleModuloSelect = (modulo) => {
+    navigate(`/admin/certificado/CertificarModulo/${modulo.id}/${selectedGrupo.id}/${selectedNivel.id}`);
+  };
+
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Certificar Módulo</h1>
-      {error && <div className="text-red-500">{error}</div>}
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Certificar Módulo</h1>
+      {error && <div className="text-red-500 mb-4">{error}</div>}
 
-      <div className="flex">
-        <div className="w-1/3">
-          <h2 className="text-xl font-semibold mb-2">Niveles</h2>
-          <table className="min-w-full bg-white border">
-            <thead>
-              <tr>
-                <th className="px-4 py-2">Nombre del Nivel</th>
-              </tr>
-            </thead>
-            <tbody>
-              {niveles.map((nivel) => (
-                <tr key={nivel.id} onClick={() => handleNivelSelect(nivel)} className="cursor-pointer hover:bg-gray-100">
-                  <td className="border px-4 py-2">{nivel.name}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {selectedNivel && (
-          <div className="w-1/3 ml-4">
-            <h2 className="text-xl font-semibold mb-2">Grupos de {selectedNivel.name}</h2>
-            <table className="min-w-full bg-white border">
-              <thead>
-                <tr>
-                  <th className="px-4 py-2">Nombre del Grupo</th>
-                </tr>
-              </thead>
-              <tbody>
-                {grupos.map((grupo) => (
-                  <tr key={grupo.id} onClick={() => handleGrupoSelect(grupo)} className="cursor-pointer hover:bg-gray-100">
-                    <td className="border px-4 py-2">{grupo.name}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div>
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-semibold mb-3 text-gray-700">Niveles</h2>
+            <button onClick={() => setNivelesVisible(!nivelesVisible)} className="text-gray-500 hover:text-gray-700">
+              {nivelesVisible ? 'Minimizar' : 'Maximizar'}
+            </button>
           </div>
-        )}
-      </div>
-
-      {selectedGrupo && (
-        <div className="mt-4">
-          <div className="flex">
-            <div className="w-1/2">
-              <h2 className="text-xl font-semibold mb-2">Usuarios del Grupo {selectedGrupo.name}</h2>
-              <table className="min-w-full bg-white border">
+          {nivelesVisible && (
+            <div className="bg-white shadow-md rounded-lg overflow-hidden">
+              <table className="min-w-full bg-white">
                 <thead>
                   <tr>
-                    <th className="px-4 py-2">Nombre del Usuario</th>
+                    <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Nombre del Nivel
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {usuarios.map((usuario) => (
-                    <tr key={usuario.sub} className="hover:bg-gray-100">
-                      <td className="border px-4 py-2">{usuario.name} {usuario.last_name}</td>
+                  {niveles.map((nivel) => (
+                    <tr key={nivel.id} onClick={() => handleNivelSelect(nivel)} className="cursor-pointer hover:bg-gray-100">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-b border-gray-200">
+                        {nivel.name}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+          )}
+        </div>
 
-            <div className="w-1/2 ml-4">
-              <h2 className="text-xl font-semibold mb-2">Módulos del Grupo {selectedGrupo.name}</h2>
-              <table className="min-w-full bg-white border">
+        {selectedNivel && (
+          <div>
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-semibold mb-3 text-gray-700">Grupos de {selectedNivel.name}</h2>
+              <button onClick={() => setGruposVisible(!gruposVisible)} className="text-gray-500 hover:text-gray-700">
+                {gruposVisible ? 'Minimizar' : 'Maximizar'}
+              </button>
+            </div>
+            {gruposVisible && (
+              <div className="bg-white shadow-md rounded-lg overflow-hidden">
+                <table className="min-w-full bg-white">
+                  <thead>
+                    <tr>
+                      <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Nombre del Grupo
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {grupos.map((grupo) => (
+                      <tr key={grupo.id} onClick={() => handleGrupoSelect(grupo)} className="cursor-pointer hover:bg-gray-100">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-b border-gray-200">
+                          {grupo.name}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
+        {selectedGrupo && (
+          <div className="lg:col-span-2">
+            <h2 className="text-2xl font-semibold mb-3 text-gray-700">Módulos del Grupo {selectedGrupo.name}</h2>
+            <div className="bg-white shadow-md rounded-lg overflow-hidden">
+              <table className="min-w-full bg-white">
                 <thead>
                   <tr>
-                    <th className="px-4 py-2">Nombre del Módulo</th>
+                    <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Nombre del Módulo
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {modulos.map((modulo) => (
-                    <tr key={modulo.id} className="hover:bg-gray-100">
-                      <td className="border px-4 py-2">{modulo.titulo}</td>
+                    <tr key={modulo.id} onClick={() => handleModuloSelect(modulo)} className="cursor-pointer hover:bg-gray-100">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-b border-gray-200">
+                        {modulo.titulo}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
