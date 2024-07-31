@@ -49,22 +49,22 @@ export default function PlanesDetails() {
           buttonRef.innerHTML = ""; // Limpiar el contenido previo
 
           const script = document.createElement("script");
-          script.src = "https://checkout.epayco.co/checkout.js";
-          script.setAttribute("data-epayco-key", "71e21621508a9e6b107778f67e08860e");
-          script.className = "epayco-button";
-          script.setAttribute("data-epayco-amount", Math.round(plan.Precio * 100).toString()); // Convertir a centavos
-          script.setAttribute("data-epayco-tax", "0.00");
-          script.setAttribute("data-epayco-tax-ico", "0.00");
-          script.setAttribute("data-epayco-tax-base", Math.round(plan.Precio * 100).toString());
-          script.setAttribute("data-epayco-name", plan.name || "Plan");
-          script.setAttribute("data-epayco-description", plan.descripcion || "Descripción del plan");
-          script.setAttribute("data-epayco-currency", "cop");
-          script.setAttribute("data-epayco-country", "CO");
-          script.setAttribute("data-epayco-test", "true");
-          script.setAttribute("data-epayco-external", "false");
-          script.setAttribute("data-epayco-response", "https://www.llaveparalasnaciones.com/Compra_Exitosa/");
-          script.setAttribute("data-epayco-confirmation", "https://apillave-ebd57605aa78.herokuapp.com/epayco/confirmation");
-          script.setAttribute("data-epayco-button", "https://multimedia.epayco.co/dashboard/btns/btn10.png");
+        script.src = "https://checkout.epayco.co/checkout.js";
+        script.setAttribute("data-epayco-key", "71e21621508a9e6b107778f67e08860e");
+        script.setAttribute("class", "epayco-button");
+        script.setAttribute("data-epayco-amount", Math.round(plan.Precio * 100).toString()); // Convertir a centavos
+        script.setAttribute("data-epayco-tax", "0.00");
+        script.setAttribute("data-epayco-tax-ico", "0.00");
+        script.setAttribute("data-epayco-tax-base", Math.round(plan.Precio * 100).toString());
+        script.setAttribute("data-epayco-name", plan.name || "Botón para pruebas");
+        script.setAttribute("data-epayco-description", plan.descripcion || "Botón para pruebas");
+        script.setAttribute("data-epayco-currency", "usd");
+        script.setAttribute("data-epayco-country", "CO");
+        script.setAttribute("data-epayco-test", "true");
+        script.setAttribute("data-epayco-external", "false");
+        script.setAttribute("data-epayco-response", "https://www.llaveparalasnaciones.com/Compra_Exitosa/");
+        script.setAttribute("data-epayco-confirmation", "https://apillave-ebd57605aa78.herokuapp.com/epayco/confirmation");
+        script.setAttribute("data-epayco-button", "https://multimedia.epayco.co/dashboard/btns/btn10.png");
           script.setAttribute("data-epayco-customer_id", userInfo.sub || "");
           script.setAttribute("data-epayco-extra1", userInfo.sub || "");
 
