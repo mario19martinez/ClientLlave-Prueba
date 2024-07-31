@@ -75,6 +75,7 @@ export default function PlanesDetails() {
   }, [plan, userInfo]);
 
 
+
   if (loading) {
     return (
       <div className="text-center py-20 text-lg font-semibold">Cargando...</div>
