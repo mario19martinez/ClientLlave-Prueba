@@ -19,7 +19,7 @@ export default function MonitorSelected({ grupoId, nivelId, userSub }) {
         Atrás
       </button>
       <div className="max-w-4xl w-full grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
-        <div onClick={() => navigate(`/Monitor/Cursos/GrupoDetais/${grupoId}/${nivelId}`)}>
+        <div onClick={() => navigate(`/Monitor/Cursos/Modulos/Seguimiento/${nivelId}/${grupoId}/${userSub}`)}>
           <Card
             icon={<FaRegChartBar className="text-blue-500" size={40} />}
             title="Seguimiento"
@@ -57,4 +57,5 @@ Card.propTypes = {
 MonitorSelected.propTypes = {
     grupoId: PropTypes.string.isRequired,
     nivelId: PropTypes.string.isRequired,
+    userSub: PropTypes.string.isRequired,
   };

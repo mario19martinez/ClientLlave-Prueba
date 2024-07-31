@@ -1,29 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import Modal from "react-modal";
 import PropTypes from "prop-types";
-import PreviewIcon from "@mui/icons-material/Preview";
-import Tooltip from "@mui/material/Tooltip";
-import UserActivity from "../Admin/NivelAdmin/UserGrupo/UserActivity";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
-import { TextField } from "@mui/material";
 
-function UsersGrupoMonitor({ nivelId, grupoId }) {
+function UsersGrupoMonitor({ nivelId, grupoId, moduloId }) {
   const [usuarios, setUsuarios] = useState([]);
   const [filteredUsuarios, setFilteredUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activityModalIsOpen, setActivityModalIsOpen] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const usersPerPage = 10;
+  const [clases, setClases] = useState([]);
+  const [loadingClases, setLoadingClases] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [modalDetails, setModalDetails] = useState({ name: "", resumen: "" });
+  const [actividadUsuarios, setActividadUsuarios] = useState({});
 
   useEffect(() => {
     const fetchUsuarios = async () => {
       try {
-        const response = await axios.get(
-          `/nivel/${nivelId}/grupos/${grupoId}/usuarios`
-        );
+        const response = await axios.get(`/nivel/${nivelId}/grupos/${grupoId}/usuarios`);
         setUsuarios(response.data);
         setLoading(false);
       } catch (error) {
@@ -35,14 +32,34 @@ function UsersGrupoMonitor({ nivelId, grupoId }) {
   }, [nivelId, grupoId]);
 
   useEffect(() => {
+    const fetchClases = async () => {
+      try {
+        const response = await axios.get(`/nivel/${nivelId}/modulo/${moduloId}/clases`);
+        setClases(response.data);
+        setLoadingClases(false);
+      } catch (error) {
+        console.error("Error fetching clases:", error);
+      }
+    };
+
+    fetchClases();
+  }, [nivelId, moduloId]);
+
+  useEffect(() => {
     setFilteredUsuarios(usuarios);
   }, [usuarios]);
 
-  useEffect(() => {
-    filterUsuarios();
-  }, [searchTerm]);
+  const fetchUserActivity = useCallback(async (userSub) => {
+    try {
+      const response = await axios.get(`/actividad/${grupoId}/usuario/${userSub}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching user activity:", error);
+      return [];
+    }
+  }, [grupoId]);
 
-  const filterUsuarios = () => {
+  const filterUsuarios = useCallback(() => {
     let filteredData = usuarios;
 
     if (searchTerm.trim() !== "") {
@@ -56,33 +73,26 @@ function UsersGrupoMonitor({ nivelId, grupoId }) {
     }
 
     setFilteredUsuarios(filteredData);
-  };
+  }, [searchTerm, usuarios]);
 
-  const handleDeleteUser = async (userSub, userName) => {
-    try {
-      const confirmDelete = window.confirm(
-        `¿Estás seguro de eliminar al usuario ${userName} del grupo?`
-      );
-      if (confirmDelete) {
-        await axios.delete(`/usuario/${userSub}/grupo/${grupoId}`);
-        const updatedUsers = usuarios.filter(
-          (usuario) => usuario.sub !== userSub
-        );
-        setUsuarios(updatedUsers);
+  useEffect(() => {
+    filterUsuarios();
+  }, [searchTerm, filterUsuarios]);
+
+  useEffect(() => {
+    const fetchActividades = async () => {
+      const actividades = {};
+      for (const usuario of usuarios) {
+        const actividad = await fetchUserActivity(usuario.sub);
+        actividades[usuario.sub] = actividad;
       }
-    } catch (error) {
-      console.error("Error al eliminar el usuario:", error);
+      setActividadUsuarios(actividades);
+    };
+
+    if (usuarios.length > 0) {
+      fetchActividades();
     }
-  };
-
-  const openActivityModal = (userId) => {
-    setSelectedUserId(userId);
-    setActivityModalIsOpen(true);
-  };
-
-  const closeActivityModal = () => {
-    setActivityModalIsOpen(false);
-  };
+  }, [usuarios, fetchUserActivity]);
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -92,28 +102,36 @@ function UsersGrupoMonitor({ nivelId, grupoId }) {
   const endIndex = startIndex + usersPerPage;
   const currentUsers = filteredUsuarios.slice(startIndex, endIndex);
 
-  if (loading) {
-    return <div>Cargando Usuarios...</div>;
+  const handleOpenModal = (name, resumen) => {
+    setModalDetails({ name, resumen });
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setModalDetails({ name: "", resumen: "" });
+  };
+
+  const removeHtmlTags = (html) => {
+    return html.replace(/<[^>]*>/g, '').slice(0, 30);
+  };
+
+  const getCellColor = (progreso) => {
+    if (progreso === null) {
+      return "bg-gray-300";
+    } else if (progreso >= 80) {
+      return "bg-green-400";
+    } else {
+      return "bg-yellow-400";
+    }
+  };
+
+  if (loading || loadingClases) {
+    return <div>Cargando...</div>;
   }
 
   return (
     <div className="overflow-x-auto translate-y-4 w-full">
-
-      <Modal
-        isOpen={activityModalIsOpen}
-        onRequestClose={closeActivityModal}
-        className="flex justify-center items-center"
-        overlayClassName="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-75"
-      >
-        {selectedUserId && (
-          <UserActivity
-            userSub={selectedUserId}
-            grupoId={grupoId}
-            closeModal={closeActivityModal}
-          />
-        )}
-      </Modal>
-
       <div className="flex space-x-4 mb-4">
         <TextField
           label="Buscar por Nombre, Apellido, Correo o Teléfono"
@@ -124,50 +142,94 @@ function UsersGrupoMonitor({ nivelId, grupoId }) {
         />
       </div>
 
-      <table className="min-w-full bg-white">
+      <div className="my-4 flex justify-center space-x-4">
+        <div className="flex items-center space-x-2">
+          <div className="w-4 h-4 bg-gray-300"></div>
+          <span>No vista</span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <div className="w-4 h-4 bg-yellow-400"></div>
+          <span>En progreso</span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <div className="w-4 h-4 bg-green-400"></div>
+          <span>Vista</span>
+        </div>
+      </div>
+
+      <table className="min-w-full bg-white border border-gray-300">
         <thead>
           <tr>
-            <th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="py-2 px-4 border-b border-blue-300 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Usuario
             </th>
-            <th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Teléfono
-            </th>
-            <th className="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Acciones
-            </th>
+            {clases
+              .filter(clase => clase.url && clase.texto)
+              .map((clase, index) => (
+                <th
+                  key={clase.id}
+                  className="py-2 px-4 border-b border-blue-300 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  {index + 1}
+                  <div>
+                    <button
+                      className="text-xs text-blue-500"
+                      onClick={() => handleOpenModal(clase.name, clase.texto)}
+                    >
+                      Ver detalles
+                    </button>
+                  </div>
+                </th>
+              ))}
           </tr>
         </thead>
         <tbody>
           {currentUsers.map((usuario) => (
             <tr key={usuario.sub}>
-              <td className="py-3 px-4 border-b border-gray-200 text-sm">
-                {usuario.name} {usuario.last_name}
+              <td className="py-3 px-4 border-b border-blue-300 text-sm">
+                <div className="flex flex-col">
+                  <span className="font-medium">{usuario.name} {usuario.last_name}</span>
+                  <span className="text-gray-500">{usuario.telefono}</span>
+                </div>
               </td>
-              <td className="py-3 px-4 border-b border-gray-200 text-sm">
-                {usuario.telefono}
-              </td>
-              <td className="py-3 px-4 border-b border-gray-200 text-sm">
-                <Tooltip title="Ver Actividad" arrow>
-                  <button
-                    className="text-blue-500 hover:text-blue-700 mr-2"
-                    onClick={() => openActivityModal(usuario.sub)}
-                  >
-                    <PreviewIcon />
-                  </button>
-                </Tooltip>
-              </td>
+              {clases
+                .filter(clase => clase.url && clase.texto)
+                .map((clase) => {
+                  const actividad = actividadUsuarios[usuario.sub]?.find(a => a.nivelclase.name === clase.name);
+                  const progreso = actividad ? actividad.progreso : null;
+                  return (
+                    <td
+                      key={clase.id}
+                      className={`py-3 px-4 border-b border-blue-300 text-sm ${getCellColor(progreso)} border-r border-blue-300`}
+                    />
+                  );
+                })}
             </tr>
           ))}
         </tbody>
       </table>
 
-      <Pagination
-        count={Math.ceil(filteredUsuarios.length / usersPerPage)}
-        page={page}
-        onChange={handlePageChange}
-        className="my-4"
-      />
+      <div className="my-4">
+        <Pagination
+          count={Math.ceil(filteredUsuarios.length / usersPerPage)}
+          page={page}
+          onChange={handlePageChange}
+          color="primary"
+        />
+      </div>
+
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        <DialogTitle>Detalles de la Clase</DialogTitle>
+        <DialogContent>
+          <p><strong>Nombre:</strong> {modalDetails.name}</p>
+          <p><strong>Resumen:</strong> {removeHtmlTags(modalDetails.resumen)}</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal} color="primary">
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
@@ -175,6 +237,7 @@ function UsersGrupoMonitor({ nivelId, grupoId }) {
 UsersGrupoMonitor.propTypes = {
   nivelId: PropTypes.string.isRequired,
   grupoId: PropTypes.string.isRequired,
+  moduloId: PropTypes.string.isRequired,
 };
 
 export default UsersGrupoMonitor;
