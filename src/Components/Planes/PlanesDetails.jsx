@@ -216,7 +216,7 @@ export default function PlanesDetails() {
               >
                 Comprar Ahora
               </a>
-              <div className="mt-8">
+              <div className="mt-0 ml-4">
                 <div ref={epaycoButtonRef} className="text-center">
                   {/* Aquí se agregará el botón ePayco */}
                 </div>
