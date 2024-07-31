@@ -1,12 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
 export default function PlanesDetails() {
   const { idPlan } = useParams();
   const navigate = useNavigate(); // Hook para navegar
+  //const ePaycoButtonRefs = useRef([]);
   const [plan, setPlan] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState(null);
+  //const [scriptLoaded, setScriptLoaded] = useState(false);
+  const epaycoButtonRefs = useRef([]);
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("/user-info", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUserInfo(response.data);
+      } catch (error) {
+        console.error("Error al obtener informacion del usuario:", error);
+      }
+    };
+    getUserInfo();
+  }, []);
 
   useEffect(() => {
     const fetchPlan = async () => {
@@ -23,23 +42,64 @@ export default function PlanesDetails() {
     fetchPlan();
   }, [idPlan]);
 
+  useEffect(() => {
+    if (userInfo && plan) {
+      epaycoButtonRefs.current.forEach((buttonRef, index) => {
+        if (buttonRef) {
+          buttonRef.innerHTML = ""; // Limpiar el contenido previo
+
+          const script = document.createElement("script");
+          script.src = "https://checkout.epayco.co/checkout.js";
+          script.setAttribute("data-epayco-key", "71e21621508a9e6b107778f67e08860e");
+          script.className = "epayco-button";
+          script.setAttribute("data-epayco-amount", Math.round(plan.Precio * 100).toString()); // Convertir a centavos
+          script.setAttribute("data-epayco-tax", "0.00");
+          script.setAttribute("data-epayco-tax-ico", "0.00");
+          script.setAttribute("data-epayco-tax-base", Math.round(plan.Precio * 100).toString());
+          script.setAttribute("data-epayco-name", plan.name || "Plan");
+          script.setAttribute("data-epayco-description", plan.descripcion || "Descripción del plan");
+          script.setAttribute("data-epayco-currency", "cop");
+          script.setAttribute("data-epayco-country", "CO");
+          script.setAttribute("data-epayco-test", "true");
+          script.setAttribute("data-epayco-external", "false");
+          script.setAttribute("data-epayco-response", "https://www.llaveparalasnaciones.com/Compra_Exitosa/");
+          script.setAttribute("data-epayco-confirmation", "https://apillave-ebd57605aa78.herokuapp.com/epayco/confirmation");
+          script.setAttribute("data-epayco-button", "https://multimedia.epayco.co/dashboard/btns/btn10.png");
+          script.setAttribute("data-epayco-customer_id", userInfo.sub || "");
+          script.setAttribute("data-epayco-extra1", userInfo.sub || "");
+
+          buttonRef.appendChild(script);
+        }
+      });
+    }
+  }, [plan, userInfo]);
+
+
   if (loading) {
-    return <div className="text-center py-20 text-lg font-semibold">Cargando...</div>;
+    return (
+      <div className="text-center py-20 text-lg font-semibold">Cargando...</div>
+    );
   }
 
   if (!plan) {
-    return <div className="text-center py-20 text-lg font-semibold">No se encontró el plan.</div>;
+    return (
+      <div className="text-center py-20 text-lg font-semibold">
+        No se encontró el plan.
+      </div>
+    );
   }
 
   const precio = parseFloat(plan.Precio);
   const porcentajeDescuento = parseFloat(plan.porcentaje_descuento) || 0;
-  const precioConDescuento = plan.descuento ? precio * (1 - (porcentajeDescuento / 100)) : precio;
+  const precioConDescuento = plan.descuento
+    ? precio * (1 - porcentajeDescuento / 100)
+    : precio;
 
   return (
     <div className="w-full h-full bg-blue-50 py-16">
       <div className="relative px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
-        <button 
-          onClick={() => navigate(-1)} 
+        <button
+          onClick={() => navigate(-1)}
           className="absolute top-4 left-4 flex items-center text-blue-700 hover:text-blue-900 focus:outline-none"
         >
           <svg
@@ -56,9 +116,12 @@ export default function PlanesDetails() {
           <span className="text-lg font-medium">Atrás</span>
         </button>
         <div className="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
-          <h2 className="text-3xl font-bold leading-tight text-gray-800 sm:text-4xl">{plan.name}</h2>
+          <h2 className="text-3xl font-bold leading-tight text-gray-800 sm:text-4xl">
+            {plan.name}
+          </h2>
           <p className="text-base text-gray-600 md:text-lg mt-4">
-            {plan.descripcion || "No hay descripción disponible para este plan."}
+            {plan.descripcion ||
+              "No hay descripción disponible para este plan."}
           </p>
         </div>
         <div className="max-w-screen-lg mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
@@ -70,7 +133,10 @@ export default function PlanesDetails() {
                     <>
                       ${precioConDescuento.toFixed(2)}
                       <span className="text-xl text-teal-400"> USD</span>
-                      <span className="block text-lg text-gray-500 line-through"> ${precio.toFixed(2)} USD</span>
+                      <span className="block text-lg text-gray-500 line-through">
+                        {" "}
+                        ${precio.toFixed(2)} USD
+                      </span>
                     </>
                   ) : (
                     <>
@@ -86,41 +152,45 @@ export default function PlanesDetails() {
                 </div>
               )}
               <ul className="space-y-4 mt-6">
-                {plan.esquema && plan.esquema.split(',').map((feature, i) => (
-                  <li key={i} className="flex items-center">
-                    <div className="mr-3">
-                      <svg
-                        className="w-5 h-5 text-teal-500"
-                        viewBox="0 0 24 24"
-                        strokeLinecap="round"
-                        strokeWidth="2"
-                      >
-                        <polyline
-                          fill="none"
-                          stroke="currentColor"
-                          points="6,12 10,16 18,8"
-                        />
-                        <circle
-                          cx="12"
-                          cy="12"
-                          fill="none"
-                          r="11"
-                          stroke="currentColor"
-                        />
-                      </svg>
-                    </div>
-                    <p className="text-base lg:text-lg font-medium text-gray-700">{feature.trim()}</p>
-                  </li>
-                ))}
+                {plan.esquema &&
+                  plan.esquema.split(",").map((feature, i) => (
+                    <li key={i} className="flex items-center">
+                      <div className="mr-3">
+                        <svg
+                          className="w-5 h-5 text-teal-500"
+                          viewBox="0 0 24 24"
+                          strokeLinecap="round"
+                          strokeWidth="2"
+                        >
+                          <polyline
+                            fill="none"
+                            stroke="currentColor"
+                            points="6,12 10,16 18,8"
+                          />
+                          <circle
+                            cx="12"
+                            cy="12"
+                            fill="none"
+                            r="11"
+                            stroke="currentColor"
+                          />
+                        </svg>
+                      </div>
+                      <p className="text-base lg:text-lg font-medium text-gray-700">
+                        {feature.trim()}
+                      </p>
+                    </li>
+                  ))}
               </ul>
             </div>
             <div className="flex justify-center mt-8">
               <a
                 href="https://api.whatsapp.com/send?phone=573126096603&text=Hola%2C%20Quiero%20mas%20informaci%C3%B3n%20sobre%20Llave%20Para%20Las%20Naciones."
-                className="inline-flex items-center justify-center text-center h-12 lg:h-14 px-6 lg:px-8 font-semibold tracking-wide text-white transition duration-200 rounded-lg shadow-lg bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="inline-flex items-center justify-center text-center h-10 lg:h-10 px-2 lg:px-2 font-semibold tracking-wide text-white transition duration-200 rounded-lg shadow-lg bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
                 Comprar Ahora
               </a>
+              <div ref={el => epaycoButtonRefs.current[0] = el} className="ml-4"></div>
             </div>
           </div>
         </div>
