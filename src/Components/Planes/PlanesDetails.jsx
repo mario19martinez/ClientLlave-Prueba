@@ -11,6 +11,7 @@ export default function PlanesDetails() {
   const [userInfo, setUserInfo] = useState(null);
   //const [scriptLoaded, setScriptLoaded] = useState(false);
   const epaycoButtonRefs = useRef([]);
+  const epaycoButtonRef = useRef(null);
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -44,36 +45,57 @@ export default function PlanesDetails() {
 
   useEffect(() => {
     if (userInfo && plan) {
-      epaycoButtonRefs.current.forEach((buttonRef, index) => {
-        if (buttonRef) {
-          buttonRef.innerHTML = ""; // Limpiar el contenido previo
-  
-          const script = document.createElement("script");
-          script.src = "https://checkout.epayco.co/checkout.js";
-          script.setAttribute("data-epayco-key", "71e21621508a9e6b107778f67e08860e");
-          script.setAttribute("class", "epayco-button");
-          
-          const amountInCents = Math.round(parseFloat(plan.Precio) * 100).toString();
-          script.setAttribute("data-epayco-amount", amountInCents); // Convertir a centavos
-          
-          script.setAttribute("data-epayco-tax", "0.00");
-          script.setAttribute("data-epayco-tax-ico", "0.00");
-          script.setAttribute("data-epayco-tax-base", amountInCents);
-          script.setAttribute("data-epayco-name", plan.name || "Botón para pruebas");
-          script.setAttribute("data-epayco-description", plan.descripcion || "Botón para pruebas");
-          script.setAttribute("data-epayco-currency", "usd");
-          script.setAttribute("data-epayco-country", "CO"); // Verifica que el país sea correcto
-          script.setAttribute("data-epayco-test", "true");
-          script.setAttribute("data-epayco-external", "false");
-          script.setAttribute("data-epayco-response", "https://www.llaveparalasnaciones.com/Compra_Exitosa/");
-          script.setAttribute("data-epayco-confirmation", "https://apillave-ebd57605aa78.herokuapp.com/epayco/confirmation");
-          script.setAttribute("data-epayco-button", "https://multimedia.epayco.co/dashboard/btns/btn10.png");
-          script.setAttribute("data-epayco-customer_id", userInfo.sub || "");
-          script.setAttribute("data-epayco-extra1", userInfo.sub || "");
-  
-          buttonRef.appendChild(script);
-        }
-      });
+      if (epaycoButtonRef.current) {
+        epaycoButtonRef.current.innerHTML = ""; // Limpiar el contenido previo
+
+        const script = document.createElement("script");
+        script.src = "https://checkout.epayco.co/checkout.js";
+        script.setAttribute("data-epayco-key", "71e21621508a9e6b107778f67e08860e");
+        script.setAttribute("class", "epayco-button");
+        
+//         const precioUSD = parseFloat(plan.Precio);
+// const tasaDeCambioCOP = 100; // Ajusta la tasa de cambio según sea necesario
+// const amountInCOP = (precioUSD * tasaDeCambioCOP * 100).toFixed(0); // Multiplicamos por 100 para convertir dólares a centavos
+//         console.log("Monto en COP:", amountInCOP);
+        
+        script.setAttribute("data-epayco-amount", precioConDescuento); // Monto en centavos
+        script.setAttribute("data-epayco-tax", "0.00");
+        script.setAttribute("data-epayco-tax-ico", "0.00");
+        script.setAttribute("data-epayco-tax-base", precioConDescuento);
+        script.setAttribute("data-epayco-name", plan.name || "Botón para pruebas");
+        script.setAttribute("data-epayco-description", plan.descripcion || "Botón para pruebas");
+        script.setAttribute("data-epayco-currency", "usd"); // Configurar como COP
+        script.setAttribute("data-epayco-country", "US"); // Verifica si esto es correcto para tu caso
+        script.setAttribute("data-epayco-test", "true");
+        script.setAttribute("data-epayco-external", "false");
+        script.setAttribute("data-epayco-response", "https://www.llaveparalasnaciones.com/Compra_Exitosa/");
+        script.setAttribute("data-epayco-confirmation", "https://apillave-ebd57605aa78.herokuapp.com/epayco/confirmation");
+        script.setAttribute("data-epayco-button", "https://multimedia.epayco.co/dashboard/btns/btn10.png");
+        script.setAttribute("data-epayco-customer_id", userInfo.sub || "");
+        script.setAttribute("data-epayco-extra1", userInfo.sub || "");
+
+        epaycoButtonRef.current.appendChild(script);
+
+        // Verificación adicional de la configuración del botón
+        console.log("Configuración del botón:", {
+          "data-epayco-key": "71e21621508a9e6b107778f67e08860e",
+          "data-epayco-amount": precioConDescuento,
+          "data-epayco-tax": "0.00",
+          "data-epayco-tax-ico": "0.00",
+          "data-epayco-tax-base": precioConDescuento,
+          "data-epayco-name": plan.name || "Botón para pruebas",
+          "data-epayco-description": plan.descripcion || "Botón para pruebas",
+          "data-epayco-currency": "cop",
+          "data-epayco-country": "CO",
+          "data-epayco-test": "true",
+          "data-epayco-external": "false",
+          "data-epayco-response": "https://www.llaveparalasnaciones.com/Compra_Exitosa/",
+          "data-epayco-confirmation": "https://apillave-ebd57605aa78.herokuapp.com/epayco/confirmation",
+          "data-epayco-button": "https://multimedia.epayco.co/dashboard/btns/btn10.png",
+          "data-epayco-customer_id": userInfo.sub || "",
+          "data-epayco-extra1": userInfo.sub || "",
+        });
+      }
     }
   }, [plan, userInfo]);
 
@@ -194,7 +216,13 @@ export default function PlanesDetails() {
               >
                 Comprar Ahora
               </a>
-              <div ref={el => epaycoButtonRefs.current[0] = el} className="ml-4"></div>
+              <div className="mt-8">
+                <div ref={epaycoButtonRef} className="text-center">
+                  {/* Aquí se agregará el botón ePayco */}
+                </div>
+                </div>
+              {/* <div ref={el => epaycoButtonRefs.current[0] = el} className="ml-4"></div> */}
+              
             </div>
           </div>
         </div>
