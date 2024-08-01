@@ -16,6 +16,7 @@ function UsersGrupoMonitor({ nivelId, grupoId, moduloId }) {
   const [openModal, setOpenModal] = useState(false);
   const [modalDetails, setModalDetails] = useState({ name: "", resumen: "" });
   const [actividadUsuarios, setActividadUsuarios] = useState({});
+  const [openResponsiveModal, setOpenResponsiveModal] = useState(false);
 
   useEffect(() => {
     const fetchUsuarios = async () => {
@@ -126,6 +127,25 @@ function UsersGrupoMonitor({ nivelId, grupoId, moduloId }) {
     }
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setOpenResponsiveModal(true);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const handleCloseResponsiveModal = () => {
+    setOpenResponsiveModal(false);
+  };
+
   if (loading || loadingClases) {
     return <div>Cargando...</div>;
   }
@@ -227,6 +247,18 @@ function UsersGrupoMonitor({ nivelId, grupoId, moduloId }) {
         <DialogActions>
           <Button onClick={handleCloseModal} color="primary">
             Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={openResponsiveModal} onClose={handleCloseResponsiveModal}>
+        <DialogTitle>Recomendación</DialogTitle>
+        <DialogContent>
+          <p>Para mejorar su experiencia a la hora de las asistencias de los usuarios, se le recomienda entrar desde un PC o tablet.</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseResponsiveModal} color="primary">
+            Entendido
           </Button>
         </DialogActions>
       </Dialog>
