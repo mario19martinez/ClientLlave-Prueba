@@ -10,7 +10,7 @@ export default function PlanesDetails() {
   const [userInfo, setUserInfo] = useState(null);
   const epaycoButtonRef = useRef(null);
 
-  //const { VITE_PUBLIC_KEY } = import.meta.env;
+  const { VITE_PUBLIC_KEY } = import.meta.env;
 
   useEffect(() => {
     const getUserInfo = async () => {
