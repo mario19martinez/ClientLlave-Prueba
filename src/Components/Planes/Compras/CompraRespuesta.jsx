@@ -12,7 +12,7 @@ export default function CompraRespuesta() {
     const fetchUserAndPurchases = async () => {
       try {
         const storedEmail = localStorage.getItem("email");
-        const userResponse = await axios.get(`/users?email=${storedEmail}`);
+        const userResponse = await axios.get(`/user/email/${storedEmail}`);
         const user = userResponse.data;
 
         if (!user || !user.sub) {
