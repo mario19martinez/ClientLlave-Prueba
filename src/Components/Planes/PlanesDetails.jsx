@@ -49,7 +49,7 @@ export default function PlanesDetails() {
 
         const script = document.createElement("script");
         script.src = "https://checkout.epayco.co/checkout.js";
-        script.setAttribute("data-epayco-key", VITE_PUBLIC_KEY);
+        script.setAttribute("data-epayco-key", "5e871d915ac9034a3f9e16eea1001a85");
         script.setAttribute("class", "epayco-button");
         script.setAttribute("data-epayco-amount", precioConDescuento); // Monto en centavos
         script.setAttribute("data-epayco-tax", "0.00");
@@ -59,11 +59,11 @@ export default function PlanesDetails() {
         script.setAttribute("data-epayco-description", plan.descripcion || "Botón para pruebas");
         script.setAttribute("data-epayco-currency", "usd");
         script.setAttribute("data-epayco-country", "CO");
-        script.setAttribute("data-epayco-test", "false");
+        script.setAttribute("data-epayco-test", "true");
         script.setAttribute("data-epayco-external", "false");
-        script.setAttribute("data-epayco-response", "https://www.llaveparalasnaciones.com/Compra_Exitosa/");
+        script.setAttribute("data-epayco-response", "https://www.llaveparalasnaciones.com/Compra_Status/");
         script.setAttribute("data-epayco-confirmation", "https://apillave-ebd57605aa78.herokuapp.com/epayco/confirmation");
-        script.setAttribute("data-epayco-button", "https://multimedia.epayco.co/dashboard/btns/btn10.png");
+        script.setAttribute("data-epayco-button", "https://multimedia.epayco.co/dashboard/btns/btn11.png");
         script.setAttribute("data-epayco-customer_id", userInfo.sub || "");
         script.setAttribute("data-epayco-extra1", userInfo.sub || "");
 
@@ -71,6 +71,36 @@ export default function PlanesDetails() {
       }
     }
   }, [plan, userInfo]);
+
+  // useEffect(() => {
+  //   if (userInfo && plan) {
+  //     if (epaycoButtonRef.current) {
+  //       epaycoButtonRef.current.innerHTML = ""; // Limpiar el contenido previo
+
+  //       const script = document.createElement("script");
+  //       script.src = "https://checkout.epayco.co/checkout.js";
+  //       script.setAttribute("data-epayco-key", VITE_PUBLIC_KEY);
+  //       script.setAttribute("class", "epayco-button");
+  //       script.setAttribute("data-epayco-amount", precioConDescuento); // Monto en centavos
+  //       script.setAttribute("data-epayco-tax", "0.00");
+  //       script.setAttribute("data-epayco-tax-ico", "0.00");
+  //       script.setAttribute("data-epayco-tax-base", precioConDescuento);
+  //       script.setAttribute("data-epayco-name", plan.name || "Botón para pruebas");
+  //       script.setAttribute("data-epayco-description", plan.descripcion || "Botón para pruebas");
+  //       script.setAttribute("data-epayco-currency", "usd");
+  //       script.setAttribute("data-epayco-country", "CO");
+  //       script.setAttribute("data-epayco-test", "false");
+  //       script.setAttribute("data-epayco-external", "false");
+  //       script.setAttribute("data-epayco-response", "https://www.llaveparalasnaciones.com/Compra_Exitosa/");
+  //       script.setAttribute("data-epayco-confirmation", "https://apillave-ebd57605aa78.herokuapp.com/epayco/confirmation");
+  //       script.setAttribute("data-epayco-button", "https://multimedia.epayco.co/dashboard/btns/btn10.png");
+  //       script.setAttribute("data-epayco-customer_id", userInfo.sub || "");
+  //       script.setAttribute("data-epayco-extra1", userInfo.sub || "");
+
+  //       epaycoButtonRef.current.appendChild(script);
+  //     }
+  //   }
+  // }, [plan, userInfo]);
 
   if (loading) {
     return (
@@ -190,6 +220,9 @@ export default function PlanesDetails() {
               <div ref={epaycoButtonRef} className="mt-0 ml-4 flex justify-center">
                 {/* Aquí se renderiza el botón de ePayco */}
               </div>
+              {/* <div ref={epaycoButtonRef} className="mt-0 ml-4 flex justify-center">
+                 Aquí se renderiza el botón de ePayco 
+              </div> */}
             </div>
           </div>
         </div>
