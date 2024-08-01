@@ -6,24 +6,42 @@ import axios from "axios";
 export default function CompraRespuesta() {
   const navigate = useNavigate();
   const [status, setStatus] = useState(null);
+  const [message, setMessage] = useState("Cargando...");
 
   useEffect(() => {
-    const fetchLatestPurchase = async () => {
+    const fetchUserAndPurchases = async () => {
       try {
-        const response = await axios.get("/purchases");
-        const data = response.data;
-        if (data && data.length > 0) {
-          const latestPurchase = data.sort(
+        const storedEmail = localStorage.getItem("email");
+        const userResponse = await axios.get(`/users?email=${storedEmail}`);
+        const user = userResponse.data;
+
+        if (!user || !user.sub) {
+          setMessage("No se ha detectado que ha hecho una compra.");
+          return;
+        }
+
+        const purchasesResponse = await axios.get("/purchases");
+        const purchases = purchasesResponse.data;
+
+        const userPurchases = purchases.filter(
+          (purchase) => purchase.userSub === user.sub
+        );
+
+        if (userPurchases.length > 0) {
+          const latestPurchase = userPurchases.sort(
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
           )[0];
           setStatus(latestPurchase.status);
+        } else {
+          setMessage("No se ha detectado que ha hecho una compra.");
         }
       } catch (error) {
-        console.error("Error fetching purchases:", error);
+        console.error("Error fetching purchases or user:", error);
+        setMessage("Error al cargar la información de compras.");
       }
     };
 
-    fetchLatestPurchase();
+    fetchUserAndPurchases();
   }, []);
 
   const handleContinuar = () => {
@@ -61,7 +79,7 @@ export default function CompraRespuesta() {
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             ></path>
           </svg>
-          <p className="text-gray-500">Cargando...</p>
+          <p className="text-gray-500">{message}</p>
         </div>
       </div>
     );
