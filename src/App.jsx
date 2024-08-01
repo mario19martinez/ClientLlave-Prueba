@@ -32,7 +32,7 @@ import ViewErrorPaginaConstruccion from "./views/ViewErrores/ViewErrorPaginaCons
 import ViewFormRegistroUsersIglesia from "./views/ViewRigistro/ViewFormRegistroUsersIglesia";
 import ViewPlanes from "./views/ViewPlanes/ViewPlanes";
 import ViewPlanesDetailsHome from "./views/ViewPlanes/ViewPlanesDetails";
-import ViewCompraExitosa from "./views/ViewPlanes/ViewCompraExitosa";
+import ViewCompraStatus from "./views/ViewsEstadosDeCompra/ViewCompraStatus";
 
 //Imports de estudiantes
 import ViewMenuStudent from "./views/ViewMenuStudent/ViewMenuStudent";
@@ -180,7 +180,7 @@ import ViewModuloUserDetail from "./views/ViewMenuStudent/ViewModulosUser/ViewMo
 
 import axios from "axios";
 
-// axios.defaults.baseURL = "http://localhost:3001";
+//axios.defaults.baseURL = "http://localhost:3001";
 axios.defaults.baseURL = "https://apillave-ebd57605aa78.herokuapp.com/";  
 
 const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -335,7 +335,7 @@ function App() {
         <Route path="/RegistroDatos" element={<ViewFormRegistroUsersIglesia />}/>
         <Route path="/Planes" element={<ViewPlanes/>} />
         <Route path="/Planes/:idPlan" element={<ViewPlanesDetailsHome/>} />
-        <Route path="/Compra_Exitosa" element={<ViewCompraExitosa/>} />
+        <Route path="/Compra_Status" element={<ViewCompraStatus/>} />
         {/*<Route path="/cursos" element={<Cursos />} />*/}
     
         {/*Rutas pagina no asociadas */}
