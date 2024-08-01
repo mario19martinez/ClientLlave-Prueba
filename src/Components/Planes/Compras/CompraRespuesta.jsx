@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaWhatsapp } from "react-icons/fa";
+import axios from "axios";
 
 export default function CompraRespuesta() {
   const navigate = useNavigate();
@@ -9,8 +10,8 @@ export default function CompraRespuesta() {
   useEffect(() => {
     const fetchLatestPurchase = async () => {
       try {
-        const response = await fetch("/purchases");
-        const data = await response.json();
+        const response = await axios.get("/purchases");
+        const data = response.data;
         if (data && data.length > 0) {
           const latestPurchase = data.sort(
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
