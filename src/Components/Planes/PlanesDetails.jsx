@@ -49,7 +49,7 @@ export default function PlanesDetails() {
 
         const script = document.createElement("script");
         script.src = "https://checkout.epayco.co/checkout.js";
-        script.setAttribute("data-epayco-key", "5e871d915ac9034a3f9e16eea1001a85");
+        script.setAttribute("data-epayco-key", "71e21621508a9e6b107778f67e08860e");
         script.setAttribute("class", "epayco-button");
         script.setAttribute("data-epayco-amount", precioConDescuento); // Monto en centavos
         script.setAttribute("data-epayco-tax", "0.00");
