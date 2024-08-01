@@ -33,6 +33,7 @@ import ViewFormRegistroUsersIglesia from "./views/ViewRigistro/ViewFormRegistroU
 import ViewPlanes from "./views/ViewPlanes/ViewPlanes";
 import ViewPlanesDetailsHome from "./views/ViewPlanes/ViewPlanesDetails";
 import ViewCompraStatus from "./views/ViewsEstadosDeCompra/ViewCompraStatus";
+import ViewDonacionRespuesta from "./views/ViewsEstadosDeCompra/ViewDonacionRespuesta";
 
 //Imports de estudiantes
 import ViewMenuStudent from "./views/ViewMenuStudent/ViewMenuStudent";
@@ -336,6 +337,7 @@ function App() {
         <Route path="/Planes" element={<ViewPlanes/>} />
         <Route path="/Planes/:idPlan" element={<ViewPlanesDetailsHome/>} />
         <Route path="/Compra_Status" element={<ViewCompraStatus/>} />
+        <Route path="/Donacion_Respuesta" element={<ViewDonacionRespuesta/>} />
         {/*<Route path="/cursos" element={<Cursos />} />*/}
     
         {/*Rutas pagina no asociadas */}

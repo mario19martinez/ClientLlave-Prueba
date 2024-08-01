@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
 
 function SeguimientoClases() {
   const [seguimientos, setSeguimientos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCurso, setSelectedCurso] = useState('');
-  const [cursos, setCursos] = useState([])
+  const [selectedCurso, setSelectedCurso] = useState("");
+  const [cursos, setCursos] = useState([]);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 20;
@@ -27,13 +27,13 @@ function SeguimientoClases() {
 
     const fetchCursos = async () => {
       try {
-        const response = await axios.get('/cursos');
+        const response = await axios.get("/cursos");
         setCursos(response.data);
       } catch (error) {
-        setError(error.message)
-        console.error('Error al obtener los cursos:', error);
+        setError(error.message);
+        console.error("Error al obtener los cursos:", error);
       }
-    }
+    };
 
     fetchSeguimiento();
     fetchCursos();
@@ -45,7 +45,7 @@ function SeguimientoClases() {
 
   const handleCursoChange = (e) => {
     setSelectedCurso(e.target.value);
-  }
+  };
 
   const filteredSeguimientos = seguimientos.filter((seguimiento) => {
     const userMatch =
@@ -64,7 +64,7 @@ function SeguimientoClases() {
       typeof seguimiento.clase === "string" &&
       seguimiento.clase.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const selectedCursoMatch = selectedCurso
+    const selectedCursoMatch = selectedCurso
       ? seguimiento.cursoId === parseInt(selectedCurso)
       : true;
 
@@ -73,12 +73,19 @@ function SeguimientoClases() {
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentSeguimientos = filteredSeguimientos.slice(indexOfFirstUser, indexOfLastUser);
+  const currentSeguimientos = filteredSeguimientos.slice(
+    indexOfFirstUser,
+    indexOfLastUser
+  );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filteredSeguimientos.length / usersPerPage); i++) {
+  for (
+    let i = 1;
+    i <= Math.ceil(filteredSeguimientos.length / usersPerPage);
+    i++
+  ) {
     pageNumbers.push(i);
   }
 
@@ -103,26 +110,29 @@ function SeguimientoClases() {
 
   return (
     <div className="py-5 px-10 ">
-      <Tooltip title="Volver" arrow placement="bottom"
-      slotProps={{
-        popper: {
-          modifiers: [
-            {
-              name: 'offset',
-              options: {
-                offset: [0, -6],
+      <Tooltip
+        title="Volver"
+        arrow
+        placement="bottom"
+        slotProps={{
+          popper: {
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, -6],
+                },
               },
-            },
-          ],
-        },
-      }}
+            ],
+          },
+        }}
       >
-      <button
-        onClick={goBack}
-        className="bg-blue-500 text-white w-20 h-10 mb-8 font-semibold py-0 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-1"
-      >
-        <KeyboardBackspaceIcon fontSize="large" />
-      </button>
+        <button
+          onClick={goBack}
+          className="bg-blue-500 text-white w-20 h-10 mb-8 font-semibold py-0 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-1"
+        >
+          <KeyboardBackspaceIcon fontSize="large" />
+        </button>
       </Tooltip>
       <h1 className="text-xl font-bold mb-6 text-gray-700">
         Seguimiento de Clases
@@ -172,19 +182,20 @@ function SeguimientoClases() {
                   {seguimiento.curso?.name}
                 </td>
                 <td className="py-3 px-6 text-left">
-                  {seguimiento.clase.name}
+                  {seguimiento.clase?.name ?? "Clase no disponible"}
                 </td>
                 <td className="py-3 px-6 text-left">
                   {new Date(seguimiento.inicio).toLocaleString()}
                 </td>
                 <td
-                  className={`py-3 px-6 text-left font-semibold w-0 ${seguimiento.progreso >= 80 ? 'bg-green-500 text-white' : 'bg-yellow-300 text-black'}`}
+                  className={`py-3 px-6 text-left font-semibold w-0 ${
+                    seguimiento.progreso >= 80
+                      ? "bg-green-500 text-white"
+                      : "bg-yellow-300 text-black"
+                  }`}
                 >
                   {seguimiento.progreso.toFixed(1)}%
                 </td>
-                {/* <td className="py-3 px-6 text-left">
-                  {seguimiento.progreso.toFixed(1)}%
-                </td> */}
               </tr>
             ))}
           </tbody>
@@ -194,13 +205,15 @@ function SeguimientoClases() {
         <ul className="flex justify-center">
           <li>
             <button
-            onClick={() => setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)}
-            disabled={currentPage === 1}
-            className={`${
-              currentPage === 1
-              ? "bg-gray-200 text-gray-600"
-              : "bg-white hover:bg-gray-50"
-            } px-3 py-1 border border-gray-300 rounded-l-md font-medium text-sm focus:outline-none`}
+              onClick={() =>
+                setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)
+              }
+              disabled={currentPage === 1}
+              className={`${
+                currentPage === 1
+                  ? "bg-gray-200 text-gray-600"
+                  : "bg-white hover:bg-gray-50"
+              } px-3 py-1 border border-gray-300 rounded-l-md font-medium text-sm focus:outline-none`}
             >
               &lt;
               <span className="sr-only">Previous</span>
@@ -209,12 +222,12 @@ function SeguimientoClases() {
           {pageNumbers.map((pageNumber) => (
             <li key={pageNumber}>
               <button
-              onClick={() => paginate(pageNumber)}
-              className={`${
-                pageNumber === currentPage
-                ? "bg-blue-500 text-white"
-                : "bg-white hover:bg-gray-50"
-              } px-3 py-1 border border-gray-300 font-medium text-sm focus:outline-none`}
+                onClick={() => paginate(pageNumber)}
+                className={`${
+                  pageNumber === currentPage
+                    ? "bg-blue-500 text-white"
+                    : "bg-white hover:bg-gray-50"
+                } px-3 py-1 border border-gray-300 font-medium text-sm focus:outline-none`}
               >
                 {pageNumber}
               </button>
@@ -222,13 +235,19 @@ function SeguimientoClases() {
           ))}
           <li>
             <button
-            onClick={() => setCurrentPage(currentPage === pageNumbers.length ? pageNumbers.length : currentPage + 1)}
-            disabled={currentPage === pageNumbers.length}
-            className={`${
-              currentPage === pageNumbers.length
-              ? "bg-gray-200 text-gray-600"
-              : "bg-white hover:bg-gray-50"
-            } px-3 py-1 border border-gray-300 rounded-r-md font-medium text-sm focus:outline-none`}
+              onClick={() =>
+                setCurrentPage(
+                  currentPage === pageNumbers.length
+                    ? pageNumbers.length
+                    : currentPage + 1
+                )
+              }
+              disabled={currentPage === pageNumbers.length}
+              className={`${
+                currentPage === pageNumbers.length
+                  ? "bg-gray-200 text-gray-600"
+                  : "bg-white hover:bg-gray-50"
+              } px-3 py-1 border border-gray-300 rounded-r-md font-medium text-sm focus:outline-none`}
             >
               &gt;
               <span className="sr-only">Next</span>
