@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
@@ -14,40 +14,85 @@ export default function UserCertificarModulo() {
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 10;
 
+  const fetchModulo = useCallback(async (id) => {
+    try {
+      const response = await axios.get(`/modulo/${id}`);
+      console.log('Modulo Data:', response.data);
+      setModulo(response.data);
+    } catch (err) {
+      console.log('Modulo Error:', err);
+      setError("Error al cargar la información del módulo.");
+    }
+  }, []);
+
+  const fetchGrupo = useCallback(async (nivelId, grupoId) => {
+    try {
+      const response = await axios.get(`/niveles/${nivelId}/grupos/${grupoId}`);
+      console.log('Grupo Data:', response.data);
+      setGrupo(response.data);
+    } catch (err) {
+      console.log('Grupo Error:', err);
+      setError("Error al cargar los detalles del grupo.");
+    }
+  }, []);
+
+  const fetchUsuarios = useCallback(async (nivelId, grupoId) => {
+    try {
+      const response = await axios.get(`/nivel/${nivelId}/grupos/${grupoId}/usuarios`);
+      console.log('Usuarios Data:', response.data);
+      const usuariosConCertificado = await Promise.all(response.data.map(async (usuario) => {
+        try {
+          const certificadoResponse = await axios.get(`/certificadosModulo/usuario/${usuario.sub}/modulo/${moduloId}`);
+          return { ...usuario, certificadoId: certificadoResponse.data.id };
+        } catch (err) {
+          if (err.response && err.response.status === 404) {
+            return { ...usuario, certificadoId: null };
+          }
+          throw err;
+        }
+      }));
+      setUsuarios(usuariosConCertificado);
+    } catch (err) {
+      console.log('Usuarios Error:', err);
+      setError("Error al cargar los usuarios del grupo.");
+    }
+  }, [moduloId]);
+
   useEffect(() => {
     if (moduloId && GrupoId && nivelId) {
       fetchModulo(moduloId);
       fetchGrupo(nivelId, GrupoId);
       fetchUsuarios(nivelId, GrupoId);
     }
-  }, [moduloId, GrupoId, nivelId]);
+  }, [moduloId, GrupoId, nivelId, fetchModulo, fetchGrupo, fetchUsuarios]);
 
-  const fetchModulo = async (id) => {
-    try {
-      const response = await axios.get(`/modulo/${id}`);
-      setModulo(response.data);
-    } catch (err) {
-      setError("Error al cargar la información del módulo.");
-    }
-  };
+  const handleCertificar = async (usuario) => {
+    if (usuario.certificadoId) {
+      try {
+        await axios.delete(`/certificadosModulo/${usuario.certificadoId}`);
+        alert("Certificado eliminado con éxito.");
+        fetchUsuarios(nivelId, GrupoId); // Recargar usuarios para actualizar estado
+      } catch (err) {
+        console.log('Error al eliminar el certificado:', err);
+        alert("Error al eliminar el certificado.");
+      }
+    } else {
+      const certificadoData = {
+        userSub: usuario.sub,
+        moduloId: modulo.id,
+        numero_nivel: 1,
+        nivelId: nivelId
+      };
 
-  const fetchGrupo = async (nivelId, grupoId) => {
-    try {
-      const response = await axios.get(`/niveles/${nivelId}/grupos/${grupoId}`);
-      setGrupo(response.data);
-    } catch (err) {
-      setError("Error al cargar los detalles del grupo.");
-    }
-  };
-
-  const fetchUsuarios = async (nivelId, grupoId) => {
-    try {
-      const response = await axios.get(
-        `/nivel/${nivelId}/grupos/${grupoId}/usuarios`
-      );
-      setUsuarios(Array.isArray(response.data) ? response.data : []);
-    } catch (err) {
-      setError("Error al cargar los usuarios del grupo.");
+      try {
+        const response = await axios.post("/certificadosModulo", certificadoData);
+        console.log('Certificado creado:', response.data);
+        alert("Certificado creado con éxito.");
+        fetchUsuarios(nivelId, GrupoId); // Recargar usuarios para actualizar estado
+      } catch (err) {
+        console.log('Error al crear el certificado:', err);
+        alert("Error al crear el certificado.");
+      }
     }
   };
 
@@ -112,14 +157,16 @@ export default function UserCertificarModulo() {
                   {usuario.name} {usuario.last_name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-b border-gray-200">
-                  No Apto
+                  {usuario.certificadoId ? "Apto" : "No Apto"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium border-b border-gray-200">
                   <button
-                    onClick={() => alert("Funcionalidad de certificar aún no implementada")}
-                    className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 focus:outline-none"
+                    onClick={() => handleCertificar(usuario)}
+                    className={`px-4 py-2 rounded focus:outline-none ${
+                      usuario.certificadoId ? "bg-red-500 text-white hover:bg-red-600" : "bg-green-500 text-white hover:bg-green-600"
+                    }`}
                   >
-                    Certificar
+                    {usuario.certificadoId ? "Quitar" : "Certificar"}
                   </button>
                 </td>
               </tr>
