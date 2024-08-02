@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import Tooltip from "@mui/material/Tooltip";
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 function SeguimientoClases() {
   const [seguimientos, setSeguimientos] = useState([]);
@@ -89,6 +90,17 @@ function SeguimientoClases() {
     pageNumbers.push(i);
   }
 
+  const getPaginationGroup = () => {
+    const totalNumbers = 10;
+    const totalPages = pageNumbers.length;
+
+    let start = Math.floor((currentPage - 1) / totalNumbers) * totalNumbers;
+    return new Array(totalNumbers)
+      .fill()
+      .map((_, idx) => start + idx + 1)
+      .filter((number) => number <= totalPages);
+  };
+
   const goBack = () => {
     navigate(-1);
   };
@@ -109,7 +121,7 @@ function SeguimientoClases() {
   }
 
   return (
-    <div className="py-5 px-10 ">
+    <div className="py-5 px-4 sm:px-10">
       <Tooltip
         title="Volver"
         arrow
@@ -129,26 +141,27 @@ function SeguimientoClases() {
       >
         <button
           onClick={goBack}
-          className="bg-blue-500 text-white w-20 h-10 mb-8 font-semibold py-0 px-4 rounded hover:bg-gray-400 transition-transform ease-in-out duration-300 hover:translate-y-1"
+          className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-transform ease-in-out duration-300"
         >
           <KeyboardBackspaceIcon fontSize="large" />
+          <span className="ml-2">Volver</span>
         </button>
       </Tooltip>
-      <h1 className="text-xl font-bold mb-6 text-gray-700">
+      <h1 className="text-2xl font-bold mb-6 text-gray-700">
         Seguimiento de Clases
       </h1>
-      <div className="mb-4 flex space-x-4">
+      <div className="mb-4 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
         <input
           type="text"
           placeholder="Buscar..."
           value={searchTerm}
           onChange={handleSearchChange}
-          className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
+          className="flex-1 border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
         />
         <select
           value={selectedCurso}
           onChange={handleCursoChange}
-          className="border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
+          className="flex-1 border-2 border-gray-400 p-2 focus:border-blue-800 focus:outline-none rounded-lg"
         >
           <option value="">Todos los cursos</option>
           {cursos.map((curso) => (
@@ -169,84 +182,106 @@ function SeguimientoClases() {
               <th className="py-3 px-6 text-left">Progreso</th>
             </tr>
           </thead>
-          <tbody className="text-gray-700 text-sm font-mono divide-y divide-gray-200">
-            {currentSeguimientos.map((seguimiento) => (
-              <tr
-                key={seguimiento.id}
-                className="border-b border-gray-200 hover:bg-gray-100"
-              >
-                <td className="py-3 px-6 text-left whitespace-nowrap">
-                  {seguimiento.user?.name} {seguimiento.user?.last_name}
-                </td>
-                <td className="py-3 px-6 text-left">
-                  {seguimiento.curso?.name}
-                </td>
-                <td className="py-3 px-6 text-left">
-                  {seguimiento.clase?.name ?? "Clase no disponible"}
-                </td>
-                <td className="py-3 px-6 text-left">
-                  {new Date(seguimiento.inicio).toLocaleString()}
-                </td>
-                <td
-                  className={`py-3 px-6 text-left font-semibold w-0 ${
-                    seguimiento.progreso >= 80
-                      ? "bg-green-500 text-white"
-                      : "bg-yellow-300 text-black"
-                  }`}
+          <tbody className="text-gray-700 text-sm divide-y divide-gray-200">
+            {currentSeguimientos.map((seguimiento) => {
+              const isTaller = seguimiento.clase?.name?.toLowerCase().includes("taller");
+              const isDownloaded = isTaller && seguimiento.progreso === 0.0;
+
+              return (
+                <tr
+                  key={seguimiento.id}
+                  className="border-b border-gray-200 hover:bg-gray-100"
                 >
-                  {seguimiento.progreso.toFixed(1)}%
-                </td>
-              </tr>
-            ))}
+                  <td className="py-3 px-6 text-left whitespace-nowrap">
+                    {seguimiento.user?.name} {seguimiento.user?.last_name}
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    {seguimiento.curso?.name}
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    {seguimiento.clase?.name ?? "Clase no disponible"}
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    {new Date(seguimiento.inicio).toLocaleString()}
+                  </td>
+                  <td
+                    className={`py-3 px-6 text-left font-semibold ${
+                      isDownloaded
+                        ? "text-white bg-blue-400"
+                        : seguimiento.progreso >= 80
+                        ? "bg-green-500 text-white"
+                        : "bg-yellow-300 text-black"
+                    }`}
+                  >
+                    {isDownloaded ? (
+                      <span className="flex items-center">
+                        <PictureAsPdfIcon className="h-5 w-5 mr-1 text-white" />
+                        Descargado
+                      </span>
+                    ) : (
+                      `${seguimiento.progreso.toFixed(1)}%`
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
-      <nav className="mt-4" aria-label="Pagination">
-        <ul className="flex justify-center">
+      <nav className="mt-4 flex justify-center" aria-label="Pagination">
+        <ul className="flex items-center space-x-2">
           <li>
             <button
-              onClick={() =>
-                setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)
-              }
+              onClick={() => setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)}
               disabled={currentPage === 1}
               className={`${
-                currentPage === 1
-                  ? "bg-gray-200 text-gray-600"
-                  : "bg-white hover:bg-gray-50"
+                currentPage === 1 ? "bg-gray-200 text-gray-600" : "bg-white hover:bg-gray-50"
               } px-3 py-1 border border-gray-300 rounded-l-md font-medium text-sm focus:outline-none`}
             >
               &lt;
               <span className="sr-only">Previous</span>
             </button>
           </li>
-          {pageNumbers.map((pageNumber) => (
+          {currentPage > 10 && (
+            <li>
+              <button
+                onClick={() => paginate(1)}
+                className="bg-white hover:bg-gray-50 px-3 py-1 border border-gray-300 font-medium text-sm focus:outline-none"
+              >
+                1
+              </button>
+            </li>
+          )}
+          {currentPage > 11 && <li className="px-2 py-1">...</li>}
+          {getPaginationGroup().map((pageNumber) => (
             <li key={pageNumber}>
               <button
                 onClick={() => paginate(pageNumber)}
                 className={`${
-                  pageNumber === currentPage
-                    ? "bg-blue-500 text-white"
-                    : "bg-white hover:bg-gray-50"
+                  pageNumber === currentPage ? "bg-blue-500 text-white" : "bg-white hover:bg-gray-50"
                 } px-3 py-1 border border-gray-300 font-medium text-sm focus:outline-none`}
               >
                 {pageNumber}
               </button>
             </li>
           ))}
+          {currentPage < pageNumbers.length - 10 && <li className="px-2 py-1">...</li>}
+          {currentPage < pageNumbers.length - 9 && (
+            <li>
+              <button
+                onClick={() => paginate(pageNumbers.length)}
+                className="bg-white hover:bg-gray-50 px-3 py-1 border border-gray-300 font-medium text-sm focus:outline-none"
+              >
+                {pageNumbers.length}
+              </button>
+            </li>
+          )}
           <li>
             <button
-              onClick={() =>
-                setCurrentPage(
-                  currentPage === pageNumbers.length
-                    ? pageNumbers.length
-                    : currentPage + 1
-                )
-              }
+              onClick={() => setCurrentPage(currentPage === pageNumbers.length ? pageNumbers.length : currentPage + 1)}
               disabled={currentPage === pageNumbers.length}
               className={`${
-                currentPage === pageNumbers.length
-                  ? "bg-gray-200 text-gray-600"
-                  : "bg-white hover:bg-gray-50"
+                currentPage === pageNumbers.length ? "bg-gray-200 text-gray-600" : "bg-white hover:bg-gray-50"
               } px-3 py-1 border border-gray-300 rounded-r-md font-medium text-sm focus:outline-none`}
             >
               &gt;

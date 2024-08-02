@@ -91,10 +91,15 @@ function Escritorio() {
   const iconContainerStyle = "w-14 h-14 p-2 rounded-full bg-blue-100 text-center";
   const iconStyle = "text-blue-500";
 
+  const cursosInscritosRedirect = () => {
+    navigate("/estudiante/cursosInscritos");
+    window.location.reload()
+  }
+
   return (
     <div className="sm:pl-2 lg:pl-20">
       <div className={containerStyle}>
-        <div className={cardStyle} onClick={() => navigate("/estudiante/cursosInscritos")}>
+        <div className={cardStyle} onClick={cursosInscritosRedirect}>
           <div className={iconContainerStyle}>
             <ImportContactsIcon className={iconStyle} fontSize="large" />
           </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import NivelClases from "../../NivelClases/NivelClases";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -17,6 +17,9 @@ function ModuloDetailsStudent() {
   const [quizCompletado, setQuizCompletado] = useState(false);
   const [progresos, setProgresos] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [showModalPreguntas, setShowModalPreguntas] = useState(false); // Modal para preguntas
+  const [perteneceAlGrupo, setPerteneceAlGrupo] = useState(true);
+  const navigate = useNavigate(); // Para redirigir al usuario
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -43,6 +46,17 @@ function ModuloDetailsStudent() {
           `/nivel/${nivelId}/grupo/${grupoId}/modulo/${moduloId}/detalles`
         );
         setModulo(moduloResponse.data.modulo);
+
+        // Verificar si el usuario pertenece al grupo
+        const grupoResponse = await axios.get(`/user/${userSub}/grupos-nivel`);
+        const grupoPertenece = grupoResponse.data.grupos.some(
+          (grupo) => grupo.id === grupoId
+        );
+
+        if (!grupoPertenece) {
+          setPerteneceAlGrupo(false);
+          setShowModal(true); // Mostrar el modal si no pertenece al grupo
+        }
       } catch (error) {
         console.error("Error al obtener el módulo:", error);
       } finally {
@@ -50,8 +64,10 @@ function ModuloDetailsStudent() {
       }
     };
 
-    fetchModulo();
-  }, [grupoId, moduloId, nivelId]);
+    if (userSub) {
+      fetchModulo();
+    }
+  }, [grupoId, moduloId, nivelId, userSub]);
 
   useEffect(() => {
     const fetchProgresos = async () => {
@@ -215,10 +231,22 @@ function ModuloDetailsStudent() {
     if (loading) {
       setShowModal(true);
     } else if (!checkAllClassesCompleted()) {
-      setShowModal(true);
+      setShowModalPreguntas(true);
     } else {
       setMostrarPreguntas(!mostrarPreguntas);
     }
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    if (!perteneceAlGrupo) {
+      navigate("/estudiante/cursosInscritos"); 
+      window.location.reload();
+    }
+  };
+
+  const handleModalPreguntasClose = () => {
+    setShowModalPreguntas(false);
   };
 
   if (loading) {
@@ -244,7 +272,7 @@ function ModuloDetailsStudent() {
     );
   }
 
-  const tituloModulo = /^\d{2}/.test(modulo.titulo)
+  const tituloModulo = modulo.titulo.startsWith("01")
     ? modulo.titulo.substring(2)
     : modulo.titulo;
 
@@ -416,7 +444,7 @@ function ModuloDetailsStudent() {
 
       <Modal
         isOpen={showModal}
-        onRequestClose={() => setShowModal(false)}
+        onRequestClose={handleModalClose}
         className="fixed inset-0 flex items-center justify-center p-4"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50"
       >
@@ -424,12 +452,31 @@ function ModuloDetailsStudent() {
           <h2 className="text-2xl font-bold mb-4 text-gray-900">
             {loading
               ? "Cargando..."
-              : !checkAllClassesCompleted()
-              ? "Debes completar al menos el 80% de las clases para responder las preguntas."
+              : !perteneceAlGrupo
+              ? "No perteneces a este grupo. Por favor, comunícate con soporte para más información."
               : ""}
           </h2>
           <button
-            onClick={() => setShowModal(false)}
+            onClick={handleModalClose}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+          >
+            Aceptar
+          </button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={showModalPreguntas}
+        onRequestClose={handleModalPreguntasClose}
+        className="fixed inset-0 flex items-center justify-center p-4"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+      >
+        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+          <h2 className="text-2xl font-bold mb-4 text-gray-900">
+            No se han completado todas las clases. Completa todas las clases para poder responder a las preguntas.
+          </h2>
+          <button
+            onClick={handleModalPreguntasClose}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
           >
             Aceptar
