@@ -1,7 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  EyeIcon,
+  DocumentIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/solid";
 
 export default function UserCertificarModulo() {
   const { moduloId, GrupoId, nivelId } = useParams();
@@ -17,10 +23,8 @@ export default function UserCertificarModulo() {
   const fetchModulo = useCallback(async (id) => {
     try {
       const response = await axios.get(`/modulo/${id}`);
-      console.log('Modulo Data:', response.data);
       setModulo(response.data);
     } catch (err) {
-      console.log('Modulo Error:', err);
       setError("Error al cargar la información del módulo.");
     }
   }, []);
@@ -28,35 +32,47 @@ export default function UserCertificarModulo() {
   const fetchGrupo = useCallback(async (nivelId, grupoId) => {
     try {
       const response = await axios.get(`/niveles/${nivelId}/grupos/${grupoId}`);
-      console.log('Grupo Data:', response.data);
       setGrupo(response.data);
     } catch (err) {
-      console.log('Grupo Error:', err);
       setError("Error al cargar los detalles del grupo.");
     }
   }, []);
 
-  const fetchUsuarios = useCallback(async (nivelId, grupoId) => {
-    try {
-      const response = await axios.get(`/nivel/${nivelId}/grupos/${grupoId}/usuarios`);
-      console.log('Usuarios Data:', response.data);
-      const usuariosConCertificado = await Promise.all(response.data.map(async (usuario) => {
-        try {
-          const certificadoResponse = await axios.get(`/certificadosModulo/usuario/${usuario.sub}/modulo/${moduloId}`);
-          return { ...usuario, certificadoId: certificadoResponse.data.id };
-        } catch (err) {
-          if (err.response && err.response.status === 404) {
-            return { ...usuario, certificadoId: null };
-          }
-          throw err;
-        }
-      }));
-      setUsuarios(usuariosConCertificado);
-    } catch (err) {
-      console.log('Usuarios Error:', err);
-      setError("Error al cargar los usuarios del grupo.");
-    }
-  }, [moduloId]);
+  const fetchUsuarios = useCallback(
+    async (nivelId, grupoId) => {
+      try {
+        const response = await axios.get(
+          `/nivel/${nivelId}/grupos/${grupoId}/usuarios`
+        );
+        const usuariosConDetalles = await Promise.all(
+          response.data.map(async (usuario) => {
+            try {
+              const certificadoResponse = await axios.get(
+                `/certificadosModulo/usuario/${usuario.sub}/modulo/${moduloId}`
+              );
+              const resultadoResponse = await axios.get(
+                `/resultados/${usuario.sub}/${moduloId}`
+              );
+              return {
+                ...usuario,
+                certificadoId: certificadoResponse.data.id,
+                aprobado: resultadoResponse.data.aprobado,
+              };
+            } catch (err) {
+              if (err.response && err.response.status === 404) {
+                return { ...usuario, certificadoId: null, aprobado: false };
+              }
+              throw err;
+            }
+          })
+        );
+        setUsuarios(usuariosConDetalles);
+      } catch (err) {
+        setError("Error al cargar los usuarios del grupo.");
+      }
+    },
+    [moduloId]
+  );
 
   useEffect(() => {
     if (moduloId && GrupoId && nivelId) {
@@ -71,9 +87,8 @@ export default function UserCertificarModulo() {
       try {
         await axios.delete(`/certificadosModulo/${usuario.certificadoId}`);
         alert("Certificado eliminado con éxito.");
-        fetchUsuarios(nivelId, GrupoId); // Recargar usuarios para actualizar estado
+        fetchUsuarios(nivelId, GrupoId); 
       } catch (err) {
-        console.log('Error al eliminar el certificado:', err);
         alert("Error al eliminar el certificado.");
       }
     } else {
@@ -81,31 +96,37 @@ export default function UserCertificarModulo() {
         userSub: usuario.sub,
         moduloId: modulo.id,
         numero_nivel: 1,
-        nivelId: nivelId
+        nivelId: nivelId,
       };
 
       try {
-        const response = await axios.post("/certificadosModulo", certificadoData);
-        console.log('Certificado creado:', response.data);
+        await axios.post("/certificadosModulo", certificadoData);
         alert("Certificado creado con éxito.");
-        fetchUsuarios(nivelId, GrupoId); // Recargar usuarios para actualizar estado
+        fetchUsuarios(nivelId, GrupoId);
       } catch (err) {
-        console.log('Error al crear el certificado:', err);
         alert("Error al crear el certificado.");
       }
     }
   };
 
   const filteredUsuarios = usuarios.filter((usuario) =>
-    `${usuario.name} ${usuario.last_name}`.toLowerCase().includes(searchTerm.toLowerCase())
+    `${usuario.name} ${usuario.last_name}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
   );
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = filteredUsuarios.slice(indexOfFirstUser, indexOfLastUser);
+  const currentUsers = filteredUsuarios.slice(
+    indexOfFirstUser,
+    indexOfLastUser
+  );
 
   const handlePageChange = (direction) => {
-    if (direction === "next" && currentPage < Math.ceil(filteredUsuarios.length / usersPerPage)) {
+    if (
+      direction === "next" &&
+      currentPage < Math.ceil(filteredUsuarios.length / usersPerPage)
+    ) {
       setCurrentPage((prevPage) => prevPage + 1);
     }
     if (direction === "prev" && currentPage > 1) {
@@ -113,11 +134,23 @@ export default function UserCertificarModulo() {
     }
   };
 
+  const getEstado = (usuario) => {
+    if (usuario.aprobado && usuario.grupos[0]?.usergrupo?.hasPaid) {
+      return "Apto";
+    } else if (!usuario.aprobado && usuario.grupos[0]?.usergrupo?.hasPaid) {
+      return "Módulo no completado";
+    } else if (usuario.aprobado && !usuario.grupos[0]?.usergrupo?.hasPaid) {
+      return "Falta Pago";
+    } else {
+      return "No Apto";
+    }
+  };
+
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-6 bg-gray-50 min-h-screen">
       <button
         onClick={() => navigate(-1)}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none mb-4"
+        className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 focus:outline-none mb-4"
       >
         Atrás
       </button>
@@ -130,7 +163,7 @@ export default function UserCertificarModulo() {
           placeholder="Buscar usuario..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="border px-4 py-2 rounded mb-4"
+          className="border border-gray-300 px-4 py-2 rounded-lg mb-4 focus:border-blue-500 focus:ring-blue-500"
         />
       </div>
       {error && <div className="text-red-500 mb-4">{error}</div>}
@@ -146,6 +179,9 @@ export default function UserCertificarModulo() {
                 Estado
               </th>
               <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Certificación
+              </th>
+              <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Acción
               </th>
             </tr>
@@ -156,18 +192,63 @@ export default function UserCertificarModulo() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-b border-gray-200">
                   {usuario.name} {usuario.last_name}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-b border-gray-200">
-                  {usuario.certificadoId ? "Apto" : "No Apto"}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium border-b border-gray-200">
-                  <button
-                    onClick={() => handleCertificar(usuario)}
-                    className={`px-4 py-2 rounded focus:outline-none ${
-                      usuario.certificadoId ? "bg-red-500 text-white hover:bg-red-600" : "bg-green-500 text-white hover:bg-green-600"
+                <td className="px-6 py-4 whitespace-nowrap text-sm border-b border-gray-200">
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      getEstado(usuario) === "Apto"
+                        ? "bg-green-100 text-green-800"
+                        : getEstado(usuario) === "Falta Pago"
+                        ? "bg-yellow-100 text-yellow-800"
+                        : getEstado(usuario) === "Módulo no completado"
+                        ? "bg-red-100 text-red-800"
+                        : "bg-gray-100 text-gray-800"
                     }`}
                   >
-                    {usuario.certificadoId ? "Quitar" : "Certificar"}
+                    {getEstado(usuario)}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm border-b border-gray-200">
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      usuario.certificadoId
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
+                    {usuario.certificadoId ? "Certificado" : "No Certificado"}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium border-b border-gray-200 flex space-x-2">
+                  <button
+                    onClick={() => handleCertificar(usuario)}
+                    className={`px-4 py-2 rounded-full focus:outline-none ${
+                      usuario.certificadoId
+                        ? "bg-red-500 text-white hover:bg-red-600"
+                        : "bg-green-500 text-white hover:bg-green-600"
+                    }`}
+                  >
+                    {usuario.certificadoId ? (
+                      <XCircleIcon className="h-5 w-5" />
+                    ) : (
+                      "Certificar"
+                    )}
                   </button>
+                  {usuario.certificadoId && (
+                    <>
+                      <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none"
+                        title="Ver Certificado"
+                      >
+                        <EyeIcon className="h-5 w-5" />
+                      </button>
+                      <button
+                        className="bg-yellow-500 text-white px-4 py-2 rounded-full hover:bg-yellow-600 focus:outline-none"
+                        title="Añadir Documentos"
+                      >
+                        <DocumentIcon className="h-5 w-5" />
+                      </button>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}
@@ -179,17 +260,20 @@ export default function UserCertificarModulo() {
         <button
           onClick={() => handlePageChange("prev")}
           disabled={currentPage === 1}
-          className="bg-gray-300 text-gray-700 px-3 py-2 rounded disabled:opacity-50"
+          className="bg-gray-300 text-gray-700 px-3 py-2 rounded-full disabled:opacity-50"
         >
           <ChevronLeftIcon className="h-5 w-5" />
         </button>
         <span className="text-gray-700">
-          Página {currentPage} de {Math.ceil(filteredUsuarios.length / usersPerPage)}
+          Página {currentPage} de{" "}
+          {Math.ceil(filteredUsuarios.length / usersPerPage)}
         </span>
         <button
           onClick={() => handlePageChange("next")}
-          disabled={currentPage === Math.ceil(filteredUsuarios.length / usersPerPage)}
-          className="bg-gray-300 text-gray-700 px-3 py-2 rounded disabled:opacity-50"
+          disabled={
+            currentPage === Math.ceil(filteredUsuarios.length / usersPerPage)
+          }
+          className="bg-gray-300 text-gray-700 px-3 py-2 rounded-full disabled:opacity-50"
         >
           <ChevronRightIcon className="h-5 w-5" />
         </button>
