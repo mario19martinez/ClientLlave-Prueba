@@ -8,6 +8,9 @@ import {
   DocumentIcon,
   XCircleIcon,
 } from "@heroicons/react/24/solid";
+import ReactModal from "react-modal";
+import DocumentoModulo from "./DocumentoModulo";
+import CertificadoModulo from "../../../Estudiante/Certificado/CertificadoModulo";
 
 export default function UserCertificarModulo() {
   const { moduloId, GrupoId, nivelId } = useParams();
@@ -17,15 +20,21 @@ export default function UserCertificarModulo() {
   const [usuarios, setUsuarios] = useState([]);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [modalIsOpenDocument, setModalIsOpenDocument] = useState(false);
+  const [modalIsOpenCertificado, setModalIsOpenCertificado] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCertificadoId, setSelectedCertificadoId] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
   const usersPerPage = 10;
 
   const fetchModulo = useCallback(async (id) => {
     try {
       const response = await axios.get(`/modulo/${id}`);
       setModulo(response.data);
+      console.log("Modulo response:", response.data);
     } catch (err) {
       setError("Error al cargar la información del módulo.");
+      console.log("Modulo error:", err);
     }
   }, []);
 
@@ -33,8 +42,10 @@ export default function UserCertificarModulo() {
     try {
       const response = await axios.get(`/niveles/${nivelId}/grupos/${grupoId}`);
       setGrupo(response.data);
+      console.log("Grupo response:", response.data);
     } catch (err) {
       setError("Error al cargar los detalles del grupo.");
+      console.log("Grupo error:", err);
     }
   }, []);
 
@@ -53,43 +64,82 @@ export default function UserCertificarModulo() {
               const resultadoResponse = await axios.get(
                 `/resultados/${usuario.sub}/${moduloId}`
               );
+              console.log(
+                `Certificado para usuario ${usuario.sub}:`,
+                certificadoResponse.data
+              );
+              console.log(
+                `Resultados para usuario ${usuario.sub}:`,
+                resultadoResponse.data
+              );
+
+              // Aquí asumimos que el resultadoResponse.data es un array
+              const aprobado =
+                resultadoResponse.data.length > 0
+                  ? resultadoResponse.data[0].aprobado
+                  : false;
+
               return {
                 ...usuario,
                 certificadoId: certificadoResponse.data.id,
-                aprobado: resultadoResponse.data.aprobado,
+                aprobado,
+                resultados: resultadoResponse.data,
               };
             } catch (err) {
               if (err.response && err.response.status === 404) {
+                console.log(
+                  `Certificado o resultados no encontrados para usuario ${usuario.sub}`
+                );
                 return { ...usuario, certificadoId: null, aprobado: false };
               }
+              console.log(`Error para usuario ${usuario.sub}:`, err);
               throw err;
             }
           })
         );
         setUsuarios(usuariosConDetalles);
+        console.log("Usuarios response:", usuariosConDetalles);
       } catch (err) {
         setError("Error al cargar los usuarios del grupo.");
+        console.log("Usuarios error:", err);
       }
     },
     [moduloId]
   );
 
   useEffect(() => {
-    if (moduloId && GrupoId && nivelId) {
+    if (moduloId) {
       fetchModulo(moduloId);
+    }
+  }, [moduloId, fetchModulo]);
+
+  useEffect(() => {
+    if (nivelId && GrupoId) {
       fetchGrupo(nivelId, GrupoId);
+    }
+  }, [nivelId, GrupoId, fetchGrupo]);
+
+  useEffect(() => {
+    if (nivelId && GrupoId) {
       fetchUsuarios(nivelId, GrupoId);
     }
-  }, [moduloId, GrupoId, nivelId, fetchModulo, fetchGrupo, fetchUsuarios]);
+  }, [nivelId, GrupoId, fetchUsuarios]);
 
   const handleCertificar = async (usuario) => {
     if (usuario.certificadoId) {
       try {
         await axios.delete(`/certificadosModulo/${usuario.certificadoId}`);
         alert("Certificado eliminado con éxito.");
-        fetchUsuarios(nivelId, GrupoId); 
+        console.log(
+          `Certificado eliminado para usuario ${usuario.sub} con certificadoId ${usuario.certificadoId}`
+        );
+        fetchUsuarios(nivelId, GrupoId);
       } catch (err) {
         alert("Error al eliminar el certificado.");
+        console.log(
+          `Error al eliminar certificado para usuario ${usuario.sub}:`,
+          err
+        );
       }
     } else {
       const certificadoData = {
@@ -102,9 +152,17 @@ export default function UserCertificarModulo() {
       try {
         await axios.post("/certificadosModulo", certificadoData);
         alert("Certificado creado con éxito.");
+        console.log(
+          `Certificado creado para usuario ${usuario.sub}:`,
+          certificadoData
+        );
         fetchUsuarios(nivelId, GrupoId);
       } catch (err) {
         alert("Error al crear el certificado.");
+        console.log(
+          `Error al crear certificado para usuario ${usuario.sub}:`,
+          err
+        );
       }
     }
   };
@@ -144,6 +202,22 @@ export default function UserCertificarModulo() {
     } else {
       return "No Apto";
     }
+  };
+
+  const handleOpenModalDocument = (certificadoId, userId) => {
+    setSelectedCertificadoId(certificadoId || "");
+    setSelectedUserId(userId || "");
+    setModalIsOpenDocument(true);
+  };
+
+  const handleOpenModalCertificado = (certificadoId) => {
+    setSelectedCertificadoId(certificadoId);
+    setModalIsOpenCertificado(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpenDocument(false);
+    setModalIsOpenCertificado(false);
   };
 
   return (
@@ -237,12 +311,18 @@ export default function UserCertificarModulo() {
                     <>
                       <button
                         className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none"
+                        onClick={() =>
+                          handleOpenModalCertificado(usuario.certificadoId)
+                        }
                         title="Ver Certificado"
                       >
                         <EyeIcon className="h-5 w-5" />
                       </button>
                       <button
                         className="bg-yellow-500 text-white px-4 py-2 rounded-full hover:bg-yellow-600 focus:outline-none"
+                        onClick={() =>
+                          handleOpenModalDocument(usuario.certificadoId, usuario.sub)
+                        }
                         title="Añadir Documentos"
                       >
                         <DocumentIcon className="h-5 w-5" />
@@ -278,6 +358,74 @@ export default function UserCertificarModulo() {
           <ChevronRightIcon className="h-5 w-5" />
         </button>
       </div>
+
+      {/* Modal para ver el certificado */}
+      <ReactModal
+        isOpen={modalIsOpenCertificado}
+        onRequestClose={closeModal}
+        contentLabel="Ver Certificado"
+        overlayClassName="modal-overlay"
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 1000,
+          },
+          content: {
+            top: "20%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            maxWidth: "90vw",
+            width: "600px",
+            height: "auto",
+            padding: "20px",
+            borderRadius: "8px",
+            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
+            backgroundColor: "white",
+            overflow: "hidden",
+          },
+        }}
+      >
+        <CertificadoModulo certificadoId={selectedCertificadoId} />
+        <button onClick={closeModal} className="absolute top-2 right-2">
+          <XCircleIcon className="h-5 w-5 text-gray-500 hover:text-gray-700" />
+        </button>
+      </ReactModal>
+
+      {/* Modal para añadir documentos */}
+      <ReactModal
+        isOpen={modalIsOpenDocument}
+        onRequestClose={closeModal}
+        contentLabel="Agregar Documento"
+        overlayClassName="modal-overlay"
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 1000,
+          },
+          content: {
+            top: "40%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            maxWidth: "90vw",
+            width: "400px",
+            height: "auto",
+            padding: "20px",
+            borderRadius: "8px",
+            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
+            backgroundColor: "white",
+            overflow: "hidden",
+          },
+        }}
+      >
+        <DocumentoModulo
+          certificadoId={selectedCertificadoId}
+          sub={selectedUserId}
+          onCloseModal={closeModal}
+        />
+        <button onClick={closeModal} className="absolute top-2 right-2">
+          <XCircleIcon className="h-5 w-5 text-gray-500 hover:text-gray-700" />
+        </button>
+      </ReactModal>
     </div>
   );
 }
