@@ -57,9 +57,9 @@ export default function CertificadoModulo({ certificadoId }) {
   useEffect(() => {
     const fetchCertificado = async () => {
       try {
-        const response = await axios.get(`/certificado/${certificadoId}`);
+        const response = await axios.get(`/certificadosModulo/${certificadoId}`);
         console.log('datos: ', response.data);
-        const certificadoData = response.data.certificado;
+        const certificadoData = response.data;
         setCertificado(certificadoData);
         const nivelResponse = await axios.get(`/nivel/${certificadoData.nivelId}`);
         setNivel(nivelResponse.data);

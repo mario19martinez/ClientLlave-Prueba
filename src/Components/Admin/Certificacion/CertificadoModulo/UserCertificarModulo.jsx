@@ -64,20 +64,22 @@ export default function UserCertificarModulo() {
               const resultadoResponse = await axios.get(
                 `/resultados/${usuario.sub}/${moduloId}`
               );
+
               console.log(
-                `Certificado para usuario ${usuario.sub}:`,
+                `Certificado para usuario ${usuario.name}:`,
                 certificadoResponse.data
               );
               console.log(
-                `Resultados para usuario ${usuario.sub}:`,
+                `Resultados para usuario ${usuario.name}:`,
                 resultadoResponse.data
               );
 
-              // Aquí asumimos que el resultadoResponse.data es un array
               const aprobado =
                 resultadoResponse.data.length > 0
                   ? resultadoResponse.data[0].aprobado
                   : false;
+
+              console.log(`Aprobado para usuario ${usuario.name}:`, aprobado);
 
               return {
                 ...usuario,
@@ -88,7 +90,7 @@ export default function UserCertificarModulo() {
             } catch (err) {
               if (err.response && err.response.status === 404) {
                 console.log(
-                  `Certificado o resultados no encontrados para usuario ${usuario.sub}`
+                  `Certificado o resultados no encontrados para usuario ${usuario.name}`
                 );
                 return { ...usuario, certificadoId: null, aprobado: false };
               }
@@ -130,9 +132,6 @@ export default function UserCertificarModulo() {
       try {
         await axios.delete(`/certificadosModulo/${usuario.certificadoId}`);
         alert("Certificado eliminado con éxito.");
-        console.log(
-          `Certificado eliminado para usuario ${usuario.sub} con certificadoId ${usuario.certificadoId}`
-        );
         fetchUsuarios(nivelId, GrupoId);
       } catch (err) {
         alert("Error al eliminar el certificado.");
@@ -152,10 +151,6 @@ export default function UserCertificarModulo() {
       try {
         await axios.post("/certificadosModulo", certificadoData);
         alert("Certificado creado con éxito.");
-        console.log(
-          `Certificado creado para usuario ${usuario.sub}:`,
-          certificadoData
-        );
         fetchUsuarios(nivelId, GrupoId);
       } catch (err) {
         alert("Error al crear el certificado.");
@@ -193,11 +188,22 @@ export default function UserCertificarModulo() {
   };
 
   const getEstado = (usuario) => {
-    if (usuario.aprobado && usuario.grupos[0]?.usergrupo?.hasPaid) {
+    const hasPaid = usuario.grupos[0]?.usergrupo?.hasPaid;
+    const aprobado = usuario.aprobado;
+
+    console.log("Evaluando estado para usuario:", usuario);
+    console.log("Aprobado:", aprobado);
+    console.log("Has Paid:", hasPaid);
+
+    if (aprobado === undefined) {
+      return "No Apto";
+    }
+
+    if (aprobado && hasPaid) {
       return "Apto";
-    } else if (!usuario.aprobado && usuario.grupos[0]?.usergrupo?.hasPaid) {
+    } else if (!aprobado && hasPaid) {
       return "Módulo no completado";
-    } else if (usuario.aprobado && !usuario.grupos[0]?.usergrupo?.hasPaid) {
+    } else if (aprobado && !hasPaid) {
       return "Falta Pago";
     } else {
       return "No Apto";
@@ -321,7 +327,10 @@ export default function UserCertificarModulo() {
                       <button
                         className="bg-yellow-500 text-white px-4 py-2 rounded-full hover:bg-yellow-600 focus:outline-none"
                         onClick={() =>
-                          handleOpenModalDocument(usuario.certificadoId, usuario.sub)
+                          handleOpenModalDocument(
+                            usuario.certificadoId,
+                            usuario.sub
+                          )
                         }
                         title="Añadir Documentos"
                       >
