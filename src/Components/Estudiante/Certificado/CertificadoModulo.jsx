@@ -49,7 +49,7 @@ const convertirNumeroRomano = (valor) => {
   }
 };
 
-export default function CertificadoNivels({ certificadoId }) {
+export default function CertificadoModulo({ certificadoId }) {
   const [certificado, setCertificado] = useState(null);
   const [nivel, setNivel] = useState(null);
   const [userData, setUserData] = useState(null);
@@ -243,6 +243,6 @@ export default function CertificadoNivels({ certificadoId }) {
 }
 
 // Validación de PropTypes
-CertificadoNivels.propTypes = {
+CertificadoModulo.propTypes = {
   certificadoId: PropTypes.string.isRequired,
 };

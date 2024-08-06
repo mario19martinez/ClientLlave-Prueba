@@ -22,8 +22,8 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedCertificadoId, setSelectedCertificadoId] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [selectedCertificado, setSelectedCertificado] = useState(null);
+  // const [selectedUser, setSelectedUser] = useState(null);
+  // const [selectedCertificado, setSelectedCertificado] = useState(null);
   const [modalIsOpenCertificado, setModalIsOpenCertificado] = useState(false);
 
   useEffect(() => {
@@ -246,16 +246,16 @@ export default function CertificadoNivel({ nivelId, grupoId }) {
     setSelectedCertificadoId(null);
   };
 
-  const isApto = (user) => {
-    const hasPaid =
-      user.grupos &&
-      user.grupos.length > 0 &&
-      user.grupos[0].usergrupo &&
-      user.grupos[0].usergrupo.hasPaid;
-    const allModulesApproved =
-      user.resultados && user.resultados.every((aprobado) => aprobado === true);
-    return hasPaid && allModulesApproved;
-  };
+  // const isApto = (user) => {
+  //   const hasPaid =
+  //     user.grupos &&
+  //     user.grupos.length > 0 &&
+  //     user.grupos[0].usergrupo &&
+  //     user.grupos[0].usergrupo.hasPaid;
+  //   const allModulesApproved =
+  //     user.resultados && user.resultados.every((aprobado) => aprobado === true);
+  //   return hasPaid && allModulesApproved;
+  // };
 
   const filteredUsers = searchResults.filter((usuario) => {
     if (filter === "Todos") return true;
