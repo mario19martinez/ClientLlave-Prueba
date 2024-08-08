@@ -5,6 +5,7 @@ import axios from "axios";
 import { FaEye, FaDownload } from "react-icons/fa";
 import { FiFileText } from "react-icons/fi";
 import CertificadoStudent from "../Certificado/CertificadoStudent";
+//import CertificadoNivels from "../Certificado/CertificadoNivels";
 import AgregarDocumentos from "../../Admin/Certificacion/AgregarDocumento";
 import html2pdf from "html2pdf.js";
 

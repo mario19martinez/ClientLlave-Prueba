@@ -4,14 +4,17 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 
 function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
-  const [userSub, setUserSub] = useState("");
-  const [error, setError] = useState(null);
-  const [message, setMessage] = useState("");
   const [busqueda, setBusqueda] = useState("");
   const [resultados, setResultados] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userNotFound, setUserNotFound] = useState(false);
   const [hasPaid, setHasPaid] = useState({});
+  const [error, setError] = useState(null);
+  const [message, setMessage] = useState("");
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const resultsPerPage = 5;
 
   const handleBuscar = async () => {
     try {
@@ -19,7 +22,9 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
       setError(null);
       setUserNotFound(false);
 
-      if (!busqueda.trim()) {
+      const query = busqueda?.trim().toLowerCase() || ""; // Asegura que query sea una cadena vacía si es undefined
+
+      if (!query) {
         setResultados([]);
         return;
       }
@@ -27,9 +32,11 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
       const response = await axios.get(`/search`, {
         params: {
           nivelId: nivelId,
-          name: busqueda.toLowerCase(),
+          query, // Cambiado de name a query para coincidir con la API
         },
       });
+
+      console.log("Respuesta de búsqueda:", response.data); // Depuración para verificar datos recibidos
 
       const { usuarios } = response.data;
 
@@ -40,13 +47,14 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
         const usuariosSub = usuarios.map((usuario) => ({
           ...usuario,
           userSub: usuario.sub,
-          grupoName: usuario.grupo ? usuario.grupo.name : null, // Añadimos el nombre del grupo si existe
+          grupoName: usuario.grupo ? usuario.grupo.name : null,
         }));
         setResultados(usuariosSub);
+        setCurrentPage(1); // Reset to the first page when new results are fetched
       }
     } catch (error) {
       console.error("Error al buscar usuarios:", error.message);
-      setError(error.response.data.error);
+      setError(error.response?.data?.error || "Ocurrió un error en la búsqueda.");
     } finally {
       setLoading(false);
     }
@@ -55,17 +63,16 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
   const memoizedResultados = useMemo(() => resultados, [resultados]);
 
   const handleSubmit = async (e, userSub) => {
-    // Eliminar el argumento userSub
     e.preventDefault();
     try {
       const response = await axios.post(`/add-user-grupo`, {
-        userSub: userSub,
-        grupoId: grupoId,
-        nivelId: nivelId,
-        hasPaid: hasPaid[userSub], // Utilizamos el valor especifico del usuario
+        userSub,
+        grupoId,
+        nivelId,
+        hasPaid: hasPaid[userSub],
       });
       setMessage(response.data.message);
-      toast.success("Usuario agregado con exito!", {
+      toast.success("Usuario agregado con éxito!", {
         position: "top-center",
         autoClose: 1200,
         closeOnClick: true,
@@ -74,11 +81,10 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
       setTimeout(() => {
         closeModalAndReload();
       }, 1500);
-      setUserSub(""); // Limpiar el estado después de la operación exitosa
       setHasPaid((prevHasPaid) => ({ ...prevHasPaid, [userSub]: false }));
     } catch (error) {
-      setError(error.response.data.error);
-      toast.warning("El usuario ya esta inscrito en un Grupo!", {
+      setError(error.response?.data?.error || "Ocurrió un error al agregar el usuario.");
+      toast.warning("El usuario ya está inscrito en un Grupo!", {
         position: "top-center",
         autoClose: 1800,
         closeOnClick: true,
@@ -94,78 +100,107 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
     }));
   };
 
+  // Paginate results
+  const indexOfLastResult = currentPage * resultsPerPage;
+  const indexOfFirstResult = indexOfLastResult - resultsPerPage;
+  const currentResults = memoizedResultados.slice(indexOfFirstResult, indexOfLastResult);
+
+  // Pagination controls
+  const totalPages = Math.ceil(memoizedResultados.length / resultsPerPage);
+
   return (
-    <div className="mx-auto w-screen p-4 bg-blue-100 rounded-md shadow-md h-auto">
-      <h2 className="text-lg font-bold mb-4 text-gray-700">Agregar Usuario</h2>
-      <div className="mb-4">
-        <label
-          htmlFor="userSearch"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Buscar Usuario por Nombre:
+    <div className="mx-auto w-full max-w-6xl p-6 bg-white rounded-lg shadow-lg">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Agregar Usuario</h2>
+      <div className="mb-6">
+        <label htmlFor="userSearch" className="block text-sm font-medium text-gray-700">
+          Buscar Usuario (Nombre, Apellido, Teléfono, Correo):
         </label>
-        <div className="flex">
+        <div className="flex mt-2">
           <input
             id="userSearch"
             type="text"
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
             onBlur={handleBuscar}
-            className="mt-1 p-2 flex-1 border rounded-md bg-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="flex-1 p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Ingrese un criterio de búsqueda"
           />
           <button
             onClick={handleBuscar}
-            className="ml-2 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="bg-blue-600 text-white py-2 px-4 rounded-r-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             Buscar
           </button>
         </div>
         {loading && <p className="text-gray-500 mt-2">Buscando usuarios...</p>}
         {error && <p className="text-red-600 mt-2">Error: {error}</p>}
-        {userNotFound && (
-          <p className="text-red-600 mt-2">
-            El Usuario no está en la plataforma.
-          </p>
-        )}
+        {userNotFound && <p className="text-red-600 mt-2">El Usuario no está en la plataforma.</p>}
         {memoizedResultados.length > 0 && (
-          <ul className="mt-1 border border-gray-200 rounded-md divide-y divide-gray-200">
-            {memoizedResultados.map((user, index) => (
-              <li
-                key={index}
-                className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 bg-white"
+          <>
+            <div className="overflow-x-auto mt-4">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuario</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correo</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">¿Pagó?</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acción</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {currentResults.map((user) => (
+                    <tr key={user.userSub}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {user.name} {user.last_name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {user.telefono}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {user.email}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <input
+                          type="checkbox"
+                          checked={!!hasPaid[user.userSub]}
+                          onChange={(e) => handlePaidChange(user.userSub, e.target.checked)}
+                          className="form-checkbox h-5 w-5 text-blue-600"
+                        />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button
+                          onClick={(e) => handleSubmit(e, user.userSub)}
+                          className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                        >
+                          Agregar
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-4 flex justify-between items-center">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               >
-                <div>
-                  <span>
-                    {user.name} {user.last_name}
-                  </span>
-                  {user.grupoName && (
-                    <span className="text-sm text-gray-700 ml-2">
-                      (En grupo: {user.grupoName})
-                    </span>
-                  )}
-                </div>
-                <div className="flex items-center">
-                  <label htmlFor="" className="mr-2">
-                    ¿Pagó?
-                  </label>
-                  <input
-                    type="checkbox"
-                    checked={!!hasPaid[user.userSub]} // Usa el valor específico del usuario
-                    onChange={(e) =>
-                      handlePaidChange(user.userSub, e.target.checked)
-                    }
-                    className="form-checkbox h-5 w-5 text-blue-500"
-                  />
-                </div>
-                <button
-                  onClick={(e) => handleSubmit(e, user.userSub)}
-                  className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                >
-                  Agregar
-                </button>
-              </li>
-            ))}
-          </ul>
+                Anterior
+              </button>
+              <span className="text-gray-700">
+                Página {currentPage} de {totalPages}
+              </span>
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              >
+                Siguiente
+              </button>
+            </div>
+          </>
         )}
       </div>
       {message && <p className="text-green-600 mt-2">{message}</p>}
