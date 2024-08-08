@@ -49,22 +49,32 @@ const convertirNumeroRomano = (valor) => {
   }
 };
 
+const formatearTituloModulo = (titulo) => {
+  return titulo.replace(/^\d{2}\s/, "");
+};
+
 export default function CertificadoModulo({ certificadoId }) {
   const [certificado, setCertificado] = useState(null);
   const [nivel, setNivel] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [modulo, setModulo] = useState(null); 
 
   useEffect(() => {
     const fetchCertificado = async () => {
       try {
         const response = await axios.get(`/certificadosModulo/${certificadoId}`);
-        console.log('datos: ', response.data);
         const certificadoData = response.data;
         setCertificado(certificadoData);
+
         const nivelResponse = await axios.get(`/nivel/${certificadoData.nivelId}`);
         setNivel(nivelResponse.data);
+
         const userResponse = await axios.get(`/user/${certificadoData.userSub}`);
         setUserData(userResponse.data);
+
+        const moduloResponse = await axios.get(`/modulo/${certificadoData.moduloId}`);
+        setModulo(moduloResponse.data); 
+
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -75,7 +85,8 @@ export default function CertificadoModulo({ certificadoId }) {
     }
   }, [certificadoId]);
 
-  if (!certificado || !nivel || !userData) {
+  if (!certificado || !nivel || !userData || !modulo) {
+    console.log('Loading data... certificado:', certificado, 'nivel:', nivel, 'userData:', userData, 'modulo:', modulo);
     return <p>Cargando...</p>;
   }
 
@@ -104,6 +115,8 @@ export default function CertificadoModulo({ certificadoId }) {
     default:
       imagenFondo = imgCertificado;
   }
+
+  const tituloModuloFormateado = formatearTituloModulo(modulo.titulo);
 
   return (
     <div
@@ -149,7 +162,7 @@ export default function CertificadoModulo({ certificadoId }) {
             className="text-lg mb-4"
             style={{ fontFamily: "'Arial', sans-serif", fontSize: "1.5rem" }}
           >
-            Ha completado satisfactoriamente el {nombreCurso} de <br />
+            Ha completado satisfactoriamente el módulo {tituloModuloFormateado} del {nombreCurso} de <br />
             Teología con orientación profética
           </p>
           <p
@@ -226,7 +239,7 @@ export default function CertificadoModulo({ certificadoId }) {
           </div>
           <p
             className="text-base mb-2"
-            style={{ fontFamily: "'Arial', sans-serif" }}
+            style={{ fontFamily: "'Arial', sans-serif'" }}
           >
             Se expide el {formattedDate}
           </p>
