@@ -173,10 +173,15 @@ function RegistroActividad() {
           (grupo) => grupo.nivel.id === selectedNivel
         ));
 
-    const selectedGrupoMatch =
-      !selectedGrupo ||
-      (registro.user?.grupos &&
-        registro.user.grupos.some((grupo) => grupo.id === selectedGrupo));
+        const selectedGrupoMatch =
+        !selectedGrupo ||
+        (registro.user?.grupos &&
+          registro.user.grupos.some(userGrupo =>
+            registro.modulo?.grupos.some(moduloGrupo =>
+              moduloGrupo.id === selectedGrupo &&
+              moduloGrupo.id === userGrupo.id
+            )
+          ));
 
     const selectedModuloMatch =
       !selectedModulo || registro.modulo?.id === selectedModulo;
@@ -381,24 +386,22 @@ function RegistroActividad() {
                         ? registro.modulo.grupos[0].nivel.name
                         : ""}
                     </td>
-                    {/* <td className="py-3 px-6 text-left whitespace-nowrap">
-                      {registro.user && registro.user.grupos.length > 0
-                        ? selectedGrupo !== ""
-                          ? registro.user.grupos.find(
-                              (grupo) => grupo.id === selectedGrupo
-                            )?.name
-                          : registro.modulo?.grupos[0]?.name
-                        : "Inscrito en Modulo"}
-                    </td> */}
                     <td className="py-3 px-6 text-left whitespace-nowrap">
-                      {registro.user && registro.user.grupos.length > 0
-                        ? registro.user.grupos.find((grupo) =>
-                            registro.modulo?.grupos.some(
-                              (moduloGrupo) => moduloGrupo.id === grupo.id
-                            )
-                          )?.name || "Grupo no encontrado"
-                        : "Inscrito en Modulo"}
-                    </td>
+  {registro.user && registro.user.grupos.length > 0
+    ? registro.modulo?.grupos.find(moduloGrupo =>
+        registro.user.grupos.some(userGrupo =>
+          moduloGrupo.id === userGrupo.id
+        )
+      )?.name || "Grupo no encontrado"
+    : "Inscrito en Modulo"}
+</td>
+                    {/* <td className="py-3 px-6 text-left whitespace-nowrap">
+  {registro.user && registro.user.grupos.length > 0
+    ? registro.user.grupos.find(grupo =>
+        registro.modulo?.grupos.some(moduloGrupo => moduloGrupo.id === grupo.id)
+      )?.name || "Grupo no encontrado"
+    : "Inscrito en Modulo"}
+</td> */}
                     <td className="py-3 px-6 text-left">
                       {registro.modulo ? registro.modulo.titulo : ""}
                     </td>
