@@ -8,6 +8,7 @@ import {
   FaTrash,
   FaEdit,
   FaEye,
+  FaList
 } from "react-icons/fa";
 import Modal from "react-modal";
 import { ToastContainer, toast } from "react-toastify";
@@ -102,6 +103,12 @@ export default function PlanesAdmin() {
         >
           <FaPlus className="mr-2" /> Crear Plan
         </button>
+        <button
+            className="bg-green-600 text-white py-2 px-4 rounded-lg flex items-center hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
+            onClick={() => navigate('/admin/registro-planes')}
+          >
+            <FaList className="mr-2" /> Ver Compras
+          </button>
       </div>
       <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {planes.map((plan) => (
