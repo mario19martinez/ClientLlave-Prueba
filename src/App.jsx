@@ -128,6 +128,7 @@ import ViewCertficadoModulo from "./views/ViewAdmin/ViewCertificacion/ViewCerifi
 import ViewPlanesAdmin from "./views/ViewAdmin/ViewPlanesAdmin/ViewPlanesAdmin";
 import ViewPlanesDetails from "./views/ViewAdmin/ViewPlanesAdmin/ViewPlanesDetails";
 import ViewCertificarModulo from "./views/ViewAdmin/ViewCertificacion/ViewCertificarModulo";
+import ViewUsersNoInscritoAll from "./views/ViewAdmin/ViewUsersNoInscrtosAll";
 import ViewRegistroPlanes from "./views/ViewAdmin/ViewPlanesAdmin/ViewRegistroPlanes";
 
 //imports editor
@@ -272,6 +273,7 @@ function App() {
             <Route path="/admin/certificado/CertificarModulo/:moduloId/:GrupoId/:nivelId" element={isLoggedIn? <ViewCertificarModulo /> : <Navigate to="/login" /> } />
             <Route path="/admin/planes" element={isLoggedIn? <ViewPlanesAdmin /> : <Navigate to="/login" /> } />
             <Route path="/admin/planes/:PlanId" element={isLoggedIn? <ViewPlanesDetails /> : <Navigate to="/login" /> } />
+            <Route path="/admin/NoInscritos" element={isLoggedIn? <ViewUsersNoInscritoAll /> : <Navigate to="/login" /> } />
             <Route path="/admin/registro-planes" element={isLoggedIn? <ViewRegistroPlanes /> : <Navigate to="/login" />} />
 
           </>
