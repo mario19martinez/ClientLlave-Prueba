@@ -381,13 +381,22 @@ function RegistroActividad() {
                         ? registro.modulo.grupos[0].nivel.name
                         : ""}
                     </td>
-                    <td className="py-3 px-6 text-left whitespace-nowrap">
+                    {/* <td className="py-3 px-6 text-left whitespace-nowrap">
                       {registro.user && registro.user.grupos.length > 0
                         ? selectedGrupo !== ""
                           ? registro.user.grupos.find(
                               (grupo) => grupo.id === selectedGrupo
                             )?.name
                           : registro.modulo?.grupos[0]?.name
+                        : "Inscrito en Modulo"}
+                    </td> */}
+                    <td className="py-3 px-6 text-left whitespace-nowrap">
+                      {registro.user && registro.user.grupos.length > 0
+                        ? registro.user.grupos.find((grupo) =>
+                            registro.modulo?.grupos.some(
+                              (moduloGrupo) => moduloGrupo.id === grupo.id
+                            )
+                          )?.name || "Grupo no encontrado"
                         : "Inscrito en Modulo"}
                     </td>
                     <td className="py-3 px-6 text-left">
