@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BarChartIcon from "@mui/icons-material/BarChart";
@@ -17,6 +16,7 @@ import {
   deleteUser as deleteUserAction,
 } from "../../../Redux/features/AdminUsers/AdminUsersSlices";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import AddIcon from '@mui/icons-material/Add';
 import Tooltip from "@mui/material/Tooltip";
 import EditarUsuarioAdmin from "./EditarUsuarioAdmin";
 import axios from "axios";
@@ -38,6 +38,10 @@ function AllUsersAdmin() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortAsc, setSortAsc] = useState(true);
   const [showAllCourses, setShowAllCourses] = useState(false);
+  const [cursos, setCursos] = useState([]);
+  const [selectedCursoId, setSelectedCursoId] = useState("");
+  const [usuariosInscritos, setUsuariosInscritos] = useState([]);
+  const [filtroSinCurso] = useState(false);
   const usersPerPage = 10;
 
   const navigate = useNavigate();
@@ -72,6 +76,33 @@ function AllUsersAdmin() {
       const identificacion = user.sub;
       await dispatch(banUserAction(identificacion));
       window.location.reload();
+    }
+  };
+
+  useEffect(() => {
+    const fetchCursos = async () => {
+      try {
+        const response = await axios.get("/cursos");
+        setCursos(response.data);
+      } catch (error) {
+        console.error("Error al obtener los cursos:", error.message);
+      }
+    };
+
+    fetchCursos();
+  }, []);
+
+  const handleCursoChange = async (cursoId) => {
+    setSelectedCursoId(cursoId);
+    if (cursoId) {
+      try {
+        const response = await axios.get(`/usuariosPorCurso/${cursoId}`);
+        setUsuariosInscritos(response.data.usuariosEnCurso);
+      } catch (error) {
+        console.error("Error al obtener usuarios inscritos:", error.message);
+      }
+    } else {
+      setUsuariosInscritos([]);
     }
   };
 
@@ -148,6 +179,15 @@ function AllUsersAdmin() {
   // Filtrado y ordenamiento de usuarios
   const filteredAndSortedUsers = usersState
     .filter((user) => {
+      if (filtroSinCurso) {
+        return !usuariosInscritos.includes(user.sub);
+      }
+      if (selectedCursoId) {
+        return usuariosInscritos.includes(user.sub);
+      }
+      return true; 
+    })
+    .filter((user) => {
       const nameMatch =
         user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -199,8 +239,8 @@ function AllUsersAdmin() {
   return (
     <div className="w-full p-5">
       <h1 className="text-2xl font-bold mb-4 text-gray-700">Usuarios</h1>
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex space-x-4 items-center">
+      <div className="flex flex-col justify-between mb-4">
+        <div className="flex flex-wrap space-x-4 items-center">
           <Tooltip
             title="Agregar usuario"
             arrow
@@ -220,8 +260,9 @@ function AllUsersAdmin() {
           >
             <button
               onClick={openRegistrationModal}
-              className="relative bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group"
+              className="space-x-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
+              <AddIcon />
               Agregar usuario
             </button>
           </Tooltip>
@@ -244,7 +285,7 @@ function AllUsersAdmin() {
           >
             <button
               onClick={() => navigate("/admin/usersDeleted")}
-              className="relative bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 group flex items-center"
+              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 flex items-center"
             >
               <DeleteIcon className="mr-2" />
               Eliminados
@@ -269,9 +310,10 @@ function AllUsersAdmin() {
           >
             <button
               onClick={() => navigate("/admin/AnalyticsUser")}
-              className="relative bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 group flex items-center"
+              className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center"
             >
-              <BarChartIcon className="text-green-400" />
+              <BarChartIcon className="text-green-400 mr-2" />
+              Analíticas
             </button>
           </Tooltip>
           <Tooltip
@@ -293,7 +335,7 @@ function AllUsersAdmin() {
           >
             <button
               onClick={() => navigate("/admin/seguimiento")}
-              className="relative bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 group"
+              className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
             >
               Seguimiento
             </button>
@@ -317,13 +359,13 @@ function AllUsersAdmin() {
           >
             <button
               onClick={() => navigate("/admin/registro-actividades")}
-              className="relative bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 group"
+              className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
             >
               Act Niveles
             </button>
           </Tooltip>
           <Tooltip
-            title="Datos de España"
+            title="Datos Formulario"
             arrow
             placement="top"
             slotProps={{
@@ -341,9 +383,33 @@ function AllUsersAdmin() {
           >
             <button
               onClick={() => navigate("/Admin/datos")}
-              className="relative bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 group"
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
-              Datos/España
+              Datos Formulario
+            </button>
+          </Tooltip>
+          <Tooltip
+            title="Usuarios no inscritos"
+            arrow
+            placement="top"
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [0, -6],
+                    },
+                  },
+                ],
+              },
+            }}
+          >
+            <button
+              onClick={() => navigate("/admin/NoInscritos")}
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            >
+              Usuarios no inscritos
             </button>
           </Tooltip>
         </div>
@@ -386,6 +452,18 @@ function AllUsersAdmin() {
           {Paises.paises.map((pais, index) => (
             <option key={index} value={pais.nombre}>
               {pais.nombre}
+            </option>
+          ))}
+        </select>
+        <select
+          value={selectedCursoId}
+          onChange={(e) => handleCursoChange(e.target.value)}
+          className="border-2 p-2 mr-2 focus:border-blue-500 focus:outline-none rounded-lg"
+        >
+          <option value="">Todos los cursos</option>
+          {cursos.map((curso) => (
+            <option key={curso.id} value={curso.id}>
+              {curso.name}
             </option>
           ))}
         </select>
