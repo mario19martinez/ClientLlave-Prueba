@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import axios from "axios";
+import CircularProgress from "@mui/material/CircularProgress";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import Tooltip from "@mui/material/Tooltip";
 
 function RegistroPlanes() {
   const [purchases, setPurchases] = useState([]);
@@ -34,7 +37,7 @@ function RegistroPlanes() {
     fetchPurchases();
   }, []);
 
-  const statuses = ["completed", "failed", "pending"];
+  const statuses = ["completed", "failed"];
   const descriptions = Array.from(new Set(purchases.map((p) => p.description)));
   const transactionDates = Array.from(
     new Set(
@@ -59,13 +62,30 @@ function RegistroPlanes() {
 
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredPurchases.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredPurchases.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   const handlePageClick = (event) => {
     setCurrentPage(event.selected);
   };
 
-  if (loading) return <p className="text-center text-gray-700">Loading...</p>;
+  const resetFilters = () => {
+    setFilters({
+      description: "",
+      status: "",
+      transactionDate: "",
+    });
+  };
+
+  if (loading)
+    return (
+      <div>
+        <p className="text-center text-gray-700">Loading...</p>
+        <CircularProgress />
+      </div>
+    );
   if (error) return <p className="text-center text-red-500">Error: {error}</p>;
 
   return (
@@ -76,10 +96,7 @@ function RegistroPlanes() {
       <div className="overflow-x-auto">
         <div className="mb-6 translate-x-6">
           {/* <h2 className="text-xl font-semibold text-gray-800 mb-4">Filtrar</h2> */}
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            className="flex space-x-4"
-          >
+          <form onSubmit={(e) => e.preventDefault()} className="flex space-x-4">
             <select
               value={filters.description}
               onChange={(e) =>
@@ -122,6 +139,31 @@ function RegistroPlanes() {
                 </option>
               ))}
             </select>
+            <Tooltip
+              title="Reiniciar Filtros"
+              arrow
+              placement="right"
+              slotProps={{
+                popper: {
+                  modifiers: [
+                    {
+                      name: "offset",
+                      options: {
+                        offset: [0, -6],
+                      },
+                    },
+                  ],
+                },
+              }}
+            >
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              >
+                <RestartAltIcon fontSize="large" />
+              </button>
+            </Tooltip>
           </form>
         </div>
         <table className="min-w-full bg-white  rounded-lg shadow-lg">
