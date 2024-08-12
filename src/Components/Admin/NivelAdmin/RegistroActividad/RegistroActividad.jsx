@@ -114,6 +114,10 @@ function RegistroActividad() {
     fetchModulosPorGrupo();
   }, [selectedGrupo]);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedNivel, selectedGrupo, selectedModulo])
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
