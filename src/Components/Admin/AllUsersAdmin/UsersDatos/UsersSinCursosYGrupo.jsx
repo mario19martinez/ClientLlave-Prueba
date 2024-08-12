@@ -147,7 +147,7 @@ export default function UserSinCursosYGrupo() {
           <FaArrowLeft size={20} />
         </button>
         <div>
-          <h1 className="text-3xl font-extrabold text-gray-800">
+          <h1 className="text-3xl font-extrabold text-gray-700">
             Usuarios no inscritos
           </h1>
         </div>

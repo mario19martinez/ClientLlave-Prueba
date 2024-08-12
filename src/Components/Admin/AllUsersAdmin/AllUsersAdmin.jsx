@@ -18,7 +18,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import AddIcon from '@mui/icons-material/Add';
 import Tooltip from "@mui/material/Tooltip";
-import EditarUsuarioAdmin from "./EditarUsuarioAdmin";
+import UsersDetails from "./UsersDatos/UserDetails";
 import axios from "axios";
 
 function AllUsersAdmin() {
@@ -31,13 +31,10 @@ function AllUsersAdmin() {
   const [endDateFilter, setEndDateFilter] = useState("");
   const [userNotFound, setUserNotFound] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedUserEmail, setSelectedUserEmail] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortAsc, setSortAsc] = useState(true);
-  const [showAllCourses, setShowAllCourses] = useState(false);
   const [cursos, setCursos] = useState([]);
   const [selectedCursoId, setSelectedCursoId] = useState("");
   const [usuariosInscritos, setUsuariosInscritos] = useState([]);
@@ -150,12 +147,6 @@ function AllUsersAdmin() {
 
   const closeRegistrationModal = () => {
     setShowRegistrationModal(false);
-  };
-
-  const handleEditUser = (userEmail) => {
-    setIsEditModalOpen(true);
-    setSelectedUserEmail(userEmail);
-    console.log("Este es el email de usuario:", userEmail);
   };
 
   const resetFilters = () => {
@@ -613,144 +604,9 @@ function AllUsersAdmin() {
               ></path>
             </svg>
           </button>
-          <div className="rounded-lg p-8">
-            <p className="text-center text-2xl font-bold mb-4 text-gray-800">
-              Detalles del usuario
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <p className="text-gray-700">Nombre:</p>
-                <p className="font-semibold text-gray-800">
-                  {selectedUser.name}
-                </p>
-              </div>
-              <div>
-                <p className="text-gray-700">Apellido:</p>
-                <p className="font-semibold text-gray-800">
-                  {selectedUser.last_name}
-                </p>
-              </div>
-              <div>
-                <p className="text-gray-700">Correo:</p>
-                <p className="font-semibold text-gray-800">
-                  {selectedUser.email}
-                </p>
-              </div>
-              <div>
-                <p className="text-gray-700">País:</p>
-                <p className="font-semibold text-gray-800">
-                  {selectedUser.pais}
-                </p>
-              </div>
-              <div>
-                <p className="text-gray-700">Teléfono:</p>
-                <p className="font-semibold text-gray-800">
-                  {selectedUser.telefono}
-                </p>
-              </div>
-              {selectedUser.grupo && (
-                <div>
-                  <p className="text-gray-700">Grupo:</p>
-                  <p className="font-semibold text-gray-800">
-                    {selectedUser.grupo.name}
-                  </p>
-                </div>
-              )}
-              {selectedUser.grupo && selectedUser.grupo.nivel && (
-                <div>
-                  <p className="text-gray-700">Nivel:</p>
-                  <p className="font-semibold text-gray-800">
-                    {selectedUser.grupo.nivel.name}
-                  </p>
-                </div>
-              )}
-            </div>
-            {selectedUser.cursos && selectedUser.cursos.length > 0 ? (
-              <div className="mt-4 flex space-x-20">
-                <div>
-                  <h3 className="text-lg font-bold text-gray-800">Cursos</h3>
-                  <ul className="list-disc list-inside">
-                    {(showAllCourses
-                      ? selectedUser.cursos
-                      : selectedUser.cursos.slice(0, 3)
-                    ).map((curso) => (
-                      <li
-                        key={curso.id}
-                        className="font-semibold text-gray-800"
-                      >
-                        {curso.name}
-                      </li>
-                    ))}
-                  </ul>
-                  {selectedUser.cursos.length > 3 && (
-                    <button
-                      className="mt-2 text-blue-500 hover:underline focus:outline-none"
-                      onClick={() => setShowAllCourses(!showAllCourses)}
-                    >
-                      {showAllCourses ? "Ver menos" : "Ver más"}
-                    </button>
-                  )}
-                </div>
-                <div className="mt-4">
-                  <h3 className="text-lg font-bold text-gray-800">
-                    Curso Actual
-                  </h3>
-                  <p className="font-semibold text-gray-800">
-                    {selectedUser.cursos[selectedUser.cursos.length - 1].name}
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <p className="mt-4 text-red-500 font-semibold">
-                El usuario no está inscrito en ningún curso.
-              </p>
-            )}
-            <div className="flex justify-center mt-6">
-              <button
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none mr-4"
-                onClick={() => handleEditUser(selectedUser.email)}
-              >
-                Editar
-              </button>
-              <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none">
-                Novedad
-              </button>
-            </div>
+          <div>
+            <UsersDetails identificacion={selectedUser.sub} />
           </div>
-        </Modal>
-      )}
-
-      {isEditModalOpen && selectedUserEmail && (
-        <Modal
-          isOpen={isEditModalOpen}
-          onRequestClose={() => setIsEditModalOpen(false)}
-          contentLabel="Editar usuario"
-          className="Modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-8 shadow-lg z-50 max-w-md w-full"
-          overlayClassName="Overlay fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center z-50"
-        >
-          <button
-            onClick={() => setIsEditModalOpen(false)}
-            className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
-          </button>
-          {selectedUserEmail && (
-            <EditarUsuarioAdmin userEmail={selectedUserEmail} />
-          )}
-          {console.log("Email de usuario en el modal:", selectedUserEmail)}
         </Modal>
       )}
 
