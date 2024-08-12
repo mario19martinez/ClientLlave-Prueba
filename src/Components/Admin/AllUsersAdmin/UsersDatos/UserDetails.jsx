@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from "react-modal";
 import axios from 'axios';
 import EditarUsuarioAdmin from '../EditarUsuarioAdmin';
+import AddNovedad from './AddNovedad';
 
 export default function UsersDetails({ identificacion }) {
     const [userData, setUserData] = useState(null);
@@ -12,6 +13,7 @@ export default function UsersDetails({ identificacion }) {
     const [error, setError] = useState(null);
     const [showAllCourses, setShowAllCourses] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isNovedadModalOpen, setIsNovedadModalOpen] = useState(false);
     const [selectedUserEmail, setSelectedUserEmail] = useState("");
     const [noCursos, setNoCursos] = useState(false);
     const [noGrupos, setNoGrupos] = useState(false);
@@ -86,6 +88,10 @@ export default function UsersDetails({ identificacion }) {
     const handleEditUser = (userEmail) => {
         setIsEditModalOpen(true);
         setSelectedUserEmail(userEmail);
+    };
+
+    const handleAddNovedad = () => {
+        setIsNovedadModalOpen(true);
     };
 
     if (loading) {
@@ -190,7 +196,10 @@ export default function UsersDetails({ identificacion }) {
                         >
                             Editar
                         </button>
-                        <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none">
+                        <button 
+                        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none"
+                        onClick={() => handleAddNovedad(userData.sub)}
+                        >
                             Novedad
                         </button>
                     </div>
@@ -230,6 +239,38 @@ export default function UsersDetails({ identificacion }) {
                     )}
                 </Modal>
             )}
+            {isNovedadModalOpen && (
+    <Modal
+        isOpen={isNovedadModalOpen}
+        onRequestClose={() => setIsNovedadModalOpen(false)}
+        contentLabel="Añadir Novedad"
+        className="Modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-8 shadow-lg z-50 max-w-md w-full"
+        overlayClassName="Overlay fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center z-50"
+    >
+        <button
+            onClick={() => setIsNovedadModalOpen(false)}
+            className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                className="w-6 h-6"
+            >
+                <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                ></path>
+            </svg>
+        </button>
+        {userData && (
+            <AddNovedad userIdentificacion={userData.sub} />
+        )}
+    </Modal>
+)}
         </div>
     );
 }
