@@ -55,6 +55,7 @@ function UsersGrupo({ nivelId, grupoId }) {
   }, [usuarios]);
 
   useEffect(() => {
+    setPage(1); 
     filterUsuarios();
   }, [searchTerm, dateFilter, startDate, endDate]);
 

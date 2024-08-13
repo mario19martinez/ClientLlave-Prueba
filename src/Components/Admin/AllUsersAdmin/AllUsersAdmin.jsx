@@ -116,9 +116,9 @@ function AllUsersAdmin() {
 
   const handleSearchChange = (newSearchTerm) => {
     setSearchTerm(newSearchTerm);
+    setCurrentPage(1); 
     setUserNotFound(false);
   };
-
   const handleCountryFilterChange = (event) => {
     setCountryFilter(event.target.value);
   };
