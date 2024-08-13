@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { FaUserCog } from "react-icons/fa";
-import { FaUserGraduate } from "react-icons/fa";
-import { FaUserTie } from "react-icons/fa";
-import { FaUserAstronaut } from "react-icons/fa";
-import { FaUserNinja } from "react-icons/fa";
+import {
+  FaUserCog,
+  FaUserGraduate,
+  FaUserTie,
+  FaUserAstronaut,
+  FaUserNinja,
+} from "react-icons/fa";
 import { MdEngineering } from "react-icons/md";
 
 function Roles() {
@@ -20,7 +22,7 @@ function Roles() {
   useEffect(() => {
     const obtenerUsuarios = async () => {
       try {
-        const response = await axios.get("/usuarios");
+        const response = await axios.get("/user");
         setUsuarios(response.data);
       } catch (error) {
         console.error("Error al obtener usuarios:", error);
@@ -58,12 +60,10 @@ function Roles() {
     setBusqueda(event.target.value);
   };
 
-  // Nuevo manejador para cambiar el filtro de roles
   const handleFiltroRolChange = (event) => {
     setFiltroRol(event.target.value);
   };
 
-  // Contadores de usuarios por rol
   const contadorUsuariosPorRol = {
     admin: usuarios.filter((usuario) => usuario.rol === "admin").length,
     docente: usuarios.filter((usuario) => usuario.rol === "docente").length,
@@ -73,14 +73,13 @@ function Roles() {
   };
 
   const usuariosFiltrados = usuarios.filter((usuario) => {
+    const nombreCompleto = `${usuario.name} ${usuario.last_name}`;
     return (
-      (usuario.name.toLowerCase().includes(busqueda.toLowerCase()) ||
-        usuario.last_name.toLowerCase().includes(busqueda.toLowerCase())) &&
+      nombreCompleto.toLowerCase().includes(busqueda.toLowerCase()) &&
       (filtroRol === "" || usuario.rol === filtroRol)
-    ); // Aplicar filtro de rol
+    );
   });
 
-  // Paginación - Calcula índices de usuarios
   const indexOfLastUser = currentPage * usuariosPerPage;
   const indexOfFirstUser = indexOfLastUser - usuariosPerPage;
   const usuariosActuales = usuariosFiltrados.slice(
@@ -88,10 +87,8 @@ function Roles() {
     indexOfLastUser
   );
 
-  // Cambia de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Calcula qué números de página mostrar en el paginado
   const calculatePageNumbers = () => {
     const totalPages = Math.ceil(usuariosFiltrados.length / usuariosPerPage);
     const halfPageRange = Math.floor(pageRangeDisplayed / 2);
@@ -115,7 +112,6 @@ function Roles() {
     );
   };
 
-  // Array de páginas a mostrar
   const pageNumbers = calculatePageNumbers();
 
   return (
@@ -131,7 +127,6 @@ function Roles() {
           onChange={handleBusquedaChange}
           className="px-4 py-2 border border-gray-300 rounded-md mr-2"
         />
-        {/* Nuevo filtro de roles */}
         <select
           value={filtroRol}
           onChange={handleFiltroRolChange}
@@ -144,7 +139,6 @@ function Roles() {
           <option value="editor">Editor</option>
           <option value="monitor">Monitor</option>
         </select>
-        {/* Contadores de usuarios por rol */}
         <div className="ml-4 flex items-center space-x-4">
           <span className="text-gray-700">
             Admin: {contadorUsuariosPorRol.admin}
@@ -167,8 +161,8 @@ function Roles() {
         <table className="min-w-full border-collapse border bg-blue-600">
           <thead>
             <tr className="text-white">
-              <th className="py-2 px-4 border">Nombre</th>
-              <th className="py-2 px-4 border">Apellido</th>
+              <th className="py-2 px-4 border">Usuarios</th>
+              <th className="py-2 px-4 border">Correo</th>
               <th className="py-2 px-4 border">Rol</th>
               <th className="py-2 px-4 border">Acciones</th>
             </tr>
@@ -186,8 +180,10 @@ function Roles() {
                   key={usuario.sub}
                   className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
                 >
-                  <td className="py-2 px-4 border">{usuario.name}</td>
-                  <td className="py-2 px-4 border">{usuario.last_name}</td>
+                  <td className="py-2 px-4 border">
+                    {`${usuario.name} ${usuario.last_name}`}
+                  </td>
+                  <td className="py-2 px-4 border">{usuario.email}</td>
                   <td className="py-2 px-4 border">
                     {usuario.rol === "client" ? "Estudiante" : usuario.rol}
                   </td>
@@ -208,7 +204,6 @@ function Roles() {
         </table>
       </div>
 
-      {/* Paginación */}
       <nav className="mt-4" aria-label="Pagination">
         <ul className="flex justify-center">
           <li>
@@ -259,8 +254,6 @@ function Roles() {
           </li>
         </ul>
       </nav>
-
-      {/* Modal de Roles */}
       {modalVisible && (
         <div className="fixed z-10 inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
