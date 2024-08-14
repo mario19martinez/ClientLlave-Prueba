@@ -8,7 +8,7 @@ export default function LandingPage() {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   return (
-    <div className="relative flex flex-col justify-center items-center min-h-screen text-white">
+    <div className="relative pb-10 flex flex-col justify-center items-center min-h-screen text-white">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${backgroundImage})` }}
