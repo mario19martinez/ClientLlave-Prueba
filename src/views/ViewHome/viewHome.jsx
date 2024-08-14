@@ -12,6 +12,7 @@ import styles from "./animate.module.css";
 import ContadorHome from "../../Components/Transmisiones/Contadores/ContadorHome";
 import ContadorTransmision from "../../Components/Transmisiones/Contadores/ContadorTransmision";
 import PlanesHome from "../../Components/Planes/PlanesHome";
+import DonacionBoton from "../../Components/DonacionBoton/DonacionBoton";
 
 export default function ViewHome() {
   return (
@@ -54,6 +55,9 @@ export default function ViewHome() {
         </div>
         <div className={`${styles.component}`}>
           <Testimonios className="mt-8" />
+        </div>
+        <div>
+          <DonacionBoton />
         </div>
       </div>
       <div>
