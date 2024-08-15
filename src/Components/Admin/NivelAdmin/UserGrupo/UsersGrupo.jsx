@@ -122,6 +122,18 @@ function UsersGrupo({ nivelId, grupoId }) {
         const updatedUsers = usuarios.filter(
           (usuario) => usuario.sub !== userSub
         );
+
+        // Eliminar al usuario del grupo
+        await axios.delete(`/usuario/${userSub}/grupo/${grupoId}`);
+        
+        // Registrar la eliminacion en el historial
+        await axios.post('/user-history', {
+          userSub: userSub,
+          grupoId: grupoId,
+          actionType: 'Eliminacion de grupo',
+          timestamp: new Date(),
+        });
+        
         setUsuarios(updatedUsers);
       }
     } catch (error) {
