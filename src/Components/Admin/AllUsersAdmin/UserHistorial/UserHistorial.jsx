@@ -32,28 +32,28 @@ function UserHistory() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Historial de Usuarios</h1>
-      <table className="min-w-full bg-white border border-gray-300">
+    <div className="absolute top-0 right-36 mt-28 w-4/5 ml-96 p-4 translate-x-24">
+      <h1 className="text-2xl font-bold mb-4 text-gray-800">Historial de Usuarios</h1>
+      <table className="min-w-full bg-white  rounded-lg shadow-lg">
         <thead>
           <tr>
-            <th className="py-2 px-4 border-b">User Sub</th>
-            <th className="py-2 px-4 border-b">Curso Id</th>
-            <th className="py-2 px-4 border-b">Grupo Id</th>
-            <th className="py-2 px-4 border-b">Certificado Id</th>
-            <th className="py-2 px-4 border-b">Action Type</th>
-            <th className="py-2 px-4 border-b">Timestamp</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">User Sub</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Curso Id</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Grupo Id</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Certificado Id</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Action Type</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Timestamp</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-white divide-y divide-gray-200">
           {history.map((item) => (
             <tr key={item.id}>
-              <td className="py-2 px-4 border-b">{item.userSub}</td>
-              <td className="py-2 px-4 border-b">{item.cursoId}</td>
-              <td className="py-2 px-4 border-b">{item.grupoId}</td>
-              <td className="py-2 px-4 border-b">{item.certificadoId}</td>
-              <td className="py-2 px-4 border-b">{item.actionType}</td>
-              <td className="py-2 px-4 border-b">
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{item.userSub}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{item.cursoId}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{item.grupoId}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{item.certificadoId}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{item.actionType}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
                 {new Date(item.timestamp).toLocaleString()}
               </td>
             </tr>

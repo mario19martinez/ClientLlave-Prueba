@@ -130,6 +130,7 @@ import ViewPlanesDetails from "./views/ViewAdmin/ViewPlanesAdmin/ViewPlanesDetai
 import ViewCertificarModulo from "./views/ViewAdmin/ViewCertificacion/ViewCertificarModulo";
 import ViewUsersNoInscritoAll from "./views/ViewAdmin/ViewUsersNoInscrtosAll";
 import ViewRegistroPlanes from "./views/ViewAdmin/ViewPlanesAdmin/ViewRegistroPlanes";
+import ViewUserHistorial from "./views/ViewAdmin/ViewUserHistorial/ViewUserHistorial"
 
 //imports editor
 import ViewEscritorioEditor from "./views/ViewEditor/ViewEscritorioEditor";
@@ -275,6 +276,7 @@ function App() {
             <Route path="/admin/planes/:PlanId" element={isLoggedIn? <ViewPlanesDetails /> : <Navigate to="/login" /> } />
             <Route path="/admin/NoInscritos" element={isLoggedIn? <ViewUsersNoInscritoAll /> : <Navigate to="/login" /> } />
             <Route path="/admin/registro-planes" element={isLoggedIn? <ViewRegistroPlanes /> : <Navigate to="/login" />} />
+            <Route path="/admin/historial-usuarios" element={isLoggedIn? <ViewUserHistorial /> : <Navigate to="/login" />} />
 
           </>
         )}
