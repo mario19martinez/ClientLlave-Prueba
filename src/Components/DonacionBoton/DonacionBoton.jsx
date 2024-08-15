@@ -14,28 +14,16 @@ const DonacionBoton = () => {
         style={styles.form}
       >
         <input name="p_cust_id_cliente" type="hidden" value="1381112" />
-        <input
-          name="p_key"
-          type="hidden"
-          value="75046b37a9cec5d5171d31bfdf52369f902dc794"
-        />
+        <input name="p_key" type="hidden" value="75046b37a9cec5d5171d31bfdf52369f902dc794" />
         <input name="p_id_factura" type="hidden" value="" />
-        <input name="p_description" type="hidden" value="Donación" />
-        <input name="p_detalle" type="hidden" value="Donación" />
-        <input name="p_referencia" type="hidden" value="000010" />
+        <input name="p_description" type="hidden" value="Donacion" />
+        <input name="p_detalle" type="hidden" value="" />
+        <input name="p_referencia" type="hidden" value="0001" />
         <input name="p_test_request" type="hidden" value="false" />
-        <input name="p_url_respuesta" type="hidden" value="" />
-        <input
-          name="p_url_confirmacion"
-          type="hidden"
-          value="https://www.llaveparalasnaciones.com/"
-        />
-        <input
-          type="image"
-          id="imagen"
-          src="https://multimedia.epayco.co/dashboard/btns/btn5.png"
-          alt="Donar"
-        />
+        <input name="p_url_respuesta" type="hidden" value="https://www.llaveparalasnaciones.com/" />
+        <input name="p_url_confirmacion" type="hidden" value="" />
+        <input type="image" id="imagen" src="https://multimedia.epayco.co/dashboard/btns/btn10.png" alt="Donar" />
+        <input type="hidden" id="idboton" name="idboton" value="66522" />
       </form>
       <button style={styles.customButton} onClick={handleClick}>
         Donación

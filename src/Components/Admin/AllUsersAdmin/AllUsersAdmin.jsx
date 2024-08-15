@@ -403,6 +403,13 @@ function AllUsersAdmin() {
               Usuarios no inscritos
             </button>
           </Tooltip>
+        {/* <button
+            onClick={() => navigate("/admin/historial-usuarios")}
+            className="flex items-center bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors"
+          >
+            Historial de Usuarios
+            {/* <BarChartIcon className="mr-2" /> Historial de Usuarios */}
+          {/*</button> */}
         </div>
         <div className="mt-4">
           <p className="text-gray-600 text-sm">

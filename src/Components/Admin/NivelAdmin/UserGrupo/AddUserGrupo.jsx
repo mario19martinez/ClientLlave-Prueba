@@ -71,6 +71,16 @@ function AddUserGrupo({ nivelId, grupoId, closeModalAndReload }) {
         nivelId,
         hasPaid: hasPaid[userSub],
       });
+
+      // Registra la accion en el historial
+      await axios.post('/user-history', {
+        userSub,
+        grupoId,
+        cursoId: null,
+        certificado: null,
+        actionType: 'Agregado al grupo',
+      })
+      
       setMessage(response.data.message);
       toast.success("Usuario agregado con éxito!", {
         position: "top-center",
