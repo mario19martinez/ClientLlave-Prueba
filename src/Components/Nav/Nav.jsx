@@ -9,7 +9,9 @@ export default function Nav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
   const dispatch = useDispatch();
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") === "true");
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true"
+  );
   const location = useLocation();
   const navigate = useNavigate();
   const userData = useSelector((state) => state.users.userData);
@@ -40,15 +42,24 @@ export default function Nav() {
   }, [dispatch, storedEmail]);
 
   const redirect = () => {
-    if ((isLoggedIn && userData?.rol === "client") || userData?.rol === "client") {
+    if (
+      (isLoggedIn && userData?.rol === "client") ||
+      userData?.rol === "client"
+    ) {
       navigate("/estudiante/Escritorio");
-    } else if ((isLoggedIn && userData?.rol === "admin") || userData?.rol === "admin") {
+    } else if (
+      (isLoggedIn && userData?.rol === "admin") ||
+      userData?.rol === "admin"
+    ) {
       navigate("/admin");
     } else if (isLoggedIn && !userData) {
       navigate("/admin");
     } else if (isLoggedIn && superAdmin) {
       navigate("/admin");
-    } else if ((isLoggedIn && userData?.rol === "editor") || userData?.rol === "admin") {
+    } else if (
+      (isLoggedIn && userData?.rol === "editor") ||
+      userData?.rol === "admin"
+    ) {
       navigate("/Editor");
     }
   };
@@ -56,7 +67,9 @@ export default function Nav() {
   const renderNavLink = (path, label) => (
     <Link
       to={path}
-      className={`hover:text-gray-300 transition-colors ${location.pathname === path ? "border-b-2 border-white" : ""}`}
+      className={`hover:text-gray-300 transition-colors ${
+        location.pathname === path ? "border-b-2 border-white" : ""
+      }`}
     >
       {label}
     </Link>
@@ -65,17 +78,40 @@ export default function Nav() {
   return (
     <nav className="bg-blue-900 py-2 lg:py-3 px-8 lg:px-12 shadow-md">
       <div className="flex items-center justify-between max-w-screen-lg mx-auto">
-        <div className="w-1/4 lg:w-2/12">
-          <img src={logo} alt="logo" className="h-auto" />
+        <div className="flex lg:hidden">
+          <button
+            type="button"
+            onClick={toggleMobileMenu}
+            className="focus:outline-none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-8 h-8 text-white"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 12h18M3 6h18M3 18h18"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div className="flex justify-center w-full lg:w-2/12">
+          <img src={logo} alt="logo" className="h-10 sm:h-12 lg:h-auto mx-auto" />
         </div>
 
         <div className="w-1/4 lg:hidden flex justify-end">
-          <div className="flex space-x-2">
+          <div className="flex items-center gap-2">
             {isLoggedIn ? (
               <button
                 type="button"
                 onClick={redirect}
-                className="py-2 px-4 w-28 bg-blue-600 text-white hover:bg-blue-800 transition-colors rounded-md"
+                className="py-1 px-2 text-xs bg-blue-600 text-white hover:bg-blue-800 transition-colors rounded-md"
               >
                 Mi cuenta
               </button>
@@ -83,40 +119,20 @@ export default function Nav() {
               <>
                 <button
                   type="button"
-                  className="py-2 px-4 bg-blue-600 text-sm text-white hover:bg-blue-800 transition-colors rounded-md"
+                  className="py-1 px-2 text-xs bg-blue-600 text-white hover:bg-blue-800 transition-colors rounded-md"
                   onClick={toggleLoginForm}
                 >
                   Iniciar Sesión
                 </button>
                 <button
                   type="button"
-                  className="py-2 px-4 bg-blue-600 text-sm text-white hover:bg-blue-800 transition-colors rounded-md"
+                  className="py-1 px-2 text-xs bg-blue-600 text-white hover:bg-blue-800 transition-colors rounded-md"
                   onClick={openRegistrationModal}
                 >
                   Crear cuenta
                 </button>
               </>
             )}
-            <button
-              type="button"
-              onClick={toggleMobileMenu}
-              className="focus:outline-none"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-8 h-8"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 12h18M3 6h18M3 18h18"
-                />
-              </svg>
-            </button>
           </div>
         </div>
 
@@ -133,7 +149,7 @@ export default function Nav() {
             <button
               type="button"
               onClick={redirect}
-              className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 transition-colors rounded-md"
+              className="py-2 px-4 bg-white text-black font-bold hover:text-blue-600 border border-gray-300 hover:border-blue-600 transition-all rounded-full shadow-md"
             >
               Mi cuenta
             </button>
@@ -141,14 +157,14 @@ export default function Nav() {
             <>
               <button
                 type="button"
-                className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 transition-colors rounded-md"
+                className="py-2 px-4 bg-white text-black font-bold hover:text-blue-600 border border-gray-300 hover:border-blue-600 transition-all rounded-full shadow-md"
                 onClick={toggleLoginForm}
               >
                 Iniciar Sesión
               </button>
               <button
                 type="button"
-                className="py-2 px-4 bg-blue-600 text-white hover:bg-blue-800 transition-colors rounded-md"
+                className="py-2 px-4 bg-white text-black font-bold hover:text-blue-600 border border-gray-300 hover:border-blue-600 transition-all rounded-full shadow-md"
                 onClick={openRegistrationModal}
               >
                 Crear cuenta
