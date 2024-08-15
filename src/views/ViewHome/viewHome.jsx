@@ -13,6 +13,7 @@ import ContadorHome from "../../Components/Transmisiones/Contadores/ContadorHome
 import ContadorTransmision from "../../Components/Transmisiones/Contadores/ContadorTransmision";
 import PlanesHome from "../../Components/Planes/PlanesHome";
 import DonacionBoton from "../../Components/DonacionBoton/DonacionBoton";
+import RedesSociales from "../../Components/LandingPage/RedesSociales/RedesSociales";
 
 export default function ViewHome() {
   return (
@@ -26,6 +27,9 @@ export default function ViewHome() {
         </div>
       </div>
       <div className="bg-gradient-to-b from-gray-200 white flex-grow">
+        <div className={`${styles.component}`}>
+          <RedesSociales />
+        </div>
         <div className={`${styles.component}`}>
           <ContadorTransmision className="mt-8" />
         </div>
