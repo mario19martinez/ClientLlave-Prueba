@@ -16,7 +16,7 @@ import {
   deleteUser as deleteUserAction,
 } from "../../../Redux/features/AdminUsers/AdminUsersSlices";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 import Tooltip from "@mui/material/Tooltip";
 import UsersDetails from "./UsersDatos/UserDetails";
 import axios from "axios";
@@ -116,7 +116,7 @@ function AllUsersAdmin() {
 
   const handleSearchChange = (newSearchTerm) => {
     setSearchTerm(newSearchTerm);
-    setCurrentPage(1); 
+    setCurrentPage(1);
     setUserNotFound(false);
   };
   const handleCountryFilterChange = (event) => {
@@ -176,7 +176,7 @@ function AllUsersAdmin() {
       if (selectedCursoId) {
         return usuariosInscritos.includes(user.sub);
       }
-      return true; 
+      return true;
     })
     .filter((user) => {
       const nameMatch =
@@ -403,7 +403,7 @@ function AllUsersAdmin() {
               Usuarios no inscritos
             </button>
           </Tooltip>
-        {/* <button
+          {/* <button
             onClick={() => navigate("/admin/historial-usuarios")}
             className="flex items-center bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors"
           >
@@ -546,37 +546,109 @@ function AllUsersAdmin() {
                       : "Sin fecha"}
                   </td>
                   <td className="translate-x-2">
-                    <button
-                      className="text-blue-500 hover:underline"
-                      onClick={() => handleOpenModal(user)}
+                    <Tooltip
+                      title="Ver Detalles del Usuario"
+                      arrow
+                      placement="top"
+                      slotProps={{
+                        popper: {
+                          modifiers: [
+                            {
+                              name: "offset",
+                              options: {
+                                offset: [0, -6],
+                              },
+                            },
+                          ],
+                        },
+                      }}
                     >
-                      <VisibilityIcon fontSize="large" />
-                    </button>
+                      <button
+                        className="text-blue-500 hover:underline"
+                        onClick={() => handleOpenModal(user)}
+                      >
+                        <VisibilityIcon fontSize="large" />
+                      </button>
+                    </Tooltip>
                   </td>
                   <td className="translate-x-2">
                     {user.banned ? (
+                      <Tooltip
+                      title="Desbanear Usuario"
+                      arrow
+                      placement="top"
+                      slotProps={{
+                        popper: {
+                          modifiers: [
+                            {
+                              name: "offset",
+                              options: {
+                                offset: [0, -6],
+                              },
+                            },
+                          ],
+                        },
+                      }}
+                    >
                       <button
                         className="text-red-700 font-sans py-2 px-4 mr-2 rounded"
                         onClick={() => bandUser(user)}
                       >
                         <PersonOffIcon fontSize="large" />
                       </button>
+                      </Tooltip>
                     ) : (
+                      <Tooltip
+                      title="Banear Usuario"
+                      arrow
+                      placement="top"
+                      slotProps={{
+                        popper: {
+                          modifiers: [
+                            {
+                              name: "offset",
+                              options: {
+                                offset: [0, -6],
+                              },
+                            },
+                          ],
+                        },
+                      }}
+                    >
                       <button
                         className="text-blue-700 font-sans py-2 px-4 mr-2 rounded"
                         onClick={() => bandUser(user)}
                       >
                         <PersonIcon fontSize="large" />
                       </button>
+                      </Tooltip>
                     )}
                   </td>
                   <td>
+                  <Tooltip
+                      title="Eliminar Usuario"
+                      arrow
+                      placement="top"
+                      slotProps={{
+                        popper: {
+                          modifiers: [
+                            {
+                              name: "offset",
+                              options: {
+                                offset: [0, -6],
+                              },
+                            },
+                          ],
+                        },
+                      }}
+                    >
                     <button
                       className="text-gray-700 font-sans py-2 px-4 rounded"
                       onClick={() => deleteUser(user.identificacion)}
                     >
                       <DeleteIcon fontSize="large" />
                     </button>
+                    </Tooltip>
                   </td>
                 </tr>
               ))}
