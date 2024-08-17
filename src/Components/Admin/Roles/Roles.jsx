@@ -8,6 +8,7 @@ import {
   FaUserNinja,
 } from "react-icons/fa";
 import { MdEngineering } from "react-icons/md";
+import CircularProgress from '@mui/material/CircularProgress';
 
 function Roles() {
   const [usuarios, setUsuarios] = useState([]);
@@ -17,16 +18,19 @@ function Roles() {
   const [currentPage, setCurrentPage] = useState(1);
   const [usuariosPerPage] = useState(10);
   const [filtroRol, setFiltroRol] = useState("");
+  const [loading, setLoading] = useState(true);
   const pageRangeDisplayed = 7;
 
   useEffect(() => {
     const obtenerUsuarios = async () => {
+      setLoading(true);
       try {
         const response = await axios.get("/user");
         setUsuarios(response.data);
       } catch (error) {
         console.error("Error al obtener usuarios:", error);
       }
+      setLoading(false);
     };
     obtenerUsuarios();
   }, []);
@@ -114,23 +118,35 @@ function Roles() {
 
   const pageNumbers = calculatePageNumbers();
 
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-500 mt-4">Cargando Usuarios...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="container mx-auto mt-8 px-3">
-      <h1 className="text-2xl font-bold text-gray-700 mb-4">
+    <div className="container mx-auto mt-8 px-4 translate-x-14">
+      <h1 className="text-2xl font-bold text-gray-700 mb-6 translate-x-0">
         Roles de Usuarios
       </h1>
-      <div className="mb-4 flex">
+      
+      <div className="mb-4 flex translate-x-0">
         <input
           type="text"
           placeholder="Buscar usuarios..."
           value={busqueda}
           onChange={handleBusquedaChange}
-          className="px-4 py-2 border border-gray-300 rounded-md mr-2"
+          className="px-4 py-2 mr-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
         />
         <select
           value={filtroRol}
           onChange={handleFiltroRolChange}
-          className="px-4 py-2 border border-gray-300 rounded-md"
+          className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
         >
           <option value="">Todos los roles</option>
           <option value="admin">Admin</option>
@@ -139,8 +155,8 @@ function Roles() {
           <option value="editor">Editor</option>
           <option value="monitor">Monitor</option>
         </select>
-        <div className="ml-4 flex items-center space-x-4">
-          <span className="text-gray-700">
+        <div className="ml-4 flex items-center space-x-4 font-semibold">
+          <span className="text-gray-700 ">
             Admin: {contadorUsuariosPorRol.admin}
           </span>
           <span className="text-gray-700">
@@ -157,17 +173,17 @@ function Roles() {
           </span>
         </div>
       </div>
-      <div className="overflow-x-scroll px-5">
-        <table className="min-w-full border-collapse border bg-blue-600">
-          <thead>
-            <tr className="text-white">
-              <th className="py-2 px-4 border">Usuarios</th>
-              <th className="py-2 px-4 border">Correo</th>
-              <th className="py-2 px-4 border">Rol</th>
-              <th className="py-2 px-4 border">Acciones</th>
+      <div className="overflow-x-auto w-5/6">
+        <table className="min-w-full border-collapse border rounded-lg border-gray-400 overflow-hidden">
+          <thead className="bg-blue-200 border-b border-gray-300">
+            <tr className=" text-xs text-gray-700 uppercase">
+              <th className="py-3 px-6 text-left">Usuarios</th>
+              <th className="py-3 px-6 text-left">Correo</th>
+              <th className="py-3 px-6 text-left">Rol</th>
+              <th className="px-6 py-3">Acciones</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-gray-700 text-sm font-mono divide-y divide-gray-200">
             {usuariosActuales.length === 0 ? (
               <tr>
                 <td colSpan="4" className="text-center py-4 bg-gray-100">
@@ -175,27 +191,26 @@ function Roles() {
                 </td>
               </tr>
             ) : (
-              usuariosActuales.map((usuario, index) => (
+              usuariosActuales.map((usuario) => (
                 <tr
                   key={usuario.sub}
-                  className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
+                  className="border-b border-gray-200 hover:bg-gray-100 transition-colors duration-150"
                 >
-                  <td className="py-2 px-4 border">
+                  <td className="px-6 py-3 whitespace-nowrap">
                     {`${usuario.name} ${usuario.last_name}`}
                   </td>
-                  <td className="py-2 px-4 border">{usuario.email}</td>
-                  <td className="py-2 px-4 border">
+                  <td className="px-6 py-3 whitespace-nowrap">{usuario.email}</td>
+                  <td className="px-6 py-3 whitespace-nowrap">
                     {usuario.rol === "client" ? "Estudiante" : usuario.rol}
                   </td>
-                  <td className="py-2 px-4 border">
-                    <div className="flex items-center ">
+                  <td className="w-36">
                       <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-2 py-1 rounded mr-2"
                         onClick={() => mostrarModalRoles(usuario.sub)}
                       >
                         Administrar Rol
                       </button>
-                    </div>
+
                   </td>
                 </tr>
               ))
