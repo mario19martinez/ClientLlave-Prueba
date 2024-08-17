@@ -14,11 +14,13 @@ import {
 import Tooltip from "@mui/material/Tooltip";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import CircularProgress from '@mui/material/CircularProgress';
 
 function UsersDeleted() {
   const [usersDeleted, setUsersDeleted] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(20);
+  const [loading, setLoading] = useState(true);
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [deleteSuccessDialogOpen, setDeleteSuccessDialogOpen] = useState(false);
@@ -59,15 +61,18 @@ function UsersDeleted() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true); // Iniciar carga
       try {
         const response = await axios.get("/eliminados");
         setUsersDeleted(response.data);
       } catch (error) {
         console.error("Error fetching eliminated users:", error);
       }
+      setLoading(false); // Finalizar carga
     };
     fetchData();
   }, []);
+
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
@@ -80,11 +85,19 @@ function UsersDeleted() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-500 mt-4">Cargando Usuarios eliminados...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="absolute top-0 right-40 mt-28 ml-96 p-4">
-      <h1 className="text-2xl font-bold mb-4 text-gray-800">
-        Usuarios Eliminados
-      </h1>
       <Tooltip
         title="Volver a la Dashbord"
         arrow
@@ -109,10 +122,14 @@ function UsersDeleted() {
           <KeyboardBackspaceIcon fontSize="large" />
         </button>
       </Tooltip>
+      <h1 className="text-2xl font-bold mb-4 text-gray-800">
+        Usuarios Eliminados
+      </h1>
+      <h1 className="font-normal mb-4 text-gray-700">Cantidad de usuarios eliminados: {usersDeleted.length}</h1>
       <div className="overflow-x-auto shadow-lg rounded-lg">
         <table className="min-w-full border-collapse border rounded-lg border-gray-400 overflow-hidden">
           <thead className="bg-blue-200 border-b border-gray-300">
-            <tr className=" text-gray-700 text-left text-sm leading-normal">
+            <tr className=" text-xs text-gray-700 uppercase">
               <th className="px-6 py-3">Nombre</th>
               <th className="px-6 py-3">Apellido</th>
               <th className="px-6 py-3">Correo</th>
