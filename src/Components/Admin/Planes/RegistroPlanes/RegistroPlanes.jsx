@@ -79,13 +79,17 @@ function RegistroPlanes() {
     });
   };
 
-  if (loading)
+  if (loading) {
     return (
-      <div>
-        <p className="text-center text-gray-700">Loading...</p>
-        <CircularProgress />
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-500 mt-4">Cargando Historial de ventas...</p>
+          <CircularProgress />
+        </div>
       </div>
     );
+  }
+
   if (error) return <p className="text-center text-red-500">Error: {error}</p>;
 
   return (
@@ -102,7 +106,7 @@ function RegistroPlanes() {
               onChange={(e) =>
                 setFilters({ ...filters, description: e.target.value })
               }
-              className="p-2 border-4 border-gray-300 rounded-md"
+              className="p-2 border-2 border-gray-300 rounded-md"
             >
               <option value="">Todas las descripciones</option>
               {descriptions.map((desc, index) => (
@@ -116,7 +120,7 @@ function RegistroPlanes() {
               onChange={(e) =>
                 setFilters({ ...filters, status: e.target.value })
               }
-              className="p-2 border-4 border-gray-300 rounded-md"
+              className="p-2 border-2 border-gray-300 rounded-md"
             >
               <option value="">Todos los estados</option>
               {statuses.map((status, index) => (
@@ -130,7 +134,7 @@ function RegistroPlanes() {
               onChange={(e) =>
                 setFilters({ ...filters, transactionDate: e.target.value })
               }
-              className="p-2 border-4 border-gray-300 rounded-md"
+              className="p-2 border-2 border-gray-300 rounded-md"
             >
               <option value="">Todas las fechas</option>
               {transactionDates.map((date, index) => (
@@ -161,7 +165,7 @@ function RegistroPlanes() {
                 onClick={resetFilters}
                 className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
               >
-                <RestartAltIcon fontSize="large" />
+                <RestartAltIcon fontSize="medium" />
               </button>
             </Tooltip>
           </form>

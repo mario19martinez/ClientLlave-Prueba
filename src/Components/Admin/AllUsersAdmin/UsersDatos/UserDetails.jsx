@@ -5,6 +5,7 @@ import axios from "axios";
 import EditarUsuarioAdmin from "../EditarUsuarioAdmin";
 import AddNovedad from "./AddNovedad";
 import UserHistoryDetail from "../UserHistorial/UserHistorialDetail";
+import Tooltip from "@mui/material/Tooltip";
 
 export default function UsersDetails({ identificacion }) {
   const [userData, setUserData] = useState(null);
@@ -280,35 +281,53 @@ export default function UsersDetails({ identificacion }) {
         </Modal>
       )}
       {isHistoryModalOpen && (
-        <Modal
-          isOpen={isHistoryModalOpen}
-          onRequestClose={() => setIsHistoryModalOpen(false)}
-          contentLabel="Historial de Usuario"
-          className="Modal rounded-lg p-6 max-w-lg w-full"
-          overlayClassName="Overlay fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center z-50"
+  <Modal
+    isOpen={isHistoryModalOpen}
+    onRequestClose={() => setIsHistoryModalOpen(false)}
+    contentLabel="Historial de Usuario"
+    className="Modal rounded-lg p-6 max-w-lg w-full"
+    overlayClassName="Overlay fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center z-50"
+  >
+    <button
+      onClick={() => setIsHistoryModalOpen(false)}
+      className="absolute top-0 right-0 text-gray-600 hover:text-gray-800 focus:outline-none cursor-pointer"
+    >
+      <Tooltip
+        title="Cerrar"
+        arrow
+        placement="top"
+        slotProps={{
+          popper: {
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, -6],
+                },
+              },
+            ],
+          },
+        }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 bg-white"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
         >
-          <button
-            onClick={() => setIsHistoryModalOpen(false)}
-            className="absolute top-0 right-0 text-gray-600 hover:text-gray-800 focus:outline-none cursor-pointer"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 bg-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-          {userData && <UserHistoryDetail userSub={userData.sub} />}
-        </Modal>
-      )}
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </Tooltip>
+    </button>
+    {userData && <UserHistoryDetail userSub={userData.sub} />}
+  </Modal>
+)}
     </div>
   );
 }
