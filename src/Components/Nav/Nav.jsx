@@ -4,10 +4,12 @@ import LoginForm from "../InicioSesion/InicioSesion.jsx";
 import { getUserData } from "../../Redux/features/Users/usersSlice.js";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import ReactModal from "react-modal";
 
 export default function Nav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
+  const [isSessionExpired, setIsSessionExpired] = useState(false);
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true"
@@ -40,6 +42,25 @@ export default function Nav() {
       dispatch(getUserData(storedEmail));
     }
   }, [dispatch, storedEmail]);
+
+  useEffect(() => {
+    if (isLoggedIn && userData?.tokenExpiration) {
+      const tokenExpirationDate = new Date(userData.tokenExpiration);
+      const currentDate = new Date();
+
+      if (currentDate > tokenExpirationDate) {
+        setIsSessionExpired(true);
+      }
+    }
+  }, [isLoggedIn, userData]);
+
+  const handleSessionExpiration = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    setIsSessionExpired(false);
+    navigate("/");
+    window.location.reload();
+  };
 
   const redirect = () => {
     if (
@@ -102,7 +123,11 @@ export default function Nav() {
         </div>
 
         <div className="flex justify-center w-full lg:w-2/12">
-          <img src={logo} alt="logo" className="h-10 sm:h-12 lg:h-auto mx-auto" />
+          <img
+            src={logo}
+            alt="logo"
+            className="h-10 sm:h-12 lg:h-auto mx-auto"
+          />
         </div>
 
         <div className="w-1/4 lg:hidden flex justify-end">
@@ -111,7 +136,7 @@ export default function Nav() {
               <button
                 type="button"
                 onClick={redirect}
-                className="py-1 px-2 text-xs bg-blue-600 text-white hover:bg-blue-800 transition-colors rounded-md"
+                className="py-1 items-center px-2 text-xs bg-blue-600 text-white hover:bg-blue-800 transition-colors rounded-md"
               >
                 Mi cuenta
               </button>
@@ -149,22 +174,29 @@ export default function Nav() {
             <button
               type="button"
               onClick={redirect}
-              className="py-2 px-4 bg-white text-black font-bold hover:text-blue-600 border border-gray-300 hover:border-blue-600 transition-all rounded-full shadow-md"
+              className="py-2 px-4 flex space-x-2 bg-white text-black font-bold hover:text-blue-600 border border-gray-300 hover:border-blue-600 transition-all rounded-md shadow-md"
             >
+              {userData?.image && (
+                <img
+                  src={userData.image}
+                  alt="user"
+                  className="w-6 h-6 rounded-full mr-2"
+                />
+              )}
               Mi cuenta
             </button>
           ) : (
             <>
               <button
                 type="button"
-                className="py-2 px-4 bg-white text-black font-bold hover:text-blue-600 border border-gray-300 hover:border-blue-600 transition-all rounded-full shadow-md"
+                className="py-2 px-4 bg-white text-black font-bold hover:text-blue-600 border border-gray-300 hover:border-blue-600 transition-all rounded-md shadow-md"
                 onClick={toggleLoginForm}
               >
                 Iniciar Sesión
               </button>
               <button
                 type="button"
-                className="py-2 px-4 bg-white text-black font-bold hover:text-blue-600 border border-gray-300 hover:border-blue-600 transition-all rounded-full shadow-md"
+                className="py-2 px-4 bg-white text-black font-bold hover:text-blue-600 border border-gray-300 hover:border-blue-600 transition-all rounded-md shadow-md"
                 onClick={openRegistrationModal}
               >
                 Crear cuenta
@@ -192,6 +224,27 @@ export default function Nav() {
             <LoginForm onClose={toggleLoginForm} />
           </div>
         </div>
+      )}
+
+      {isSessionExpired && (
+        <ReactModal
+          isOpen={isSessionExpired}
+          onRequestClose={handleSessionExpiration}
+          contentLabel="Session Expired"
+          className="bg-white rounded-lg p-4 max-w-lg mx-auto mt-20 text-center" // Centrado de contenido
+          overlayClassName="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center"
+        >
+          <h2 className="text-2xl font-bold text-red-600 mb-4">
+            Sesión Expirada
+          </h2>
+          <p>Tu sesión ha expirado. Por favor, inicia sesión nuevamente.</p>
+          <button
+            onClick={handleSessionExpiration}
+            className="mt-4 py-2 px-4 bg-blue-600 text-white rounded-md"
+          >
+            Aceptar
+          </button>
+        </ReactModal>
       )}
     </nav>
   );
