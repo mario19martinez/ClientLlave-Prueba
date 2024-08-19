@@ -45,7 +45,9 @@ function ModulosDelGrupo() {
         {modulos.map((modulo) => (
           <li key={modulo.id} className="border-b border-gray-200 py-4">
             <p className="text-lg font-semibold mb-2 text-gray-700">{modulo.titulo}</p>
-            <p className="text-sm text-gray-600 mb-1">Agregado: {new Date(modulo.createdAt).toLocaleDateString()}</p>
+            <p className="text-sm text-gray-600 mb-1">
+  Agregado al grupo: {new Date(modulo.GrupoModulo.createdAt).toLocaleDateString()}
+</p>
             <Tooltip
             title="Eliminar Modulo del Grupo"
             arrow

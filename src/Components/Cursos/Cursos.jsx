@@ -91,7 +91,7 @@ function CursoClases() {
               playsinline: 1, // Permite la reproducción en línea en dispositivos móviles
               showinfo: 0, // No muestra la información del video (incluyendo la barra de progreso)
               iv_load_policy: 3, // Desactiva las anotaciones
-              rel: 0, // Evita que se muestren videos recomendados al final
+              rel: 1, // Evita que se muestren videos recomendados al final
               fs: 0, // Desactiva el botón de pantalla completa
               autoplay: 1, // Auto-reproduce el video
               loop: 0,
