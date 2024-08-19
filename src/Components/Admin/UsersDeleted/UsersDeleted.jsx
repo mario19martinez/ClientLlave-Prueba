@@ -97,7 +97,7 @@ function UsersDeleted() {
   }
 
   return (
-    <div className="absolute top-0 right-40 mt-28 ml-96 p-4">
+    <div className="px-10 py-5 justify-center items-center">
       <Tooltip
         title="Volver a la Dashbord"
         arrow
