@@ -6,11 +6,9 @@ import SchoolIcon from "@mui/icons-material/School";
 import CampaignIcon from "@mui/icons-material/Campaign";
 import GroupIcon from "@mui/icons-material/Group";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import SourceIcon from "@mui/icons-material/Source";
-import VideoFileIcon from "@mui/icons-material/VideoFile";
 import WebIcon from '@mui/icons-material/Web';
 import CardMembershipIcon from '@mui/icons-material/CardMembership';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'; // Icono para "Ventas"
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserData } from "../../../Redux/features/Users/usersSlice";
@@ -39,10 +37,8 @@ function SidebarAdmin({ selectedTab }) {
     { label: 'Certificados', icon: <CardMembershipIcon />, path: '/admin/certificacion' },
     { label: 'Campañas', icon: <CampaignIcon />, path: '/admin/campain' },
     { label: 'Roles', icon: <GroupIcon />, path: '/admin/roles' },
-    { label: 'Ventas', icon: <MonetizationOnIcon />, path: '/admin/planes' }, // Nueva sección de Ventas
+    { label: 'Ventas', icon: <MonetizationOnIcon />, path: '/admin/planes' }, 
     { label: 'Pagina', icon: <WebIcon />, path: '/AdminPage' },
-    { label: 'Noticias', icon: <SourceIcon />, path: '/admin/noticias' },
-    { label: 'Videos', icon: <VideoFileIcon />, path: '/admin/videos' },
     { label: 'Ajustes', icon: <SettingsIcon />, path: '/admin/ajustes' }
   ];
 
