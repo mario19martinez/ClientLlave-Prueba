@@ -43,35 +43,35 @@ function SidebarAdmin({ selectedTab }) {
   ];
 
   return (
-    <div className="bg-blue-700 text-white w-56 min-h-screen pr-7">
-      <div className="p-4">
-        <div className="md:text-2xl font-semibold mb-2">
-          <h2>{userData?.name || "Usuario"}</h2>
+    <div className="bg-gradient-to-b from-blue-700 to-blue-600 text-white w-64 min-h-screen shadow-lg">
+      <div className="p-6">
+        <div className="text-center mb-8">
+          <h2 className="text-xl font-semibold">{userData?.name || "Usuario"}</h2>
+          <h3 className="text-2xl font-bold tracking-wider">ADMIN</h3>
         </div>
-        <h3 className="text-2xl font-bold mb-6">ADMIN</h3>
-        <ul>
+        <ul className="space-y-4">
           {menuItems.map((item) => (
-            <li key={item.label} className="mb-4">
+            <li key={item.label}>
               <button
-                className={`px-2 py-1 rounded w-32 font-medium flex items-center transition-colors ${
+                className={`w-full text-left px-4 py-3 rounded-lg flex items-center transition-all duration-300 ${
                   selectedTab === item.label
-                    ? "bg-blue-400 text-white"
+                    ? "bg-blue-500 text-white shadow-md"
                     : "hover:bg-blue-500 hover:text-white"
                 }`}
                 onClick={() => navigate(item.path)}
               >
                 {item.icon}
-                <span className="ml-2">{item.label}</span>
+                <span className="ml-4">{item.label}</span>
               </button>
             </li>
           ))}
-          <li className="mb-4">
+          <li>
             <button
-              className="px-2 py-1 rounded w-32 font-medium flex items-center hover:bg-blue-500 hover:text-white transition-colors"
+              className="w-full text-left px-4 py-3 rounded-lg flex items-center hover:bg-red-500 hover:text-white transition-all duration-300"
               onClick={handleLogout}
             >
               <ExitToAppIcon />
-              <span className="ml-2">Salir</span>
+              <span className="ml-4">Salir</span>
             </button>
           </li>
         </ul>

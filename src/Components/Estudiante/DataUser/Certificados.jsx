@@ -5,9 +5,10 @@ import axios from "axios";
 import { FaEye, FaDownload } from "react-icons/fa";
 import { FiFileText } from "react-icons/fi";
 import CertificadoStudent from "../Certificado/CertificadoStudent";
-//import CertificadoNivels from "../Certificado/CertificadoNivels";
+import CertificadoNivels from "../Certificado/CertificadoNivels";
 import AgregarDocumentos from "../../Admin/Certificacion/AgregarDocumento";
-import html2pdf from "html2pdf.js";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 export default function Certificados() {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ export default function Certificados() {
   const [showModal, setShowModal] = useState(false);
   const [selectedCertificado, setSelectedCertificado] = useState(null);
   const [showAgregarDocumentos, setShowAgregarDocumentos] = useState(false);
+  const [showNivelModal, setShowNivelModal] = useState(false);
   const userData = useSelector((state) => state.users.userData);
   const storedEmail = localStorage.getItem("email");
 
@@ -24,7 +26,6 @@ export default function Certificados() {
     }
   }, [dispatch, storedEmail]);
 
-  // Fetch course certificates
   useEffect(() => {
     const fetchCertificadosCurso = async () => {
       if (userData?.sub) {
@@ -42,7 +43,6 @@ export default function Certificados() {
     fetchCertificadosCurso();
   }, [userData]);
 
-  // Fetch additional certificates
   useEffect(() => {
     const fetchCertificados = async () => {
       if (userData?.sub) {
@@ -60,8 +60,10 @@ export default function Certificados() {
 
   const actualizarCertificados = (nuevosCertificados) => {
     setCertificados((prev) => {
-      const existingIds = new Set(prev.map(cert => cert.id));
-      const uniqueNewCertificados = nuevosCertificados.filter(cert => !existingIds.has(cert.id));
+      const existingIds = new Set(prev.map((cert) => cert.id));
+      const uniqueNewCertificados = nuevosCertificados.filter(
+        (cert) => !existingIds.has(cert.id)
+      );
       return [...prev, ...uniqueNewCertificados];
     });
   };
@@ -76,10 +78,7 @@ export default function Certificados() {
   };
 
   const getNivelTexto = (numero_nivel) => {
-    if (numero_nivel === 5) {
-      return "Especialización";
-    }
-    return `Nivel ${numero_nivel}`;
+    return numero_nivel === 5 ? "Especialización" : `Nivel ${numero_nivel}`;
   };
 
   const openModal = (certificado) => {
@@ -92,30 +91,32 @@ export default function Certificados() {
     }
   };
 
+  const openNivelModal = (certificado) => {
+    setSelectedCertificado(certificado);
+    setShowNivelModal(true);
+  };
+
   const closeModal = () => {
     setShowModal(false);
     setShowAgregarDocumentos(false);
+    setShowNivelModal(false);
     setSelectedCertificado(null);
   };
 
-  const handleDownloadPDF = () => {
-    const element = document.getElementById("certificado");
+  const handleDownloadPDF = async () => {
+    const certificadoElement = document.getElementById("certificado");
+    if (!certificadoElement) return;
 
-    const contentWidth = 1300; 
-    const contentHeight = 914; 
+    const canvas = await html2canvas(certificadoElement, { scale: 2 });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({
+      orientation: "landscape",
+      unit: "px",
+      format: [canvas.width, canvas.height],
+    });
 
-    html2pdf()
-      .from(element)
-      .set({
-        filename: `Certificado_${userData.name}_${userData.last_name}.pdf`,
-        html2canvas: { scale: 2 },
-        jsPDF: {
-          orientation: "landscape",
-          unit: "px",
-          format: [contentWidth, contentHeight],
-        },
-      })
-      .save();
+    pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+    pdf.save("certificado.pdf");
   };
 
   return (
@@ -132,14 +133,21 @@ export default function Certificados() {
             <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
               <thead className="bg-gray-200 text-gray-600">
                 <tr>
-                  <th className="py-3 px-6 text-left">Nombre del Certificado</th>
-                  <th className="py-3 px-6 text-left hidden sm:table-cell">Fecha de Emisión</th>
+                  <th className="py-3 px-6 text-left">
+                    Nombre del Certificado
+                  </th>
+                  <th className="py-3 px-6 text-left hidden sm:table-cell">
+                    Fecha de Emisión
+                  </th>
                   <th className="py-3 px-6 text-center">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {certificados.map((certificado) => (
-                  <tr key={certificado.id} className="hover:bg-gray-100 transition-colors">
+                  <tr
+                    key={certificado.id}
+                    className="hover:bg-gray-100 transition-colors"
+                  >
                     <td className="py-3 px-6 border-b">
                       {getNivelTexto(certificado.numero_nivel)}
                     </td>
@@ -148,13 +156,22 @@ export default function Certificados() {
                     </td>
                     <td className="py-3 px-6 border-b text-center">
                       <div className="flex justify-center items-center space-x-2">
-                        <button onClick={() => openModal(certificado)} className="relative group bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors">
+                        <button
+                          onClick={() => openModal(certificado)}
+                          className="relative group bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors"
+                        >
                           <FaEye />
                           <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-80 shadow-lg">
                             Ver Certificado
                           </span>
                         </button>
-                        <button onClick={() => { openModal(certificado); handleDownloadPDF(); }} className="relative group bg-green-500 text-white p-2 rounded-full hover:bg-green-600 transition-colors">
+                        <button
+                          onClick={() => {
+                            openNivelModal(certificado);
+                            handleDownloadPDF();
+                          }}
+                          className="relative group bg-green-500 text-white p-2 rounded-full hover:bg-green-600 transition-colors"
+                        >
                           <FaDownload />
                           <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-80 shadow-lg">
                             Descargar Certificado
@@ -171,14 +188,19 @@ export default function Certificados() {
       ) : (
         <div className="flex flex-col items-center justify-center mt-10">
           <FiFileText className="text-6xl text-gray-400 mb-4" />
-          <p className="text-xl text-gray-500">Aún no tienes certificados disponibles.</p>
+          <p className="text-xl text-gray-500">
+            Aún no tienes certificados disponibles.
+          </p>
         </div>
       )}
 
       {showModal && selectedCertificado && (
         <div className="fixed z-10 inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div className="fixed inset-0 transition-opacity" onClick={closeModal}>
+            <div
+              className="fixed inset-0 transition-opacity"
+              onClick={closeModal}
+            >
               <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
             <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
@@ -186,14 +208,64 @@ export default function Certificados() {
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full px-2 py-2">
               <div className="bg-white">
                 <div id="certificado" className="sm:p-4">
-                  <CertificadoStudent certificado={selectedCertificado} usuario={userData} className="text-sm" />
+                  <CertificadoStudent
+                    certificado={selectedCertificado}
+                    usuario={userData}
+                    className="text-sm"
+                  />
                 </div>
               </div>
               <div className="flex bg-gray-50 px-4 py-3">
-                <button onClick={handleDownloadPDF} className="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto sm:text-sm">
+                <button
+                  onClick={handleDownloadPDF}
+                  className="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto sm:text-sm"
+                >
                   Descargar
                 </button>
-                <button onClick={closeModal} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm">
+                <button
+                  onClick={closeModal}
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm"
+                >
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showNivelModal && selectedCertificado && (
+        <div className="fixed z-10 inset-0 overflow-y-auto">
+          <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div
+              className="fixed inset-0 transition-opacity"
+              onClick={closeModal}
+            >
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
+            &#8203;
+            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full px-2 py-2">
+              <div className="bg-white">
+                <div id="certificado" className="sm:p-4">
+                  <CertificadoNivels
+                    certificado={selectedCertificado}
+                    usuario={userData}
+                    className="text-sm"
+                  />
+                </div>
+              </div>
+              <div className="flex bg-gray-50 px-4 py-3">
+                <button
+                  onClick={handleDownloadPDF}
+                  className="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto sm:text-sm"
+                >
+                  Descargar
+                </button>
+                <button
+                  onClick={closeModal}
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm"
+                >
                   Cerrar
                 </button>
               </div>
@@ -203,19 +275,34 @@ export default function Certificados() {
       )}
 
       {showAgregarDocumentos && selectedCertificado && (
-        <div className="fixed z-10 inset-0 overflow-y-auto" onClick={closeModal}>
+        <div
+          className="fixed z-10 inset-0 overflow-y-auto"
+          onClick={closeModal}
+        >
           <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div className="fixed inset-0 transition-opacity" onClick={closeModal}>
+            <div
+              className="fixed inset-0 transition-opacity"
+              onClick={closeModal}
+            >
               <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
             <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
             &#8203;
-            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full px-2 py-2" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full px-2 py-2"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <button onClick={closeModal} className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700">
+                <button
+                  onClick={closeModal}
+                  className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700"
+                >
                   &times;
                 </button>
-                <AgregarDocumentos idUser={userData.sub} idCertificado={selectedCertificado.id} />
+                <AgregarDocumentos
+                  idUser={userData.sub}
+                  idCertificado={selectedCertificado.id}
+                />
               </div>
             </div>
           </div>
