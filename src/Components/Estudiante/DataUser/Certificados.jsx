@@ -92,8 +92,12 @@ export default function Certificados() {
   };
 
   const openNivelModal = (certificado) => {
-    setSelectedCertificado(certificado);
-    setShowNivelModal(true);
+    if (certificado && certificado.id) {
+      setSelectedCertificado(certificado);
+      setShowNivelModal(true);
+    } else {
+      console.error("El ID del certificado es undefined o inválido");
+    }
   };
 
   const closeModal = () => {
@@ -174,7 +178,7 @@ export default function Certificados() {
                         >
                           <FaDownload />
                           <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-80 shadow-lg">
-                            Descargar Certificado
+                            Descargar
                           </span>
                         </button>
                       </div>
@@ -251,6 +255,7 @@ export default function Certificados() {
                   <CertificadoNivels
                     certificado={selectedCertificado}
                     usuario={userData}
+                    certificadoId={selectedCertificado?.id} 
                     className="text-sm"
                   />
                 </div>
