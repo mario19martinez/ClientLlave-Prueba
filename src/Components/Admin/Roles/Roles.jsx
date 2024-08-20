@@ -130,7 +130,7 @@ function Roles() {
   }
 
   return (
-    <div className="container mx-auto mt-8 px-4 translate-x-14">
+    <div className="container px-10 py-5">
       <h1 className="text-2xl font-bold text-gray-700 mb-6 translate-x-0">
         Roles de Usuarios
       </h1>

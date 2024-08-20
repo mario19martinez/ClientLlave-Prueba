@@ -185,7 +185,7 @@ export default function PlanesDetails() {
                 href="https://api.whatsapp.com/send?phone=573126096603&text=Hola%2C%20Quiero%20mas%20informaci%C3%B3n%20sobre%20Llave%20Para%20Las%20Naciones."
                 className="inline-flex items-center justify-center text-center h-10 lg:h-10 px-2 lg:px-2 font-semibold tracking-wide text-white transition duration-200 rounded-lg shadow-lg bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
-                Comprar Ahora
+                Más Información
               </a>
               <div ref={epaycoButtonRef} className="mt-0 ml-4 flex justify-center">
                 {/* Aquí se renderiza el botón de ePayco */}
