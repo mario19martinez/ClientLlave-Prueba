@@ -5,11 +5,14 @@ import Modal from "react-modal";
 import GrupoCreate from "./GrupoCreate";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import CancelIcon from "@mui/icons-material/Cancel";
+import CircularProgress from "@mui/material/CircularProgress";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 
 function Grupos() {
   const [grupos, setGrupos] = useState([]);
   const [error, setError] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [groupsPerPage] = useState(6);
   const { id } = useParams();
@@ -23,6 +26,8 @@ function Grupos() {
       } catch (error) {
         setError(error.response.data.error);
         console.error("Ocurrió un error al traer los grupos:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -57,6 +62,19 @@ function Grupos() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">
+            Cargando...
+          </p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <button
@@ -66,7 +84,19 @@ function Grupos() {
         <KeyboardBackspaceIcon fontSize="large" />
       </button>
       <h2 className="text-3xl font-bold mb-6 text-gray-800">Grupos en Nivel</h2>
-      {error && <p className="text-red-500 mb-4">Error: {error}</p>}
+      {error && (
+        <div className="fixed inset-0 flex justify-center items-center">
+          <div className="text-center">
+            <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+            <p className="text-red-500 mt-4 font-semibold">
+              Oops! Algo salió mal. Vuelve a intentarlo en un momento.
+            </p>
+            <p className="text-red-500 mt-4 font-semibold">
+              <SentimentVeryDissatisfiedIcon fontSize="large" />
+            </p>
+          </div>
+        </div>
+      )}
       <button
         onClick={openModal}
         className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition-transform duration-300 ease-in-out mb-6"
@@ -120,18 +150,23 @@ function Grupos() {
       <div className="flex justify-center mt-8">
         <nav>
           <ul className="flex list-none p-0">
-            {Array.from({ length: Math.ceil(grupos.length / groupsPerPage) }, (_, i) => (
-              <li key={i + 1} className="mx-1">
-                <button
-                  onClick={() => paginate(i + 1)}
-                  className={`px-3 py-2 rounded-lg border ${
-                    currentPage === i + 1 ? "bg-blue-600 text-white" : "bg-white text-blue-600"
-                  } hover:bg-blue-700 hover:text-white transition-colors duration-300`}
-                >
-                  {i + 1}
-                </button>
-              </li>
-            ))}
+            {Array.from(
+              { length: Math.ceil(grupos.length / groupsPerPage) },
+              (_, i) => (
+                <li key={i + 1} className="mx-1">
+                  <button
+                    onClick={() => paginate(i + 1)}
+                    className={`px-3 py-2 rounded-lg border ${
+                      currentPage === i + 1
+                        ? "bg-blue-600 text-white"
+                        : "bg-white text-blue-600"
+                    } hover:bg-blue-700 hover:text-white transition-colors duration-300`}
+                  >
+                    {i + 1}
+                  </button>
+                </li>
+              )
+            )}
           </ul>
         </nav>
       </div>
