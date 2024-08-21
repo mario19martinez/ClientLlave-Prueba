@@ -13,6 +13,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import CircularProgress from '@mui/material/CircularProgress';
 
 function ClaseDetailUser({ claseId }) {
   const [clase, setClase] = useState(null);
@@ -106,13 +107,19 @@ function ClaseDetailUser({ claseId }) {
                   const currentTime = event.target.getCurrentTime();
                   const duration = event.target.getDuration();
                   const newProgreso = (currentTime / duration) * 100;
+      
+                  console.log(`Current Time: ${currentTime}, Duration: ${duration}, New Progreso: ${newProgreso}`);
+      
                   setProgreso((prevProgresos) => ({
                     ...prevProgresos,
                     [claseId]: newProgreso,
                   }));
+      
                   const lastSavedProgreso = progreso[claseId] || 0;
+      
                   if (newProgreso >= 100) {
-                    clearInterval(intervalId); // Detener el intervalo si el progreso llega al 100%
+                    clearInterval(intervalId);
+                    console.log("Progreso completo, intervalo detenido.");
                   } else if (newProgreso - lastSavedProgreso >= 5) {
                     try {
                       await axios.post("/movimiento-usuario", {
@@ -121,22 +128,26 @@ function ClaseDetailUser({ claseId }) {
                         claseId,
                         progreso: newProgreso,
                       });
+                      console.log("Progreso enviado al backend:", newProgreso);
                     } catch (error) {
                       console.error("Error al actualizar el progreso:", error);
                     }
                   }
-                }, 15000);
+                }, 60000);
+      
                 player.intervalId = intervalId;
               } else if (
                 event.data === window.YT.PlayerState.PAUSED ||
                 event.data === window.YT.PlayerState.ENDED
               ) {
                 clearInterval(player.intervalId);
-                player.intervalId = null; // Asegurarse de que el intervalo no se ejecute de nuevo
+                player.intervalId = null;
+                console.log("Reproductor pausado o terminado, intervalo limpiado.");
               }
             },
           },
         });
+      
         setYoutubePlayer(player);
       };
 
@@ -233,7 +244,7 @@ function ClaseDetailUser({ claseId }) {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900"></div>
+        <CircularProgress />
         <span className="ml-4 text-xl font-semibold text-blue-700">
           Cargando...
         </span>
