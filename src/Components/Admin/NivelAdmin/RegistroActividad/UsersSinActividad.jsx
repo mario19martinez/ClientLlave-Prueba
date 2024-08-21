@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import CircularProgress from '@mui/material/CircularProgress';
 
 function UsersSinActividad() {
   const [usuarios, setUsuarios] = useState([]);
@@ -31,10 +32,10 @@ function UsersSinActividad() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="flex flex-col items-center">
-          <div className="w-16 h-16 border-4 border-blue-500 border-solid rounded-full spinner"></div>
-          <div className="text-xl font-semibold mt-4">Cargando...</div>
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-500 mt-4 font-semibold">Cargando...</p>
+          <CircularProgress />
         </div>
       </div>
     );
@@ -42,8 +43,10 @@ function UsersSinActividad() {
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="text-red-600 text-xl font-semibold">Error: {error}</div>
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+        </div>
       </div>
     );
   }
