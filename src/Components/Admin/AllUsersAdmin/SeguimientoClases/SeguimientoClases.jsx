@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import Tooltip from "@mui/material/Tooltip";
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import CircularProgress from '@mui/material/CircularProgress';
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import CircularProgress from "@mui/material/CircularProgress";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 
 function SeguimientoClases() {
   const [seguimientos, setSeguimientos] = useState([]);
@@ -107,17 +108,27 @@ function SeguimientoClases() {
   };
 
   if (error) {
-    return <div className="text-center text-red-500 mt-4">Error: {error}</div>;
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+          <p className="text-red-500 mt-4 font-semibold">
+            Oops! Algo salió mal. Vuelve a intentarlo en un momento.
+          </p>
+          <p className="text-red-500 mt-4 font-semibold">
+            <SentimentVeryDissatisfiedIcon fontSize="large" />
+          </p>
+        </div>
+      </div>
+    );
   }
 
   if (seguimientos.length === 0) {
     return (
       <div className="fixed inset-0 flex justify-center items-center">
         <div className="text-center">
-        <span className="text-gray-500 mb-4 font-semibold">
-          Cargando...
-        </span>
-        <CircularProgress />
+          <p className="text-gray-600 mb-4 font-semibold">Cargando...</p>
+          <CircularProgress />
         </div>
       </div>
     );
@@ -144,9 +155,9 @@ function SeguimientoClases() {
       >
         <button
           onClick={goBack}
-          className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-transform ease-in-out duration-300"
+          className="flex items-center bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300 mb-4"
         >
-          <KeyboardBackspaceIcon fontSize="large" />
+          <KeyboardBackspaceIcon fontSize="medium" />
           <span className="ml-2">Volver</span>
         </button>
       </Tooltip>
@@ -187,7 +198,9 @@ function SeguimientoClases() {
           </thead>
           <tbody className="text-gray-700 text-sm divide-y divide-gray-200">
             {currentSeguimientos.map((seguimiento) => {
-              const isTaller = seguimiento.clase?.name?.toLowerCase().includes("taller");
+              const isTaller = seguimiento.clase?.name
+                ?.toLowerCase()
+                .includes("taller");
               const isDownloaded = isTaller && seguimiento.progreso === 0.0;
 
               return (
@@ -235,10 +248,14 @@ function SeguimientoClases() {
         <ul className="flex items-center space-x-2">
           <li>
             <button
-              onClick={() => setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)}
+              onClick={() =>
+                setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)
+              }
               disabled={currentPage === 1}
               className={`${
-                currentPage === 1 ? "bg-gray-200 text-gray-600" : "bg-white hover:bg-gray-50"
+                currentPage === 1
+                  ? "bg-gray-200 text-gray-600"
+                  : "bg-white hover:bg-gray-50"
               } px-3 py-1 border border-gray-300 rounded-l-md font-medium text-sm focus:outline-none`}
             >
               &lt;
@@ -261,14 +278,18 @@ function SeguimientoClases() {
               <button
                 onClick={() => paginate(pageNumber)}
                 className={`${
-                  pageNumber === currentPage ? "bg-blue-500 text-white" : "bg-white hover:bg-gray-50"
+                  pageNumber === currentPage
+                    ? "bg-blue-500 text-white"
+                    : "bg-white hover:bg-gray-50"
                 } px-3 py-1 border border-gray-300 font-medium text-sm focus:outline-none`}
               >
                 {pageNumber}
               </button>
             </li>
           ))}
-          {currentPage < pageNumbers.length - 10 && <li className="px-2 py-1">...</li>}
+          {currentPage < pageNumbers.length - 10 && (
+            <li className="px-2 py-1">...</li>
+          )}
           {currentPage < pageNumbers.length - 9 && (
             <li>
               <button
@@ -281,10 +302,18 @@ function SeguimientoClases() {
           )}
           <li>
             <button
-              onClick={() => setCurrentPage(currentPage === pageNumbers.length ? pageNumbers.length : currentPage + 1)}
+              onClick={() =>
+                setCurrentPage(
+                  currentPage === pageNumbers.length
+                    ? pageNumbers.length
+                    : currentPage + 1
+                )
+              }
               disabled={currentPage === pageNumbers.length}
               className={`${
-                currentPage === pageNumbers.length ? "bg-gray-200 text-gray-600" : "bg-white hover:bg-gray-50"
+                currentPage === pageNumbers.length
+                  ? "bg-gray-200 text-gray-600"
+                  : "bg-white hover:bg-gray-50"
               } px-3 py-1 border border-gray-300 rounded-r-md font-medium text-sm focus:outline-none`}
             >
               &gt;
