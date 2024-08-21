@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 import axios from "axios";
+import CircularProgress from "@mui/material/CircularProgress";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 
 function NivelEdit({ id }) {
   const [nivelData, setNivelData] = useState({
@@ -49,128 +51,140 @@ function NivelEdit({ id }) {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900"></div>
-        <span className="ml-4 text-xl font-semibold text-gray-900">
-          Cargando...
-        </span>
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">
+            Cargando...
+          </p>
+          <CircularProgress />
+        </div>
       </div>
     );
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+          <p className="text-red-500 mt-4 font-semibold">
+            Oops! Algo salió mal. Vuelve a intentarlo en un momento.
+          </p>
+          <p className="text-red-500 mt-4 font-semibold">
+            <SentimentVeryDissatisfiedIcon fontSize="large" />
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className=" min-h-screen flex items-center justify-center">
-        <div className="p-4 bg-blue-600 shadow rounded-md w-full -translate-y-4">
-      <h2 className="text-lg font-bold mb-0 text-gray-100">
-        Editar Nivel
-      </h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-1">
-          <label
-            htmlFor="name"
-            className="block font-semibold mb-0 text-gray-100"
+      <div className="p-4 bg-blue-200 shadow rounded-md w-full -translate-y-4">
+        <h2 className="text-lg font-bold mb-0 text-gray-700">Editar Nivel</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-1">
+            <label
+              htmlFor="name"
+              className="block font-semibold mb-0 text-gray-700"
+            >
+              Nombre:
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={nivelData.name}
+              onChange={handleChange}
+              className="border border-gray-300 rounded-md p-2 w-full"
+            />
+          </div>
+          <div className="mb-1">
+            <label
+              htmlFor="image"
+              className="block font-semibold mb-0 text-gray-700"
+            >
+              Imagen:
+            </label>
+            <input
+              type="text"
+              id="image"
+              name="image"
+              value={nivelData.image}
+              onChange={handleChange}
+              className="border border-gray-300 rounded-md p-2 w-full"
+            />
+          </div>
+          <div className="mb-1">
+            <label
+              htmlFor="certificacion"
+              className="block font-semibold mb-0 text-gray-700"
+            >
+              Certificación:
+            </label>
+            <input
+              type="text"
+              id="certificacion"
+              name="certificacion"
+              value={nivelData.certificacion}
+              onChange={handleChange}
+              className="border border-gray-300 rounded-md p-2 w-full"
+            />
+          </div>
+          <div className="mb-1">
+            <label
+              htmlFor="duracion"
+              className="block font-semibold mb-0 text-gray-700"
+            >
+              Duración:
+            </label>
+            <input
+              type="text"
+              id="duracion"
+              name="duracion"
+              value={nivelData.duracion}
+              onChange={handleChange}
+              className="border border-gray-300 rounded-md p-2 w-full"
+            />
+          </div>
+          <div className="mb-1">
+            <label
+              htmlFor="description"
+              className="block font-semibold mb-0 text-gray-700"
+            >
+              Descripción:
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              value={nivelData.description}
+              onChange={handleChange}
+              className="border border-gray-300 rounded-md p-2 w-full"
+            />
+          </div>
+          <div className="mb-2">
+            <label
+              htmlFor="costo"
+              className="block font-semibold mb-0 text-gray-700"
+            >
+              Costo:
+            </label>
+            <input
+              type="text"
+              id="costo"
+              name="costo"
+              value={nivelData.costo}
+              onChange={handleChange}
+              className="border border-gray-300 rounded-md p-2 w-full"
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
           >
-            Nombre:
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={nivelData.name}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md bg-gray-100 p-2 w-full"
-          />
-        </div>
-        <div className="mb-1">
-          <label
-            htmlFor="image"
-            className="block font-semibold mb-0 text-gray-100"
-          >
-            Imagen:
-          </label>
-          <input
-            type="text"
-            id="image"
-            name="image"
-            value={nivelData.image}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md bg-gray-100 p-2 w-full"
-          />
-        </div>
-        <div className="mb-1">
-          <label
-            htmlFor="certificacion"
-            className="block font-semibold mb-0 text-gray-100"
-          >
-            Certificación:
-          </label>
-          <input
-            type="text"
-            id="certificacion"
-            name="certificacion"
-            value={nivelData.certificacion}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md bg-gray-100 p-2 w-full"
-          />
-        </div>
-        <div className="mb-1">
-          <label
-            htmlFor="duracion"
-            className="block font-semibold mb-0 text-gray-100"
-          >
-            Duración:
-          </label>
-          <input
-            type="text"
-            id="duracion"
-            name="duracion"
-            value={nivelData.duracion}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md bg-gray-100 p-2 w-full"
-          />
-        </div>
-        <div className="mb-1">
-          <label
-            htmlFor="description"
-            className="block font-semibold mb-0 text-gray-100"
-          >
-            Descripción:
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            value={nivelData.description}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md bg-gray-100 p-2 w-full"
-          />
-        </div>
-        <div className="mb-2">
-          <label
-            htmlFor="costo"
-            className="block font-semibold mb-0 text-gray-100"
-          >
-            Costo:
-          </label>
-          <input
-            type="text"
-            id="costo"
-            name="costo"
-            value={nivelData.costo}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md bg-gray-100 p-2 w-full"
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
-        >
-          Guardar Cambios
-        </button>
-      </form>
+            Guardar Cambios
+          </button>
+        </form>
       </div>
     </div>
   );
