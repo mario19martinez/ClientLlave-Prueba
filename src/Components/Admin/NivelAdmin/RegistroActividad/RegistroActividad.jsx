@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import Tooltip from "@mui/material/Tooltip";
+import CircularProgress from '@mui/material/CircularProgress';
 
 function RegistroActividad() {
   const [registros, setRegistros] = useState([]);
@@ -222,17 +223,23 @@ function RegistroActividad() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-blue-600"></div>
-        <span className="ml-4 text-xl font-semibold text-blue-600">
-          Cargando...
-        </span>
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando Registros...</p>
+          <CircularProgress />
+        </div>
       </div>
     );
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+        </div>
+      </div>
+    );
   }
 
   return (
