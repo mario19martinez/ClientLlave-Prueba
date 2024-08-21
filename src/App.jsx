@@ -50,6 +50,7 @@ import ViewModuloClases from "./views/ViewMenuStudent/ViewsLevels/ViewModuloClas
 import ViewGrupoDetailUser from "./views/ViewMenuStudent/ViewsLevels/ViewGrupoDetailUser";
 import ViewMyPost from "./views/ViewMenuStudent/ViewMyPost";
 import ViewCertificadoSelected from "./views/ViewMenuStudent/ViewCertificados/ViewCertificadoSelected";
+import ViewAllCertificadosNivel from "./views/ViewMenuStudent/ViewCertificados/ViewAllCertificadoNivel";
 
 //imports admins
 import ViewDashBoardAdmin from "./views/ViewAdmin/ViewDashBoardAdmin";
@@ -210,6 +211,7 @@ function App() {
             <Route path="/estudiante/datosLegales" element={isLoggedIn ? <ViewCertificacion /> : <Navigate to="/login" />} />
             <Route path="/estudiante/certificados" element={isLoggedIn ? <ViewCertificadoSelected /> : <Navigate to="/login" />} />
             <Route path="/estudiante/certificados/cursos" element={isLoggedIn ? <ViewCertificado /> : <Navigate to="/login" />} />
+            <Route path="/estudiante/certificados/nivel" element={isLoggedIn ? <ViewAllCertificadosNivel /> : <Navigate to="/login" />} />
           </>
         )}
 

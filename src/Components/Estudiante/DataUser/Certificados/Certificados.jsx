@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getUserData } from "../../../Redux/features/Users/usersSlice";
+import { getUserData } from "../../../../Redux/features/Users/usersSlice";
 import axios from "axios";
 import { FaEye, FaDownload } from "react-icons/fa";
 import { FiFileText } from "react-icons/fi";
-import CertificadoStudent from "../Certificado/CertificadoStudent";
-import CertificadoNivels from "../Certificado/CertificadoNivels";
-import AgregarDocumentos from "../../Admin/Certificacion/AgregarDocumento";
+import CertificadoStudent from "../../Certificado/CertificadoStudent";
+import AgregarDocumentos from "../../../Admin/Certificacion/AgregarDocumento";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
@@ -16,7 +15,6 @@ export default function Certificados() {
   const [showModal, setShowModal] = useState(false);
   const [selectedCertificado, setSelectedCertificado] = useState(null);
   const [showAgregarDocumentos, setShowAgregarDocumentos] = useState(false);
-  const [showNivelModal, setShowNivelModal] = useState(false);
   const userData = useSelector((state) => state.users.userData);
   const storedEmail = localStorage.getItem("email");
 
@@ -41,21 +39,6 @@ export default function Certificados() {
     };
 
     fetchCertificadosCurso();
-  }, [userData]);
-
-  useEffect(() => {
-    const fetchCertificados = async () => {
-      if (userData?.sub) {
-        try {
-          const response = await axios.get(`/certificados/${userData.sub}`);
-          actualizarCertificados(response.data);
-        } catch (error) {
-          console.error("Error al obtener certificados adicionales:", error);
-        }
-      }
-    };
-
-    fetchCertificados();
   }, [userData]);
 
   const actualizarCertificados = (nuevosCertificados) => {
@@ -91,19 +74,9 @@ export default function Certificados() {
     }
   };
 
-  const openNivelModal = (certificado) => {
-    if (certificado && certificado.id) {
-      setSelectedCertificado(certificado);
-      setShowNivelModal(true);
-    } else {
-      console.error("El ID del certificado es undefined o inválido");
-    }
-  };
-
   const closeModal = () => {
     setShowModal(false);
     setShowAgregarDocumentos(false);
-    setShowNivelModal(false);
     setSelectedCertificado(null);
   };
 
@@ -171,7 +144,6 @@ export default function Certificados() {
                         </button>
                         <button
                           onClick={() => {
-                            openNivelModal(certificado);
                             handleDownloadPDF();
                           }}
                           className="relative group bg-green-500 text-white p-2 rounded-full hover:bg-green-600 transition-colors"
@@ -215,47 +187,6 @@ export default function Certificados() {
                   <CertificadoStudent
                     certificado={selectedCertificado}
                     usuario={userData}
-                    className="text-sm"
-                  />
-                </div>
-              </div>
-              <div className="flex bg-gray-50 px-4 py-3">
-                <button
-                  onClick={handleDownloadPDF}
-                  className="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto sm:text-sm"
-                >
-                  Descargar
-                </button>
-                <button
-                  onClick={closeModal}
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm"
-                >
-                  Cerrar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showNivelModal && selectedCertificado && (
-        <div className="fixed z-10 inset-0 overflow-y-auto">
-          <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div
-              className="fixed inset-0 transition-opacity"
-              onClick={closeModal}
-            >
-              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
-            &#8203;
-            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full px-2 py-2">
-              <div className="bg-white">
-                <div id="certificado" className="sm:p-4">
-                  <CertificadoNivels
-                    certificado={selectedCertificado}
-                    usuario={userData}
-                    certificadoId={selectedCertificado?.id} 
                     className="text-sm"
                   />
                 </div>

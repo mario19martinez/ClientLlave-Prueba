@@ -1,7 +1,7 @@
 import { useState } from "react";
 import NavUser from "../../Components/Estudiante/NavUser/NavUser";
 import SidebarUser from "../../Components/Estudiante/SidebarUser/SidebarUser";
-import Certificados from "../../Components/Estudiante/DataUser/Certificados";
+import Certificados from "../../Components/Estudiante/DataUser/Certificados/Certificados";
 
 
 export default function ViewCertificado() {
