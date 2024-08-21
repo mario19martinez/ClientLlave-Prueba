@@ -13,6 +13,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import CircularProgress from '@mui/material/CircularProgress';
 
 function ClaseDetailUser({ claseId }) {
   const [clase, setClase] = useState(null);
@@ -85,6 +86,20 @@ function ClaseDetailUser({ claseId }) {
       const onYouTubeIframeAPIReady = () => {
         const player = new window.YT.Player(`youtubePlayer-${claseId}`, {
           videoId: extractYoutubeVideoId(clase.url),
+          playerVars: {
+            controls: 0, // Oculta los controles del video
+            disablekb: 1, // Desactiva el teclado para evitar que se use el teclado para manipular el video
+            modestbranding: 1, // Muestra menos marcas de YouTube
+            playsinline: 1, // Permite la reproducción en línea en dispositivos móviles
+            showinfo: 0, // No muestra la información del video (incluyendo la barra de progreso)
+            iv_load_policy: 3, // Desactiva las anotaciones
+            rel: 1, // Evita que se muestren videos recomendados al final
+            fs: 0, // Desactiva el botón de pantalla completa
+            autoplay: 1, // Auto-reproduce el video
+            loop: 0,
+
+            playlist: extractYoutubeVideoId(clase.url), // Asegura que no se muestre la barra de progreso
+          },
           events: {
             onStateChange: (event) => {
               if (event.data === window.YT.PlayerState.PLAYING) {
@@ -92,13 +107,19 @@ function ClaseDetailUser({ claseId }) {
                   const currentTime = event.target.getCurrentTime();
                   const duration = event.target.getDuration();
                   const newProgreso = (currentTime / duration) * 100;
+      
+                  console.log(`Current Time: ${currentTime}, Duration: ${duration}, New Progreso: ${newProgreso}`);
+      
                   setProgreso((prevProgresos) => ({
                     ...prevProgresos,
                     [claseId]: newProgreso,
                   }));
+      
                   const lastSavedProgreso = progreso[claseId] || 0;
+      
                   if (newProgreso >= 100) {
-                    clearInterval(intervalId); // Detener el intervalo si el progreso llega al 100%
+                    clearInterval(intervalId);
+                    console.log("Progreso completo, intervalo detenido.");
                   } else if (newProgreso - lastSavedProgreso >= 5) {
                     try {
                       await axios.post("/movimiento-usuario", {
@@ -107,22 +128,26 @@ function ClaseDetailUser({ claseId }) {
                         claseId,
                         progreso: newProgreso,
                       });
+                      console.log("Progreso enviado al backend:", newProgreso);
                     } catch (error) {
                       console.error("Error al actualizar el progreso:", error);
                     }
                   }
-                }, 15000);
+                }, 60000);
+      
                 player.intervalId = intervalId;
               } else if (
                 event.data === window.YT.PlayerState.PAUSED ||
                 event.data === window.YT.PlayerState.ENDED
               ) {
                 clearInterval(player.intervalId);
-                player.intervalId = null; // Asegurarse de que el intervalo no se ejecute de nuevo
+                player.intervalId = null;
+                console.log("Reproductor pausado o terminado, intervalo limpiado.");
               }
             },
           },
         });
+      
         setYoutubePlayer(player);
       };
 
@@ -219,7 +244,7 @@ function ClaseDetailUser({ claseId }) {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900"></div>
+        <CircularProgress />
         <span className="ml-4 text-xl font-semibold text-blue-700">
           Cargando...
         </span>

@@ -4,6 +4,7 @@ import axios from "axios";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import Tooltip from "@mui/material/Tooltip";
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function SeguimientoClases() {
   const [seguimientos, setSeguimientos] = useState([]);
@@ -111,11 +112,13 @@ function SeguimientoClases() {
 
   if (seguimientos.length === 0) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-blue-600"></div>
-        <span className="ml-4 text-xl font-semibold text-blue-600">
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+        <span className="text-gray-500 mb-4 font-semibold">
           Cargando...
         </span>
+        <CircularProgress />
+        </div>
       </div>
     );
   }

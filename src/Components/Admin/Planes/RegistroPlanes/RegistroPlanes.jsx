@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import ReactPaginate from "react-paginate";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import Tooltip from "@mui/material/Tooltip";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 function RegistroPlanes() {
   const [purchases, setPurchases] = useState([]);
@@ -14,13 +15,14 @@ function RegistroPlanes() {
     status: "",
     transactionDate: "",
   });
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
   useEffect(() => {
     const fetchPurchases = async () => {
       try {
         const response = await axios.get("/purchases");
+        console.log(response.data);
         const purchasesWithUserInfo = response.data.map((purchase) => ({
           ...purchase,
           customerName: purchase.user.name,
@@ -56,20 +58,31 @@ function RegistroPlanes() {
       ? new Date(purchase.transactionDate).toLocaleDateString() ===
         filters.transactionDate
       : true;
-
+  
     return matchesDescription && matchesStatus && matchesDate;
   });
-
-  const indexOfLastItem = (currentPage + 1) * itemsPerPage;
+  
+  console.log(filteredPurchases); // Verifica los datos filtrados
+  
+  const indexOfLastItem = currentPage * itemsPerPage; // Corrige el índice
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredPurchases.slice(
     indexOfFirstItem,
     indexOfLastItem
   );
+  
+  console.log(currentItems); // Verifica los datos paginados
 
-  const handlePageClick = (event) => {
-    setCurrentPage(event.selected);
-  };
+  const pageNumbers = [];
+  for (
+    let i = 1;
+    i <= Math.ceil(filteredPurchases.length / itemsPerPage);
+    i++
+  ) {
+    pageNumbers.push(i);
+  }
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const resetFilters = () => {
     setFilters({
@@ -92,14 +105,25 @@ function RegistroPlanes() {
 
   if (error) return <p className="text-center text-red-500">Error: {error}</p>;
 
+  //   return (
+  //     <div className="fixed inset-0 flex justify-center items-center">
+  //     <div className="text-center">
+  //       <p className="text-gray-500 mt-4">Cargando Historial de ventas...</p>
+  //       <CircularProgress />
+  //     </div>
+  //   </div>
+  // );
+  // }
+
+  // if (error) return <p className="text-center text-red-500">Error: {error}</p>;
+
   return (
     <div className="mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800 translate-x-6">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">
         Registros de compra
       </h1>
       <div className="overflow-x-auto">
-        <div className="mb-6 translate-x-6">
-          {/* <h2 className="text-xl font-semibold text-gray-800 mb-4">Filtrar</h2> */}
+        <div className="mb-6">
           <form onSubmit={(e) => e.preventDefault()} className="flex space-x-4">
             <select
               value={filters.description}
@@ -143,23 +167,7 @@ function RegistroPlanes() {
                 </option>
               ))}
             </select>
-            <Tooltip
-              title="Reiniciar Filtros"
-              arrow
-              placement="right"
-              slotProps={{
-                popper: {
-                  modifiers: [
-                    {
-                      name: "offset",
-                      options: {
-                        offset: [0, -6],
-                      },
-                    },
-                  ],
-                },
-              }}
-            >
+            <Tooltip title="Reiniciar Filtros" arrow placement="right">
               <button
                 type="button"
                 onClick={resetFilters}
@@ -170,8 +178,8 @@ function RegistroPlanes() {
             </Tooltip>
           </form>
         </div>
-        <table className="min-w-full bg-white  rounded-lg shadow-lg">
-          <thead className="">
+        <table className="min-w-full bg-white rounded-lg shadow-lg">
+          <thead>
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                 RefPayco
@@ -204,10 +212,7 @@ function RegistroPlanes() {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {currentItems.map((purchase) => (
-              <tr
-                key={purchase.id}
-                //className="transition-transform transform hover:scale-105 hover:bg-gray-100"
-              >
+              <tr key={purchase.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
                   {purchase.refPayco}
                 </td>
@@ -250,35 +255,58 @@ function RegistroPlanes() {
           </tbody>
         </table>
       </div>
-      <div className="mt-6 flex justify-center">
-        <ReactPaginate
-          previousLabel={"‹"}
-          nextLabel={"›"}
-          breakLabel={"..."}
-          pageCount={Math.ceil(filteredPurchases.length / itemsPerPage)}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={handlePageClick}
-          containerClassName={"flex items-center space-x-2"}
-          pageClassName={
-            "px-4 py-2 cursor-pointer border border-gray-300 rounded-md text-gray-800 hover:bg-gray-100"
-          }
-          pageLinkClassName={"block"}
-          previousClassName={
-            "px-4 py-2 cursor-pointer border border-gray-300 rounded-md text-gray-800 hover:bg-gray-100"
-          }
-          previousLinkClassName={"block"}
-          nextClassName={
-            "px-4 py-2 cursor-pointer border border-gray-300 rounded-md text-gray-800 hover:bg-gray-100"
-          }
-          nextLinkClassName={"block"}
-          breakClassName={
-            "px-4 py-2 cursor-pointer border border-gray-300 rounded-md text-gray-800 hover:bg-gray-100"
-          }
-          breakLinkClassName={"block"}
-          activeClassName={"bg-blue-500 text-white border-blue-500"}
-        />
-      </div>
+      <nav className="mt-4" aria-label="Pagination">
+        <ul className="flex justify-center">
+          <li>
+            <button
+              onClick={() =>
+                setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)
+              }
+              disabled={currentPage === 1}
+              className={`${
+                currentPage === 1
+                  ? "bg-gray-200 text-gray-600"
+                  : "bg-white hover:bg-gray-50"
+              } px-3 py-1 border border-gray-300 rounded-l-md font-medium text-sm focus:outline-none`}
+            >
+              <ChevronLeftIcon className="w-5 h-5" />
+            </button>
+          </li>
+          {pageNumbers.map((number) => (
+            <li key={number}>
+              <button
+                onClick={() => paginate(number)}
+                className={`${
+                  number === currentPage
+                    ? "bg-blue-500 text-white"
+                    : "bg-white text-gray-600 hover:bg-gray-50"
+                } px-3 py-1 border border-gray-300 font-medium text-sm rounded-md`}
+              >
+                {number}
+              </button>
+            </li>
+          ))}
+          <li>
+            <button
+              onClick={() =>
+                setCurrentPage(
+                  currentPage === pageNumbers.length
+                    ? pageNumbers.length
+                    : currentPage + 1
+                )
+              }
+              disabled={currentPage === pageNumbers.length}
+              className={`${
+                currentPage === pageNumbers.length
+                  ? "bg-gray-200 text-gray-600"
+                  : "bg-white hover:bg-gray-50"
+              } px-3 py-1 border border-gray-300 rounded-r-md font-medium text-sm focus:outline-none`}
+            >
+              <ChevronRightIcon className="w-5 h-5" />
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 }

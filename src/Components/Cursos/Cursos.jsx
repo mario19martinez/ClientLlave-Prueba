@@ -84,14 +84,28 @@ function CursoClases() {
           `youtubePlayer-${claseSeleccionada.id}`,
           {
             videoId: extractYoutubeVideoId(claseSeleccionada.url),
+            playerVars: {
+              controls: 0, // Oculta los controles del video
+              disablekb: 1, // Desactiva el teclado para evitar que se use el teclado para manipular el video
+              modestbranding: 1, // Muestra menos marcas de YouTube
+              playsinline: 1, // Permite la reproducción en línea en dispositivos móviles
+              showinfo: 0, // No muestra la información del video (incluyendo la barra de progreso)
+              iv_load_policy: 3, // Desactiva las anotaciones
+              rel: 1, // Evita que se muestren videos recomendados al final
+              fs: 0, // Desactiva el botón de pantalla completa
+              autoplay: 1, // Auto-reproduce el video
+              loop: 0,
+
+              playlist: extractYoutubeVideoId(claseSeleccionada.url), // Asegura que no se muestre la barra de progreso
+            },
             events: {
               onStateChange: (event) => {
                 if (event.data === window.YT.PlayerState.PLAYING) {
                   const intervalId = setInterval(async () => {
+                    const currentTime = event.target.getCurrentTime();
                     const newProgreso =
-                      (event.target.getCurrentTime() /
-                        event.target.getDuration()) *
-                      100;
+                      (currentTime / event.target.getDuration()) * 100;
+  
                     setProgreso((prevProgresos) => ({
                       ...prevProgresos,
                       [claseSeleccionada.id]: newProgreso,
@@ -127,7 +141,7 @@ function CursoClases() {
         );
         setYoutubePlayer(player);
       };
-
+  
       if (!window.YT) {
         const tag = document.createElement("script");
         tag.src = "https://www.youtube.com/iframe_api";
@@ -137,7 +151,7 @@ function CursoClases() {
       } else {
         onYouTubeIframeAPIReady();
       }
-
+  
       return () => {
         if (youtubePlayer && youtubePlayer.intervalId) {
           clearInterval(youtubePlayer.intervalId);
@@ -167,13 +181,18 @@ function CursoClases() {
       setClaseSeleccionada(null);
     } else {
       setClaseSeleccionada(clase);
+      //setLastSavedTime(0); // Reinicia el ultimo tiempo guardado cuando se selecciona una clase
     }
   };
 
   const handleVerTallerClick = async () => {
     if (userInfo && claseSeleccionada) {
       try {
-        await axios.post("/seguimiento-taller", { userSub: userInfo.sub, claseId: claseSeleccionada.id, cursoId: id });
+        await axios.post("/seguimiento-taller", {
+          userSub: userInfo.sub,
+          claseId: claseSeleccionada.id,
+          cursoId: id,
+        });
         console.log("Seguimiento del taller registrado correctamente.");
       } catch (error) {
         console.error("Error al registrar el seguimiento del taller:", error);
@@ -279,34 +298,44 @@ function CursoClases() {
                   </svg>
                 </div>
                 {claseSeleccionada && claseSeleccionada.id === clase.id && (
-  <div className="aspect-w-16 aspect-h-9 transition-all duration-500">
-    {claseSeleccionada.url && claseSeleccionada.platform === "youtube" ? (
-      <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-        <div id={`youtubePlayer-${claseSeleccionada.id}`} className="absolute top-0 left-0 w-full h-full" />
-      </div>
-    ) : claseSeleccionada.pdfURL ? (
-      <div>
-        <ul className="space-y-2">
-          <li key={claseSeleccionada.id}>
-            <a
-              href={claseSeleccionada.pdfURL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-between bg-blue-500 text-white px-4 py-2 rounded-md"
-            >
-              <span>{claseSeleccionada.name} PDF</span>
-              <button onClick={handleVerTallerClick} className="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1 rounded-md">
-                Ver Taller
-              </button>
-            </a>
-          </li>
-        </ul>
-      </div>
-    ) : (
-      <p>No hay contenido disponible para esta clase.</p>
-    )}
-  </div>
-)}
+                  <div className="aspect-w-16 aspect-h-9 transition-all duration-500">
+                    {claseSeleccionada.url &&
+                    claseSeleccionada.platform === "youtube" ? (
+                      <div
+                        className="relative w-full"
+                        style={{ paddingTop: "56.25%" }}
+                      >
+                        <div
+                          id={`youtubePlayer-${claseSeleccionada.id}`}
+                          className="absolute top-0 left-0 w-full h-full"
+                        />
+                      </div>
+                    ) : claseSeleccionada.pdfURL ? (
+                      <div>
+                        <ul className="space-y-2">
+                          <li key={claseSeleccionada.id}>
+                            <a
+                              href={claseSeleccionada.pdfURL}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-between bg-blue-500 text-white px-4 py-2 rounded-md"
+                            >
+                              <span>{claseSeleccionada.name} PDF</span>
+                              <button
+                                onClick={handleVerTallerClick}
+                                className="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1 rounded-md"
+                              >
+                                Ver Taller
+                              </button>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    ) : (
+                      <p>No hay contenido disponible para esta clase.</p>
+                    )}
+                  </div>
+                )}
               </li>
             ))
           : clases.length > 0 && (
