@@ -115,6 +115,9 @@ function ModuloDetailsStudent() {
               {}
             );
             setRespuestas(formattedRespuestas);
+
+            // Verifica si el cuestionario fue aprobado
+            setQuizCompletado(response.data[0].aprobado);
           }
         } catch (error) {
           console.error("Error al obtener las respuestas del usuario:", error);
@@ -240,7 +243,7 @@ function ModuloDetailsStudent() {
   const handleModalClose = () => {
     setShowModal(false);
     if (!perteneceAlGrupo) {
-      navigate("/estudiante/cursosInscritos"); 
+      navigate("/estudiante/cursosInscritos");
       window.location.reload();
     }
   };
@@ -428,6 +431,7 @@ function ModuloDetailsStudent() {
               </span>
             </div>
           )}
+
           {!quizCompletado && respuestasUsuario.length > 0 && (
             <div className="bg-red-200 text-red-800 p-4 rounded-lg mb-4">
               Algunas respuestas son incorrectas. Inténtalo de nuevo.
@@ -471,15 +475,19 @@ function ModuloDetailsStudent() {
         className="fixed inset-0 flex items-center justify-center p-4"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50"
       >
-        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-          <h2 className="text-2xl font-bold mb-4 text-gray-900">
-            No se han completado todas las clases. Completa todas las clases para poder responder a las preguntas.
+        <div className="bg-white p-8 rounded-xl shadow-xl max-w-lg w-full transform transition-transform duration-300 ease-out">
+          <h2 className="text-3xl font-semibold mb-6 text-gray-800 text-center">
+            ¡Atención!
           </h2>
+          <p className="text-lg text-gray-700 mb-6 text-center">
+            Para poder ver y responder a las preguntas, es necesario completar
+            al menos el 80% de todas las clases.
+          </p>
           <button
             onClick={handleModalPreguntasClose}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+            className="bg-blue-600 hover:bg-blue-800 text-white font-semibold py-3 px-6 rounded-lg w-full transition-colors duration-300 ease-out"
           >
-            Aceptar
+            Entendido
           </button>
         </div>
       </Modal>
