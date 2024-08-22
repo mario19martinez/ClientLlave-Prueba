@@ -6,6 +6,8 @@ import EditarUsuarioAdmin from "../EditarUsuarioAdmin";
 import AddNovedad from "./AddNovedad";
 import UserHistoryDetail from "../UserHistorial/UserHistorialDetail";
 import Tooltip from "@mui/material/Tooltip";
+import CircularProgress from '@mui/material/CircularProgress';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 export default function UsersDetails({ identificacion }) {
   const [userData, setUserData] = useState(null);
@@ -103,11 +105,28 @@ export default function UsersDetails({ identificacion }) {
   };
 
   if (loading) {
-    return <div>Cargando...</div>;
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+          <p className="text-red-500 mt-4 font-semibold">Oops! Algo salió mal. Vuelve a intentarlo en un momento.</p>
+          <p className="text-red-500 mt-4 font-semibold">
+          <SentimentVeryDissatisfiedIcon fontSize="large" />
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (

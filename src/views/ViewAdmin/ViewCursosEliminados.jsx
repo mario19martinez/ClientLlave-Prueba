@@ -8,8 +8,8 @@ export default function ViewCursosEliminados() {
   return (
     <div>
       <NavAdmin />
+      <div className="flex">
       <SidebarAdmin selectedTab={selectedTab} />
-      <div className="-translate-y-60">
         <CursosEliminados />
       </div>
     </div>
