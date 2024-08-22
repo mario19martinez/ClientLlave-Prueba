@@ -27,7 +27,6 @@ export default function AllCertificadoModulo() {
       if (userData?.sub) {
         try {
           const response = await axios.get(`/certificadosModulo/usuario/${userData.sub}`);
-          console.log("Certificados de módulos recibidos:", response.data);
           setCertificados(response.data);
         } catch (error) {
           console.error("Error al obtener los certificados de módulos:", error);
@@ -45,7 +44,6 @@ export default function AllCertificadoModulo() {
         if (!moduloDetails[certificado.moduloId]) {
           try {
             const response = await axios.get(`/modulo/${certificado.moduloId}`);
-            console.log("Detalles del módulo:", response.data); // Verifica los detalles del módulo en la consola
             moduloDetails[certificado.moduloId] = response.data.titulo;
           } catch (error) {
             console.error(`Error al obtener el nombre del módulo con ID ${certificado.moduloId}:`, error);
