@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import CircularProgress from '@mui/material/CircularProgress';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 function UserHistoryDetail({ userSub }) {
-  // const { userSub } = useParams();
   const [history, setHistory] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const itemsPerPage = 9;
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -42,47 +43,63 @@ function UserHistoryDetail({ userSub }) {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = history.slice(indexOfFirstItem, indexOfLastItem);
 
-  if (loading)
+  if (loading){
     return (
-      <div>
-        <p>Loading...</p>
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando Registros...</p>
+          <CircularProgress />
+        </div>
       </div>
     );
+  }
 
-  if (error) return <p>Error: {error}</p>;
+  if (error) {
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+          <p className="text-red-500 mt-4 font-semibold">Oops! Algo salió mal. Vuelve a intentarlo en un momento.</p>
+          <p className="text-red-500 mt-4 font-semibold">
+          <SentimentVeryDissatisfiedIcon fontSize="large" />
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="absolute top-0 right-36 mt-28 w-4/5 ml-96 p-4 -translate-y-40">
     <h1 className="text-2xl font-bold mb-4 text-gray-700">
       Historial de Usuario
     </h1>
-    <table className="min-w-full bg-white rounded-lg shadow-lg">
-      <thead>
-        <tr>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+    <table className="min-w-full border-collaps border rounded-lg border-gray-400 overflow-hidden">
+      <thead className="bg-blue-200 border-b border-gray-300">
+        <tr className=" text-xs text-gray-700 uppercase">
+          <th className="px-6 py-3">
             Usuario
           </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+          <th className="px-6 py-3">
             Curso
           </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+          <th className="px-6 py-3">
             Grupo
           </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+          <th className="px-6 py-3">
             Certificado Curso
           </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+          <th className="px-6 py-3">
             Certificado
           </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+          <th className="px-6 py-3">
             Tipo de Accion
           </th>
-          <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+          <th className="px-6 py-3">
             Fecha
           </th>
         </tr>
       </thead>
-      <tbody className="bg-white divide-y divide-gray-300">
+      <tbody className="text-gray-700 text-sm font-mono divide-y divide-gray-200 bg-white">
         {currentItems.length === 0 ? (
           <tr>
             <td
@@ -94,28 +111,29 @@ function UserHistoryDetail({ userSub }) {
           </tr>
         ) : (
           currentItems.map((item) => (
-            <tr key={item.id}>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">
+            <tr key={item.id}
+            className="border-b border-gray-200 hover:bg-gray-100 transition-colors duration-150">
+              <td className="px-6 py-3 whitespace-nowrap">
                 {item.user
                   ? `${item.user.name} ${item.user.last_name}`
                   : "N/A"}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">
+              <td className="px-6 py-3 whitespace-nowrap">
                 {item.curso?.name || "N/A"}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">
+              <td className="px-6 py-3 whitespace-nowrap">
                 {item.grupo?.name || "N/A"}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">
+              <td className="px-6 py-3 whitespace-nowrap">
                 {item.certificadoCurso?.numero_certificado || "N/A"}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">
+              <td className="px-6 py-3 whitespace-nowrap">
                 {item.certificado?.numero_certificado || "N/A"}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">
+              <td className="px-6 py-3 whitespace-nowrap">
                 {item.actionType || "N/A"}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">
+              <td className="px-6 py-3 whitespace-nowrap">
                 {new Date(item.timestamp).toLocaleString()}
               </td>
             </tr>
