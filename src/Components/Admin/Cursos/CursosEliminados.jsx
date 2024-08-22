@@ -56,7 +56,7 @@ function CursosEliminados() {
   }, []);
 
   return (
-    <div className="absolute translate-x-96 -translate-y-80 w-2/3">
+    <div className="absolute translate-x-96 translate-y-10 w-2/3">
       <button
         className="bg-blue-500 hover:bg-blue-800 text-white font-bold py-0 px-4 rounded mb-4 -translate-y-4"
         onClick={() => navigate("/admin/cursos")}
@@ -73,7 +73,7 @@ function CursosEliminados() {
           {cursosEliminados.map((curso) => (
             <li
               key={curso.id}
-              className="mb-2 py-2 px-4 rounded border-4 border-gray-400 w-2/3 flex items-center justify-between"
+              className="mb-2 py-2 px-4 rounded border-2 border-gray-400 w-2/3 flex items-center justify-between"
             >
               <span className="font-gabarito text-xl text-gray-700">
                 {curso.name}
