@@ -5,10 +5,12 @@ import Modal from "react-modal";
 import FolderDeleteIcon from "@mui/icons-material/FolderDelete";
 import CancelIcon from "@mui/icons-material/Cancel";
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import GroupsIcon from '@mui/icons-material/Groups';
+import GroupsIcon from "@mui/icons-material/Groups";
 import NivelEdit from "./NivelEdit";
 import ModuloAdmin from "../ModuloAdmin/ModuloAdmin";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import CircularProgress from "@mui/material/CircularProgress";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 
 function NivelDetailAdmin() {
   const [nivel, setNivel] = useState(null);
@@ -73,17 +75,34 @@ function NivelDetailAdmin() {
           onClick={goBack}
           className="flex items-center bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300 mb-4"
         >
-          <KeyboardBackspaceIcon fontSize="large" className="mr-2" />
+          <KeyboardBackspaceIcon fontSize="medium" />
           Volver
         </button>
         {loading ? (
-          <div className="text-center">Cargando...</div>
+          <div className="fixed inset-0 flex justify-center items-center">
+            <div className="text-center">
+              <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+              <CircularProgress />
+            </div>
+          </div>
         ) : error ? (
-          <div className="text-center text-red-500">{error}</div>
+          <div className="fixed inset-0 flex justify-center items-center">
+            <div className="text-center">
+              <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+              <p className="text-red-500 mt-4 font-semibold">
+                Oops! Algo salió mal. Vuelve a intentarlo en un momento.
+              </p>
+              <p className="text-red-500 mt-4 font-semibold">
+                <SentimentVeryDissatisfiedIcon fontSize="large" />
+              </p>
+            </div>
+          </div>
         ) : (
           nivel && (
             <div>
-              <h2 className="text-2xl font-bold mb-4 text-gray-800">{nivel.name}</h2>
+              <h2 className="text-2xl font-bold mb-4 text-gray-800">
+                {nivel.name}
+              </h2>
               <div className="mb-4">
                 <img
                   src={nivel.image}

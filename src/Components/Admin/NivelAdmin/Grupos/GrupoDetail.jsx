@@ -9,29 +9,41 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Tooltip from "@mui/material/Tooltip";
 import GrupoEdit from "./GrupoEdit";
+import CircularProgress from '@mui/material/CircularProgress';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 function GrupoDetail() {
   const [grupo, setGrupo] = useState(null);
   const [error, setError] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { id, grupoId } = useParams();
 
   useEffect(() => {
     const fetchGrupo = async () => {
+      if (!id || !grupoId) {
+        setError("ID de nivel o grupo no encontrados");
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
       try {
-        if (!id || !grupoId) {
-          setError("ID de nivel o grupo no encontrados");
-          return;
-        }
         const response = await axios.get(`/niveles/${id}/grupos/${grupoId}`);
         setGrupo(response.data);
+        setError(null);
       } catch (error) {
-        setError(error.response.data.error);
-        console.error("Ocurrio un error:", error);
+        setError(
+          error.response?.data?.error || "Ocurrió un error al cargar los datos"
+        );
+        console.error("Ocurrió un error:", error);
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchGrupo();
   }, [id, grupoId]);
 
@@ -79,26 +91,28 @@ function GrupoDetail() {
     setEditModalIsOpen(false);
   };
 
-  if (error) {
-    return <p className="text-center text-red-500 mt-4">Error: {error}</p>;
-  }
-
-  if (!grupo) {
+  if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-blue-600"></div>
-        <span className="ml-4 text-xl font-semibold text-blue-600">
-          Cargando...
-        </span>
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+          <CircularProgress />
+        </div>
       </div>
     );
   }
 
-  if (id === undefined) {
+  if (error) {
     return (
-      <p className="text-center text-red-500 mt-4">
-        Error: ID de nivel no encontrado
-      </p>
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+          <p className="text-red-500 mt-4 font-semibold">Oops! Algo salió mal. Vuelve a intentarlo en un momento.</p>
+          <p className="text-red-500 mt-4 font-semibold">
+            <SentimentVeryDissatisfiedIcon fontSize="large" />
+          </p>
+        </div>
+      </div>
     );
   }
 

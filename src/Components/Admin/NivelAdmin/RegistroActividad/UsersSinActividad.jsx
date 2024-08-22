@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 
 function UsersSinActividad() {
   const [usuarios, setUsuarios] = useState([]);
@@ -46,6 +47,12 @@ function UsersSinActividad() {
       <div className="fixed inset-0 flex justify-center items-center">
         <div className="text-center">
           <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+          <p className="text-red-500 mt-4 font-semibold">
+            Oops! Algo salió mal. Vuelve a intentarlo en un momento.
+          </p>
+          <p className="text-red-500 mt-4 font-semibold">
+            <SentimentVeryDissatisfiedIcon fontSize="large" />
+          </p>
         </div>
       </div>
     );
@@ -64,13 +71,13 @@ function UsersSinActividad() {
 
   return (
     <div className="translate-x-40 translate-y-10">
-        <button
-          onClick={goBack}
-          className="flex items-center bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300 mb-4"
-        >
-          <KeyboardBackspaceIcon fontSize="large" className="mr-2" />
-          Volver
-        </button>
+      <button
+        onClick={goBack}
+        className="flex items-center bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300 mb-4"
+      >
+        <KeyboardBackspaceIcon fontSize="medium" />
+        Volver
+      </button>
       <h1 className="text-xl font-bold mb-4 text-gray-800 translate-x-2">
         Usuarios Sin Actividad
       </h1>

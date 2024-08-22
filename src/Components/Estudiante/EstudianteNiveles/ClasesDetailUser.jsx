@@ -87,14 +87,14 @@ function ClaseDetailUser({ claseId }) {
         const player = new window.YT.Player(`youtubePlayer-${claseId}`, {
           videoId: extractYoutubeVideoId(clase.url),
           playerVars: {
-            controls: 0, // Oculta los controles del video
+            controls: 1, // Oculta los controles del video
             disablekb: 1, // Desactiva el teclado para evitar que se use el teclado para manipular el video
             modestbranding: 1, // Muestra menos marcas de YouTube
             playsinline: 1, // Permite la reproducción en línea en dispositivos móviles
             showinfo: 0, // No muestra la información del video (incluyendo la barra de progreso)
             iv_load_policy: 3, // Desactiva las anotaciones
             rel: 1, // Evita que se muestren videos recomendados al final
-            fs: 0, // Desactiva el botón de pantalla completa
+            fs: 1, // Desactiva el botón de pantalla completa
             autoplay: 1, // Auto-reproduce el video
             loop: 0,
 

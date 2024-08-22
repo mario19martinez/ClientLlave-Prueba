@@ -5,6 +5,7 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import Tooltip from "@mui/material/Tooltip";
 import CircularProgress from '@mui/material/CircularProgress';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 function RegistroActividad() {
   const [registros, setRegistros] = useState([]);
@@ -237,6 +238,10 @@ function RegistroActividad() {
       <div className="fixed inset-0 flex justify-center items-center">
         <div className="text-center">
           <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+          <p className="text-red-500 mt-4 font-semibold">Oops! Algo salió mal. Vuelve a intentarlo en un momento.</p>
+          <p className="text-red-500 mt-4 font-semibold">
+          <SentimentVeryDissatisfiedIcon fontSize="large" />
+          </p>
         </div>
       </div>
     );
@@ -354,9 +359,14 @@ function RegistroActividad() {
         </Tooltip>
       </div>
       {currentRegistros.length === 0 ? (
+        <div>
         <p className="text-gray-600 font-semibold">
-          No hay registros disponibles.
+          No hay registros disponibles
         </p>
+        {/* <p className="text-gray-600">
+          <SentimentVeryDissatisfiedIcon fontSize="large" />
+        </p> */}
+        </div>
       ) : (
         <div className="overflow-x-auto border border-gray-400 rounded-lg shadow-md">
           <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg border-separate border-spacing-2">

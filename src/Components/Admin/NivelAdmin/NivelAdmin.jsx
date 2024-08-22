@@ -6,6 +6,8 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import FolderDeleteIcon from "@mui/icons-material/FolderDelete";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import NivelCreate from "./NivelCreate";
+import CircularProgress from '@mui/material/CircularProgress';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 function NivelAdmin() {
   const [niveles, setNiveles] = useState([]);
@@ -59,9 +61,21 @@ function NivelAdmin() {
           <h1 className="text-xs text-white">Eliminar</h1>
         </button>
         {loading ? (
-          <p>Cargando niveles...</p>
+          <div className="fixed inset-0 flex justify-center items-center">
+          <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando Niveles...</p>
+          <CircularProgress />
+          </div>
+          </div>
         ) : niveles.length === 0 ? (
-          <p>No hay niveles disponibles.</p>
+          <div className="fixed inset-0 flex justify-center items-center">
+          <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">No hay niveles disponibles.</p>
+          <p className="text-gray-600">
+          <SentimentVeryDissatisfiedIcon fontSize="large" />
+          </p>
+          </div>
+          </div>
         ) : (
           <div>
             {niveles.map((nivel) => (
