@@ -26,7 +26,6 @@ export default function AllCertificadosNivel() {
       if (userData?.sub) {
         try {
           const response = await axios.get(`/certificados/${userData.sub}`);
-          console.log("Certificados recibidos:", response.data);
           setCertificados(response.data);
         } catch (error) {
           console.error("Error al obtener los certificados:", error);
