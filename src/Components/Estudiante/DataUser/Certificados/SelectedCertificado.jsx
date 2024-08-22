@@ -17,6 +17,11 @@ export default function SelectedCertificado() {
     window.location.reload()
   }
 
+  const modulosCertificados = () => {
+    navigate("/estudiante/certificados/modulo");
+    window.location.reload()
+  }
+
   const cardStyle =
     "w-48 md:w-56 h-44 md:h-52 p-4 border-2 border-blue-500 rounded-lg shadow-lg mx-2 my-4 text-center flex flex-col justify-center items-center transition-transform transform hover:scale-105 hover:shadow-2xl cursor-pointer bg-white hover:bg-blue-100";
   const labelStyle = "text-base md:text-lg lg:text-xl font-semibold mt-2";
@@ -35,15 +40,15 @@ export default function SelectedCertificado() {
         <p className={countStyle}>{getRandomNumber()}</p>
       </div>
 
-      <div className={cardStyle}>
-        <div className={iconContainerStyle} onClick={nivelesCertificados}>
+      <div className={cardStyle} onClick={nivelesCertificados}>
+        <div className={iconContainerStyle}>
           <FaAward className={iconStyle} size="2rem" />
         </div>
         <h3 className={labelStyle}>Certificado de Nivel</h3>
         <p className={countStyle}>{getRandomNumber()}</p>
       </div>
 
-      <div className={cardStyle}>
+      <div className={cardStyle} onClick={modulosCertificados}>
         <div className={iconContainerStyle}>
           <FaCertificate className={iconStyle} size="2rem" />
         </div>
