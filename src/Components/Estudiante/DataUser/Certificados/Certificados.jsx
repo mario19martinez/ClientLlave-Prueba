@@ -83,16 +83,24 @@ export default function Certificados() {
   const handleDownloadPDF = async () => {
     const certificadoElement = document.getElementById("certificado");
     if (!certificadoElement) return;
-
+  
+    // Configura el tamaño A4 en horizontal (210mm x 297mm)
+    const pdfWidth = 297; // en mm
+    const pdfHeight = 210; // en mm
+  
+    // Genera una imagen del contenido
     const canvas = await html2canvas(certificadoElement, { scale: 2 });
     const imgData = canvas.toDataURL("image/png");
+    
+    // Crea un nuevo documento PDF con tamaño A4 horizontal
     const pdf = new jsPDF({
-      orientation: "landscape",
-      unit: "px",
-      format: [canvas.width, canvas.height],
+      orientation: "landscape", // Horizontal
+      unit: "mm",
+      format: [pdfWidth, pdfHeight],
     });
-
-    pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+  
+    // Agrega la imagen al PDF
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
     pdf.save("certificado.pdf");
   };
 
