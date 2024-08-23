@@ -127,13 +127,17 @@ function CursoClases() {
                         );
                       }
                     }
-                  }, 15000);
+                  }, 60000);
                   player.intervalId = intervalId;
                 } else if (
                   event.data === window.YT.PlayerState.PAUSED ||
                   event.data === window.YT.PlayerState.ENDED
                 ) {
                   clearInterval(player.intervalId);
+                } else if (event.data === window.YT.PlayerState.BUFFERING) {
+                  alert(
+                    "Para aprovechar al máximo el contenido y no perder ningún detalle importante, te recomendamos ver la clase en su totalidad sin adelantar. ¡Cada minuto cuenta para tu aprendizaje!"
+                  )
                 }
               },
             },
