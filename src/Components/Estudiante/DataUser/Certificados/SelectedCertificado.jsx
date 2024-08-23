@@ -25,13 +25,19 @@ export default function SelectedCertificado() {
     const fetchCounts = async () => {
       try {
         if (userData && userData.sub) {
-          const cursosResponse = await axios.get(`/certificadosCurso/usuario/${userData.sub}`);
+          const cursosResponse = await axios.get(
+            `/certificadosCurso/usuario/${userData.sub}`
+          );
           setCursoCount(cursosResponse.data.length);
 
-          const nivelesResponse = await axios.get(`/certificados/${userData.sub}`);
+          const nivelesResponse = await axios.get(
+            `/certificados/${userData.sub}`
+          );
           setNivelCount(nivelesResponse.data.length);
 
-          const modulosResponse = await axios.get(`/certificadosModulo/usuario/${userData.sub}`);
+          const modulosResponse = await axios.get(
+            `/certificadosModulo/usuario/${userData.sub}`
+          );
           setModuloCount(modulosResponse.data.length);
         }
       } catch (error) {
@@ -67,29 +73,35 @@ export default function SelectedCertificado() {
 
   return (
     <div className="flex flex-wrap p-16 mt-6">
-      <div className={cardStyle} onClick={cursosCertificados}>
-        <div className={iconContainerStyle}>
-          <FaGraduationCap className={iconStyle} size="2rem" />
+      {cursoCount > 0 && (
+        <div className={cardStyle} onClick={cursosCertificados}>
+          <div className={iconContainerStyle}>
+            <FaGraduationCap className={iconStyle} size="2rem" />
+          </div>
+          <h3 className={labelStyle}>Certificado de Curso</h3>
+          <p className={countStyle}>{cursoCount}</p>
         </div>
-        <h3 className={labelStyle}>Certificado de Curso</h3>
-        <p className={countStyle}>{cursoCount}</p>
-      </div>
+      )}
 
-      <div className={cardStyle} onClick={nivelesCertificados}>
-        <div className={iconContainerStyle}>
-          <FaAward className={iconStyle} size="2rem" />
+      {nivelCount > 0 && (
+        <div className={cardStyle} onClick={nivelesCertificados}>
+          <div className={iconContainerStyle}>
+            <FaAward className={iconStyle} size="2rem" />
+          </div>
+          <h3 className={labelStyle}>Certificado de Nivel</h3>
+          <p className={countStyle}>{nivelCount}</p>
         </div>
-        <h3 className={labelStyle}>Certificado de Nivel</h3>
-        <p className={countStyle}>{nivelCount}</p>
-      </div>
+      )}
 
-      <div className={cardStyle} onClick={modulosCertificados}>
-        <div className={iconContainerStyle}>
-          <FaCertificate className={iconStyle} size="2rem" />
+      {moduloCount > 0 && (
+        <div className={cardStyle} onClick={modulosCertificados}>
+          <div className={iconContainerStyle}>
+            <FaCertificate className={iconStyle} size="2rem" />
+          </div>
+          <h3 className={labelStyle}>Certificado de Módulo</h3>
+          <p className={countStyle}>{moduloCount}</p>
         </div>
-        <h3 className={labelStyle}>Certificado de Módulo</h3>
-        <p className={countStyle}>{moduloCount}</p>
-      </div>
+      )}
     </div>
   );
 }
