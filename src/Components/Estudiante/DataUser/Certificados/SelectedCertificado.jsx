@@ -25,20 +25,41 @@ export default function SelectedCertificado() {
     const fetchCounts = async () => {
       try {
         if (userData && userData.sub) {
-          const cursosResponse = await axios.get(
-            `/certificadosCurso/usuario/${userData.sub}`
-          );
-          setCursoCount(cursosResponse.data.length);
+          const cursosResponse = await axios
+            .get(`/certificadosCurso/usuario/${userData.sub}`)
+            .catch((error) => {
+              if (error.response && error.response.status === 404) {
+                console.warn("No se encontraron certificados de curso.");
+                return { data: [] }; // Devolver un array vacío si no hay certificados
+              } else {
+                throw error;
+              }
+            });
+          setCursoCount(cursosResponse.data.length || 0);
 
-          const nivelesResponse = await axios.get(
-            `/certificados/${userData.sub}`
-          );
-          setNivelCount(nivelesResponse.data.length);
+          const nivelesResponse = await axios
+            .get(`/certificados/${userData.sub}`)
+            .catch((error) => {
+              if (error.response && error.response.status === 404) {
+                console.warn("No se encontraron certificados de nivel.");
+                return { data: [] }; // Devolver un array vacío si no hay certificados
+              } else {
+                throw error;
+              }
+            });
+          setNivelCount(nivelesResponse.data.length || 0);
 
-          const modulosResponse = await axios.get(
-            `/certificadosModulo/usuario/${userData.sub}`
-          );
-          setModuloCount(modulosResponse.data.length);
+          const modulosResponse = await axios
+            .get(`/certificadosModulo/usuario/${userData.sub}`)
+            .catch((error) => {
+              if (error.response && error.response.status === 404) {
+                console.warn("No se encontraron certificados de módulo.");
+                return { data: [] }; // Devolver un array vacío si no hay certificados
+              } else {
+                throw error;
+              }
+            });
+          setModuloCount(modulosResponse.data.length || 0);
         }
       } catch (error) {
         console.error("Error fetching certificate counts", error);

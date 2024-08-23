@@ -74,8 +74,26 @@ function Escritorio() {
             certificadosNivelRes,
             certificadosModuloRes,
           ] = await Promise.all([
-            axios.get(`/certificadosCurso/usuario/${userData.sub}`),
-            axios.get(`/certificados/${userData.sub}`),
+            axios
+              .get(`/certificadosCurso/usuario/${userData.sub}`)
+              .catch((error) => {
+                if (error.response && error.response.status === 404) {
+                  console.warn("No se encontraron certificados de curso.");
+                  return { data: [] }; // Devolver un array vacío si no hay certificados
+                } else {
+                  throw error;
+                }
+              }),
+            axios
+              .get(`/certificados/${userData.sub}`)
+              .catch((error) => {
+                if (error.response && error.response.status === 404) {
+                  console.warn("No se encontraron certificados de nivel.");
+                  return { data: [] }; // Devolver un array vacío si no hay certificados
+                } else {
+                  throw error;
+                }
+              }),
             axios
               .get(`/certificadosModulo/usuario/${userData.sub}`)
               .catch((error) => {
@@ -87,20 +105,21 @@ function Escritorio() {
                 }
               }),
           ]);
-
+    
           const certificadosCurso = certificadosCursoRes.data.length || 0;
           const certificadosNivel = certificadosNivelRes.data.length || 0;
           const certificadosModulo = certificadosModuloRes.data.length || 0;
-
+    
           const totalCertificados =
             certificadosCurso + certificadosNivel + certificadosModulo;
-
+    
           setCertificados(totalCertificados);
         } catch (error) {
           console.error("Error fetching certificates:", error);
         }
       }
     };
+    
     const fetchTransmisiones = async () => {
       try {
         const response = await axios.get("/transmisiones");
