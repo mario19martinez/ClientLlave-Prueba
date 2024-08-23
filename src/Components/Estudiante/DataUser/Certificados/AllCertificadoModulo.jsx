@@ -3,6 +3,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { FaEye, FaDownload } from "react-icons/fa";
 import CertificadoModulo from "../../Certificado/CertificadoModulo";
+import DocumentoModulo from "../../../Admin/Certificacion/CertificadoModulo/DocumentoModulo";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { getUserData } from "../../../../Redux/features/Users/usersSlice";
@@ -12,6 +13,7 @@ export default function AllCertificadoModulo() {
   const [certificados, setCertificados] = useState([]);
   const [modulos, setModulos] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
   const [selectedCertificado, setSelectedCertificado] = useState(null);
   const userData = useSelector((state) => state.users.userData);
   const storedEmail = localStorage.getItem("email");
@@ -26,7 +28,9 @@ export default function AllCertificadoModulo() {
     const fetchCertificados = async () => {
       if (userData?.sub) {
         try {
-          const response = await axios.get(`/certificadosModulo/usuario/${userData.sub}`);
+          const response = await axios.get(
+            `/certificadosModulo/usuario/${userData.sub}`
+          );
           setCertificados(response.data);
         } catch (error) {
           console.error("Error al obtener los certificados de módulos:", error);
@@ -46,7 +50,10 @@ export default function AllCertificadoModulo() {
             const response = await axios.get(`/modulo/${certificado.moduloId}`);
             moduloDetails[certificado.moduloId] = response.data.titulo;
           } catch (error) {
-            console.error(`Error al obtener el nombre del módulo con ID ${certificado.moduloId}:`, error);
+            console.error(
+              `Error al obtener el nombre del módulo con ID ${certificado.moduloId}:`,
+              error
+            );
           }
         }
       }
@@ -67,13 +74,25 @@ export default function AllCertificadoModulo() {
   };
 
   const openModal = (certificado) => {
-    setSelectedCertificado(certificado);
-    setShowModal(true);
+    if (!certificado.documento) {
+      openAddDocumentModal(certificado);
+    } else {
+      setSelectedCertificado(certificado);
+      setShowModal(true);
+    }
   };
-
   const closeModal = () => {
     setShowModal(false);
     setSelectedCertificado(null);
+  };
+
+  const openAddDocumentModal = (certificado) => {
+    setSelectedCertificado(certificado);
+    setShowAddDocumentModal(true);
+  };
+
+  const closeAddDocumentModal = () => {
+    setShowAddDocumentModal(false);
   };
 
   const handleDownloadPDF = async () => {
@@ -184,6 +203,38 @@ export default function AllCertificadoModulo() {
                 </button>
                 <button
                   onClick={closeModal}
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm"
+                >
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showAddDocumentModal && selectedCertificado && (
+        <div className="fixed z-10 inset-0 overflow-y-auto">
+          <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div
+              className="fixed inset-0 transition-opacity"
+              onClick={closeAddDocumentModal}
+            >
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
+            &#8203;
+            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full px-2 py-2">
+              <div className="bg-white">
+                <DocumentoModulo
+                  certificadoId={selectedCertificado.id}
+                  sub={userData.sub}
+                  onClose={closeAddDocumentModal}
+                />
+              </div>
+              <div className="flex bg-gray-50 px-4 py-3">
+                <button
+                  onClick={closeAddDocumentModal}
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm"
                 >
                   Cerrar

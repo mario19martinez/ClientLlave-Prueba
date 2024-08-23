@@ -9,7 +9,7 @@ export default function CursoOrNivel() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex px-10 py-10 space-x-10 items-center justify-center">
+    <div className="flex px-20 py-20 space-x-10">
       <div
         onClick={() => navigate("/Admin/Certificado")}
         className="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out mb-8 lg:mb-0"
