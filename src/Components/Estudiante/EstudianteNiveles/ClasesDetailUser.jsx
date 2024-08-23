@@ -143,6 +143,10 @@ function ClaseDetailUser({ claseId }) {
                 clearInterval(player.intervalId);
                 player.intervalId = null;
                 console.log("Reproductor pausado o terminado, intervalo limpiado.");
+              } else if (event.data === window.YT.PlayerState.BUFFERING) {
+                alert(
+                  "Para aprovechar al máximo el contenido y no perder ningún detalle importante, te recomendamos ver la clase en su totalidad sin adelantar. ¡Cada minuto cuenta para tu aprendizaje!"
+                )
               }
             },
           },
