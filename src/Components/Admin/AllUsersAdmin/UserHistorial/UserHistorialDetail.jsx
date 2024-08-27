@@ -91,6 +91,7 @@ function UserHistoryDetail({ userSub }) {
           <th className="px-6 py-3">
             Certificado
           </th>
+          <th className="px-6 py-3">Certificado Módulo</th>
           <th className="px-6 py-3">
             Tipo de Accion
           </th>
@@ -130,6 +131,9 @@ function UserHistoryDetail({ userSub }) {
               <td className="px-6 py-3 whitespace-nowrap">
                 {item.certificado?.numero_certificado || "N/A"}
               </td>
+              <td className="px-6 py-3 whitespace-nowrap">
+                  {item.certificadoModulo?.numero_certificado || "N/A"}
+                </td>
               <td className="px-6 py-3 whitespace-nowrap">
                 {item.actionType || "N/A"}
               </td>

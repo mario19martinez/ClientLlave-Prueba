@@ -73,49 +73,24 @@ export default function AllCertificadoModulo() {
     });
   };
 
-  // Función para registrar el historial
-const registroHistorial = async (actionType, certificado) => {
-  if (!userData.numeroIdentificacion) {
-    console.warn("Número de identificación no proporcionado. No se registrará el historial.");
-    return;
-  }
-  try {
-    // Verifica el valor antes de hacer la petición
-    console.log("Registrando historial con certificadoCursoId:", certificado.id);
+const openModal = (certificado) => {
+  setSelectedCertificado(certificado);
 
-    const historyData = {
-      userSub: userData.sub,
-      //cursoId: certificado.cursoId,
-      certificadoModuloId: certificado.id,
-      actionType,
-      timestamp: new Date().toISOString(),
-    };
-
-    await axios.post("/user-history", historyData);
-  } catch (error) {
-    console.error("Error al registrar el historial:", error);
+  // Registra el historial solo si el certificado tiene un id
+  if (certificado.id) {
+    if (!certificado.documento) {
+      openAddDocumentModal(certificado);
+    } else {
+      setShowModal(true);
+    }
+    
+    // Registra el historial de "Vio el Certificado"
+    registroHistorial("Vio el Certificado", certificado);
+  } else {
+    console.warn("certificadoModuloId no está definido:", certificado);
   }
 };
 
-  const openModal = (certificado) => {
-    if (!userData.numeroIdentificacion) {
-      alert("Por favor, proporcione su número de identificación antes de continuar.");
-      return;
-    }
-    
-    if (!certificado.documento) {
-      openAddDocumentModal(certificado);
-
-      if (certificado.id) {
-        registroHistorial("Vio el Certificado", certificado)
-      } else {
-        console.warn("certificadoModuloId no esta definido:", certificado)
-      }
-    } else {
-      setSelectedCertificado(certificado);
-      setShowModal(true);
-    }
-  };
   const closeModal = () => {
     setShowModal(false);
     setSelectedCertificado(null);
@@ -128,6 +103,26 @@ const registroHistorial = async (actionType, certificado) => {
 
   const closeAddDocumentModal = () => {
     setShowAddDocumentModal(false);
+  };
+
+  const registroHistorial = async (actionType, certificado) => {
+    try {
+      console.log("Registrando historial con certificadoModuloId:", certificado.id);
+  
+      const historyData = {
+        userSub: userData.sub,
+        certificadoModuloId: certificado.id,
+        actionType,
+        timestamp: new Date().toISOString(),
+      };
+
+      console.log("Datos del historial a enviar:", historyData);
+  
+      await axios.post("/user-history", historyData);
+      console.log("Historial registrado exitosamente");
+    } catch (error) {
+      console.error("Error al registrar el historial:", error);
+    }
   };
 
   const handleDownloadPDF = async () => {
