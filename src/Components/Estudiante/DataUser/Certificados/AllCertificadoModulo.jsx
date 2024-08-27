@@ -73,9 +73,44 @@ export default function AllCertificadoModulo() {
     });
   };
 
+  // Función para registrar el historial
+const registroHistorial = async (actionType, certificado) => {
+  if (!userData.numeroIdentificacion) {
+    console.warn("Número de identificación no proporcionado. No se registrará el historial.");
+    return;
+  }
+  try {
+    // Verifica el valor antes de hacer la petición
+    console.log("Registrando historial con certificadoCursoId:", certificado.id);
+
+    const historyData = {
+      userSub: userData.sub,
+      //cursoId: certificado.cursoId,
+      certificadoModuloId: certificado.id,
+      actionType,
+      timestamp: new Date().toISOString(),
+    };
+
+    await axios.post("/user-history", historyData);
+  } catch (error) {
+    console.error("Error al registrar el historial:", error);
+  }
+};
+
   const openModal = (certificado) => {
+    if (!userData.numeroIdentificacion) {
+      alert("Por favor, proporcione su número de identificación antes de continuar.");
+      return;
+    }
+    
     if (!certificado.documento) {
       openAddDocumentModal(certificado);
+
+      if (certificado.id) {
+        registroHistorial("Vio el Certificado", certificado)
+      } else {
+        console.warn("certificadoModuloId no esta definido:", certificado)
+      }
     } else {
       setSelectedCertificado(certificado);
       setShowModal(true);
@@ -109,6 +144,10 @@ export default function AllCertificadoModulo() {
 
     pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
     pdf.save("certificado-modulo.pdf");
+
+    if (selectedCertificado) {
+      registroHistorial("Descargado", selectedCertificado) // Registra la descarga
+    }
   };
 
   return (
