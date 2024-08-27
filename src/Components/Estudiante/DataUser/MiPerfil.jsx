@@ -1,20 +1,56 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserData } from "../../../Redux/features/Users/usersSlice";
+import CircularProgress from '@mui/material/CircularProgress';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 function MiPerfil() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.users.userData);
   const storedEmail = localStorage.getItem("email");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (storedEmail) {
-      dispatch(getUserData(storedEmail));
-    }
+    const fetchData = async () => {
+      if (storedEmail) {
+        setLoading(true);
+        try {
+          await dispatch(getUserData(storedEmail)).unwrap();
+        } catch (err) {
+          setError(err.message || 'Error al cargar los datos');
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+  
+    fetchData();
   }, [dispatch, storedEmail]);
 
-  if (!userData) {
-    return <div className="flex justify-center items-center h-screen">Cargando...</div>;
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando Perfil...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+          <p className="text-red-500 mt-4 font-semibold">Oops! Algo salió mal. Vuelve a intentarlo en un momento.</p>
+          <p className="text-red-500 mt-4 font-semibold">
+          <SentimentVeryDissatisfiedIcon fontSize="large" />
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (

@@ -2,10 +2,17 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import axios from "axios";
+import CircularProgress from '@mui/material/CircularProgress';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 function MyPost() {
   const [userPosts, setUserPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,6 +28,7 @@ function MyPost() {
         setUserPosts(response.data);
         setLoading(false);
       } catch (error) {
+        setError(error.message);
         console.error("Error al obtener las publicaciones:", error.message);
         setLoading(false);
       }
@@ -40,17 +48,40 @@ function MyPost() {
     );
   };
 
-  if (loading) {
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = userPosts.slice(indexOfFirstPost, indexOfLastPost);
+
+  const totalPages = Math.ceil(userPosts.length / postsPerPage);
+  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+  if (loading){
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-24 w-24 border-t-2 border-b-2 border-blue-600"></div>
-        <p className="ml-4 text-blue-700 text-lg">Cargando...</p>
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando Publicaciones...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+          <p className="text-red-500 mt-4 font-semibold">Oops! Algo salió mal. Vuelve a intentarlo en un momento.</p>
+          <p className="text-red-500 mt-4 font-semibold">
+          <SentimentVeryDissatisfiedIcon fontSize="large" />
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full px-4 py-10 md:px-20 lg:px-40 bg-gray-200">
+    <div className="w-full px-4 py-10 md:px-20 lg:px-40 bg-gray-50">
       <div className="mb-8 flex flex-col items-center justify-center">
         <h2 className="text-2xl font-bold text-gray-700">Mis Publicaciones</h2>
       </div>
@@ -68,7 +99,7 @@ function MyPost() {
         </div>
       ) : (
         <ul className="flex flex-col items-center justify-center">
-          {userPosts.map((post) => (
+          {currentPosts.map((post) => (
             <li
               key={post.id}
               className="bg-white shadow-md mb-8 p-6 rounded-md md:w-1/2 md:h-auto"
@@ -148,6 +179,63 @@ function MyPost() {
           ))}
         </ul>
       )}
+
+<nav className="mt-2" aria-label="Pagination">
+        <ul className="flex justify-center">
+          <li>
+            <button
+              onClick={() =>
+                setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)
+              }
+              disabled={currentPage === 1}
+              className={`${
+                currentPage === 1
+                  ? "bg-gray-200 text-gray-600"
+                  : "bg-white hover:bg-gray-50"
+              } px-3 py-1 border border-gray-300 rounded-l-md font-medium text-sm focus:outline-none`}
+            >
+              <ChevronLeftIcon className="w-5 h-5" aria-hidden="true" />
+              <span className="sr-only">Previous</span>
+            </button>
+          </li>
+          {pageNumbers
+            .slice(Math.max(currentPage - 5, 0), currentPage + 5)
+            .map((pageNumber) => (
+              <li key={pageNumber}>
+                <button
+                  onClick={() => setCurrentPage(pageNumber)}
+                  className={`${
+                    pageNumber === currentPage
+                      ? "bg-blue-500 text-white"
+                      : "bg-white hover:bg-gray-50"
+                  } px-3 py-1 border border-gray-300 font-medium text-sm focus:outline-none`}
+                >
+                  {pageNumber}
+                </button>
+              </li>
+            ))}
+          <li>
+            <button
+              onClick={() =>
+                setCurrentPage(
+                  currentPage === pageNumbers.length
+                    ? pageNumbers.length
+                    : currentPage + 1
+                )
+              }
+              disabled={currentPage === pageNumbers.length}
+              className={`${
+                currentPage === pageNumbers.length
+                  ? "bg-gray-200 text-gray-600"
+                  : "bg-white hover:bg-gray-50"
+              } px-3 py-1 border border-gray-300 rounded-r-md font-medium text-sm focus:outline-none`}
+            >
+              <ChevronRightIcon className="w-5 h-5" aria-hidden="true" />
+              <span className="sr-only">Next</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 }

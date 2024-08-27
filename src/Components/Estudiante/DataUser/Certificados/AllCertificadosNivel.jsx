@@ -7,11 +7,13 @@ import AgregarDocumentos from "../../../Admin/Certificacion/CertificadoNivel/Agr
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { getUserData } from "../../../../Redux/features/Users/usersSlice";
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function AllCertificadosNivel() {
   const dispatch = useDispatch();
   const [certificados, setCertificados] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
   const [selectedCertificado, setSelectedCertificado] = useState(null);
   const userData = useSelector((state) => state.users.userData);
@@ -27,10 +29,13 @@ export default function AllCertificadosNivel() {
     const fetchCertificados = async () => {
       if (userData?.sub) {
         try {
+          setLoading(true);
           const response = await axios.get(`/certificados/${userData.sub}`);
           setCertificados(response.data);
         } catch (error) {
           console.error("Error al obtener los certificados:", error);
+        } finally {
+          setLoading(false);
         }
       }
     };
@@ -106,6 +111,17 @@ export default function AllCertificadosNivel() {
       registroHistorial("Descargado", selectedCertificado) // Registra la descarga
     }
   };
+
+  if (loading){
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4">
