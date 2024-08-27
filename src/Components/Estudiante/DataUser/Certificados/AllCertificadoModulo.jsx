@@ -7,6 +7,7 @@ import DocumentoModulo from "../../../Admin/Certificacion/CertificadoModulo/Docu
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { getUserData } from "../../../../Redux/features/Users/usersSlice";
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function AllCertificadoModulo() {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ export default function AllCertificadoModulo() {
   const [showModal, setShowModal] = useState(false);
   const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
   const [selectedCertificado, setSelectedCertificado] = useState(null);
+  const [loading, setLoading] = useState(true)
   const userData = useSelector((state) => state.users.userData);
   const storedEmail = localStorage.getItem("email");
 
@@ -28,12 +30,15 @@ export default function AllCertificadoModulo() {
     const fetchCertificados = async () => {
       if (userData?.sub) {
         try {
+          setLoading(true)
           const response = await axios.get(
             `/certificadosModulo/usuario/${userData.sub}`
           );
           setCertificados(response.data);
         } catch (error) {
           console.error("Error al obtener los certificados de módulos:", error);
+        } finally {
+          setLoading(false)
         }
       }
     };
@@ -107,7 +112,6 @@ const openModal = (certificado) => {
 
   const registroHistorial = async (actionType, certificado) => {
     try {
-      console.log("Registrando historial con certificadoModuloId:", certificado.id);
   
       const historyData = {
         userSub: userData.sub,
@@ -115,11 +119,8 @@ const openModal = (certificado) => {
         actionType,
         timestamp: new Date().toISOString(),
       };
-
-      console.log("Datos del historial a enviar:", historyData);
   
       await axios.post("/user-history", historyData);
-      console.log("Historial registrado exitosamente");
     } catch (error) {
       console.error("Error al registrar el historial:", error);
     }
@@ -144,6 +145,17 @@ const openModal = (certificado) => {
       registroHistorial("Descargado", selectedCertificado) // Registra la descarga
     }
   };
+
+  if (loading){
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4">

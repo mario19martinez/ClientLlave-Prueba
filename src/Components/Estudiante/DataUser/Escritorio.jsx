@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchInscripcion } from "../../../Redux/features/UsersCourses/UsersCursesSlices";
 import { fetchCursoDetail } from "../../../Redux/features/courses/coursesSlice";
 import { getUserData } from "../../../Redux/features/Users/usersSlice";
+import CircularProgress from '@mui/material/CircularProgress';
 import {
   ImportContacts as ImportContactsIcon,
   EmojiEvents as EmojiEventsIcon,
@@ -21,6 +22,8 @@ function Escritorio() {
   const [nivelesInscritos, setNivelesInscritos] = useState([]);
   const [certificados, setCertificados] = useState(0);
   const [transmisiones, setTransmisiones] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (storedEmail) {
@@ -30,45 +33,56 @@ function Escritorio() {
 
   useEffect(() => {
     const fetchCourses = async () => {
-      if (userData?.sub) {
-        const inscripcionResponse = await dispatch(
-          fetchInscripcion(userData.sub)
-        );
-        const inscripciones = inscripcionResponse.payload.inscripciones || [];
-        const cursoIds = inscripciones.map(
-          (inscripcion) => inscripcion.cursoId
-        );
-        const cursoPromises = cursoIds.map((cursoId) =>
-          dispatch(fetchCursoDetail(cursoId))
-        );
-        Promise.all(cursoPromises).then((responses) => {
-          const cursosNombres = responses
-            .filter((cursoResponse) => cursoResponse.payload)
-            .map((cursoResponse) => cursoResponse.payload.name);
-          setCursosInscritos(cursosNombres);
-        });
+      setLoading(true);
+      setError(null);
+      try {
+        if (userData?.sub) {
+          const inscripcionResponse = await dispatch(
+            fetchInscripcion(userData.sub)
+          );
+          const inscripciones = inscripcionResponse.payload.inscripciones || [];
+          const cursoIds = inscripciones.map(
+            (inscripcion) => inscripcion.cursoId
+          );
+          const cursoPromises = cursoIds.map((cursoId) =>
+            dispatch(fetchCursoDetail(cursoId))
+          );
+          Promise.all(cursoPromises).then((responses) => {
+            const cursosNombres = responses
+              .filter((cursoResponse) => cursoResponse.payload)
+              .map((cursoResponse) => cursoResponse.payload.name);
+            setCursosInscritos(cursosNombres);
+          });
+        }
+      } catch (err) {
+        setError("Error al obtener los cursos.");
+      } finally {
+        setLoading(false);
       }
     };
 
     const fetchNivelesInscritos = async () => {
-      if (userData?.sub) {
-        try {
+      setLoading(true);
+      setError(null);
+      try {
+        if (userData?.sub) {
           const response = await axios.get(
             `/user/${userData.sub}/grupos-nivel`
           );
           setNivelesInscritos(response.data.grupos);
-        } catch (error) {
-          console.error(
-            "Error al obtener los niveles inscritos del usuario:",
-            error
-          );
         }
+      } catch (error) {
+        setError("Error al obtener los niveles inscritos.");
+      } finally {
+        setLoading(false);
       }
     };
 
     const fetchCertificados = async () => {
-      if (userData?.sub) {
-        try {
+      setLoading(true);
+      setError(null);
+      try {
+        if (userData?.sub) {
           const [
             certificadosCursoRes,
             certificadosNivelRes,
@@ -105,27 +119,33 @@ function Escritorio() {
                 }
               }),
           ]);
-    
+
           const certificadosCurso = certificadosCursoRes.data.length || 0;
           const certificadosNivel = certificadosNivelRes.data.length || 0;
           const certificadosModulo = certificadosModuloRes.data.length || 0;
-    
+
           const totalCertificados =
             certificadosCurso + certificadosNivel + certificadosModulo;
-    
+
           setCertificados(totalCertificados);
-        } catch (error) {
-          console.error("Error fetching certificates:", error);
         }
+      } catch (error) {
+        setError("Error al obtener los certificados.");
+      } finally {
+        setLoading(false);
       }
     };
-    
+
     const fetchTransmisiones = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const response = await axios.get("/transmisiones");
         setTransmisiones(response.data.length);
       } catch (error) {
-        console.error("Error fetching transmissions:", error);
+        setError("Error al obtener las transmisiones.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -151,6 +171,31 @@ function Escritorio() {
     navigate("/estudiante/cursosInscritos");
     window.location.reload();
   };
+
+  if (loading){
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando Escritorio...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
+
+  // if (error) {
+  //   return (
+  //     <div className="fixed inset-0 flex justify-center items-center">
+  //       <div className="text-center">
+  //         <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+  //         <p className="text-red-500 mt-4 font-semibold">Oops! Algo salió mal. Vuelve a intentarlo en un momento.</p>
+  //         <p className="text-red-500 mt-4 font-semibold">
+  //         <SentimentVeryDissatisfiedIcon fontSize="large" />
+  //         </p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="sm:pl-2 lg:pl-20">

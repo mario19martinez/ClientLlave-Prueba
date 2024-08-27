@@ -3,11 +3,15 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserData, updateUser } from "../../../Redux/features/Users/usersSlice";
 import UploadWidget from "../../UploadWidget/UploadWidget";
+import CircularProgress from '@mui/material/CircularProgress';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 function Ajustes() {
   const [mostrarPerfil, setMostrarPerfil] = useState(true);
   const [mostrarContraseña, setMostrarContraseña] = useState(false);
   const [contrasena, setContrasena] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.users.userData);
@@ -32,9 +36,19 @@ function Ajustes() {
   });
 
   useEffect(() => {
-    if (storedEmail) {
-      dispatch(getUserData(storedEmail));
-    }
+    const fetchUserData = async () => {
+      try {
+        if (storedEmail) {
+          await dispatch(getUserData(storedEmail));
+        }
+      } catch (err) {
+        setError("Error al obtener los datos del usuario.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
   }, [dispatch, storedEmail]);
 
   useEffect(() => {
@@ -118,26 +132,57 @@ function Ajustes() {
     setContrasena(e.target.value);
   };
 
-  const guardarCambios = async() => {
-    const usuarioActualizado = {
-      ...usuario,
-      contraseña: contrasena,
-    };
+  const guardarCambios = async () => {
+    setLoading(true);
+    setError(null);
 
-    //dispatch(updateUser({ id: userData.identificacion, userData: usuarioActualizado }));
-    //window.location.reload();
-    await dispatch(updateUser({ id: userData.identificacion, userData: usuarioActualizado }));
+    try {
+      const usuarioActualizado = {
+        ...usuario,
+        contraseña: contrasena,
+      };
 
-    // Agregamos un retraso de un segundo antes de recargar la pagina
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000)
+      await dispatch(updateUser({ id: userData.identificacion, userData: usuarioActualizado }));
+
+      // Agregamos un retraso de un segundo antes de recargar la pagina
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (err) {
+      setError("Error al actualizar los datos del usuario.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     setMostrarPerfil(true);
   }, []);
   
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+          <p className="text-red-500 mt-4 font-semibold">Oops! Algo salió mal. Vuelve a intentarlo en un momento.</p>
+          <p className="text-red-500 mt-4 font-semibold">
+            <SentimentVeryDissatisfiedIcon fontSize="large" />
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-auto md:w-1/2 mx-auto mt-6 p-4">

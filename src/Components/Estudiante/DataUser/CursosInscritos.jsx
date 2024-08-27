@@ -5,12 +5,16 @@ import { fetchInscripcion } from "../../../Redux/features/UsersCourses/UsersCurs
 import { fetchCursoDetail } from "../../../Redux/features/courses/coursesSlice";
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 export default function CursosInscritos() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.users.userData);
   const [cursosInscritos, setCursosInscritos] = useState([]);
   const [nivelesInscritos, setNivelesInscritos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const storedEmail = localStorage.getItem("email");
 
@@ -28,9 +32,11 @@ export default function CursosInscritos() {
   }, [dispatch, userData]);
 
   const fetchCourses = async (userId) => {
+    setLoading(true);
+    setError(null);
     try {
       const inscripcionResponse = await dispatch(fetchInscripcion(userId));
-      const inscripciones = inscripcionResponse.payload.inscripciones || [];
+      const inscripciones = inscripcionResponse.payload?.inscripciones || [];
       const cursoIds = inscripciones.map((inscripcion) => inscripcion.cursoId);
       const cursoPromises = cursoIds.map((cursoId) => dispatch(fetchCursoDetail(cursoId)));
 
@@ -42,21 +48,54 @@ export default function CursosInscritos() {
       setCursosInscritos(cursos);
     } catch (error) {
       console.error("Error al obtener los cursos:", error);
+      setError("Error al obtener los cursos.");
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchNivelesInscritos = async (userId) => {
+    setLoading(true);
+    setError(null);
     try {
       const response = await axios.get(`/user/${userId}/grupos-nivel`);
       setNivelesInscritos(response.data.grupos);
     } catch (error) {
       console.error('Error al obtener los niveles inscritos del usuario:', error);
+      setError('Error al obtener los niveles inscritos.');
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleCursoClick = (curso) => {
     navigate(`/user/curso/${curso.id}`);
   };
+
+  if (loading){
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+          <p className="text-red-500 mt-4 font-semibold">Oops! Algo salió mal. Vuelve a intentarlo en un momento.</p>
+          <p className="text-red-500 mt-4 font-semibold">
+          <SentimentVeryDissatisfiedIcon fontSize="large" />
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 md:px-20 lg:px-40 py-8">
@@ -92,7 +131,7 @@ export default function CursosInscritos() {
                   <span className="inline-block bg-green-500 text-white text-xs px-2 py-1 rounded-full mb-2">Nivel</span>
                   <p className="text-lg font-semibold text-gray-700">{grupo.name}</p>
                   <p className="text-gray-500 mb-2">{grupo.descripcion}</p>
-                  <Link to={`/nivel/${grupo.nivel.id}/grupo/${grupo.id}/detalles/${userData.sub}`}>
+                  <Link to={`/nivel/${grupo.nivel?.id}/grupo/${grupo.id}/detalles/${userData?.sub}`}>
                     <button
                       className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
