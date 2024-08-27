@@ -4,6 +4,7 @@ import axios from "axios";
 import { motion } from 'framer-motion';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function GrupoDetailUser() {
   const [grupo, setGrupo] = useState(null);
@@ -35,10 +36,17 @@ function GrupoDetailUser() {
     fetchGrupoDetail();
   }, [grupoId, nivelId, userSub]);
 
-  console.log('Resultados de los módulos:', resultadosModulos);
+  //console.log('Resultados de los módulos:', resultadosModulos);
 
   if (!grupo) {
-    return <div className="flex justify-center items-center h-screen">Cargando...</div>;
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
   }
 
   const handleCardClick = (moduloId) => {

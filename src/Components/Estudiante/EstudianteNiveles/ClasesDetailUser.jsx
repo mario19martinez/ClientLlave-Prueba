@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import CircularProgress from '@mui/material/CircularProgress';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 function ClaseDetailUser({ claseId }) {
   const [clase, setClase] = useState(null);
@@ -245,18 +246,29 @@ function ClaseDetailUser({ claseId }) {
     }
   };
 
-  if (loading) {
+  if (loading){
     return (
-      <div className="flex justify-center items-center h-screen">
-        <CircularProgress />
-        <span className="ml-4 text-xl font-semibold text-blue-700">
-          Cargando...
-        </span>
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+          <CircularProgress />
+        </div>
       </div>
     );
   }
+
   if (error) {
-    return <div className="text-red-600 text-center mt-4">{error}</div>;
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+          <p className="text-red-500 mt-4 font-semibold">Oops! Algo salió mal. Vuelve a intentarlo en un momento.</p>
+          <p className="text-red-500 mt-4 font-semibold">
+          <SentimentVeryDissatisfiedIcon fontSize="large" />
+          </p>
+        </div>
+      </div>
+    );
   }
 
   if (!clase) {
