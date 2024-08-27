@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import Tooltip from "@mui/material/Tooltip";
-import CircularProgress from '@mui/material/CircularProgress';
-import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import CircularProgress from "@mui/material/CircularProgress";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function RegistroActividad() {
   const [registros, setRegistros] = useState([]);
@@ -118,7 +119,24 @@ function RegistroActividad() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, selectedNivel, selectedGrupo, selectedModulo])
+  }, [searchTerm, selectedNivel, selectedGrupo, selectedModulo]);
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "¿Estás seguro de que deseas eliminar este registro de este Usuario?"
+    );
+
+    if (confirmDelete) {
+      try {
+        await axios.delete(`/registro-actividad/${id}`);
+        setRegistros(registros.filter((registro) => registro.id !== id));
+        alert("Registro de actividad eliminado exitosamente");
+      } catch (error) {
+        console.error("Error al eliminar el registro:", error);
+        alert("Ocurrió un error al intentar eliminar el registro");
+      }
+    }
+  };
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -179,15 +197,16 @@ function RegistroActividad() {
           (grupo) => grupo.nivel.id === selectedNivel
         ));
 
-        const selectedGrupoMatch =
-        !selectedGrupo ||
-        (registro.user?.grupos &&
-          registro.user.grupos.some(userGrupo =>
-            registro.modulo?.grupos.some(moduloGrupo =>
+    const selectedGrupoMatch =
+      !selectedGrupo ||
+      (registro.user?.grupos &&
+        registro.user.grupos.some((userGrupo) =>
+          registro.modulo?.grupos.some(
+            (moduloGrupo) =>
               moduloGrupo.id === selectedGrupo &&
               moduloGrupo.id === userGrupo.id
-            )
-          ));
+          )
+        ));
 
     const selectedModuloMatch =
       !selectedModulo || registro.modulo?.id === selectedModulo;
@@ -226,7 +245,9 @@ function RegistroActividad() {
     return (
       <div className="fixed inset-0 flex justify-center items-center">
         <div className="text-center">
-          <p className="text-gray-600 mt-4 font-semibold">Cargando Registros...</p>
+          <p className="text-gray-600 mt-4 font-semibold">
+            Cargando Registros...
+          </p>
           <CircularProgress />
         </div>
       </div>
@@ -238,9 +259,11 @@ function RegistroActividad() {
       <div className="fixed inset-0 flex justify-center items-center">
         <div className="text-center">
           <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
-          <p className="text-red-500 mt-4 font-semibold">Oops! Algo salió mal. Vuelve a intentarlo en un momento.</p>
           <p className="text-red-500 mt-4 font-semibold">
-          <SentimentVeryDissatisfiedIcon fontSize="large" />
+            Oops! Algo salió mal. Vuelve a intentarlo en un momento.
+          </p>
+          <p className="text-red-500 mt-4 font-semibold">
+            <SentimentVeryDissatisfiedIcon fontSize="large" />
           </p>
         </div>
       </div>
@@ -360,10 +383,10 @@ function RegistroActividad() {
       </div>
       {currentRegistros.length === 0 ? (
         <div>
-        <p className="text-gray-600 font-semibold">
-          No hay registros disponibles
-        </p>
-        {/* <p className="text-gray-600">
+          <p className="text-gray-600 font-semibold">
+            No hay registros disponibles
+          </p>
+          {/* <p className="text-gray-600">
           <SentimentVeryDissatisfiedIcon fontSize="large" />
         </p> */}
         </div>
@@ -408,21 +431,14 @@ function RegistroActividad() {
                         : ""}
                     </td>
                     <td className="py-3 px-6 text-left whitespace-nowrap">
-  {registro.user && registro.user.grupos.length > 0
-    ? registro.modulo?.grupos.find(moduloGrupo =>
-        registro.user.grupos.some(userGrupo =>
-          moduloGrupo.id === userGrupo.id
-        )
-      )?.name || "Grupo no encontrado"
-    : "Inscrito en Modulo"}
-</td>
-                    {/* <td className="py-3 px-6 text-left whitespace-nowrap">
-  {registro.user && registro.user.grupos.length > 0
-    ? registro.user.grupos.find(grupo =>
-        registro.modulo?.grupos.some(moduloGrupo => moduloGrupo.id === grupo.id)
-      )?.name || "Grupo no encontrado"
-    : "Inscrito en Modulo"}
-</td> */}
+                      {registro.user && registro.user.grupos.length > 0
+                        ? registro.modulo?.grupos.find((moduloGrupo) =>
+                            registro.user.grupos.some(
+                              (userGrupo) => moduloGrupo.id === userGrupo.id
+                            )
+                          )?.name || "Grupo no encontrado"
+                        : "Inscrito en Modulo"}
+                    </td>
                     <td className="py-3 px-6 text-left">
                       {registro.modulo ? registro.modulo.titulo : ""}
                     </td>
@@ -442,6 +458,32 @@ function RegistroActividad() {
                       }`}
                     >
                       {registro.progreso.toFixed(1)}%
+                    </td>
+                    <td className="py-0 px-0 text-left">
+                      <Tooltip
+                        title="Eliminar registro"
+                        arrow
+                        placement="top"
+                        slotProps={{
+                          popper: {
+                            modifiers: [
+                              {
+                                name: "offset",
+                                options: {
+                                  offset: [0, -6],
+                                },
+                              },
+                            ],
+                          },
+                        }}
+                      >
+                        <button
+                          onClick={() => handleDelete(registro.id)}
+                          className=" text-red-500 px-4 py-2 rounded"
+                        >
+                          <DeleteIcon fontSize="large" />
+                        </button>
+                      </Tooltip>
                     </td>
                   </tr>
                 ))

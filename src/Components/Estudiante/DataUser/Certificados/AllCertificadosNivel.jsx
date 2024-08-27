@@ -38,6 +38,22 @@ export default function AllCertificadosNivel() {
     fetchCertificados();
   }, [userData]);
 
+  const registroHistorial = async (actionType, certificado) => {
+    try {
+      const historyData = {
+        userSub: userData.sub,
+        grupoId: certificado.grupoId,
+        certificadoId: certificado.id,
+        actionType,
+        timestamp: new Date().toISOString(),
+      };
+
+      await axios.post("/user-history", historyData);
+    } catch (error) {
+      console.error("Error al registrar el historial:", error);
+    }
+  }
+
   const formatFecha = (fecha) => {
     const date = new Date(fecha);
     return date.toLocaleDateString("es-ES", {
@@ -53,6 +69,7 @@ export default function AllCertificadosNivel() {
     } else {
       setSelectedCertificado(certificado);
       setShowModal(true);
+      registroHistorial("Vio el Certificado", certificado)
     }
   };
 
@@ -84,6 +101,10 @@ export default function AllCertificadosNivel() {
 
     pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
     pdf.save("certificado-nivel.pdf");
+
+    if (selectedCertificado) {
+      registroHistorial("Descargado", selectedCertificado) // Registra la descarga
+    }
   };
 
   return (

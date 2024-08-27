@@ -31,6 +31,7 @@ export default function Certificados() {
           const response = await axios.get(
             `/certificadosCurso/usuario/${userData.sub}`
           );
+          console.log("Respuesta de la API:", response.data);
           actualizarCertificados(response.data);
         } catch (error) {
           console.error("Error al obtener certificados de curso:", error);
@@ -40,6 +41,23 @@ export default function Certificados() {
 
     fetchCertificadosCurso();
   }, [userData]);
+
+  // const registroHistorial = async (actionType, certificado) => {
+  //   try {
+  //     const historyData = {
+  //       userSub: userData.sub,
+  //       cursoId: certificado.cursoId,
+  //       certificadoCursoId: certificado.certificadoCursoId,
+  //       actionType,
+  //       timestamp: new Date().toISOString(),
+  //     };
+  //     console.log('data:', historyData)
+
+  //     await axios.post("/user-history", historyData);
+  //   } catch (error) {
+  //     console.error("Error al registrar el historial:", error);
+  //   }
+  // }
 
   const actualizarCertificados = (nuevosCertificados) => {
     setCertificados((prev) => {
@@ -65,14 +83,43 @@ export default function Certificados() {
   };
 
   const openModal = (certificado) => {
+    console.log("Certificado recibido:", certificado);
     setSelectedCertificado(certificado);
     if (certificado.documento && certificado.tipoDocumento) {
       setShowModal(true);
+
+      // Asegurate de que certificadoCursoId no este undefined
+      if (certificado.id) {
+        registroHistorial("Vio el Certificado", certificado)
+      } else {
+        console.warn("certificadoCursoId no esta definido:", certificado)
+      }
     } else {
       setShowModal(false);
       setShowAgregarDocumentos(true);
+
     }
   };
+
+  // Función para registrar el historial
+const registroHistorial = async (actionType, certificado) => {
+  try {
+    // Verifica el valor antes de hacer la petición
+    console.log("Registrando historial con certificadoCursoId:", certificado.id);
+
+    const historyData = {
+      userSub: userData.sub,
+      cursoId: certificado.cursoId,
+      certificadoCursoId: certificado.id, // Asegúrate de que esté definido
+      actionType,
+      timestamp: new Date().toISOString(),
+    };
+
+    await axios.post("/user-history", historyData);
+  } catch (error) {
+    console.error("Error al registrar el historial:", error);
+  }
+};
 
   const closeModal = () => {
     setShowModal(false);
@@ -102,6 +149,10 @@ export default function Certificados() {
     // Agrega la imagen al PDF
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
     pdf.save("certificado.pdf");
+
+    if (selectedCertificado) {
+      registroHistorial("Descargado", selectedCertificado) // Registra la descarga
+    }
   };
 
   return (
