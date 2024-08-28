@@ -54,41 +54,45 @@ function MiPerfil() {
   }
 
   return (
-    <div className="container mx-auto px-4 md:px-8 lg:px-12">
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="text-center py-6">
-          <h1 className="text-3xl md:text-4xl font-semibold text-blue-400">Mi Perfil</h1>
+    <div className="max-w-4xl mx-auto mt-8 p-4 bg-white rounded-lg  w-full sm:w-3/4 md:w-2/3 lg:w-1/2">
+      <div className="relative">
+        <div className="flex justify-center items-center">
+          <img
+            src={userData.image || "https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280.jpg"}
+            alt="Imagen de perfil"
+            className="rounded-full h-24 w-24 sm:h-32 sm:-w-32 md:h-48 md:w-48 border-4 border-white shadow-lg"
+          />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 py-6 px-4 md:px-8">
-          <div className="flex justify-center items-center">
-            <img
-              src={userData.image}
-              alt="Imagen de perfil"
-              className="rounded-full h-32 w-32 md:h-48 md:w-48"
-            />
-          </div>
-          <div>
-            <div className="mb-4">
-              <h1 className="text-xl md:text-2xl font-medium text-gray-800">Nombre:</h1>
-              <p className="text-lg md:text-xl text-gray-600">{userData.name}</p>
+        <div className="text-center mt-4">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-800">{userData.name} {userData.last_name}</h1>
+          <p className="text-gray-500">{userData.email}</p>
+        </div>
+      
+
+      <div className="mt-8 flex flex-col gap-6">
+          <h2 className="text-lg font-medium text-gray-700 items-center justify-center flex">Información Personal</h2>
+          <div className="mt-4 space-y-4 sm:space-y-6">
+            <div className="flex justify-between items-center">
+              <span className="text-gray-500">Nombre:</span>
+              <span className="text-gray-700 font-semibold">{userData.name}</span>
             </div>
-            <div className="mb-4">
-              <h1 className="text-xl md:text-2xl font-medium text-gray-800">Apellidos:</h1>
-              <p className="text-lg md:text-xl text-gray-600">{userData.last_name}</p>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-500">Apellidos:</span>
+              <span className="text-gray-700 font-semibold">{userData.last_name}</span>
             </div>
-            <div className="mb-4">
-              <h1 className="text-xl md:text-2xl font-medium text-gray-800">Correo electrónico:</h1>
-              <p className="text-lg md:text-xl text-gray-600">{userData.email}</p>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-500">Email:</span>
+              <span className="text-gray-700 font-semibold">{userData.email}</span>
             </div>
-            <div className="mb-4">
-              <h1 className="text-xl md:text-2xl font-medium text-gray-800">Número de teléfono:</h1>
-              <p className="text-lg md:text-xl text-gray-600">{userData.telefono}</p>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-500">Número de Teléfono:</span>
+              <span className="text-gray-700 font-semibold">{userData.telefono}</span>
             </div>
-            <div className="mb-4">
-              <h1 className="text-xl md:text-2xl font-medium text-gray-800">País:</h1>
-              <p className="text-lg md:text-xl text-gray-600">{userData.pais}</p>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-500">País:</span>
+              <span className="text-gray-700 font-semibold">{userData.pais}</span>
             </div>
-          </div>
+        </div>
         </div>
       </div>
     </div>
