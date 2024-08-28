@@ -5,6 +5,7 @@ import { getUserData, updateUser } from "../../../Redux/features/Users/usersSlic
 import UploadWidget from "../../UploadWidget/UploadWidget";
 import CircularProgress from '@mui/material/CircularProgress';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import { toast, ToastContainer } from "react-toastify";
 
 function Ajustes() {
   const [mostrarPerfil, setMostrarPerfil] = useState(true);
@@ -144,12 +145,24 @@ function Ajustes() {
 
       await dispatch(updateUser({ id: userData.identificacion, userData: usuarioActualizado }));
 
+      toast.success("Informacion actualizada con exito!", {
+        position: "top-center",
+        autoClose: 1500,
+        closeOnClick: true,
+        theme: "colored",
+      });
       // Agregamos un retraso de un segundo antes de recargar la pagina
       setTimeout(() => {
         window.location.reload();
       }, 1000);
     } catch (err) {
       setError("Error al actualizar los datos del usuario.");
+      toast.error("Error al actualizar los datos del usuario.", {
+        position: "top-center",
+        autoClose: 1500,
+        closeOnClick: true,
+        theme: "colored",
+      });
     } finally {
       setLoading(false);
     }
@@ -186,6 +199,7 @@ function Ajustes() {
 
   return (
     <div className="h-auto md:w-1/2 mx-auto mt-6 p-4">
+       <ToastContainer />
       <div className="flex flex-col lg:flex-row items-center justify-center">
       <button
           className={`mx-2 md:mx-4 px-4 py-2 ${

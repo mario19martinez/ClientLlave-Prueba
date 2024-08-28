@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import CardBlog from "./CardBlog";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -39,9 +40,19 @@ const Blogs = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       {loading ? (
-        <div className="flex justify-center items-center h-48">
-          <p className="text-lg font-bold">Cargando blogs...</p>
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+        <div className="fixed inset-0 flex justify-center items-center">
+          <div className="text-center">
+            <p className="text-gray-600 mt-4 font-semibold">
+              Cargando Blogs...
+            </p>
+            <CircularProgress />
+          </div>
+        </div>
+      ) : filteredBlogs.length === 0 ? (
+        <div className="text-center py-16">
+          <p className="text-gray-600 text-lg font-semibold">
+            No hay blogs disponibles.
+          </p>
         </div>
       ) : (
         <div>

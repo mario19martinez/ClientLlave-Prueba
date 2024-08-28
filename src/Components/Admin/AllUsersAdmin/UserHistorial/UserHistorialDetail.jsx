@@ -89,7 +89,7 @@ function UserHistoryDetail({ userSub }) {
             Certificado Curso
           </th>
           <th className="px-6 py-3">
-            Certificado
+            Certificado Nivel
           </th>
           <th className="px-6 py-3">Certificado Módulo</th>
           <th className="px-6 py-3">
