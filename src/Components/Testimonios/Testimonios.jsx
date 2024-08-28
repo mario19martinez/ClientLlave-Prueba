@@ -1,21 +1,26 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import CircularProgress from '@mui/material/CircularProgress';
 
 function Testimonios() {
   const [testimonios, setTestimonios] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTestimonios = async () => {
       try {
+        setLoading(true)
         const response = await axios.get("/testimonios");
         const sortedTestimonios = response.data.testimonios.sort((a, b) => b.id - a.id);
         const lastFourTestimonios = sortedTestimonios.slice(0, 4);
         setTestimonios(lastFourTestimonios);
       } catch (error) {
         console.error("Error al obtener testimonios", error);
+      } finally {
+        setLoading(false)
       }
     };
     fetchTestimonios();
@@ -49,6 +54,17 @@ function Testimonios() {
         </div>
       </div>
     ));
+
+    if (loading){
+      return (
+        <div className="fixed inset-0 flex justify-center items-center">
+          <div className="text-center">
+            <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+            <CircularProgress />
+          </div>
+        </div>
+      );
+    }
 
   return (
     <div className="mx-auto my-12 px-4 text-center max-w-7xl">
