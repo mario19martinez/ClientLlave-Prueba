@@ -9,41 +9,42 @@ export default function CursoOrNivel() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex px-20 py-20 space-x-10">
+    <div className="flex flex-col lg:flex-row items-center justify-center lg:space-x-10 space-y-10 lg:space-y-0 px-6 py-10">
       <div
         onClick={() => navigate("/Admin/Certificado")}
-        className="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out mb-8 lg:mb-0"
+        className="cursor-pointer w-full max-w-sm bg-white shadow-md rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out hover:shadow-lg"
       >
-        <div className="flex items-center justify-center p-4 bg-blue-500">
+        <div className="flex items-center justify-center p-6 bg-gradient-to-r from-blue-500 to-blue-600">
           <FontAwesomeIcon
             icon={faCertificate}
-            className="text-white text-3xl"
+            className="text-white text-4xl"
           />
         </div>
-        <div className="p-6">
+        <div className="p-6 text-center">
           <h2 className="text-2xl font-semibold text-gray-800">
             Certificados Cursos
           </h2>
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-600 mt-3">
             Genera certificados para los cursos completados con éxito.
           </p>
         </div>
       </div>
-      <div 
-      onClick={() => navigate("/admin/certificado/selectedNivel/selected")}
-      className="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out">
-        <div className="flex items-center justify-center p-4 bg-green-500">
+      <div
+        onClick={() => navigate("/admin/certificado/selectedNivel/selected")}
+        className="cursor-pointer w-full max-w-sm bg-white shadow-md rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out hover:shadow-lg"
+      >
+        <div className="flex items-center justify-center p-6 bg-gradient-to-r from-green-500 to-green-600">
           <FontAwesomeIcon
             icon={faGraduationCap}
-            className="text-white text-3xl"
+            className="text-white text-4xl"
           />
         </div>
-        <div className="p-6">
+        <div className="p-6 text-center">
           <h2 className="text-2xl font-semibold text-gray-800">
-            Certificados Nivel y Modulos
+            Certificados Nivel y Módulos
           </h2>
-          <p className="text-gray-600 mt-2">
-            Genera certificados para los niveles y modulos completados con éxito.
+          <p className="text-gray-600 mt-3">
+            Genera certificados para los niveles y módulos completados con éxito.
           </p>
         </div>
       </div>
