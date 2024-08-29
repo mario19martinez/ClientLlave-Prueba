@@ -9,8 +9,10 @@ import PreviewIcon from "@mui/icons-material/Preview";
 import Tooltip from "@mui/material/Tooltip";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import UserActivity from "./UserActivity";
 import Pagination from "@mui/material/Pagination";
+import { useNavigate } from "react-router-dom";
 import {
   TextField,
   MenuItem,
@@ -33,6 +35,7 @@ function UsersGrupo({ nivelId, grupoId }) {
   const [endDate, setEndDate] = useState(null);
   const [page, setPage] = useState(1);
   const usersPerPage = 10;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsuarios = async () => {
@@ -55,7 +58,7 @@ function UsersGrupo({ nivelId, grupoId }) {
   }, [usuarios]);
 
   useEffect(() => {
-    setPage(1); 
+    setPage(1);
     filterUsuarios();
   }, [searchTerm, dateFilter, startDate, endDate]);
 
@@ -125,15 +128,15 @@ function UsersGrupo({ nivelId, grupoId }) {
 
         // Eliminar al usuario del grupo
         await axios.delete(`/usuario/${userSub}/grupo/${grupoId}`);
-        
+
         // Registrar la eliminacion en el historial
-        await axios.post('/user-history', {
+        await axios.post("/user-history", {
           userSub: userSub,
           grupoId: grupoId,
-          actionType: 'Eliminacion de grupo',
+          actionType: "Eliminacion de grupo",
           timestamp: new Date(),
         });
-        
+
         setUsuarios(updatedUsers);
       }
     } catch (error) {
@@ -240,31 +243,58 @@ function UsersGrupo({ nivelId, grupoId }) {
 
   return (
     <div className="overflow-x-auto translate-y-4 w-full">
-      <Tooltip
-        title="Agregar Usuario"
-        arrow
-        placement="right"
-        slotProps={{
-          popper: {
-            modifiers: [
-              {
-                name: "offset",
-                options: {
-                  offset: [0, -6],
+      <div className="flex space-x-3">
+        <Tooltip
+          title="Agregar Usuario"
+          arrow
+          placement="right"
+          slotProps={{
+            popper: {
+              modifiers: [
+                {
+                  name: "offset",
+                  options: {
+                    offset: [0, -6],
+                  },
                 },
-              },
-            ],
-          },
-        }}
-      >
-        <button
-          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mb-4 font-bold"
-          onClick={openModal}
+              ],
+            },
+          }}
         >
-          <PersonAddIcon />
-          Usuario
-        </button>
-      </Tooltip>
+          <button
+            className="flex items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-5 rounded-lg mb-4 font-semibold shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            onClick={openModal}
+          >
+            <PersonAddIcon className="mr-2" />
+            Usuario
+          </button>
+        </Tooltip>
+
+        <Tooltip
+          title="Seguimiento Grupal"
+          arrow
+          placement="right"
+          slotProps={{
+            popper: {
+              modifiers: [
+                {
+                  name: "offset",
+                  options: {
+                    offset: [0, -6],
+                  },
+                },
+              ],
+            },
+          }}
+        >
+          <button
+          onClick={() => navigate(`/admin/nivel/${nivelId}/grupo/${grupoId}`)}
+           className="flex items-center bg-green-500 hover:bg-green-600 text-white py-2 px-5 rounded-lg mb-4 font-semibold shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300">
+            <AutoStoriesIcon className="mr-2" />
+            Seguimiento Grupal
+          </button>
+        </Tooltip>
+      </div>
 
       <Modal
         isOpen={modalIsOpen}
