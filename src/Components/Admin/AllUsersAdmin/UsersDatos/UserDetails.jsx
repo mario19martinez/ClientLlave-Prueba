@@ -304,8 +304,9 @@ export default function UsersDetails({ identificacion }) {
     isOpen={isHistoryModalOpen}
     onRequestClose={() => setIsHistoryModalOpen(false)}
     contentLabel="Historial de Usuario"
-    className="Modal rounded-lg p-6 max-w-lg w-full"
-    overlayClassName="Overlay fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center z-50"
+    className="Modal "
+    //className="Modal rounded-lg p-4 max-w-lg w-full"
+    overlayClassName="Overlay fixed top-0 left-0 right-0 w-full h-full bg-gray-800 bg-opacity-75 flex justify-center items-center z-50"
   >
     <button
       onClick={() => setIsHistoryModalOpen(false)}

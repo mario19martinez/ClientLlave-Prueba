@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaSignInAlt, FaUserPlus } from "react-icons/fa";
 import Modal from "react-modal";
+import CircularProgress from '@mui/material/CircularProgress';
 
 Modal.setAppElement('#root');
 
@@ -50,7 +51,14 @@ export default function Planes() {
   };
 
   if (loading) {
-    return <div className="text-center py-20">Cargando...</div>;
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando Planes...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
   }
 
   if (planes.length === 0) {

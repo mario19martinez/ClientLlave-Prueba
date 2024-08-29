@@ -13,9 +13,8 @@ export default function ViewProfile() {
       </div>
       <div className="flex">
         <SidebarUser selectedTab={selectedTab} />
-        <div className="pt-8">
-          <MiPerfil />
-        </div>
+
+        <MiPerfil />
       </div>
     </div>
   );

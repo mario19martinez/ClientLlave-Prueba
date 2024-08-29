@@ -11,7 +11,6 @@ const CardEntrenamiento = () => {
       try {
         const response = await axios.get("/informacion");
         setInformacion(response.data);
-        console.log("Información obtenida:", response.data);
       } catch (error) {
         console.error("Error al obtener la información:", error);
       }

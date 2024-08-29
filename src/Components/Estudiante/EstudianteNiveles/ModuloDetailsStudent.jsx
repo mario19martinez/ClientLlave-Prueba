@@ -4,6 +4,7 @@ import axios from "axios";
 import NivelClases from "../../NivelClases/NivelClases";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Modal from "react-modal";
+import CircularProgress from '@mui/material/CircularProgress';
 
 function ModuloDetailsStudent() {
   const { nivelId, grupoId, moduloId } = useParams();
@@ -254,11 +255,11 @@ function ModuloDetailsStudent() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-blue-600"></div>
-        <span className="ml-4 text-xl font-semibold text-blue-600">
-          Cargando...
-        </span>
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+          <CircularProgress />
+        </div>
       </div>
     );
   }

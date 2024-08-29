@@ -321,5 +321,11 @@ CertificadoStudent.propTypes = {
     pais: PropTypes.string.isRequired,
   }).isRequired,
   //cursoNombre: PropTypes.string.isRequired,
-  certificado: PropTypes.string.isRequired,
+  certificado: PropTypes.shape({
+    cursoId: PropTypes.string.isRequired,
+    tipoDocumento: PropTypes.string.isRequired,
+    documento: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    numero_certificado: PropTypes.number.isRequired,
+  }).isRequired,
 };

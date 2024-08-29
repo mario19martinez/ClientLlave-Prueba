@@ -7,6 +7,7 @@ import DocumentoModulo from "../../../Admin/Certificacion/CertificadoModulo/Docu
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { getUserData } from "../../../../Redux/features/Users/usersSlice";
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function AllCertificadoModulo() {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ export default function AllCertificadoModulo() {
   const [showModal, setShowModal] = useState(false);
   const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
   const [selectedCertificado, setSelectedCertificado] = useState(null);
+  const [loading, setLoading] = useState(true)
   const userData = useSelector((state) => state.users.userData);
   const storedEmail = localStorage.getItem("email");
 
@@ -28,12 +30,15 @@ export default function AllCertificadoModulo() {
     const fetchCertificados = async () => {
       if (userData?.sub) {
         try {
+          setLoading(true)
           const response = await axios.get(
             `/certificadosModulo/usuario/${userData.sub}`
           );
           setCertificados(response.data);
         } catch (error) {
           console.error("Error al obtener los certificados de módulos:", error);
+        } finally {
+          setLoading(false)
         }
       }
     };
@@ -73,14 +78,24 @@ export default function AllCertificadoModulo() {
     });
   };
 
-  const openModal = (certificado) => {
+const openModal = (certificado) => {
+  setSelectedCertificado(certificado);
+
+  // Registra el historial solo si el certificado tiene un id
+  if (certificado.id) {
     if (!certificado.documento) {
       openAddDocumentModal(certificado);
     } else {
-      setSelectedCertificado(certificado);
       setShowModal(true);
     }
-  };
+    
+    // Registra el historial de "Vio el Certificado"
+    registroHistorial("Vio el Certificado", certificado);
+  } else {
+    console.warn("certificadoModuloId no está definido:", certificado);
+  }
+};
+
   const closeModal = () => {
     setShowModal(false);
     setSelectedCertificado(null);
@@ -93,6 +108,22 @@ export default function AllCertificadoModulo() {
 
   const closeAddDocumentModal = () => {
     setShowAddDocumentModal(false);
+  };
+
+  const registroHistorial = async (actionType, certificado) => {
+    try {
+  
+      const historyData = {
+        userSub: userData.sub,
+        certificadoModuloId: certificado.id,
+        actionType,
+        timestamp: new Date().toISOString(),
+      };
+  
+      await axios.post("/user-history", historyData);
+    } catch (error) {
+      console.error("Error al registrar el historial:", error);
+    }
   };
 
   const handleDownloadPDF = async () => {
@@ -109,7 +140,22 @@ export default function AllCertificadoModulo() {
 
     pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
     pdf.save("certificado-modulo.pdf");
+
+    if (selectedCertificado) {
+      registroHistorial("Descargado", selectedCertificado) // Registra la descarga
+    }
   };
+
+  if (loading){
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4">

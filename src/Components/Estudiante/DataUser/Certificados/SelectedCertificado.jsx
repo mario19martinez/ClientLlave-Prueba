@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FaCertificate, FaAward, FaGraduationCap } from "react-icons/fa";
 import { getUserData } from "../../../../Redux/features/Users/usersSlice";
+import CircularProgress from '@mui/material/CircularProgress';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import axios from "axios";
 
 export default function SelectedCertificado() {
@@ -14,6 +16,8 @@ export default function SelectedCertificado() {
   const [cursoCount, setCursoCount] = useState(0);
   const [nivelCount, setNivelCount] = useState(0);
   const [moduloCount, setModuloCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (storedEmail) {
@@ -23,6 +27,7 @@ export default function SelectedCertificado() {
 
   useEffect(() => {
     const fetchCounts = async () => {
+      setLoading(true);
       try {
         if (userData && userData.sub) {
           const cursosResponse = await axios
@@ -30,7 +35,7 @@ export default function SelectedCertificado() {
             .catch((error) => {
               if (error.response && error.response.status === 404) {
                 console.warn("No se encontraron certificados de curso.");
-                return { data: [] }; // Devolver un array vacío si no hay certificados
+                return { data: [] };
               } else {
                 throw error;
               }
@@ -42,7 +47,7 @@ export default function SelectedCertificado() {
             .catch((error) => {
               if (error.response && error.response.status === 404) {
                 console.warn("No se encontraron certificados de nivel.");
-                return { data: [] }; // Devolver un array vacío si no hay certificados
+                return { data: [] };
               } else {
                 throw error;
               }
@@ -54,7 +59,7 @@ export default function SelectedCertificado() {
             .catch((error) => {
               if (error.response && error.response.status === 404) {
                 console.warn("No se encontraron certificados de módulo.");
-                return { data: [] }; // Devolver un array vacío si no hay certificados
+                return { data: [] };
               } else {
                 throw error;
               }
@@ -62,12 +67,15 @@ export default function SelectedCertificado() {
           setModuloCount(modulosResponse.data.length || 0);
         }
       } catch (error) {
+        setError("Error fetching certificate counts");
         console.error("Error fetching certificate counts", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchCounts();
-  }, [userData, dispatch]);
+  }, [userData]);
 
   const cursosCertificados = () => {
     navigate("/estudiante/certificados/cursos");
@@ -91,6 +99,31 @@ export default function SelectedCertificado() {
   const iconContainerStyle =
     "w-16 h-16 p-2 rounded-full bg-blue-100 flex items-center justify-center mb-2";
   const iconStyle = "text-blue-500";
+
+  if (loading){
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
+          <p className="text-red-500 mt-4 font-semibold">Oops! Algo salió mal. Vuelve a intentarlo en un momento.</p>
+          <p className="text-red-500 mt-4 font-semibold">
+          <SentimentVeryDissatisfiedIcon fontSize="large" />
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-wrap p-16 mt-6">

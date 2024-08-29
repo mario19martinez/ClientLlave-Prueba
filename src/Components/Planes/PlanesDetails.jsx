@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function PlanesDetails() {
   const { idPlan } = useParams();
@@ -74,7 +75,12 @@ export default function PlanesDetails() {
 
   if (loading) {
     return (
-      <div className="text-center py-20 text-lg font-semibold">Cargando...</div>
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando Publicaciones...</p>
+          <CircularProgress />
+        </div>
+      </div>
     );
   }
 

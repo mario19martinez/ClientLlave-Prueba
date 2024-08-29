@@ -8,11 +8,13 @@ import CertificadoStudent from "../../Certificado/CertificadoStudent";
 import AgregarDocumentos from "../../../Admin/Certificacion/AgregarDocumento";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Certificados() {
   const dispatch = useDispatch();
   const [certificados, setCertificados] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedCertificado, setSelectedCertificado] = useState(null);
   const [showAgregarDocumentos, setShowAgregarDocumentos] = useState(false);
   const userData = useSelector((state) => state.users.userData);
@@ -28,12 +30,15 @@ export default function Certificados() {
     const fetchCertificadosCurso = async () => {
       if (userData?.sub) {
         try {
+          setLoading(true)
           const response = await axios.get(
             `/certificadosCurso/usuario/${userData.sub}`
           );
           actualizarCertificados(response.data);
         } catch (error) {
           console.error("Error al obtener certificados de curso:", error);
+        } finally {
+          setLoading(false)
         }
       }
     };
@@ -68,11 +73,37 @@ export default function Certificados() {
     setSelectedCertificado(certificado);
     if (certificado.documento && certificado.tipoDocumento) {
       setShowModal(true);
+
+      // Asegurate de que certificadoCursoId no este undefined
+      if (certificado.id) {
+        registroHistorial("Vio el Certificado", certificado)
+      } else {
+        console.warn("certificadoCursoId no esta definido:", certificado)
+      }
     } else {
       setShowModal(false);
       setShowAgregarDocumentos(true);
+
     }
   };
+
+  // Función para registrar el historial
+const registroHistorial = async (actionType, certificado) => {
+  try {
+
+    const historyData = {
+      userSub: userData.sub,
+      cursoId: certificado.cursoId,
+      certificadoCursoId: certificado.id, // Asegúrate de que esté definido
+      actionType,
+      timestamp: new Date().toISOString(),
+    };
+
+    await axios.post("/user-history", historyData);
+  } catch (error) {
+    console.error("Error al registrar el historial:", error);
+  }
+};
 
   const closeModal = () => {
     setShowModal(false);
@@ -102,7 +133,22 @@ export default function Certificados() {
     // Agrega la imagen al PDF
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
     pdf.save("certificado.pdf");
+
+    if (selectedCertificado) {
+      registroHistorial("Descargado", selectedCertificado) // Registra la descarga
+    }
   };
+
+  if (loading){
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4">

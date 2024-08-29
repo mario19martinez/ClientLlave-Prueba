@@ -1,20 +1,25 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Pagination } from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function ComponenteTestimonio() {
   const [testimonios, setTestimonios] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [testimoniosPerPage] = useState(6); 
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchTestimonios() {
       try {
+        setLoading(true)
         const response = await axios.get("/testimonios");
         setTestimonios(response.data.testimonios);
       } catch (error) {
         console.error("Error fetching testimonios:", error);
+      } finally {
+        setLoading(false)
       }
     }
     fetchTestimonios();
@@ -39,6 +44,17 @@ export default function ComponenteTestimonio() {
   const closeModal = () => {
     setSelectedVideo(null);
   };
+
+  if (loading){
+    return (
+      <div className="fixed inset-0 flex justify-center items-center">
+        <div className="text-center">
+          <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto pb-5">
