@@ -69,82 +69,67 @@ function UserHistoryDetail({ userSub }) {
   }
 
   return (
-    <div className="absolute top-0 right-36 mt-28 w-4/5 ml-96 p-4 -translate-y-40">
-    <h1 className="text-2xl font-bold mb-4 text-gray-700">
-      Historial de Usuario
-    </h1>
-    <table className="min-w-full border-collaps border rounded-lg border-gray-400 overflow-hidden">
-      <thead className="bg-blue-200 border-b border-gray-300">
-        <tr className=" text-xs text-gray-700 uppercase">
-          <th className="px-6 py-3">
-            Usuario
-          </th>
-          <th className="px-6 py-3">
-            Curso
-          </th>
-          <th className="px-6 py-3">
-            Grupo
-          </th>
-          <th className="px-6 py-3">
-            Certificado Curso
-          </th>
-          <th className="px-6 py-3">
-            Certificado Nivel
-          </th>
-          <th className="px-6 py-3">Certificado Módulo</th>
-          <th className="px-6 py-3">
-            Tipo de Accion
-          </th>
-          <th className="px-6 py-3">
-            Fecha
-          </th>
-        </tr>
-      </thead>
-      <tbody className="text-gray-700 text-sm font-mono divide-y divide-gray-200 bg-white">
-        {currentItems.length === 0 ? (
-          <tr>
-            <td
-              colSpan="7"
-              className="px-6 py-4 text-center text-sm font-medium text-gray-700"
-            >
-              Este usuario no tiene historial aún.
-            </td>
-          </tr>
-        ) : (
-          currentItems.map((item) => (
-            <tr key={item.id}
-            className="border-b border-gray-200 hover:bg-gray-100 transition-colors duration-150">
-              <td className="px-6 py-3 whitespace-nowrap">
-                {item.user
-                  ? `${item.user.name} ${item.user.last_name}`
-                  : "N/A"}
-              </td>
-              <td className="px-6 py-3 whitespace-nowrap">
-                {item.curso?.name || "N/A"}
-              </td>
-              <td className="px-6 py-3 whitespace-nowrap">
-                {item.grupo?.name || "N/A"}
-              </td>
-              <td className="px-6 py-3 whitespace-nowrap">
-                {item.certificadoCurso?.numero_certificado || "N/A"}
-              </td>
-              <td className="px-6 py-3 whitespace-nowrap">
-                {item.certificado?.numero_certificado || "N/A"}
-              </td>
-              <td className="px-6 py-3 whitespace-nowrap">
-                  {item.certificadoModulo?.numero_certificado || "N/A"}
+    <div className="p-0 w-full">
+      {/* <h1 className="text-2xl font-bold mb-4 text-gray-700">
+        Historial de Usuario
+      </h1> */}
+      <div className=" ">
+        <table className="border-collapse border rounded-lg border-gray-400 overflow-hidden ">
+          <thead className="bg-blue-200 border-b border-gray-300">
+            <tr className="text-xs text-gray-700 uppercase">
+              <th className="px-6 py-3 ">Usuario</th>
+              <th className="px-6 py-3 ">Curso</th>
+              <th className="px-6 py-3 ">Grupo</th>
+              <th className="px-6 py-3 ">Certificado Curso</th>
+              <th className="px-6 py-3 ">Certificado Nivel</th>
+              <th className="px-6 py-3 ">Certificado Módulo</th>
+              <th className="px-6 py-3 ">Tipo de Acción</th>
+              <th className="px-6 py-3 ">Fecha</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-700 text-sm font-mono divide-y divide-gray-200 bg-white">
+            {currentItems.length === 0 ? (
+              <tr>
+                <td
+                  colSpan="8"
+                  className="px-6 py-4 text-center text-sm font-medium text-gray-700"
+                >
+                  Este usuario no tiene historial aún.
                 </td>
-              <td className="px-6 py-3 whitespace-nowrap">
-                {item.actionType || "N/A"}
-              </td>
-              <td className="px-6 py-3 whitespace-nowrap">
+              </tr>
+            ) : (
+              currentItems.map((item) => (
+                <tr key={item.id} className="border-b border-gray-200 hover:bg-gray-100 transition-colors duration-150">
+                  <td className="px-6 py-3 whitespace-nowrap overflow-hidden text-ellipsis">
+                    {item.user ? `${item.user.name} ${item.user.last_name}` : "N/A"}
+                  </td>
+                  <td className="px-6 py-3 whitespace-nowrap overflow-hidden text-ellipsis">
+                    {item.curso?.name || "N/A"}
+                  </td>
+                  <td className="px-6 py-3 whitespace-nowrap overflow-hidden text-ellipsis">
+                    {item.grupo?.name || "N/A"}
+                  </td>
+                  <td className="px-6 py-3 whitespace-nowrap overflow-hidden text-ellipsis">
+                    {item.certificadoCurso?.numero_certificado || "N/A"}
+                  </td>
+                  <td className="px-6 py-3 whitespace-nowrap overflow-hidden text-ellipsis">
+                    {item.certificado?.numero_certificado || "N/A"}
+                  </td>
+                  <td className="px-6 py-3 whitespace-nowrap overflow-hidden text-ellipsis">
+                    {item.certificadoModulo?.numero_certificado || "N/A"}
+                  </td>
+                  <td className="px-6 py-3 whitespace-nowrap overflow-hidden text-ellipsis">
+                    {item.actionType || "N/A"}
+                  </td>
+                  <td className="px-6 py-3 whitespace-nowrap">
                 {new Date(item.timestamp).toLocaleString()}
               </td>
-            </tr>
-          ))
-        )}
-      </tbody>
-    </table>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     <nav className="mt-2" aria-label="Pagination">
       <ul className="flex justify-center">
         <li>

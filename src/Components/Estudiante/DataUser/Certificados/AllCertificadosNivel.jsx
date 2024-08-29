@@ -74,7 +74,7 @@ export default function AllCertificadosNivel() {
     } else {
       setSelectedCertificado(certificado);
       setShowModal(true);
-      registroHistorial("Vio el Certificado", certificado)
+      registroHistorial(`Vio el Certificado ${certificado.nivel.name}`, certificado)
     }
   };
 
