@@ -29,8 +29,18 @@ export default function NoTransmisionActiva() {
 
   // Genera la URL de la miniatura de YouTube usando el ID del video
   const getThumbnailUrl = (videoUrl) => {
-    const videoId = new URL(videoUrl).searchParams.get("v");
-    return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    try {
+      const url = new URL(videoUrl);
+      const isLive = url.pathname.startsWith("/live");
+      const videoId = isLive
+        ? url.pathname.split("/")[2]
+        : url.searchParams.get("v");
+
+      return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    } catch (error) {
+      console.error("Error generating thumbnail URL:", error);
+      return ""; // Retorna una cadena vacía o una URL de miniatura predeterminada en caso de error
+    }
   };
 
   return (
