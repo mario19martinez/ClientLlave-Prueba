@@ -18,7 +18,7 @@ export default function PoliticasPrivacidad() {
         privacidad y que acepta estar sujeto a los términos y condiciones aquí
         dispuestos.
       </p>
-      <h2 className="text-xl font-semibold mb-4">ALCANCE</h2>
+      <h2 className="text-2xl font-semibold mb-4">ALCANCE</h2>
       <p className="mb-4">
         La Política de Protección de Datos Personales que desarrolla a
         continuación se aplicará a todas las Bases de Datos y/o Archivos que
@@ -36,7 +36,7 @@ export default function PoliticasPrivacidad() {
         cualquier tipo de información personal, podrá actualizarla o consultarla
         posteriormente.
       </p>
-      <h2 className="text-xl font-semibold mb-4">
+      <h2 className="text-2xl font-semibold mb-4">
         IDENTIFICACIÓN DEL RESPONSABLE Y/O ENCARGADO DEL TRATAMIENTO DE DATOS
         PERSONALES
       </h2>
@@ -45,7 +45,7 @@ export default function PoliticasPrivacidad() {
         centro en Sahagún-Córdoba, Colombia. Correo electrónico:
         contacto@isacarsas.com, con línea de atención al cliente +573217786046.
       </p>
-      <h2 className="text-xl font-semibold mb-4">DEFINICIONES</h2>
+      <h2 className="text-2xl font-semibold mb-4">DEFINICIONES</h2>
       <p className="mb-4">
         Conforme a lo establecido en la normatividad previamente expuesta, se
         entenderá por:
@@ -129,6 +129,69 @@ export default function PoliticasPrivacidad() {
           entre otros.
         </li>
       </ul>
+
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-8">Datos del Usuario</h1>
+        <h2 className="text-2xl font-semibold mb-4">
+          1. Transparencia en la Gestión de Datos
+        </h2>
+        <p className="mb-4">
+          En Llave Para Las Naciones, propiedad de ISACAR CONSULTING SAS, nos
+          comprometemos a ser transparentes en el manejo de los datos de
+          nuestros usuarios. Esto incluye la información que recopilamos sobre
+          los usuarios, la información que estos proporcionan, y los datos
+          relacionados con el dispositivo. A continuación, detallamos cómo
+          recopilamos, usamos, gestionamos y compartimos esta información:
+        </p>
+        <h2 className="text-2xl font-semibold mb-4">
+          2. Información que Recopilamos
+        </h2>
+        <p className="mb-4">Recopilamos los siguientes tipos de información:</p>
+        <ul className="list-disc ml-8 mb-4">
+          <li className="mb-2">
+            <strong>Información del Usuario:</strong> Datos proporcionados
+            directamente por el usuario, como nombre, dirección de correo
+            electrónico, y preferencias.
+          </li>
+          <li className="mb-2">
+            <strong>Información del Dispositivo:</strong> Datos técnicos
+            relacionados con el dispositivo del usuario, como el modelo, el
+            sistema operativo, y la dirección IP.
+          </li>
+          <li className="mb-2">
+            <strong>Datos de Uso:</strong> Información sobre cómo se utiliza la
+            aplicación, incluyendo actividades realizadas y características
+            utilizadas.
+          </li>
+        </ul>
+        <h2 className="text-2xl font-semibold mb-4">
+          3. Uso de la Información
+        </h2>
+        <p className="mb-4">
+          Utilizamos la información recopilada para los siguientes fines:
+        </p>
+        <ul className="list-disc ml-8 mb-4">
+          <li className="mb-2">
+            <strong>Mejorar el Servicio:</strong> Para personalizar la
+            experiencia del usuario y mejorar la funcionalidad de la aplicación.
+          </li>
+          <li className="mb-2">
+            <strong>Comunicación:</strong> Para enviar notificaciones
+            importantes sobre la aplicación y responder a consultas o
+            solicitudes.
+          </li>
+          <li className="mb-2">
+            <strong>Análisis:</strong> Para entender el uso de la aplicación y
+            realizar análisis internos para optimizar el rendimiento.
+          </li>
+        </ul>
+        <h2 className="text-2xl font-semibold mb-4">4. Gestión de Datos</h2>
+        <p className="mb-4">
+          Los datos recopilados son gestionados de acuerdo con la normativa
+          vigente en materia de protección de datos y son almacenados de manera
+          segura para evitar accesos no autorizados.
+        </p>
+      </div>
 
       <h2 className="text-xl font-semibold mb-4">DATOS RECOLECTADOS:</h2>
       <p className="mb-4">
