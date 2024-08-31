@@ -6,6 +6,7 @@ import UserDatosDetail from "./UserDatosDetail";
 import CancelIcon from "@mui/icons-material/Cancel";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { format } from "date-fns";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 function UsersDatos() {
   const [users, setUsers] = useState([]);
@@ -16,7 +17,10 @@ function UsersDatos() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [filterDate, setFilterDate] = useState("");
+  const [showLinkInput, setShowLinkInput] = useState(false);
   const navigate = useNavigate();
+
+  const formLink = "https://www.llaveparalasnaciones.com/RegistroDatos/";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +59,15 @@ function UsersDatos() {
     setCurrentPage(1);
   };
 
+  const toggleLinkInput = () => {
+    setShowLinkInput(!showLinkInput);
+  };
+
+  const copyLinkToClipboard = () => {
+    navigator.clipboard.writeText(formLink);
+    alert("¡Enlace copiado al portapapeles!");
+  };
+
   const filteredUsers = users.filter((user) => {
     if (!filterDate) return true;
     return user.registeredAt.includes(filterDate);
@@ -88,7 +101,7 @@ function UsersDatos() {
       <div className="absolute top-0 right-0 mr-10 mt-10 translate-y-16">
         <p className="font-gabarito text-gray-600">Total de usuarios: {userCount}</p>
       </div>
-      <div className="mb-4">
+      <div className="mb-4 flex items-center space-x-4">
         <input
           type="date"
           value={filterDate}
@@ -96,6 +109,28 @@ function UsersDatos() {
           className="border rounded p-2"
           placeholder="Filtrar por fecha de registro"
         />
+        <button
+          onClick={toggleLinkInput}
+          className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition-transform ease-in-out duration-300"
+        >
+          Link del formulario
+        </button>
+        {showLinkInput && (
+          <div className="flex items-center space-x-2">
+            <input
+              type="text"
+              value={formLink}
+              readOnly
+              className="border rounded p-2 w-96"
+            />
+            <button
+              onClick={copyLinkToClipboard}
+              className="bg-gray-200 text-gray-600 hover:bg-gray-400 hover:text-gray-800 transition-transform ease-in-out duration-300 py-2 px-4 rounded"
+            >
+              <ContentCopyIcon />
+            </button>
+          </div>
+        )}
       </div>
       <div className="overflow-hidden border border-gray-300 rounded-lg shadow-md">
         <table className="min-w-full divide-y divide-gray-200">
