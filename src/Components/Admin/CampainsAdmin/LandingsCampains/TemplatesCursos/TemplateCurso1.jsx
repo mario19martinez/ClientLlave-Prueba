@@ -68,13 +68,16 @@ export default function TemplateCurso1({ idCurso, campeinId, landingId }) {
         {showMoreInfo && (
           <div className="flex flex-col lg:flex-row">
             <div className="lg:w-1/2 lg:mr-4">
-              <p className="text-gray-700 mb-4">
-                {landingData.contenido || "Aquí va el contenido"}
-              </p>
+              <div
+                className="text-gray-700 px-2 py-5"
+                dangerouslySetInnerHTML={{
+                  __html: landingData.contenido || "Aquí va el contenido",
+                }}
+              ></div>
             </div>
             <div className="lg:w-1/2">
               <img
-                className="object-cover w-full h-56 rounded-lg shadow-lg mb-4"
+                className="object-cover w-full h-full rounded-lg shadow-lg mb-4"
                 src={
                   landingData.img ||
                   "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
@@ -149,7 +152,7 @@ export default function TemplateCurso1({ idCurso, campeinId, landingId }) {
             </p>
             <button
               onClick={() =>
-                window.open("https://wa.me/+573126096603", "_blank")
+                window.open("https://wa.link/q48e05", "_blank")
               }
               className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded flex items-center justify-center mx-auto"
             >
@@ -163,7 +166,7 @@ export default function TemplateCurso1({ idCurso, campeinId, landingId }) {
             <button
               onClick={() =>
                 window.open(
-                  "https://chat.whatsapp.com/K5QAcc547LF0vlXotYiZat",
+                  "https://wa.link/q48e05",
                   "_blank"
                 )
               }
