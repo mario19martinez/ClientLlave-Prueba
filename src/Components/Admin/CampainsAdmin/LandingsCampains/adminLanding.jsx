@@ -2,8 +2,37 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, CircularProgress, TextField, Tooltip, Snackbar, Alert } from "@mui/material";
-import { Campaign as CampaignIcon, Delete as DeleteIcon, Visibility as VisibilityIcon, Edit as EditIcon, Share as ShareIcon, ContentCopy as ContentCopyIcon, CheckCircle as CheckCircleIcon } from "@mui/icons-material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+  CircularProgress,
+  TextField,
+  Tooltip,
+  Snackbar,
+  Alert,
+} from "@mui/material";
+import {
+  Campaign as CampaignIcon,
+  Delete as DeleteIcon,
+  Visibility as VisibilityIcon,
+  Edit as EditIcon,
+  Share as ShareIcon,
+  ContentCopy as ContentCopyIcon,
+  CheckCircle as CheckCircleIcon,
+} from "@mui/icons-material";
 
 export default function AdminLanding({ campeinId }) {
   const [landings, setLandings] = useState([]);
@@ -34,7 +63,9 @@ export default function AdminLanding({ campeinId }) {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/campein/${campeinId}/landingcampein/${selectedLanding}`);
+      await axios.delete(
+        `/campein/${campeinId}/landingcampein/${selectedLanding}`
+      );
       setLandings(landings.filter((landing) => landing.id !== selectedLanding));
       setOpen(false);
       console.log("Landing eliminada con éxito");
@@ -66,7 +97,12 @@ export default function AdminLanding({ campeinId }) {
   };
 
   const handleShare = (landing) => {
-    const url = `${window.location.origin}/campain/${landing.id}/Landing/${campeinId}/${landing.template}`;
+    let url;
+    if (landing.idcurso) {
+      url = `${window.location.origin}/campain/${landing.id}/Landing/${campeinId}/${landing.template}/curso/${landing.idcurso}`;
+    } else {
+      url = `${window.location.origin}/campain/${landing.id}/Landing/${campeinId}/${landing.template}`;
+    }
     setShareUrl(url);
   };
 
@@ -119,7 +155,9 @@ export default function AdminLanding({ campeinId }) {
                 <TableRow key={landing.id}>
                   <TableCell>{landing.titulo}</TableCell>
                   <TableCell>{landing.template}</TableCell>
-                  <TableCell>{landing.idcurso || "Curso no asociado"}</TableCell>
+                  <TableCell>
+                    {landing.idcurso || "Curso no asociado"}
+                  </TableCell>
                   <TableCell>
                     <IconButton
                       color="primary"
@@ -129,7 +167,11 @@ export default function AdminLanding({ campeinId }) {
                     </IconButton>
                     <IconButton
                       color="secondary"
-                      onClick={() => navigate(`/admin/campain/editLanding/${campeinId}/${landing.id}`)}
+                      onClick={() =>
+                        navigate(
+                          `/admin/campain/editLanding/${campeinId}/${landing.id}`
+                        )
+                      }
                     >
                       <EditIcon />
                     </IconButton>
@@ -175,14 +217,15 @@ export default function AdminLanding({ campeinId }) {
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
       >
-        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
           URL copiada al portapapeles
         </Alert>
       </Snackbar>
-      <Dialog
-        open={open}
-        onClose={handleCloseDialog}
-      >
+      <Dialog open={open} onClose={handleCloseDialog}>
         <DialogTitle>Confirmar eliminación</DialogTitle>
         <DialogContent>
           <DialogContentText>
