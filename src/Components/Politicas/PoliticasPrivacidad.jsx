@@ -1,512 +1,127 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
-
 export default function PoliticasPrivacidad() {
   return (
-    <div className="max-w-4xl mx-auto px-4">
-      <h1 className="text-3xl font-bold mb-8">Políticas de privacidad</h1>
-      <p className="mb-4">
-        Política de protección de Datos Última vez actualizado el 23 de Junio,
-        2023
-      </p>
-      <p className="mb-4">
-        La siguiente Declaración de Política de Privacidad y Protección de Datos
-        rige la recopilación y el uso de información privada a través ISACAR
-        CONSULTING SAS y los Servicios ofrecidos por esta. Al acceder a nuestras
-        redes sociales, sitio web o registrarse para el uso de nuestros
-        Servicios, usted declara que ha leído y comprendido la Política de
-        privacidad y que acepta estar sujeto a los términos y condiciones aquí
-        dispuestos.
-      </p>
-      <h2 className="text-2xl font-semibold mb-4">ALCANCE</h2>
-      <p className="mb-4">
-        La Política de Protección de Datos Personales que desarrolla a
-        continuación se aplicará a todas las Bases de Datos y/o Archivos que
-        contengan Datos Personales que sean objeto de Tratamiento por parte de
-        ISACAR CONSULTING SAS en adelante se entenderá como responsable del
-        tratamiento de Datos Personales y se obliga al estricto cumplimiento de
-        las disposiciones expuestas a continuación, Los empleados, contratistas
-        y terceros se encuentran obligados a cumplir con la presente política de
-        protección de datos personales, en el cumplimiento de sus funciones y
-        actividades, aún después de terminar su relación comercial, laboral o de
-        otra índole. De igual manera se comprometen a guardar estricta
-        confidencialidad en relación con los datos manejados. Todos los
-        titulares que, en el desarrollo de las diferentes actividades laborales,
-        comerciales, entre otras, sean permanentes u ocasionales y proporcionen
-        cualquier tipo de información personal, podrá actualizarla o consultarla
-        posteriormente.
-      </p>
-      <h2 className="text-2xl font-semibold mb-4">
-        IDENTIFICACIÓN DEL RESPONSABLE Y/O ENCARGADO DEL TRATAMIENTO DE DATOS
-        PERSONALES
-      </h2>
-      <p className="mb-4">
-        ISACAR CONSULTING SAS Con domicilio en La Carrera 11#9-51, barrio el
-        centro en Sahagún-Córdoba, Colombia. Correo electrónico:
-        contacto@isacarsas.com, con línea de atención al cliente +573217786046.
-      </p>
-      <h2 className="text-2xl font-semibold mb-4">DEFINICIONES</h2>
-      <p className="mb-4">
-        Conforme a lo establecido en la normatividad previamente expuesta, se
-        entenderá por:
-      </p>
-      <ul className="list-disc ml-8 mb-4">
-        <li className="mb-2">
-          Autorización: Consentimiento previo, expreso e informado del Titular
-          para llevar a cabo el Tratamiento de datos personales;
-        </li>
-        <li className="mb-2">
-          Base de Datos: Conjunto organizado de datos personales que sea objeto
-          de Tratamiento;
-        </li>
-        <li className="mb-2">
-          Datos personales: Cualquier información vinculada o que pueda
-          asociarse a una o varias personas naturales determinadas o
-          determinables (se considerará persona física determinable toda persona
-          cuya identidad pueda determinarse, directa o indirectamente, en
-          particular mediante un identificador,);
-        </li>
-        <li className="mb-2">
-          Responsable del Tratamiento: Persona natural o jurídica, pública o
-          privada, que por sí misma o en asocio con otros, decida sobre la base
-          de datos y/o el Tratamiento de los datos;
-        </li>
-        <li className="mb-2">
-          Encargado del Tratamiento: Persona natural o jurídica, pública o
-          privada, que por sí misma o en asocio con otros, realice el
-          Tratamiento de datos personales por cuenta del Responsable del
-          Tratamiento;
-        </li>
-        <li className="mb-2">
-          Tercero: persona natural o jurídica, autoridad pública, servicio u
-          organismo distinto del interesado, del responsable del tratamiento,
-          del encargado del tratamiento y de las personas autorizadas para
-          tratar los datos personales bajo la autoridad directa del responsable
-          o del encargado;
-        </li>
-        <li className="mb-2">
-          Titular: Persona natural cuyos datos personales sean objeto de
-          Tratamiento.
-        </li>
-        <li className="mb-2">
-          Tratamiento: Cualquier operación o conjunto de operaciones sobre datos
-          personales, tales como la recolección, almacenamiento, uso,
-          circulación o supresión (ya sea por procedimientos automatizados o
-          no).
-        </li>
-        <li className="mb-2">
-          Elaboración de perfiles: toda forma de tratamiento automatizado de
-          datos personales consistente en utilizar datos personales para evaluar
-          determinados aspectos personales de una persona física, como las
-          preferencias personales, intereses, fiabilidad, comportamiento,
-          ubicación o movimientos de dicha persona física.
-        </li>
-        <li className="mb-2">
-          Dato público: Es el dato que no sea semiprivado, privado o sensible.
-        </li>
-        <li className="mb-2">
-          Datos sensibles: Se entiende por datos sensibles aquellos que afectan
-          la intimidad del Titular o cuyo uso indebido puede generar su
-          discriminación.
-        </li>
-        <li className="mb-2">
-          Transferencia: La transferencia de datos tiene lugar cuando el
-          Responsable y/o Encargado del Tratamiento de datos personales, envía
-          la información o los datos personales a un receptor, que a su vez
-          diferente y que pasa ser Responsable del Tratamiento.
-        </li>
-        <li className="mb-2">
-          Consentimiento del interesado: toda manifestación de voluntad libre,
-          específica, informada e inequívoca por la que el interesado acepta, ya
-          sea mediante una declaración o una clara acción afirmativa, el
-          tratamiento de datos personales que le conciernen; Las referencias a
-          usted y / o Usuario se refieren al Usuario de las redes sociales,
-          sitio web y / o los demás Servicios que ofrece ISACAR CONSULTING SAS.
-          Las referencias a Servicios se refieren a los servicios que se prestan
-          en el giro ordinario de la actividad del responsable del tratamiento;
-          tales como consultoría, contenido digital (vídeos de YouTube, imágenes
-          o videos en Facebook, Instagram, etc.), eventos, cursos virtuales,
-          entre otros.
-        </li>
-      </ul>
-
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Datos del Usuario</h1>
-        <h2 className="text-2xl font-semibold mb-4">
-          1. Transparencia en la Gestión de Datos
-        </h2>
-        <p className="mb-4">
-          En Llave Para Las Naciones, propiedad de ISACAR CONSULTING SAS, nos
-          comprometemos a ser transparentes en el manejo de los datos de
-          nuestros usuarios. Esto incluye la información que recopilamos sobre
-          los usuarios, la información que estos proporcionan, y los datos
-          relacionados con el dispositivo. A continuación, detallamos cómo
-          recopilamos, usamos, gestionamos y compartimos esta información:
+    <div className="bg-white p-8 sm:p-12 max-w-5xl mx-auto my-10 shadow-lg rounded-lg">
+      <h1 className="text-3xl font-bold text-center text-gray-800 mb-10">Políticas de Privacidad</h1>
+      
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">Política de Protección de Datos</h2>
+        <p className="text-gray-600 mb-4">
+          Última vez actualizado el 01 octubre de 2024. La siguiente Declaración de Política de Privacidad y
+          Protección de Datos rige la recopilación y el uso de información privada a través de FUNDACION LLAVE PARA LAS NACIONES 
+          y los Servicios ofrecidos por esta. Al acceder a nuestras redes sociales, sitio web o registrarse para el uso de nuestros 
+          Servicios, usted declara que ha leído y comprendido la Política de privacidad y que acepta estar sujeto a los términos y condiciones 
+          aquí dispuestos.
         </p>
-        <h2 className="text-2xl font-semibold mb-4">
-          2. Información que Recopilamos
+      </section>
+      
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">ALCANCE</h2>
+        <p className="text-gray-600">
+          La Política de Protección de Datos Personales que se desarrolla a continuación se aplicará a todas las Bases de Datos y/o 
+          Archivos que contengan Datos Personales que sean objeto de Tratamiento por parte de FUNDACION LLAVE PARA LAS NACIONES, en 
+          adelante se entenderá como responsable del tratamiento de Datos Personales y se obliga al estricto cumplimiento de las 
+          disposiciones expuestas a continuación. Los empleados, contratistas y terceros se encuentran obligados a cumplir con la 
+          presente política de protección de datos personales, en el cumplimiento de sus funciones y actividades, aún después de terminar su 
+          relación comercial, laboral o de otra índole. De igual manera, se comprometen a guardar estricta confidencialidad en relación 
+          con los datos manejados. Todos los titulares que, en el desarrollo de las diferentes actividades laborales, comerciales, entre 
+          otras, sean permanentes u ocasionales y proporcionen cualquier tipo de información personal, podrán actualizarla o consultarla posteriormente.
+        </p>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">
+          Identificación del Responsable y/o Encargado del Tratamiento de Datos Personales
         </h2>
-        <p className="mb-4">Recopilamos los siguientes tipos de información:</p>
-        <ul className="list-disc ml-8 mb-4">
-          <li className="mb-2">
-            <strong>Información del Usuario:</strong> Datos proporcionados
-            directamente por el usuario, como nombre, dirección de correo
-            electrónico, y preferencias.
-          </li>
-          <li className="mb-2">
-            <strong>Información del Dispositivo:</strong> Datos técnicos
-            relacionados con el dispositivo del usuario, como el modelo, el
-            sistema operativo, y la dirección IP.
-          </li>
-          <li className="mb-2">
-            <strong>Datos de Uso:</strong> Información sobre cómo se utiliza la
-            aplicación, incluyendo actividades realizadas y características
-            utilizadas.
-          </li>
+        <p className="text-gray-600">
+          FUNDACION LLAVE PARA LAS NACIONES, con domicilio en La Carrera 11#9-51, barrio el centro en Sahagún-Córdoba, Colombia. 
+          Correo electrónico: <a href="mailto:contacto@isacarsas.com" className="text-blue-500 underline">contacto@isacarsas.com</a>, 
+          con línea de atención al cliente +573217786046.
+        </p>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">Definiciones</h2>
+        <ul className="list-disc list-inside text-gray-600 space-y-2">
+          <li><strong>Autorización:</strong> Consentimiento previo, expreso e informado del Titular para llevar a cabo el Tratamiento de datos personales.</li>
+          <li><strong>Base de Datos:</strong> Conjunto organizado de datos personales que sea objeto de Tratamiento.</li>
+          <li><strong>Datos personales:</strong> Cualquier información vinculada o que pueda asociarse a una o varias personas naturales determinadas o determinables.</li>
+          <li><strong>Responsable del Tratamiento:</strong> Persona natural o jurídica que decide sobre la base de datos y/o el Tratamiento de los datos.</li>
+          <li><strong>Encargado del Tratamiento:</strong> Persona que realiza el Tratamiento de datos personales por cuenta del Responsable del Tratamiento.</li>
+          <li><strong>Tercero:</strong> Persona o entidad distinta del interesado, del responsable del tratamiento, del encargado del tratamiento y de las personas autorizadas.</li>
+          <li><strong>Titular:</strong> Persona natural cuyos datos personales sean objeto de Tratamiento.</li>
+          <li><strong>Tratamiento:</strong> Cualquier operación sobre datos personales, tales como recolección, almacenamiento, uso, circulación o supresión.</li>
+          <li><strong>Datos sensibles:</strong> Datos que afectan la intimidad del Titular o cuyo uso indebido puede generar su discriminación.</li>
+          <li><strong>Transferencia:</strong> Envío de datos personales a un receptor diferente que se convierte en Responsable del Tratamiento.</li>
         </ul>
-        <h2 className="text-2xl font-semibold mb-4">
-          3. Uso de la Información
-        </h2>
-        <p className="mb-4">
-          Utilizamos la información recopilada para los siguientes fines:
+      </section>
+
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">Datos del Usuario</h2>
+        <ol className="list-decimal list-inside text-gray-600 space-y-2">
+          <li><strong>Transparencia en la Gestión de Datos:</strong> En FUNDACION LLAVE PARA LAS NACIONES, nos comprometemos a ser transparentes en el manejo de los datos de nuestros usuarios.</li>
+          <li>
+            <strong>Información que Recopilamos:</strong>
+            <ul className="list-disc ml-6">
+              <li><strong>Información del Usuario:</strong> Datos proporcionados directamente por el usuario, como nombre y dirección de correo electrónico.</li>
+              <li><strong>Información del Dispositivo:</strong> Datos técnicos relacionados con el dispositivo del usuario, como el modelo, el sistema operativo y la dirección IP.</li>
+              <li><strong>Datos de Uso:</strong> Información sobre cómo se utiliza la aplicación, incluyendo actividades realizadas y características utilizadas.</li>
+            </ul>
+          </li>
+          <li><strong>Uso de la Información:</strong> Utilizamos la información recopilada para mejorar el servicio, personalizar la experiencia del usuario, comunicar notificaciones importantes y realizar análisis internos para optimizar el rendimiento.</li>
+          <li><strong>Procedimientos de Seguridad:</strong> Los datos son gestionados de acuerdo con la normativa vigente en materia de protección de datos y son almacenados de manera segura para evitar accesos no autorizados.</li>
+          <li><strong>Conservación y Eliminación de Datos:</strong> Retendremos la información mientras usted sea cliente. Puede solicitar la eliminación de sus datos en cualquier momento.</li>
+        </ol>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">Política de Privacidad para Google Play</h2>
+        <p className="text-gray-600">
+          Para cumplir con los requisitos de Google Play, nuestra política de privacidad estará disponible en una URL activa 
+          y se puede acceder públicamente. La política incluirá:
         </p>
-        <ul className="list-disc ml-8 mb-4">
-          <li className="mb-2">
-            <strong>Mejorar el Servicio:</strong> Para personalizar la
-            experiencia del usuario y mejorar la funcionalidad de la aplicación.
-          </li>
-          <li className="mb-2">
-            <strong>Comunicación:</strong> Para enviar notificaciones
-            importantes sobre la aplicación y responder a consultas o
-            solicitudes.
-          </li>
-          <li className="mb-2">
-            <strong>Análisis:</strong> Para entender el uso de la aplicación y
-            realizar análisis internos para optimizar el rendimiento.
-          </li>
+        <ul className="list-disc list-inside text-gray-600 space-y-2">
+          <li>Un enlace en la ficha de Play Store de la aplicación y dentro de la propia aplicación.</li>
+          <li>Referencia a FUNDACION LLAVE PARA LAS NACIONES como entidad responsable.</li>
+          <li>Un título claro que indique que se trata de una política de privacidad.</li>
+          <li>Información de contacto para consultas sobre privacidad.</li>
         </ul>
-        <h2 className="text-2xl font-semibold mb-4">4. Gestión de Datos</h2>
-        <p className="mb-4">
-          Los datos recopilados son gestionados de acuerdo con la normativa
-          vigente en materia de protección de datos y son almacenados de manera
-          segura para evitar accesos no autorizados.
+      </section>
+
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">Derechos de los Usuarios</h2>
+        <p className="text-gray-600">
+          Puede beneficiarse de una serie de derechos en relación con la información que procesamos. Esto incluye acceder, corregir y eliminar 
+          datos personales. También puede oponerse al tratamiento de sus datos en ciertas circunstancias.
         </p>
-      </div>
+      </section>
 
-      <h2 className="text-xl font-semibold mb-4">DATOS RECOLECTADOS:</h2>
-      <p className="mb-4">
-        El responsable podrá recopilar una variedad de información, que incluye
-        su nombre, país y/o dirección postal, número de teléfono, dirección de
-        correo electrónico y preferencias de contacto. En caso tal que se
-        requiera un pago o información de pago, se solicitará la información de
-        tarjeta de crédito a través de un tercero, como Stripe. Toda información
-        que sea cargada los enlaces que sean suministrados por el responsable
-        será almacenada sea propia de un usuario o de otra persona.
-      </p>
-      <ul className="list-disc ml-8 mb-4">
-        <li className="mb-2">Manejar y administrar bases de datos.</li>
-        <li className="mb-2">
-          Facilitar la implementación de programas en cumplimiento de mandatos
-          legales de la legislación del Estado de Florida EEUU o de la UE.
-        </li>
-        <li className="mb-2">
-          Envío de información para fortalecer la relación con nuestros
-          usuarios, para la prestación de servicios, programaciones, ofertas,
-          invitaciones y demás actividades relacionadas con el desenvolvimiento
-          del giro ordinario de nuestras actividades. De igual manera para
-          evaluar la calidad de los servicios prestados.
-        </li>
-        <li className="mb-2">
-          Adelantar la labor de recuperación y recolección de datos de usuarios.
-        </li>
-      </ul>
-      <p className="mb-4">
-        Toda información que haya sido transferida por otras personas (naturales
-        o jurídicas), será tratada bajo los mismos parámetros de
-        confidencialidad y seguridad.
-      </p>
-      <p className="mb-4">
-        En caso de recolectar los datos de tarjetas de crédito y/o otras cuentas
-        financieras el manejo de dichos datos se regirán de conformidad con las
-        políticas de terceros que presten tal servicio.
-      </p>
-      <h2 className="text-xl font-semibold mb-4">DATOS RECOLECTADOS:</h2>
-      <p className="mb-4">
-        El responsable podrá recopilar una variedad de información, que incluye
-        su nombre, país y/o dirección postal, número de teléfono, dirección de
-        correo electrónico y preferencias de contacto. En caso tal que se
-        requiera un pago o información de pago, se solicitará la información de
-        tarjeta de crédito a través de un tercero, como Stripe.
-      </p>
-      <p className="mb-4">
-        Toda información que sea cargada los enlaces que sean suministrados por
-        el responsable será almacenada sea propia de un usuario o de otra
-        persona.
-      </p>
-      <ul className="list-disc ml-8 mb-4">
-        <li className="mb-2">Manejar y administrar bases de datos.</li>
-        <li className="mb-2">
-          Facilitar la implementación de programas en cumplimiento de mandatos
-          legales de la legislación del Estado de Florida EEUU o de la UE.
-        </li>
-        <li className="mb-2">
-          Envío de información para fortalecer la relación con nuestros
-          usuarios, para la prestación de servicios, programaciones, ofertas,
-          invitaciones y demás actividades relacionadas con el desenvolvimiento
-          del giro ordinario de nuestras actividades. De igual manera para
-          evaluar la calidad de los servicios prestados.
-        </li>
-        <li className="mb-2">
-          Adelantar la labor de recuperación y recolección de datos de usuarios.
-        </li>
-        <p className="mb-4"></p>
-      </ul>
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">Transferencia de Datos a Terceros</h2>
+        <p className="text-gray-600">
+          La información podrá ser compartida con administradoras de bases de datos que cumplan con los requisitos del RGPD de la UE. 
+          FUNDACION LLAVE PARA LAS NACIONES puede ser responsable de la transferencia de datos personales a terceros que actúen como nuestros agentes.
+        </p>
+      </section>
 
-      <h2 className="text-xl font-semibold mb-4">FINES DEL TRATAMIENTO:</h2>
-      <p className="mb-4">
-        El tratamiento que realizará ISACAR CONSULTING SAS será el de
-        recolectar, almacenar, procesar, transmitir, transferir y/o usar acorde
-        a lo que se requiera, los datos personales de los usuarios, clientes y
-        demás personas en el giro y desarrollo de las actividades ordinarias de
-        la misma sociedad. Atendiendo a la seguridad y confidencialidad
-        requeridas y a los siguientes fines específicos:
-      </p>
-      <ul>
-        <li className="mb-2">Manejar y administrar bases de datos.</li>
-        <li className="mb-2">
-          Facilitar la implementación de programas en cumplimiento de mandatos
-          legales de la legislación del Estado de Florida EEUU o de la UE.
-        </li>
-        <li className="mb-2">
-          Envío de información para fortalecer la relación con nuestros
-          usuarios, para la prestación de servicios, programaciones, ofertas,
-          invitaciones y demás actividades relacionadas con el desenvolvimiento
-          del giro ordinario de nuestras actividades. De igual manera para
-          evaluar la calidad de los servicios prestados.
-        </li>
-        <li className="mb-2">
-          Adelantar la labor de recuperación y recolección de datos de usuarios.
-        </li>
-      </ul>
-      <p className="mb-4">
-        Toda información que haya sido transferida por otras personas (naturales
-        o jurídicas), será tratada bajo los mismos parámetros de
-        confidencialidad y seguridad.
-      </p>
-      <p className="mb-4">
-        En caso de recolectar los datos de tarjetas de crédito y/o otras cuentas
-        financieras el manejo de dichos datos se regirán de conformidad con las
-        políticas de terceros que presten tal servicio.
-      </p>
-      <h2 className="text-xl font-semibold mb-4">
-        TRANSFERENCIA DE DATOS A TERCEROS:
-      </h2>
-      <p className="mb-4">
-        La información podrá ser compartida con administradoras de bases de
-        datos que se encuentren legalmente constituidas y cumplan con los
-        requisitos del RGPD de la UE. De igual manera la información aquí
-        suministrada podrá ser compartida con www.clickfunnels.com,
-        transferencia que se regirá por las políticas de tratamiento de datos,
-        términos y condiciones de dicho tercero.
-      </p>
-      <p className="mb-4">
-        ISACAR CONSULTING SAS puede ser responsable de la transferencia de datos
-        personales de la UE y / o Suiza a terceros que actúen como nuestros
-        agentes, a menos que se logre demostrar la exoneración de responsables
-        del evento dado el aumento de los daños.
-      </p>
-      <h2 className="text-xl font-semibold mb-4">DERECHOS DE LOS USUARIOS</h2>
-      <p className="mb-4">
-        Puede beneficiarse de una serie de derechos en relación con la
-        información que procesamos. Algunos derechos se aplican sólo en ciertos
-        casos limitados, dependiendo de la ubicación del usuario, interesado y/o
-        los datos suministrados.
-      </p>
-      <ul className="list-disc ml-8 mb-4">
-        <li className="mb-2">Manejar y administrar bases de datos.</li>
-        <li className="mb-2">
-          Facilitar la implementación de programas en cumplimiento de mandatos
-          legales de la legislación del Estado de Florida EEUU o de la UE.
-        </li>
-        <li className="mb-2">
-          Envío de información para fortalecer la relación con nuestros
-          usuarios, para la prestación de servicios, programaciones, ofertas,
-          invitaciones y demás actividades relacionadas con el desenvolvimiento
-          del giro ordinario de nuestras actividades. De igual manera para
-          evaluar la calidad de los servicios prestados.
-        </li>
-        <li className="mb-2">
-          Adelantar la labor de recuperación y recolección de datos de usuarios.
-        </li>
-      </ul>
-      <p className="mb-4">
-        Toda información que haya sido transferida por otras personas (naturales
-        o jurídicas), será tratada bajo los mismos parámetros de
-        confidencialidad y seguridad.
-      </p>
-      <p className="mb-4">
-        En caso de recolectar los datos de tarjetas de crédito y/o otras cuentas
-        financieras el manejo de dichos datos se regirán de conformidad con las
-        políticas de terceros que presten tal servicio.
-      </p>
-      <h2 className="text-xl font-semibold mb-4">
-        TRANSFERENCIA DE DATOS A TERCEROS.
-      </h2>
-      <p className="mb-4">
-        La información podrá ser compartida con administradoras de bases de
-        datos que se encuentren legalmente constituidas y cumplan con los
-        requisitos del RGPD de la UE. De igual manera la información aquí
-        suministrada podrá ser compartida con www.clickfunnels.com,
-        transferencia que se regirá por las políticas de tratamiento de datos,
-        términos y condiciones de dicho tercero.
-      </p>
-      <p className="mb-4">
-        ISACAR CONSULTING SAS puede ser responsable de la transferencia de datos
-        personales de la UE y / o Suiza a terceros que actúen como nuestros
-        agentes, a menos que se logre demostrar la exoneración de responsables
-        del evento dado el aumento de los daños.
-      </p>
-      <h2 className="text-xl font-semibold mb-4">DERECHOS DE LOS USUARIOS:</h2>
-      <p className="mb-4">
-        Puede beneficiarse de una serie de derechos en relación con la
-        información que procesamos. Algunos derechos se aplican sólo en ciertos
-        casos limitados, dependiendo de la ubicación del usuario, interesado y/o
-        los datos suministrados.
-      </p>
-      <p className="mb-4">
-        El usuario y /o interesado tendrá derecho a recibir los datos personales
-        que le incumban, que haya facilitado al responsable del tratamiento, en
-        un formato estructurado, de uso común y lectura mecánica, y a
-        transmitirlos- transferirlos a otro responsable del tratamiento sin que
-        lo impida el responsable al que se los hubiera facilitado. Tendrá además
-        derecho a oponerse en cualquier momento a que los datos personales que
-        le conciernen sean objeto de tratamiento, de igual manera podrá revisar
-        y actualizar datos cuando sea necesario o lo requiera.
-      </p>
-      <p className="mb-4">
-        Solo se realizarán transferencias de datos personales que sean objeto de
-        tratamiento o vayan a serlo tras su transferencia a un tercer país u
-        organización internacional si, a reserva de las demás disposiciones del
-        presente Reglamento, el responsable y el encargado del tratamiento
-        cumplen las condiciones establecidas en el RGPD de la UE y con la
-        normatividad del Estado de Florida EEUU, incluidas las relativas a las
-        transferencias ulteriores de datos personales desde el tercer país u
-        organización internacional a otro tercer país u otra organización
-        internacional. Todas las disposiciones del presente capítulo se
-        aplicarán a fin de asegurar que el nivel de protección de las personas
-        físicas garantizado por el presente Reglamento no se vea menoscabado.
-      </p>
-      <h2 className="text-xl font-semibold mb-4">PLAZO:</h2>
-      <p className="mb-4">
-        Retendremos su información mientras usted sea nuestro cliente y/o
-        usuario. Si no abre ninguno de los correos que le sean enviados en el
-        transcurso de un año, procederemos a eliminar su información de nuestro
-        sistema.
-      </p>
-      <p className="mb-4">
-        Si es razonablemente necesario o requerido para cumplir con los
-        requisitos legales o reglamentarios, resolver disputas, prevenir fraudes
-        y abusos, o hacer cumplir nuestros Términos y condiciones, reservaremos
-        el derecho de retener parte de su información según sea necesario,
-        incluso después de que se haya finalizado la prestación de servicios o
-        que usted haya solicitado el retiro de sus datos.
-      </p>
-      <p className="mb-4">
-        Si ya no desea ser nuestro usuario, también puede ponerse en contacto
-        con nuestro equipo de Atención al Cliente y solicitar que eliminemos
-        toda la información que tenemos sobre usted. Puede dejar de recibir
-        nuestros mensajes de marketing en cualquier momento a través de los
-        siguientes medios:
-      </p>
-      <p className="mb-4">
-        Al hacer clic en el enlace cancelar suscripción en cualquier correo
-        electrónico
-      </p>
-      <p className="mb-4">
-        Al contactarnos mediante nuestra línea de atención al cliente
-        (+573217786046) o mediante el correo electrónico contacto@isacarsas.com
-      </p>
-      <p className="mb-4">
-        Responderemos a las solicitudes realizadas dentro de un plazo razonable.
-        Tenga en cuenta que, dado que nuestro sistema comprende una red compleja
-        de muchos servicios de interconexión, puede llevar algunos días
-        actualizar todos nuestros sistemas, por lo que puede recibir nuestros
-        mensajes mientras procesamos su solicitud.
-      </p>
-      <p className="mb-4">
-        Detener los mensajes de marketing no detendrá las comunicaciones de
-        servicio (como actualizaciones de pedidos o donde haya expresado interés
-        en una actividad en ISACAR CONSULTING SAS, por ejemplo, nuevos
-        diseñadores).
-      </p>
-      <p className="mb-4">
-        Puede acceder, corregir, cambiar y eliminar cierta información personal.
-        Si procesamos su información en función de nuestros intereses legítimos
-        según lo explicado anteriormente, o en interés del público, puede
-        objetar este procesamiento en ciertas circunstancias. En tales casos,
-        dejaremos de procesar su información a menos que tengamos motivos
-        legítimos para continuar con el procesamiento o cuando sea necesario por
-        razones legales.
-      </p>
-      <h2 className="text-xl font-semibold mb-4">MENORES DE EDAD</h2>
-      <p className="mb-4">
-        No se recopilará a sabiendas información de identificación personal de
-        niños menores de dieciséis (16) años. Si tiene menos dieciséis (16)
-        años, debe pedir permiso a sus padres, tutores o quien ostente su
-        cuidado legalmente, para usar el sitio web y los Servicios prestados por
-        ISACAR CONSULTING SAS. En ningún caso se aceptará información de menores
-        de trece años a sabiendas, razón por la cual se solicita que todos los
-        usuarios del sitio web y nuestros Servicios que tengan menos de trece
-        (13) años de edad no revelen ni proporcionen ninguna información de
-        identificación personal. Si por algún motivo un niño menor de trece (13)
-        años proporciona información de identificación personal, dichos datos
-        serán eliminados en el momento mismo en que se tenga conocimiento de
-        ello. El padre, tutor o quien ostente el cuidado del menor es
-        responsable de todas y cada una de las actividades realizadas por un
-        menor de edad cuenta suya.
-      </p>
-      <h2 className="text-xl font-semibold mb-4">COOKIES</h2>
-      <p className="mb-4">
-        ISACAR CONSULTING SAS utiliza cookies, web bugs y/o otras tecnologías,
-        para recolectar datos personales de los usuarios. Si no desea permitir
-        el uso de cookies puede rechazarlas o eliminar las ya existentes
-        configurando su navegador, e inhabilitando el código Java Script del
-        navegador en la configuración de seguridad.
-      </p>
-      <p className="mb-4">
-        ISACAR CONSULTING SAS utiliza las cookies proporcionadas por Facebook y
-        Google, incluyendo aquellas que se proporcionan cuando visita nuestras
-        redes y sitios. Las características de cookies y otras tecnologías
-        utilizadas las podrá encontrar en las políticas oficiales de Facebook y
-        Google.
-      </p>
-      <p className="mb-4">
-        Al momento de proporcionar un producto o servicio a un usuario, dicha
-        transacción se regirá bajo lo aquí dispuesto (si se requiere más
-        información de un producto o servicio ofrecido se podrá obtener toda la
-        información que se requiera a través de las vías de contacto y servicio
-        al cliente aquí proporcionados).
-      </p>
-      <p className="mb-4">
-        ISACAR CONSULTING SAS y los productos que ofrecen no están asociados,
-        afiliados, respaldados ni patrocinados por Facebook o Instagram, ni han
-        sido revisados y certificados por los mismos.
-      </p>
-      <p className="mb-4">
-        En caso de adquirir alguno de los productos ofrecidos por el responsable
-        del tratamiento, no se brinda garantía de que ganará dinero con las
-        técnicas e ideas de los materiales proporcionados.
-      </p>
-      <p className="mb-4">
-        Esta Política de privacidad puede estar sujeta adicionalmente a nuestros
-        Términos de servicio particulares (en caso de que existan) para aquellos
-        usuarios que hagan manejo de los mismos. En caso de que se generen
-        modificaciones sustanciales a las políticas aquí previstas o en general
-        a las políticas de tratamiento de datos que ostente ISACAR CONSULTING
-        SAS, estas serán informadas a través de medios idóneos a los Usuarios
-        registrados en nuestras bases de datos.
-      </p>
-      <p>ISACAR CONSULTING SAS GERENTE PRINCIPAL: Diego Martin Rullier.</p>
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">Menores de Edad</h2>
+        <p className="text-gray-600">
+          No se recopilará a sabiendas información de identificación personal de niños menores de dieciséis (16) años. Si tiene menos de 
+          dieciséis (16) años, debe pedir permiso a sus padres o tutores.
+        </p>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">Cookies</h2>
+        <p className="text-gray-600">
+          FUNDACION LLAVE PARA LAS NACIONES utiliza cookies y tecnologías similares para recopilar datos de los usuarios. Puede rechazar 
+          o eliminar cookies configurando su navegador.
+        </p>
+      </section>
+
+      <footer className="text-center mt-10">
+        <p className="text-gray-500">FUNDACION LLAVE PARA LAS NACIONES | Gerente Principal: Diego Martin Rullier</p>
+      </footer>
     </div>
   );
 }
