@@ -74,6 +74,20 @@ export default function PoliticasPrivacidad() {
       </section>
 
       <section className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">Uso de Google Analytics</h2>
+        <p className="text-gray-600">
+          Esta aplicación utiliza Google Analytics para ayudarnos a analizar cómo utilizas la aplicación y mejorar el producto. Gracias a Google Analytics, sabemos cuánto tiempo utilizas la aplicación, qué tipo de dispositivo estás usando y de dónde eres. Para más información, visita <a href="https://support.google.com/analytics/answer/6004245?hl=en" className="text-blue-500 underline">este enlace</a>.
+        </p>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">Publicidad</h2>
+        <p className="text-gray-600">
+          La política de privacidad de Google Admob se encuentra <a href="https://support.google.com/admob/answer/6128543?hl=es" className="text-blue-500 underline">aquí</a>. Los proveedores externos, incluido Google, utilizan cookies para mostrar anuncios basados en las visitas anteriores de un usuario a nuestro sitio web. Puede optar por no utilizar la cookie de DoubleClick visitando la <a href="https://adssettings.google.com/authenticated" className="text-blue-500 underline">Configuración de anuncios</a> o sobre desactivación en <a href="http://www.aboutads.info/choices/" className="text-blue-500 underline">aboutads.info</a>.
+        </p>
+      </section>
+
+      <section className="mb-8">
         <h2 className="text-xl font-semibold text-gray-700 mb-4">Política de Privacidad para Google Play</h2>
         <p className="text-gray-600">
           Para cumplir con los requisitos de Google Play, nuestra política de privacidad estará disponible en una URL activa 
