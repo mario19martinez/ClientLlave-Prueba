@@ -75,7 +75,7 @@ function ClaseDetailUser({ claseId }) {
           });
           setProgreso(response.data);
         } catch (error) {
-          console.error("error al obtener el progreso:", error);
+          console.error("Error al obtener el progreso:", error);
         }
       };
       fetchRegistro();
@@ -88,18 +88,14 @@ function ClaseDetailUser({ claseId }) {
         const player = new window.YT.Player(`youtubePlayer-${claseId}`, {
           videoId: extractYoutubeVideoId(clase.url),
           playerVars: {
-            controls: 1, // Oculta los controles del video
-            disablekb: 1, // Desactiva el teclado para evitar que se use el teclado para manipular el video
-            modestbranding: 1, // Muestra menos marcas de YouTube
-            playsinline: 1, // Permite la reproducción en línea en dispositivos móviles
-            showinfo: 0, // No muestra la información del video (incluyendo la barra de progreso)
-            iv_load_policy: 3, // Desactiva las anotaciones
-            rel: 1, // Evita que se muestren videos recomendados al final
-            fs: 1, // Desactiva el botón de pantalla completa
-            autoplay: 1, // Auto-reproduce el video
-            loop: 0,
-
-            playlist: extractYoutubeVideoId(clase.url), // Asegura que no se muestre la barra de progreso
+            controls: 1,
+            disablekb: 1,
+            modestbranding: 1,
+            playsinline: 1,
+            rel: 0, // Mostrar videos del mismo canal al final
+            fs: 1, // Permitir pantalla completa
+            autoplay: 0, // Desactivar reproducción automática
+            iv_load_policy: 3,
           },
           events: {
             onStateChange: (event) => {
@@ -108,20 +104,15 @@ function ClaseDetailUser({ claseId }) {
                   const currentTime = event.target.getCurrentTime();
                   const duration = event.target.getDuration();
                   const newProgreso = (currentTime / duration) * 100;
-      
-                  console.log(`Current Time: ${currentTime}, Duration: ${duration}, New Progreso: ${newProgreso}`);
-      
+
                   setProgreso((prevProgresos) => ({
                     ...prevProgresos,
                     [claseId]: newProgreso,
                   }));
-      
-                  const lastSavedProgreso = progreso[claseId] || 0;
-      
+
                   if (newProgreso >= 100) {
                     clearInterval(intervalId);
-                    console.log("Progreso completo, intervalo detenido.");
-                  } else if (newProgreso - lastSavedProgreso >= 5) {
+                  } else if (newProgreso - (progreso[claseId] || 0) >= 5) {
                     try {
                       await axios.post("/movimiento-usuario", {
                         userSub: userInfo.sub,
@@ -129,30 +120,23 @@ function ClaseDetailUser({ claseId }) {
                         claseId,
                         progreso: newProgreso,
                       });
-                      console.log("Progreso enviado al backend:", newProgreso);
                     } catch (error) {
                       console.error("Error al actualizar el progreso:", error);
                     }
                   }
                 }, 60000);
-      
+
                 player.intervalId = intervalId;
               } else if (
                 event.data === window.YT.PlayerState.PAUSED ||
                 event.data === window.YT.PlayerState.ENDED
               ) {
                 clearInterval(player.intervalId);
-                player.intervalId = null;
-                console.log("Reproductor pausado o terminado, intervalo limpiado.");
-              } else if (event.data === window.YT.PlayerState.BUFFERING) {
-                alert(
-                  "Para aprovechar al máximo el contenido y no perder ningún detalle importante, te recomendamos ver la clase en su totalidad sin adelantar. ¡Cada minuto cuenta para tu aprendizaje!"
-                )
               }
             },
           },
         });
-      
+
         setYoutubePlayer(player);
       };
 
@@ -246,7 +230,7 @@ function ClaseDetailUser({ claseId }) {
     }
   };
 
-  if (loading){
+  if (loading) {
     return (
       <div className="fixed inset-0 flex justify-center items-center">
         <div className="text-center">
@@ -264,7 +248,7 @@ function ClaseDetailUser({ claseId }) {
           <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
           <p className="text-red-500 mt-4 font-semibold">Oops! Algo salió mal. Vuelve a intentarlo en un momento.</p>
           <p className="text-red-500 mt-4 font-semibold">
-          <SentimentVeryDissatisfiedIcon fontSize="large" />
+            <SentimentVeryDissatisfiedIcon fontSize="large" />
           </p>
         </div>
       </div>
