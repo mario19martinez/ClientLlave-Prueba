@@ -1,26 +1,25 @@
 import Modal from "react-modal";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import {
   TextField,
   Button,
-  Checkbox,
+  Switch,
   FormControlLabel,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
+import UploadWidget from "../../../UploadWidget/UploadWidget";
 
 Modal.setAppElement("#root");
 
-export default function EditarDiplomatura({
-  isOpen,
-  onRequestClose,
-  diplomaturaData,
-  onUpdated,
-}) {
+export default function EditarDiplomatura({ isOpen, onRequestClose, diplomaturaData, onUpdated }) {
+  const [previewImage, setPreviewImage] = useState("");
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -43,14 +42,18 @@ export default function EditarDiplomatura({
       try {
         await axios.put(`/diplomatura/${diplomaturaData.id}`, values);
         toast.success("Diplomatura actualizada con éxito");
-        onUpdated(); // para recargar la lista
-        onRequestClose(); // cerrar modal
+        onUpdated();
+        onRequestClose();
       } catch (error) {
         console.error("Error al actualizar diplomatura:", error);
         toast.error("Error al actualizar diplomatura");
       }
     },
   });
+
+  useEffect(() => {
+    setPreviewImage(formik.values.image);
+  }, [formik.values.image]);
 
   return (
     <Modal
@@ -70,7 +73,7 @@ export default function EditarDiplomatura({
         Editar diplomatura
       </h2>
 
-      <form onSubmit={formik.handleSubmit} className="space-y-4">
+      <form onSubmit={formik.handleSubmit} className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <TextField
             label="Nombre"
@@ -93,16 +96,39 @@ export default function EditarDiplomatura({
           />
         </div>
 
-        <TextField
-          label="Imagen (URL)"
-          name="image"
-          fullWidth
-          size="small"
-          value={formik.values.image}
-          onChange={formik.handleChange}
-          error={formik.touched.image && Boolean(formik.errors.image)}
-          helperText={formik.touched.image && formik.errors.image}
-        />
+        <div className="flex items-center gap-4">
+          <TextField
+            label="Imagen (URL)"
+            name="image"
+            fullWidth
+            size="small"
+            value={formik.values.image}
+            onChange={formik.handleChange}
+            error={formik.touched.image && Boolean(formik.errors.image)}
+            helperText={formik.touched.image && formik.errors.image}
+          />
+
+          <Tooltip title="Subir imagen con Cloudinary">
+            <div>
+              <UploadWidget
+                onImageUpload={(url) => {
+                  formik.setFieldValue("image", url);
+                  setPreviewImage(url);
+                }}
+              />
+            </div>
+          </Tooltip>
+        </div>
+
+        {previewImage && (
+          <div className="mt-2 text-center">
+            <img
+              src={previewImage}
+              alt="Vista previa"
+              className="w-full h-40 object-cover rounded border"
+            />
+          </div>
+        )}
 
         <TextField
           label="Descripción"
@@ -117,7 +143,7 @@ export default function EditarDiplomatura({
 
         <FormControlLabel
           control={
-            <Checkbox
+            <Switch
               name="certificacion"
               checked={formik.values.certificacion}
               onChange={formik.handleChange}

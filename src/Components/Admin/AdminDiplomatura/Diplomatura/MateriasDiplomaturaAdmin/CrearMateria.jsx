@@ -2,36 +2,32 @@ import Modal from "react-modal";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import {
   TextField,
   Button,
-  Switch,
-  FormControlLabel,
   IconButton,
   Tooltip,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import UploadWidget from "../../../UploadWidget/UploadWidget";
+import UploadWidget from "../../../../UploadWidget/UploadWidget";
 import { toast } from "react-toastify";
-import { useState, useEffect } from "react";
 
 Modal.setAppElement("#root");
 
-export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) {
+export default function CrearMateria({ isOpen, onRequestClose, diplomaturaId, onCreated }) {
   const [previewImage, setPreviewImage] = useState("");
 
   const formik = useFormik({
     initialValues: {
       name: "",
       image: "",
-      certificacion: false,
       description: "",
       precio: "",
     },
     validationSchema: Yup.object({
-      name: Yup.string().trim().required("El nombre es obligatorio."),
+      name: Yup.string().required("El nombre es obligatorio."),
       image: Yup.string().url("Debe ser una URL válida").nullable(),
-      certificacion: Yup.boolean(),
       description: Yup.string(),
       precio: Yup.number()
         .min(0, "Debe ser mayor o igual a 0")
@@ -39,14 +35,14 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
-        await axios.post("/diplomatura", values);
-        toast.success("Diplomatura creada con éxito");
+        const res = await axios.post(`/diplomatura/${diplomaturaId}/materia`, values);
+        toast.success("Materia creada con éxito");
         resetForm();
-        onCreated();
-        onRequestClose();
+        onCreated(); // notifica al padre para recargar
+        onRequestClose(); // cierra modal
       } catch (error) {
-        console.error("Error al crear diplomatura:", error);
-        toast.error("Error al crear diplomatura");
+        console.error("Error al crear materia:", error);
+        toast.error("No se pudo crear la materia");
       }
     },
   });
@@ -70,30 +66,20 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
       </IconButton>
 
       <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">
-        Crear diplomatura
+        Crear materia
       </h2>
 
       <form onSubmit={formik.handleSubmit} className="space-y-5">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <TextField
-            label="Nombre"
-            name="name"
-            size="small"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            error={formik.touched.name && Boolean(formik.errors.name)}
-            helperText={formik.touched.name && formik.errors.name}
-          />
-          <TextField
-            label="Precio"
-            name="precio"
-            size="small"
-            value={formik.values.precio}
-            onChange={formik.handleChange}
-            error={formik.touched.precio && Boolean(formik.errors.precio)}
-            helperText={formik.touched.precio && formik.errors.precio}
-          />
-        </div>
+        <TextField
+          label="Nombre"
+          name="name"
+          fullWidth
+          size="small"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
+        />
 
         <div className="flex items-center gap-4">
           <TextField
@@ -139,16 +125,15 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
           onChange={formik.handleChange}
         />
 
-        <FormControlLabel
-          control={
-            <Switch
-              name="certificacion"
-              checked={formik.values.certificacion}
-              onChange={formik.handleChange}
-              color="primary"
-            />
-          }
-          label="Incluye certificación"
+        <TextField
+          label="Precio"
+          name="precio"
+          fullWidth
+          size="small"
+          value={formik.values.precio}
+          onChange={formik.handleChange}
+          error={formik.touched.precio && Boolean(formik.errors.precio)}
+          helperText={formik.touched.precio && formik.errors.precio}
         />
 
         <Button
@@ -157,7 +142,7 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
           variant="contained"
           className="!bg-blue-600 hover:!bg-blue-700 text-white font-semibold py-2"
         >
-          Registrar Diplomatura
+          Crear Materia
         </Button>
       </form>
     </Modal>
