@@ -137,6 +137,7 @@ import ViewUserHistorial from "./views/ViewAdmin/ViewUserHistorial/ViewUserHisto
 import ViewSeguimientoGeneral from "./views/ViewAdmin/ViewRegistroActividad/ViewSeguimientoGeneral";
 import ViewAdminDiplomatura from "./views/ViewAdmin/ViewAdminDiplomaturas/ViewAdminDiplomatura";
 import ViewDiplomaturaDetailsAdmin from "./views/ViewAdmin/ViewAdminDiplomaturas/ViewDiplomaturaDetailsAdmin";
+import ViewAdminMateria from "./views/ViewAdmin/ViewAdminDiplomaturas/ViewAdminMateria";
 
 //imports editor
 import ViewEscritorioEditor from "./views/ViewEditor/ViewEscritorioEditor";
@@ -289,7 +290,7 @@ function App() {
             <Route path="/admin/nivel/:nivelId/grupo/:grupoId" element={isLoggedIn? <ViewSeguimientoGeneral /> : <Navigate to="/login" />} />
             <Route path="/admin/diplomaturas" element={isLoggedIn? <ViewAdminDiplomatura /> : <Navigate to="/login" />} />
             <Route path="/admin/diplomaturas/detalles/:diplomaturaId" element={isLoggedIn? <ViewDiplomaturaDetailsAdmin /> : <Navigate to="/login" />} />
-
+            <Route path="/admin/diplomaturas/:diplomaturaId/materia/:materiaId" element={isLoggedIn? <ViewAdminMateria /> : <Navigate to="/login" />} />
           </>
         )}
         
