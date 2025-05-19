@@ -8,18 +8,22 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import NivelCreate from "./NivelCreate";
 import CircularProgress from '@mui/material/CircularProgress';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import ReactPaginate from 'react-paginate';
 
 function NivelAdmin() {
   const [niveles, setNiveles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+
   const navigate = useNavigate();
+  const itemsPerPage = 6;
 
   useEffect(() => {
     const fetchNiveles = async () => {
       try {
-        const response = await axios.get("/niveles");
-        setNiveles(response.data);
+        const res = await axios.get("/niveles");
+        setNiveles(res.data);
       } catch (error) {
         console.error("Error al obtener los niveles:", error);
       } finally {
@@ -33,8 +37,8 @@ function NivelAdmin() {
     setShowModal(false);
     setLoading(true);
     try {
-      const response = await axios.get("/niveles");
-      setNiveles(response.data);
+      const res = await axios.get("/niveles");
+      setNiveles(res.data);
     } catch (error) {
       console.error("Error al obtener los niveles:", error);
     } finally {
@@ -42,70 +46,91 @@ function NivelAdmin() {
     }
   };
 
+  const handlePageClick = (event) => {
+    setCurrentPage(event.selected);
+  };
+
+  const offset = currentPage * itemsPerPage;
+  const currentItems = niveles.slice(offset, offset + itemsPerPage);
+  const pageCount = Math.ceil(niveles.length / itemsPerPage);
+
   return (
-    <div>
-      <div className="absolute top-0 right-36 mt-28 ml-96 p-4 w-3/5 h-auto -translate-x-20">
-        <h2 className="text-2xl font-bold mb-4 text-gray-700">Niveles</h2>
+    <div className="relative p-6 max-w-4xl mx-auto">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">Niveles</h2>
+
+      <div className="flex justify-end gap-4 mb-6">
         <button
           onClick={() => setShowModal(true)}
-          className="absolute top-0 right-0 mt-0 mr-8 h-16 bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded shadow transition"
         >
-          <PostAddIcon fontSize="large" />
-          <h1 className="text-xs text-white">Agregar</h1>
+          <PostAddIcon />
+          <span>Agregar</span>
         </button>
         <button
           onClick={() => navigate("/admin/deleted")}
-          className="absolute top-0 right-8 mt-0 mr-0 -translate-x-24 h-16 bg-red-500 font-semibold text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-300"
+          className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded shadow transition"
         >
-          <FolderDeleteIcon fontSize="large" />
-          <h1 className="text-xs text-white">Eliminar</h1>
+          <FolderDeleteIcon />
+          <span>Eliminados</span>
         </button>
-        {loading ? (
-          <div className="fixed inset-0 flex justify-center items-center">
+      </div>
+
+      {loading ? (
+        <div className="flex justify-center items-center h-48">
           <div className="text-center">
-          <p className="text-gray-600 mt-4 font-semibold">Cargando Niveles...</p>
-          <CircularProgress />
+            <p className="text-gray-600 font-medium mb-2">Cargando Niveles...</p>
+            <CircularProgress />
           </div>
-          </div>
-        ) : niveles.length === 0 ? (
-          <div className="fixed inset-0 flex justify-center items-center">
+        </div>
+      ) : niveles.length === 0 ? (
+        <div className="flex justify-center items-center h-48">
           <div className="text-center">
-          <p className="text-gray-600 mt-4 font-semibold">No hay niveles disponibles.</p>
-          <p className="text-gray-600">
-          <SentimentVeryDissatisfiedIcon fontSize="large" />
-          </p>
+            <p className="text-gray-600 font-medium mb-2">No hay niveles disponibles.</p>
+            <SentimentVeryDissatisfiedIcon fontSize="large" />
           </div>
-          </div>
-        ) : (
-          <div>
-            {niveles.map((nivel) => (
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {currentItems.map((nivel) => (
               <Link to={`/nivel/${nivel.id}`} key={nivel.id}>
-                <div
-                  key={nivel.id}
-                  className="bg-gray-200 border-b-4 border-blue-500 rounded p-2 mb-4 hover:bg-gray-300 transition duration-300 translate-y-4"
-                >
-                  <strong className="block text-lg mb-2 font-bold text-gray-800">
-                    {nivel.name}
-                  </strong>
+                <div className="bg-white border border-blue-400 rounded-md shadow hover:bg-blue-50 p-4 transition">
+                  <strong className="text-lg text-gray-800">{nivel.name}</strong>
                 </div>
               </Link>
             ))}
           </div>
-        )}
-      </div>
+
+          <div className="mt-6 flex justify-center">
+            <ReactPaginate
+              previousLabel="<"
+              nextLabel=">"
+              pageCount={pageCount}
+              onPageChange={handlePageClick}
+              containerClassName="flex gap-2"
+              pageClassName="px-3 py-1 border rounded hover:bg-gray-200"
+              activeClassName="bg-blue-500 text-white"
+              previousClassName="px-3 py-1 border rounded"
+              nextClassName="px-3 py-1 border rounded"
+              disabledClassName="text-gray-400"
+            />
+          </div>
+        </>
+      )}
+
       <Modal
         isOpen={showModal}
         onRequestClose={() => setShowModal(false)}
         className="modal"
         contentLabel="Agregar Nivel"
-        shouldCloseOnOverlayClick={true}
-        shouldCloseOnEsc={true}
+        shouldCloseOnOverlayClick
+        shouldCloseOnEsc
       >
-        <div className="modal-content p-0 w-2/5 h-screen mx-auto rounded-lg shadow-lg">
+        <div className="modal-content p-0 w-full max-w-lg h-screen mx-auto rounded-lg shadow-lg">
           <NivelCreate closeModalAndReload={closeModalAndReload} />
           <button
             onClick={() => setShowModal(false)}
-            className="absolute top-1 hover:text-red-400 text-gray-500 rounded-full"
+            className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
           >
             <CancelIcon fontSize="large" />
           </button>
