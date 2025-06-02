@@ -34,6 +34,8 @@ import ViewPlanes from "./views/ViewPlanes/ViewPlanes";
 import ViewPlanesDetailsHome from "./views/ViewPlanes/ViewPlanesDetails";
 import ViewCompraStatus from "./views/ViewsEstadosDeCompra/ViewCompraStatus";
 import ViewDonacionRespuesta from "./views/ViewsEstadosDeCompra/ViewDonacionRespuesta";
+import ViewAllDiplomaturas from "./views/ViewDiplomaturas/ViewAllDiplomaturas";
+import ViewDetallesVentaDiplomatura from "./views/ViewDiplomaturas/ViewDetallesVentaDiplomatura";
 
 //Imports de estudiantes
 import ViewMenuStudent from "./views/ViewMenuStudent/ViewMenuStudent";
@@ -138,6 +140,7 @@ import ViewSeguimientoGeneral from "./views/ViewAdmin/ViewRegistroActividad/View
 import ViewAdminDiplomatura from "./views/ViewAdmin/ViewAdminDiplomaturas/ViewAdminDiplomatura";
 import ViewDiplomaturaDetailsAdmin from "./views/ViewAdmin/ViewAdminDiplomaturas/ViewDiplomaturaDetailsAdmin";
 import ViewAdminMateria from "./views/ViewAdmin/ViewAdminDiplomaturas/ViewAdminMateria";
+import ViewAdminModuloMateria from "./views/ViewAdmin/ViewAdminDiplomaturas/ViewAdminModuloMateria";
 
 //imports editor
 import ViewEscritorioEditor from "./views/ViewEditor/ViewEscritorioEditor";
@@ -291,6 +294,7 @@ function App() {
             <Route path="/admin/diplomaturas" element={isLoggedIn? <ViewAdminDiplomatura /> : <Navigate to="/login" />} />
             <Route path="/admin/diplomaturas/detalles/:diplomaturaId" element={isLoggedIn? <ViewDiplomaturaDetailsAdmin /> : <Navigate to="/login" />} />
             <Route path="/admin/diplomaturas/:diplomaturaId/materia/:materiaId" element={isLoggedIn? <ViewAdminMateria /> : <Navigate to="/login" />} />
+            <Route path="/admin/diplomaturas/:diplomaturaId/materia/:materiaId/modulo/:moduloId" element={isLoggedIn? <ViewAdminModuloMateria /> : <Navigate to="/login" />} />
           </>
         )}
         
@@ -357,6 +361,8 @@ function App() {
         <Route path="/Planes/:idPlan" element={<ViewPlanesDetailsHome/>} />
         <Route path="/Compra_Status" element={<ViewCompraStatus/>} />
         <Route path="/Donacion_Respuesta" element={<ViewDonacionRespuesta/>} />
+        <Route path="/Diplomaturas" element={<ViewAllDiplomaturas />} />
+        <Route path="/Diplomaturas/:diplomaturaId" element={<ViewDetallesVentaDiplomatura />} />
         {/*<Route path="/cursos" element={<Cursos />} />*/}
     
         {/*Rutas pagina no asociadas */}

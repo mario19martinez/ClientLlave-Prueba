@@ -8,12 +8,15 @@ import ModulosMateriaAdmin from "../../../Components/Admin/AdminDiplomatura/Dipl
 export default function ViewAdminMateria() {
   const [selectedTab] = useState("Diplomaturas");
 
-  // Estado que se usará como "trigger" para actualizar los módulos
+  // Estado para actualizar los módulos después de creación/edición
   const [refrescarModulos, setRefrescarModulos] = useState(false);
 
-  // Función que alterna el valor para forzar el useEffect en ModulosMateriaAdmin
+  // Estados globales de búsqueda y filtro
+  const [search, setSearch] = useState("");
+
+  // Toggle para refrescar useEffect en ModulosMateriaAdmin
   const handleModulosActualizados = () => {
-    setRefrescarModulos(prev => !prev);
+    setRefrescarModulos((prev) => !prev);
   };
 
   return (
@@ -21,10 +24,17 @@ export default function ViewAdminMateria() {
       <NavAdmin />
       <div className="flex">
         <SidebarAdmin selectedTab={selectedTab} />
-        <div>
+        <div className="flex-1 px-6">
           <DetallesMateriaAdmin />
-          <AdministrarModulos onModulosChange={handleModulosActualizados} />
-          <ModulosMateriaAdmin refreshTrigger={refrescarModulos} />
+          <AdministrarModulos
+            search={search}
+            setSearch={setSearch}
+            onModulosChange={handleModulosActualizados}
+          />
+          <ModulosMateriaAdmin
+            refreshTrigger={refrescarModulos}
+            search={search}
+          />
         </div>
       </div>
     </div>
