@@ -1,10 +1,6 @@
 import { useState } from "react";
 import {
   TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Button,
   Tooltip,
 } from "@mui/material";
@@ -13,14 +9,8 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import PropTypes from "prop-types";
 import GestionarModulos from "./GestionarModulos";
 
-export default function AdministrarModulos({ search, setSearch, filter, setFilter, onModulosChange }) {
-  const [selectedOption, setSelectedOption] = useState("");
+export default function AdministrarModulos({ search, setSearch, onModulosChange }) {
   const [isGestionarOpen, setIsGestionarOpen] = useState(false);
-
-  const handleFilterChange = (e) => {
-    setSelectedOption(e.target.value);
-    setFilter(e.target.value);
-  };
 
   return (
     <>
@@ -35,24 +25,6 @@ export default function AdministrarModulos({ search, setSearch, filter, setFilte
             onChange={(e) => setSearch(e.target.value)}
             className="w-full md:w-1/3"
           />
-
-          {/* Filtro */}
-          <FormControl size="small" className="w-full md:w-1/4">
-            <InputLabel id="filter-modulo-label">Filtrar por</InputLabel>
-            <Select
-              labelId="filter-modulo-label"
-              value={selectedOption}
-              label="Filtrar por"
-              onChange={handleFilterChange}
-            >
-              <MenuItem value="">Todos</MenuItem>
-              <MenuItem value="nombre_az">Nombre A-Z</MenuItem>
-              <MenuItem value="nombre_za">Nombre Z-A</MenuItem>
-              <MenuItem value="precio_asc">Precio ascendente</MenuItem>
-              <MenuItem value="precio_desc">Precio descendente</MenuItem>
-              <MenuItem value="creacion_desc">Más recientes</MenuItem>
-            </Select>
-          </FormControl>
 
           {/* Botones */}
           <div className="flex gap-2">
@@ -92,7 +64,7 @@ export default function AdministrarModulos({ search, setSearch, filter, setFilte
       <GestionarModulos
         isOpen={isGestionarOpen}
         onRequestClose={() => setIsGestionarOpen(false)}
-        onModulosUpdate={onModulosChange} // 👈 Prop clave para actualizar
+        onModulosUpdate={onModulosChange}
       />
     </>
   );
@@ -101,7 +73,5 @@ export default function AdministrarModulos({ search, setSearch, filter, setFilte
 AdministrarModulos.propTypes = {
   search: PropTypes.string.isRequired,
   setSearch: PropTypes.func.isRequired,
-  filter: PropTypes.string.isRequired,
-  setFilter: PropTypes.func.isRequired,
-  onModulosChange: PropTypes.func, 
+  onModulosChange: PropTypes.func,
 };

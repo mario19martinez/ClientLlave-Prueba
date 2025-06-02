@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -6,14 +5,19 @@ import {
   DialogActions,
   TextField,
   Button,
-  IconButton,
-  MenuItem,
   Typography,
-  Select,
-  InputLabel,
-  FormControl,
   Box,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
+  IconButton,
 } from "@mui/material";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import {
   ArrowUpward,
   ArrowDownward,
@@ -21,15 +25,11 @@ import {
   Delete,
   Add,
 } from "@mui/icons-material";
-import { useParams } from "react-router-dom";
-import Modal from "react-modal";
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
 import axios from "axios";
 
-// ==========================
-// Submodal para preguntas
-// ==========================
+const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+// Submodal para editar preguntas
 function PreguntasModal({ isOpen, onClose, preguntas, setPreguntas }) {
   const [tipo, setTipo] = useState("multiple");
   const [enunciado, setEnunciado] = useState("");
@@ -37,7 +37,6 @@ function PreguntasModal({ isOpen, onClose, preguntas, setPreguntas }) {
   const [respuesta, setRespuesta] = useState("A");
   const [modoEditar, setModoEditar] = useState(false);
   const [indiceEditando, setIndiceEditando] = useState(null);
-  const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
   const limpiarFormulario = () => {
     setTipo("multiple");
@@ -98,7 +97,7 @@ function PreguntasModal({ isOpen, onClose, preguntas, setPreguntas }) {
 
   return (
     <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>Preguntas del módulo</DialogTitle>
+      <DialogTitle>Editar Preguntas del módulo</DialogTitle>
       <DialogContent dividers>
         {preguntas.map((p, i) => (
           <Box
@@ -112,7 +111,7 @@ function PreguntasModal({ isOpen, onClose, preguntas, setPreguntas }) {
             mb={1}
           >
             <Typography>
-              <strong>{i + 1}.</strong> [{p.tipo.toUpperCase()}] {p.enunciado}
+              <strong>{i + 1}.</strong> [{p.tipo}] {p.enunciado}
             </Typography>
             <Box>
               <IconButton onClick={() => moverPregunta(i, -1)} size="small">
@@ -131,7 +130,7 @@ function PreguntasModal({ isOpen, onClose, preguntas, setPreguntas }) {
           </Box>
         ))}
 
-        <Box mt={3}>
+        <Box mt={2}>
           <TextField
             fullWidth
             label="Enunciado de la pregunta"
@@ -142,7 +141,7 @@ function PreguntasModal({ isOpen, onClose, preguntas, setPreguntas }) {
 
           <FormControl fullWidth margin="normal">
             <InputLabel>Tipo de pregunta</InputLabel>
-            <Select value={tipo} onChange={(e) => setTipo(e.target.value)} label="Tipo de pregunta">
+            <Select value={tipo} onChange={(e) => setTipo(e.target.value)}>
               <MenuItem value="multiple">Opción múltiple</MenuItem>
               <MenuItem value="vf">Verdadero / Falso</MenuItem>
             </Select>
@@ -164,11 +163,7 @@ function PreguntasModal({ isOpen, onClose, preguntas, setPreguntas }) {
                   margin="dense"
                 />
               ))}
-              <Button
-                startIcon={<Add />}
-                onClick={() => setOpciones([...opciones, ""])}
-                sx={{ mt: 1 }}
-              >
+              <Button startIcon={<Add />} onClick={() => setOpciones([...opciones, ""])}>
                 Agregar opción
               </Button>
 
@@ -177,7 +172,6 @@ function PreguntasModal({ isOpen, onClose, preguntas, setPreguntas }) {
                 <Select
                   value={respuesta}
                   onChange={(e) => setRespuesta(e.target.value)}
-                  label="Respuesta correcta"
                 >
                   {opciones.map((_, i) => (
                     <MenuItem key={i} value={letras[i]}>
@@ -193,7 +187,6 @@ function PreguntasModal({ isOpen, onClose, preguntas, setPreguntas }) {
               <Select
                 value={respuesta}
                 onChange={(e) => setRespuesta(e.target.value)}
-                label="Respuesta"
               >
                 <MenuItem value="true">Verdadero</MenuItem>
                 <MenuItem value="false">Falso</MenuItem>
@@ -215,13 +208,14 @@ function PreguntasModal({ isOpen, onClose, preguntas, setPreguntas }) {
   );
 }
 
-// ==========================
-// Modal principal
-// ==========================
-export default function CrearModulos({ isOpen, onRequestClose }) {
+export default function EditarModulo({ isOpen, onClose, modulo, onUpdate }) {
   const { materiaId } = useParams();
-  const [preguntas, setPreguntas] = useState([]);
-  const [showPreguntas, setShowPreguntas] = useState(false);
+  const [preguntas, setPreguntas] = useState(modulo.preguntas || []);
+  const [abrirPreguntas, setAbrirPreguntas] = useState(false);
+
+  useEffect(() => {
+    setPreguntas(modulo.preguntas || []);
+  }, [modulo]);
 
   const validationSchema = Yup.object({
     titulo: Yup.string().required("El título es obligatorio"),
@@ -231,111 +225,109 @@ export default function CrearModulos({ isOpen, onRequestClose }) {
   });
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onRequestClose}
-      className="z-50 w-[90%] max-w-3xl bg-white rounded-lg p-6"
-      overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-center items-center"
-    >
-      <Typography variant="h6" gutterBottom>
-        Crear nuevo módulo
-      </Typography>
+    <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="md">
+      <DialogTitle>Editar Módulo</DialogTitle>
+      <DialogContent dividers>
+        <Formik
+          initialValues={{
+            titulo: modulo.titulo || "",
+            descripcion: modulo.descripcion || "",
+            contenido: modulo.contenido || "",
+            precio: modulo.precio || 0,
+          }}
+          enableReinitialize
+          validationSchema={validationSchema}
+          onSubmit={async (values) => {
+            const datosFinales = {
+              ...values,
+              preguntas,
+              activo: modulo.activo,
+            };
 
-      <Formik
-        initialValues={{
-          titulo: "",
-          descripcion: "",
-          contenido: "",
-          precio: 0,
-        }}
-        validationSchema={validationSchema}
-        onSubmit={async (values) => {
-          const datosFinales = {
-            ...values,
-            preguntas,
-            activo: false,
-          };
+            try {
+              await axios.put(`/materia/${materiaId}/modulo/${modulo.id}`, datosFinales);
+              toast.success("✅ Módulo actualizado correctamente");
+              onUpdate?.();
+              onClose();
+            } catch (error) {
+              console.error("Error al editar módulo:", error);
+              toast.error("❌ Error al actualizar el módulo");
+            }
+          }}
+        >
+          {({ values, handleChange, handleSubmit, errors, touched }) => (
+            <Form onSubmit={handleSubmit}>
+              <TextField
+                fullWidth
+                label="Título"
+                name="titulo"
+                value={values.titulo}
+                onChange={handleChange}
+                error={touched.titulo && !!errors.titulo}
+                helperText={touched.titulo && errors.titulo}
+                margin="dense"
+              />
 
-          try {
-            await axios.post(`/materia/${materiaId}/modulo`, datosFinales);
-            onRequestClose();
-          } catch (error) {
-            console.error("Error al crear módulo:", error);
-          }
-        }}
-      >
-        {({ values, handleChange, handleSubmit, errors, touched }) => (
-          <Form onSubmit={handleSubmit}>
-            <TextField
-              fullWidth
-              label="Título"
-              name="titulo"
-              value={values.titulo}
-              onChange={handleChange}
-              error={touched.titulo && !!errors.titulo}
-              helperText={touched.titulo && errors.titulo}
-              margin="dense"
-            />
+              <TextField
+                fullWidth
+                label="Descripción"
+                name="descripcion"
+                value={values.descripcion}
+                onChange={handleChange}
+                error={touched.descripcion && !!errors.descripcion}
+                helperText={touched.descripcion && errors.descripcion}
+                margin="dense"
+              />
 
-            <TextField
-              fullWidth
-              label="Descripción"
-              name="descripcion"
-              value={values.descripcion}
-              onChange={handleChange}
-              error={touched.descripcion && !!errors.descripcion}
-              helperText={touched.descripcion && errors.descripcion}
-              margin="dense"
-            />
+              <TextField
+                fullWidth
+                label="Contenido"
+                name="contenido"
+                multiline
+                rows={4}
+                value={values.contenido}
+                onChange={handleChange}
+                error={touched.contenido && !!errors.contenido}
+                helperText={touched.contenido && errors.contenido}
+                margin="dense"
+              />
 
-            <TextField
-              fullWidth
-              label="Contenido"
-              name="contenido"
-              multiline
-              rows={4}
-              value={values.contenido}
-              onChange={handleChange}
-              error={touched.contenido && !!errors.contenido}
-              helperText={touched.contenido && errors.contenido}
-              margin="dense"
-            />
+              <TextField
+                fullWidth
+                type="number"
+                label="Precio"
+                name="precio"
+                value={values.precio}
+                onChange={handleChange}
+                error={touched.precio && !!errors.precio}
+                helperText={touched.precio && errors.precio}
+                margin="dense"
+              />
 
-            <TextField
-              fullWidth
-              type="number"
-              label="Precio"
-              name="precio"
-              value={values.precio}
-              onChange={handleChange}
-              error={touched.precio && !!errors.precio}
-              helperText={touched.precio && errors.precio}
-              margin="dense"
-            />
-
-            <Box mt={3} display="flex" justifyContent="space-between" alignItems="center">
-              <Button variant="outlined" onClick={() => setShowPreguntas(true)}>
-                Gestionar Preguntas
-              </Button>
-              <Box display="flex" gap={2}>
-                <Button onClick={onRequestClose} variant="outlined" color="error">
-                  Cancelar
+              <Box mt={2} display="flex" justifyContent="space-between">
+                <Button variant="outlined" onClick={() => setAbrirPreguntas(true)}>
+                  Editar preguntas
                 </Button>
-                <Button type="submit" variant="contained" color="primary">
-                  Crear Módulo
-                </Button>
+                <Box display="flex" gap={1}>
+                  <Button onClick={onClose} variant="outlined" color="error">
+                    Cancelar
+                  </Button>
+                  <Button type="submit" variant="contained" color="primary">
+                    Guardar cambios
+                  </Button>
+                </Box>
               </Box>
-            </Box>
-          </Form>
-        )}
-      </Formik>
+            </Form>
+          )}
+        </Formik>
+      </DialogContent>
 
       <PreguntasModal
-        isOpen={showPreguntas}
-        onClose={() => setShowPreguntas(false)}
+        isOpen={abrirPreguntas}
+        onClose={() => setAbrirPreguntas(false)}
         preguntas={preguntas}
         setPreguntas={setPreguntas}
       />
-    </Modal>
+    </Dialog>
   );
 }
