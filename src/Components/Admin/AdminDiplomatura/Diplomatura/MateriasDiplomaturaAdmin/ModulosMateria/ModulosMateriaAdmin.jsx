@@ -1,3 +1,4 @@
+// ModulosMateriaAdmin.jsx
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -19,7 +20,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import EditarModulo from "./EditarModulo";
+import EditarModulo from "./EditarModulo"; // puedes renombrarlo más adelante
 
 import {
   DndContext,
@@ -57,7 +58,6 @@ function SortableItem({ modulo, index, onEdit, onDelete, onView }) {
       style={style}
       className="flex justify-between items-center bg-gray-50 hover:bg-gray-100 px-4 py-3 rounded-md border border-gray-200 shadow-sm transition-all group"
     >
-      {/* Título con número */}
       <div
         className="flex items-center gap-3 text-blue-800 font-semibold cursor-move"
         {...attributes}
@@ -66,8 +66,6 @@ function SortableItem({ modulo, index, onEdit, onDelete, onView }) {
         <span className="text-gray-500">{index + 1}.</span>
         <span className="truncate max-w-xs">{modulo.titulo}</span>
       </div>
-
-      {/* Acciones ocultas al pasar el mouse */}
       <div
         className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
         onClick={(e) => e.stopPropagation()}
@@ -82,7 +80,7 @@ function SortableItem({ modulo, index, onEdit, onDelete, onView }) {
             <ShowChartIcon fontSize="small" />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Editar módulo">
+        <Tooltip title="Editar clase">
           <IconButton
             size="small"
             onClick={() => onEdit(modulo)}
@@ -91,7 +89,7 @@ function SortableItem({ modulo, index, onEdit, onDelete, onView }) {
             <EditIcon fontSize="small" />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Eliminar módulo">
+        <Tooltip title="Eliminar clase">
           <IconButton
             size="small"
             onClick={() => onDelete(modulo)}
@@ -105,7 +103,6 @@ function SortableItem({ modulo, index, onEdit, onDelete, onView }) {
   );
 }
 
-// Componente principal
 export default function ModulosMateriaAdmin({ refreshTrigger, search }) {
   const { materiaId, diplomaturaId } = useParams();
   const navigate = useNavigate();
@@ -118,12 +115,12 @@ export default function ModulosMateriaAdmin({ refreshTrigger, search }) {
 
   const fetchModulos = async () => {
     try {
-      const res = await axios.get(`/materia/${materiaId}/modulos`);
+      const res = await axios.get(`/materia/${materiaId}/clases`);
       const activos = res.data.filter((m) => m.activo);
       const ordenados = activos.sort((a, b) => a.orden - b.orden);
       setModulos(ordenados);
     } catch (err) {
-      console.error("Error al obtener módulos:", err);
+      console.error("Error al obtener clases:", err);
     } finally {
       setLoading(false);
     }
@@ -138,9 +135,9 @@ export default function ModulosMateriaAdmin({ refreshTrigger, search }) {
     try {
       const actualizada = lista.map((m, i) => ({ ...m, orden: i + 1 }));
       setModulos(actualizada);
-      for (const modulo of actualizada) {
-        await axios.put(`/materia/${materiaId}/modulo/${modulo.id}`, {
-          orden: modulo.orden,
+      for (const clase of actualizada) {
+        await axios.put(`/materia/${materiaId}/clase/${clase.id}`, {
+          orden: clase.orden,
         });
       }
     } catch (error) {
@@ -159,13 +156,13 @@ export default function ModulosMateriaAdmin({ refreshTrigger, search }) {
 
   const eliminarModulo = async () => {
     try {
-      await axios.delete(`/materia/${materiaId}/modulo/${moduloAEliminar.id}`);
-      toast.success("✅ Módulo eliminado correctamente");
+      await axios.delete(`/materia/${materiaId}/clase/${moduloAEliminar.id}`);
+      toast.success("✅ Clase eliminada correctamente");
       setModuloAEliminar(null);
       fetchModulos();
     } catch (error) {
-      console.error("Error al eliminar módulo:", error);
-      toast.error("❌ Hubo un problema al eliminar el módulo");
+      console.error("Error al eliminar clase:", error);
+      toast.error("❌ Hubo un problema al eliminar la clase");
     }
   };
 
@@ -185,8 +182,8 @@ export default function ModulosMateriaAdmin({ refreshTrigger, search }) {
     return (
       <div className="flex flex-col items-center justify-center text-center py-20 text-gray-600">
         <InfoOutlinedIcon sx={{ fontSize: 60 }} className="text-blue-500 mb-4" />
-        <p className="text-xl font-semibold">No hay clases activos en esta materia.</p>
-        <p className="text-sm mt-1">Puedes crear uno desde la gestión de clases.</p>
+        <p className="text-xl font-semibold">No hay clases activas en esta materia.</p>
+        <p className="text-sm mt-1">Puedes crear una desde la gestión de clases.</p>
       </div>
     );
   }
@@ -215,13 +212,11 @@ export default function ModulosMateriaAdmin({ refreshTrigger, search }) {
         </SortableContext>
       </DndContext>
 
-      {/* Confirmar eliminación */}
       <Dialog open={!!moduloAEliminar} onClose={() => setModuloAEliminar(null)}>
-        <DialogTitle>¿Eliminar módulo?</DialogTitle>
+        <DialogTitle>¿Eliminar clase?</DialogTitle>
         <DialogContent>
           <Typography>
-            Estás a punto de eliminar el Clases <strong>{moduloAEliminar?.titulo}</strong>.
-            Esta acción no se puede deshacer.
+            Estás a punto de eliminar la clase <strong>{moduloAEliminar?.titulo}</strong>. Esta acción no se puede deshacer.
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -230,7 +225,6 @@ export default function ModulosMateriaAdmin({ refreshTrigger, search }) {
         </DialogActions>
       </Dialog>
 
-      {/* Modal Editar */}
       {moduloAEditar && (
         <EditarModulo
           isOpen={!!moduloAEditar}

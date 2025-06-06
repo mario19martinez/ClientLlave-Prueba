@@ -3,22 +3,23 @@ import {
   TextField,
   Button,
   Tooltip,
+  Box,
 } from "@mui/material";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PropTypes from "prop-types";
 import GestionarModulos from "./GestionarModulos";
 
-export default function AdministrarModulos({ search, setSearch, onModulosChange }) {
+export default function AdministrarModulos({ search, setSearch, onClasesChange }) {
   const [isGestionarOpen, setIsGestionarOpen] = useState(false);
 
   return (
     <>
-      <div className="bg-white shadow-md rounded-lg p-6 w-full mt-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          {/* Buscador */}
+      <Box className="bg-white shadow-md rounded-xl p-6 w-full mt-6 transition-all duration-300">
+        <Box className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          {/* Buscador de clases */}
           <TextField
-            label="Buscar módulos"
+            label="Buscar clases"
             variant="outlined"
             size="small"
             value={search}
@@ -26,20 +27,21 @@ export default function AdministrarModulos({ search, setSearch, onModulosChange 
             className="w-full md:w-1/3"
           />
 
-          {/* Botones */}
-          <div className="flex gap-2">
-            <Tooltip title="Ver estadísticas de ventas de módulos">
+          {/* Botones de acción */}
+          <Box className="flex gap-3">
+            <Tooltip title="Ver estadísticas de ventas de clases">
               <Button
                 variant="outlined"
                 color="primary"
                 startIcon={<ShowChartIcon />}
                 size="small"
+                sx={{ borderRadius: "12px", textTransform: "none" }}
               >
                 Ventas
               </Button>
             </Tooltip>
 
-            <Tooltip title="Crear, asignar u ordenar módulos">
+            <Tooltip title="Crear, asignar u organizar clases">
               <Button
                 variant="contained"
                 startIcon={<SettingsIcon />}
@@ -51,20 +53,22 @@ export default function AdministrarModulos({ search, setSearch, onModulosChange 
                     backgroundColor: "#2563EB",
                   },
                   color: "white",
+                  borderRadius: "12px",
+                  textTransform: "none",
                 }}
               >
                 Gestionar Clases
               </Button>
             </Tooltip>
-          </div>
-        </div>
-      </div>
+          </Box>
+        </Box>
+      </Box>
 
-      {/* Modal de gestión de módulos */}
+      {/* Modal de gestión de clases */}
       <GestionarModulos
         isOpen={isGestionarOpen}
         onRequestClose={() => setIsGestionarOpen(false)}
-        onModulosUpdate={onModulosChange}
+        onModulosUpdate={onClasesChange} 
       />
     </>
   );
@@ -73,5 +77,5 @@ export default function AdministrarModulos({ search, setSearch, onModulosChange 
 AdministrarModulos.propTypes = {
   search: PropTypes.string.isRequired,
   setSearch: PropTypes.func.isRequired,
-  onModulosChange: PropTypes.func,
+  onClasesChange: PropTypes.func, 
 };

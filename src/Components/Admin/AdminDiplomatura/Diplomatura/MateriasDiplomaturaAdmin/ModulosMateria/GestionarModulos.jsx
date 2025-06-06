@@ -20,8 +20,8 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CrearModulos from "./CrearMoudulos";
-import EditarModulo from "./EditarModulo";
+import CrearModulos from "./CrearMoudulos"; 
+import EditarModulo from "./EditarModulo";  
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -31,99 +31,99 @@ Modal.setAppElement("#root");
 
 export default function GestionarModulos({ isOpen, onRequestClose, onModulosUpdate }) {
   const { materiaId } = useParams();
-  const [modulos, setModulos] = useState([]);
+  const [clases, setClases] = useState([]);
   const [selectedAvailable, setSelectedAvailable] = useState([]);
   const [selectedAssigned, setSelectedAssigned] = useState([]);
   const [showCrearModal, setShowCrearModal] = useState(false);
-  const [moduloAEditar, setModuloAEditar] = useState(null);
-  const [moduloAEliminar, setModuloAEliminar] = useState(null);
+  const [claseAEditar, setClaseAEditar] = useState(null);
+  const [claseAEliminar, setClaseAEliminar] = useState(null);
 
-  const fetchModulos = async () => {
+  const fetchClases = async () => {
     try {
-      const res = await axios.get(`/materia/${materiaId}/modulos`);
-      setModulos(res.data);
+      const res = await axios.get(`/materia/${materiaId}/clases`);
+      setClases(res.data);
     } catch (err) {
-      console.error("Error al obtener los módulos:", err);
+      console.error("Error al obtener las clases:", err);
     }
   };
 
   useEffect(() => {
-    if (isOpen) fetchModulos();
+    if (isOpen) fetchClases();
   }, [isOpen]);
 
-  const toggleAvailable = (modulo) => {
+  const toggleAvailable = (clase) => {
     setSelectedAvailable((prev) =>
-      prev.some((m) => m.id === modulo.id)
-        ? prev.filter((m) => m.id !== modulo.id)
-        : [...prev, modulo]
+      prev.some((m) => m.id === clase.id)
+        ? prev.filter((m) => m.id !== clase.id)
+        : [...prev, clase]
     );
   };
 
-  const toggleAssigned = (modulo) => {
+  const toggleAssigned = (clase) => {
     setSelectedAssigned((prev) =>
-      prev.some((m) => m.id === modulo.id)
-        ? prev.filter((m) => m.id !== modulo.id)
-        : [...prev, modulo]
+      prev.some((m) => m.id === clase.id)
+        ? prev.filter((m) => m.id !== clase.id)
+        : [...prev, clase]
     );
   };
 
   const handleActivar = async () => {
     try {
       await Promise.all(
-        selectedAvailable.map((modulo) =>
-          axios.put(`/materia/${materiaId}/modulo/${modulo.id}`, { activo: true })
+        selectedAvailable.map((clase) =>
+          axios.put(`/materia/${materiaId}/clase/${clase.id}`, { activo: true })
         )
       );
-      toast.success("✅ Módulos activados correctamente");
+      toast.success("✅ Clases activadas correctamente");
       setSelectedAvailable([]);
-      fetchModulos();
+      fetchClases();
       onModulosUpdate?.();
     } catch (err) {
-      console.error("Error al activar módulos:", err);
-      toast.error("❌ Error al activar módulos");
+      console.error("Error al activar clases:", err);
+      toast.error("❌ Error al activar clases");
     }
   };
 
   const handleDesactivar = async () => {
     try {
       await Promise.all(
-        selectedAssigned.map((modulo) =>
-          axios.put(`/materia/${materiaId}/modulo/${modulo.id}`, { activo: false })
+        selectedAssigned.map((clase) =>
+          axios.put(`/materia/${materiaId}/clase/${clase.id}`, { activo: false })
         )
       );
-      toast.success("✅ Módulos desactivados correctamente");
+      toast.success("✅ Clases desactivadas correctamente");
       setSelectedAssigned([]);
-      fetchModulos();
+      fetchClases();
       onModulosUpdate?.();
     } catch (err) {
-      console.error("Error al desactivar módulos:", err);
-      toast.error("❌ Error al desactivar módulos");
+      console.error("Error al desactivar clases:", err);
+      toast.error("❌ Error al desactivar clases");
     }
   };
 
-  const handleEliminarModulo = async () => {
+  const handleEliminarClase = async () => {
     try {
-      await axios.delete(`/materia/${materiaId}/modulo/${moduloAEliminar.id}`);
-      toast.success("✅ Módulo eliminado");
-      setModuloAEliminar(null);
-      fetchModulos();
+      await axios.delete(`/materia/${materiaId}/clase/${claseAEliminar.id}`);
+      toast.success("✅ Clase eliminada");
+      setClaseAEliminar(null);
+      fetchClases();
       onModulosUpdate?.();
     } catch (err) {
-      console.error("Error al eliminar módulo:", err);
-      toast.error("❌ Error al eliminar módulo");
+      console.error("Error al eliminar clase:", err);
+      toast.error("❌ Error al eliminar clase");
     }
   };
 
-  const modulosDisponibles = modulos.filter((m) => !m.activo);
-  const modulosAsignados = modulos.filter((m) => m.activo);
+  const clasesDisponibles = clases.filter((m) => !m.activo);
+  const clasesAsignadas = clases.filter((m) => m.activo);
 
-  const renderModuloItem = (modulo, selectedList, toggleFn, isAsignado) => {
-    const isSelected = selectedList.some((m) => m.id === modulo.id);
+  const renderClaseItem = (clase, selectedList, toggleFn) => {
+    const isSelected = selectedList.some((m) => m.id === clase.id);
     return (
       <ListItemButton
-        key={modulo.id}
+        key={clase.id}
         selected={isSelected}
-        onClick={() => toggleFn(modulo)}
+        onClick={() => toggleFn(clase)}
         sx={{
           display: "flex",
           justifyContent: "space-between",
@@ -131,7 +131,7 @@ export default function GestionarModulos({ isOpen, onRequestClose, onModulosUpda
           "&.Mui-selected": {
             bgcolor: "#DBEAFE",
           },
-          "&:hover .modulo-actions": {
+          "&:hover .clase-actions": {
             opacity: 1,
           },
         }}
@@ -139,24 +139,24 @@ export default function GestionarModulos({ isOpen, onRequestClose, onModulosUpda
         <ListItemText
           primary={
             <div className="flex items-center justify-between w-full">
-              <span>{modulo.titulo}</span>
+              <span>{clase.titulo}</span>
               {isSelected && <CheckCircleIcon sx={{ color: "#3B82F6", fontSize: 20 }} />}
             </div>
           }
         />
-        <div className="modulo-actions opacity-0 transition-opacity duration-150 flex gap-2">
-          <Tooltip title="Editar módulo">
+        <div className="clase-actions opacity-0 transition-opacity duration-150 flex gap-2">
+          <Tooltip title="Editar clase">
             <IconButton size="small" onClick={(e) => {
               e.stopPropagation();
-              setModuloAEditar(modulo);
+              setClaseAEditar(clase);
             }}>
               <EditIcon fontSize="small" />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Eliminar módulo">
+          <Tooltip title="Eliminar clase">
             <IconButton size="small" onClick={(e) => {
               e.stopPropagation();
-              setModuloAEliminar(modulo);
+              setClaseAEliminar(clase);
             }}>
               <DeleteIcon fontSize="small" />
             </IconButton>
@@ -176,19 +176,19 @@ export default function GestionarModulos({ isOpen, onRequestClose, onModulosUpda
       >
         <div className="mb-6">
           <Typography variant="h5" className="font-bold text-gray-800">
-            Gestión de clase
+            Gestión de Clases
           </Typography>
           <Typography variant="body2" className="text-gray-500">
-            Crear, asignar o desasignar clase de la materia
+            Crear, asignar o desasignar clases de la materia
           </Typography>
         </div>
 
         <div className="mb-6">
-          <Tooltip title="Crear nuevo módulo">
+          <Tooltip title="Crear nueva clase">
             <Button
               variant="contained"
               startIcon={<AddIcon />}
-              sx={{ backgroundColor: "#3B82F6", color: "#fff" }}
+              sx={{ backgroundColor: "#3B82F6", color: "#fff", borderRadius: "10px" }}
               onClick={() => setShowCrearModal(true)}
             >
               Crear Clase
@@ -201,12 +201,12 @@ export default function GestionarModulos({ isOpen, onRequestClose, onModulosUpda
             <Typography variant="subtitle1" className="mb-2 font-semibold text-gray-700">
               Clases Disponibles
             </Typography>
-            <Paper variant="outlined" className="h-72 overflow-auto">
+            <Paper variant="outlined" className="h-72 overflow-auto rounded-lg">
               <List>
-                {modulosDisponibles.map((modulo) =>
-                  renderModuloItem(modulo, selectedAvailable, toggleAvailable, false)
+                {clasesDisponibles.map((clase) =>
+                  renderClaseItem(clase, selectedAvailable, toggleAvailable)
                 )}
-                {modulosDisponibles.length === 0 && (
+                {clasesDisponibles.length === 0 && (
                   <Typography variant="body2" color="textSecondary" className="px-4 py-2">
                     No hay clases disponibles.
                   </Typography>
@@ -228,7 +228,7 @@ export default function GestionarModulos({ isOpen, onRequestClose, onModulosUpda
             <Button
               variant="contained"
               startIcon={<ArrowForwardIcon />}
-              sx={{ backgroundColor: "#3B82F6", color: "#fff" }}
+              sx={{ backgroundColor: "#3B82F6", color: "#fff", borderRadius: "10px" }}
               disabled={selectedAvailable.length === 0}
               onClick={handleActivar}
             >
@@ -238,7 +238,7 @@ export default function GestionarModulos({ isOpen, onRequestClose, onModulosUpda
             <Button
               variant="contained"
               startIcon={<ArrowForwardIcon sx={{ transform: "rotate(180deg)" }} />}
-              sx={{ backgroundColor: "#EF4444", color: "#fff" }}
+              sx={{ backgroundColor: "#EF4444", color: "#fff", borderRadius: "10px" }}
               disabled={selectedAssigned.length === 0}
               onClick={handleDesactivar}
             >
@@ -248,16 +248,16 @@ export default function GestionarModulos({ isOpen, onRequestClose, onModulosUpda
 
           <Grid item xs={12} md={5}>
             <Typography variant="subtitle1" className="mb-2 font-semibold text-gray-700">
-              Clases de la Materia
+              Clases Asignadas
             </Typography>
-            <Paper variant="outlined" className="h-72 overflow-auto">
+            <Paper variant="outlined" className="h-72 overflow-auto rounded-lg">
               <List>
-                {modulosAsignados.map((modulo) =>
-                  renderModuloItem(modulo, selectedAssigned, toggleAssigned, true)
+                {clasesAsignadas.map((clase) =>
+                  renderClaseItem(clase, selectedAssigned, toggleAssigned)
                 )}
-                {modulosAsignados.length === 0 && (
+                {clasesAsignadas.length === 0 && (
                   <Typography variant="body2" color="textSecondary" className="px-4 py-2">
-                    No hay Clases asignados.
+                    No hay clases asignadas.
                   </Typography>
                 )}
               </List>
@@ -272,39 +272,39 @@ export default function GestionarModulos({ isOpen, onRequestClose, onModulosUpda
         </div>
       </Modal>
 
-      {/* Crear */}
+      {/* Crear Clase */}
       <CrearModulos
         isOpen={showCrearModal}
         onRequestClose={() => {
           setShowCrearModal(false);
-          fetchModulos();
+          fetchClases();
           onModulosUpdate?.();
         }}
       />
 
-      {/* Editar */}
-      {moduloAEditar && (
+      {/* Editar Clase */}
+      {claseAEditar && (
         <EditarModulo
-          isOpen={!!moduloAEditar}
-          onClose={() => setModuloAEditar(null)}
-          modulo={moduloAEditar}
+          isOpen={!!claseAEditar}
+          onClose={() => setClaseAEditar(null)}
+          modulo={claseAEditar}
           onUpdate={() => {
-            setModuloAEditar(null);
-            fetchModulos();
+            setClaseAEditar(null);
+            fetchClases();
             onModulosUpdate?.();
           }}
         />
       )}
 
       {/* Confirmar Eliminar */}
-      <Dialog open={!!moduloAEliminar} onClose={() => setModuloAEliminar(null)}>
-        <DialogTitle>¿Eliminar módulo?</DialogTitle>
+      <Dialog open={!!claseAEliminar} onClose={() => setClaseAEliminar(null)}>
+        <DialogTitle>¿Eliminar clase?</DialogTitle>
         <DialogContent>
-          ¿Estás seguro de que deseas eliminar el módulo <strong>{moduloAEliminar?.titulo}</strong>?
+          ¿Estás seguro de que deseas eliminar la clase <strong>{claseAEliminar?.titulo}</strong>?
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setModuloAEliminar(null)}>Cancelar</Button>
-          <Button color="error" onClick={handleEliminarModulo} variant="contained">
+          <Button onClick={() => setClaseAEliminar(null)}>Cancelar</Button>
+          <Button color="error" onClick={handleEliminarClase} variant="contained">
             Eliminar
           </Button>
         </DialogActions>

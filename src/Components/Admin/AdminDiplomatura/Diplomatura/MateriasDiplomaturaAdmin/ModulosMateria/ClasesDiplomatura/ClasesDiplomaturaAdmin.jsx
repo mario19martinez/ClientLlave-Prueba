@@ -36,7 +36,7 @@ const obtenerMiniaturaYoutube = (url) => {
 };
 
 export default function ClasesDiplomaturaAdmin({ filtros }) {
-  const { materiaId, moduloId } = useParams();
+  const { materiaId, moduloId: clasesmateriaId } = useParams();
   const [clasesOriginales, setClasesOriginales] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [paginaActual, setPaginaActual] = useState(1);
@@ -48,10 +48,10 @@ export default function ClasesDiplomaturaAdmin({ filtros }) {
 
   const fetchClases = async () => {
     try {
-      const res = await axios.get(`/materia/${materiaId}/modulo/${moduloId}/clases`);
+      const res = await axios.get(`/materia/${materiaId}/clases/${clasesmateriaId}/recursos`);
       setClasesOriginales(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
-      console.error("Error al cargar clases:", error);
+      console.error("Error al cargar recursos:", error);
     } finally {
       setCargando(false);
     }
@@ -59,7 +59,7 @@ export default function ClasesDiplomaturaAdmin({ filtros }) {
 
   useEffect(() => {
     fetchClases();
-  }, [materiaId, moduloId]);
+  }, [materiaId, clasesmateriaId]);
 
   const clasesFiltradas = clasesOriginales
     .filter((clase) =>
@@ -89,11 +89,11 @@ export default function ClasesDiplomaturaAdmin({ filtros }) {
   const eliminarClase = async () => {
     if (!claseAEliminar) return;
     try {
-      await axios.delete(`/modulo/${moduloId}/clase/${claseAEliminar.id}`);
+      await axios.delete(`/clase/${clasesmateriaId}/recurso/${claseAEliminar.id}`);
       setClaseAEliminar(null);
       fetchClases();
     } catch (error) {
-      console.error("Error al eliminar clase:", error);
+      console.error("Error al eliminar recurso:", error);
     }
   };
 
@@ -101,7 +101,7 @@ export default function ClasesDiplomaturaAdmin({ filtros }) {
     setClaseAEditar({
       ...clase,
       materiaId,
-      moduloId,
+      moduloId: clasesmateriaId,
     });
   };
 
@@ -109,7 +109,7 @@ export default function ClasesDiplomaturaAdmin({ filtros }) {
     setClaseAVisualizar({
       ...clase,
       materiaId,
-      moduloId,
+      moduloId: clasesmateriaId,
     });
   };
 
@@ -126,7 +126,7 @@ export default function ClasesDiplomaturaAdmin({ filtros }) {
       <Box textAlign="center" py={6} color="text.secondary">
         <SentimentDissatisfiedIcon fontSize="large" />
         <Typography variant="h6" mt={1}>
-          No hay clases que coincidan con la búsqueda.
+          No hay recursos que coincidan con la búsqueda.
         </Typography>
       </Box>
     );
@@ -135,7 +135,7 @@ export default function ClasesDiplomaturaAdmin({ filtros }) {
   return (
     <Box px={2} py={4}>
       <Typography variant="h5" fontWeight="bold" gutterBottom>
-        Recursos didacticos de la clase
+        Recursos didácticos de la clase
       </Typography>
 
       <Grid container spacing={3}>
@@ -234,9 +234,9 @@ export default function ClasesDiplomaturaAdmin({ filtros }) {
       )}
 
       <Dialog open={!!claseAEliminar} onClose={() => setClaseAEliminar(null)}>
-        <DialogTitle>¿Eliminar clase?</DialogTitle>
+        <DialogTitle>¿Eliminar recurso?</DialogTitle>
         <DialogContent>
-          ¿Estás seguro de que deseas eliminar la clase "
+          ¿Estás seguro de que deseas eliminar el recurso "
           <strong>{claseAEliminar?.name}</strong>"?
         </DialogContent>
         <DialogActions>

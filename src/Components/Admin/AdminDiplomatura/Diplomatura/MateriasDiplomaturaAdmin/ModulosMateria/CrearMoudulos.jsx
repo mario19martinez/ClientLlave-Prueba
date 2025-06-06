@@ -98,7 +98,7 @@ function PreguntasModal({ isOpen, onClose, preguntas, setPreguntas }) {
 
   return (
     <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>Preguntas del módulo</DialogTitle>
+      <DialogTitle>Preguntas de la clase</DialogTitle>
       <DialogContent dividers>
         {preguntas.map((p, i) => (
           <Box
@@ -238,7 +238,7 @@ export default function CrearModulos({ isOpen, onRequestClose }) {
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-center items-center"
     >
       <Typography variant="h6" gutterBottom>
-        Crear nuevo módulo
+        Crear nueva clase
       </Typography>
 
       <Formik
@@ -257,10 +257,10 @@ export default function CrearModulos({ isOpen, onRequestClose }) {
           };
 
           try {
-            await axios.post(`/materia/${materiaId}/modulo`, datosFinales);
+            await axios.post(`/materia/${materiaId}/clase`, datosFinales);
             onRequestClose();
           } catch (error) {
-            console.error("Error al crear módulo:", error);
+            console.error("Error al crear clase:", error);
           }
         }}
       >
@@ -322,7 +322,7 @@ export default function CrearModulos({ isOpen, onRequestClose }) {
                   Cancelar
                 </Button>
                 <Button type="submit" variant="contained" color="primary">
-                  Crear Módulo
+                  Crear Clase
                 </Button>
               </Box>
             </Box>

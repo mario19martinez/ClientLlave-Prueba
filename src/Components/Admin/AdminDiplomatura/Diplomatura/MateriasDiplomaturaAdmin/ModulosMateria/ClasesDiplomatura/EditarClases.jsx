@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   Box,
   Button,
@@ -8,6 +7,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  CircularProgress,
 } from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -34,14 +34,14 @@ export default function EditarClase({ open, onClose, clase, onActualizada }) {
       };
 
       await axios.put(
-        `/materia/${clase.materiaId}/modulo/${clase.moduloId}/clase/${clase.id}`,
+        `/materia/${clase.materiaId}/clase/${clase.clasesmateriaId}/recurso/${clase.id}`,
         payload
       );
 
       if (onActualizada) onActualizada();
       onClose();
     } catch (error) {
-      console.error("Error al editar clase:", error);
+      console.error("Error al editar recurso:", error);
     } finally {
       setSubmitting(false);
     }
@@ -49,7 +49,9 @@ export default function EditarClase({ open, onClose, clase, onActualizada }) {
 
   return (
     <Dialog open={!!open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Editar Clase</DialogTitle>
+      <DialogTitle sx={{ fontWeight: "bold", fontSize: "1.25rem" }}>
+        Editar Recurso
+      </DialogTitle>
       <Formik
         enableReinitialize
         initialValues={{
@@ -71,15 +73,16 @@ export default function EditarClase({ open, onClose, clase, onActualizada }) {
           isSubmitting,
         }) => (
           <Form>
-            <DialogContent>
+            <DialogContent dividers>
               <TextField
                 name="name"
-                label="Nombre de la Clase"
+                label="Nombre del recurso"
                 value={values.name}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 fullWidth
                 margin="normal"
+                variant="outlined"
                 error={touched.name && !!errors.name}
                 helperText={touched.name && errors.name}
               />
@@ -92,6 +95,7 @@ export default function EditarClase({ open, onClose, clase, onActualizada }) {
                 onBlur={handleBlur}
                 fullWidth
                 margin="normal"
+                variant="outlined"
                 error={touched.url && !!errors.url}
                 helperText={touched.url && errors.url}
               />
@@ -104,13 +108,14 @@ export default function EditarClase({ open, onClose, clase, onActualizada }) {
                 onBlur={handleBlur}
                 fullWidth
                 margin="normal"
+                variant="outlined"
                 error={touched.pdfURL && !!errors.pdfURL}
                 helperText={touched.pdfURL && errors.pdfURL}
               />
 
               <TextField
                 name="texto"
-                label="Texto o contenido de la clase (opcional)"
+                label="Texto o contenido (opcional)"
                 value={values.texto}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -118,6 +123,7 @@ export default function EditarClase({ open, onClose, clase, onActualizada }) {
                 minRows={3}
                 fullWidth
                 margin="normal"
+                variant="outlined"
               />
 
               <TextField
@@ -130,19 +136,25 @@ export default function EditarClase({ open, onClose, clase, onActualizada }) {
                 minRows={2}
                 fullWidth
                 margin="normal"
+                variant="outlined"
                 placeholder="Introducción, Objetivos, Conclusión..."
               />
             </DialogContent>
 
-            <DialogActions>
-              <Button onClick={onClose}>Cancelar</Button>
+            <DialogActions sx={{ px: 3, py: 2 }}>
+              <Button onClick={onClose} variant="outlined">
+                Cancelar
+              </Button>
               <Button
                 type="submit"
                 variant="contained"
-                color="primary"
                 disabled={isSubmitting}
               >
-                Guardar Cambios
+                {isSubmitting ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  "Guardar Cambios"
+                )}
               </Button>
             </DialogActions>
           </Form>
