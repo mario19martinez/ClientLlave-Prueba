@@ -44,7 +44,7 @@ export default function DetallesClase({
           pb: 1,
         }}
       >
-        Material Didactico
+        Detalles del Recurso
         <Stack direction="row" spacing={1}>
           <IconButton color="primary" onClick={() => onEditar(clase)}>
             <EditIcon />
@@ -56,10 +56,11 @@ export default function DetallesClase({
       </DialogTitle>
 
       <DialogContent dividers sx={{ pt: 1 }}>
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="h6" fontWeight={600} gutterBottom>
           {clase.name}
         </Typography>
 
+        {/* Video */}
         {youtubeId ? (
           <Box
             sx={{
@@ -69,7 +70,7 @@ export default function DetallesClase({
               borderRadius: 2,
               boxShadow: 2,
               mb: 3,
-              aspectRatio: "16/9", // ⬅ Nueva forma moderna si tu navegador lo permite
+              aspectRatio: "16 / 9",
             }}
           >
             <YouTube
@@ -97,6 +98,7 @@ export default function DetallesClase({
           </Typography>
         )}
 
+        {/* Texto */}
         {clase.texto && (
           <>
             <Typography variant="subtitle1" fontWeight={600} gutterBottom>
@@ -109,10 +111,11 @@ export default function DetallesClase({
           </>
         )}
 
+        {/* PDF */}
         {clase.pdfURL && (
           <>
             <Typography variant="subtitle1" fontWeight={600} gutterBottom>
-              PDF asociado:
+              PDF Asociado:
             </Typography>
             <Link
               href={clase.pdfURL}
@@ -127,6 +130,7 @@ export default function DetallesClase({
           </>
         )}
 
+        {/* Resumen */}
         {clase.resumen?.puntos?.length > 0 && (
           <>
             <Typography variant="subtitle1" fontWeight={600} gutterBottom>

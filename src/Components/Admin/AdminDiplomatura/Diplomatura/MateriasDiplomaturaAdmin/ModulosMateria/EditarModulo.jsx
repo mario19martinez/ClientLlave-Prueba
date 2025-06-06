@@ -97,7 +97,7 @@ function PreguntasModal({ isOpen, onClose, preguntas, setPreguntas }) {
 
   return (
     <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>Editar Preguntas del módulo</DialogTitle>
+      <DialogTitle>Editar preguntas de la clase</DialogTitle>
       <DialogContent dividers>
         {preguntas.map((p, i) => (
           <Box
@@ -226,7 +226,7 @@ export default function EditarModulo({ isOpen, onClose, modulo, onUpdate }) {
 
   return (
     <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>Editar Módulo</DialogTitle>
+      <DialogTitle>Editar Clase</DialogTitle>
       <DialogContent dividers>
         <Formik
           initialValues={{
@@ -245,13 +245,13 @@ export default function EditarModulo({ isOpen, onClose, modulo, onUpdate }) {
             };
 
             try {
-              await axios.put(`/materia/${materiaId}/modulo/${modulo.id}`, datosFinales);
-              toast.success("✅ Módulo actualizado correctamente");
+              await axios.put(`/materia/${materiaId}/clase/${modulo.id}`, datosFinales);
+              toast.success("✅ Clase actualizada correctamente");
               onUpdate?.();
               onClose();
             } catch (error) {
-              console.error("Error al editar módulo:", error);
-              toast.error("❌ Error al actualizar el módulo");
+              console.error("Error al editar clase:", error);
+              toast.error("❌ Error al actualizar la clase");
             }
           }}
         >

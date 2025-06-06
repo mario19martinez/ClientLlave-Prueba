@@ -1,168 +1,109 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
-  Button,
-  TextField,
+  Box,
   Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  CircularProgress,
+  TextField,
+  InputAdornment,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Paper,
+  Button,
 } from "@mui/material";
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
-import axios from "axios";
-import { useParams } from "react-router-dom";
+import SearchIcon from "@mui/icons-material/Search";
+import SortIcon from "@mui/icons-material/Sort";
+import AddIcon from "@mui/icons-material/Add";
+import CrearClasesDiplomatura from "./CrearClases";
 
-export default function EditarClase({ open, onClose, clase, onActualizada }) {
-  const { materiaId, moduloId } = useParams();
-  const [datosClase, setDatosClase] = useState(null);
-  const [cargando, setCargando] = useState(false);
+export default function AdministrarClases({ onFiltroChange }) {
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const [busqueda, setBusqueda] = useState("");
+  const [orden, setOrden] = useState("recientes");
 
-  useEffect(() => {
-    const obtenerDetalles = async () => {
-      if (!clase || !open) return;
+  const abrirModal = () => setModalAbierto(true);
+  const cerrarModal = () => setModalAbierto(false);
 
-      setCargando(true);
-      try {
-        const res = await axios.get(`/materia/${materiaId}/modulo/${moduloId}/clase/${clase.id}`);
-        setDatosClase(res.data);
-      } catch (error) {
-        console.error("Error al obtener datos de la clase:", error);
-      } finally {
-        setCargando(false);
-      }
-    };
-
-    obtenerDetalles();
-  }, [clase, open, materiaId, moduloId]);
-
-  const validacion = Yup.object().shape({
-    name: Yup.string().required("El nombre es obligatorio"),
-    url: Yup.string().url("Debe ser una URL válida").nullable(),
-    pdfURL: Yup.string().url("Debe ser una URL válida").nullable(),
-    texto: Yup.string().nullable(),
-    resumen: Yup.string().nullable(),
-  });
-
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      const payload = {
-        ...values,
-        resumen: values.resumen
-          ? { puntos: values.resumen.split(",").map((p) => p.trim()) }
-          : null,
-      };
-
-      await axios.put(
-        `/materia/${materiaId}/modulo/${moduloId}/clase/${clase.id}`,
-        payload
-      );
-
-      onActualizada();
-      onClose();
-    } catch (error) {
-      console.error("Error al editar clase:", error);
-    } finally {
-      setSubmitting(false);
-    }
+  const manejarBusqueda = (e) => {
+    const valor = e.target.value;
+    setBusqueda(valor);
+    onFiltroChange({ busqueda: valor, orden });
   };
 
-  if (!open || !clase) return null;
+  const manejarOrden = (e) => {
+    const valor = e.target.value;
+    setOrden(valor);
+    onFiltroChange({ busqueda, orden: valor });
+  };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Editar Clase</DialogTitle>
-
-      {cargando || !datosClase ? (
-        <DialogContent sx={{ textAlign: "center", py: 4 }}>
-          <CircularProgress />
-          <Typography mt={2}>Cargando información...</Typography>
-        </DialogContent>
-      ) : (
-        <Formik
-          initialValues={{
-            name: datosClase.name || "",
-            url: datosClase.url || "",
-            pdfURL: datosClase.pdfURL || "",
-            texto: datosClase.texto || "",
-            resumen: datosClase.resumen?.puntos?.join(", ") || "",
-          }}
-          enableReinitialize
-          validationSchema={validacion}
-          onSubmit={handleSubmit}
+    <>
+      <Paper elevation={2} sx={{ borderRadius: 4, padding: 4, marginBottom: 5 }}>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          flexWrap="wrap"
+          gap={2}
+          mb={3}
         >
-          {({ values, handleChange, handleBlur, errors, touched, isSubmitting }) => (
-            <Form>
-              <DialogContent>
-                <TextField
-                  name="name"
-                  label="Nombre de la Clase"
-                  value={values.name}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  fullWidth
-                  margin="normal"
-                  error={touched.name && !!errors.name}
-                  helperText={touched.name && errors.name}
-                />
-                <TextField
-                  name="url"
-                  label="URL del Video (opcional)"
-                  value={values.url}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  fullWidth
-                  margin="normal"
-                  error={touched.url && !!errors.url}
-                  helperText={touched.url && errors.url}
-                />
-                <TextField
-                  name="pdfURL"
-                  label="URL del PDF (opcional)"
-                  value={values.pdfURL}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  fullWidth
-                  margin="normal"
-                  error={touched.pdfURL && !!errors.pdfURL}
-                  helperText={touched.pdfURL && errors.pdfURL}
-                />
-                <TextField
-                  name="texto"
-                  label="Texto de la clase (opcional)"
-                  value={values.texto}
-                  onChange={handleChange}
-                  multiline
-                  minRows={3}
-                  fullWidth
-                  margin="normal"
-                />
-                <TextField
-                  name="resumen"
-                  label="Resumen (separar por comas)"
-                  value={values.resumen}
-                  onChange={handleChange}
-                  multiline
-                  minRows={2}
-                  fullWidth
-                  margin="normal"
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={onClose}>Cancelar</Button>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  disabled={isSubmitting}
-                >
-                  Guardar Cambios
-                </Button>
-              </DialogActions>
-            </Form>
-          )}
-        </Formik>
-      )}
-    </Dialog>
+          <Typography variant="h5" fontWeight={600}>
+            Administrar Clases
+          </Typography>
+
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={abrirModal}
+            sx={{
+              textTransform: "none",
+              borderRadius: 2,
+              fontWeight: 500,
+              px: 3,
+            }}
+          >
+            Crear Clase
+          </Button>
+        </Box>
+
+        <Box display="flex" flexWrap="wrap" gap={3}>
+          <TextField
+            value={busqueda}
+            onChange={manejarBusqueda}
+            variant="outlined"
+            placeholder="Buscar clase por nombre..."
+            size="medium"
+            sx={{ minWidth: 280, flexGrow: 1 }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <FormControl size="medium" sx={{ minWidth: 220 }}>
+            <InputLabel id="ordenar-label">Ordenar por</InputLabel>
+            <Select
+              labelId="ordenar-label"
+              value={orden}
+              label="Ordenar por"
+              onChange={manejarOrden}
+              sx={{ borderRadius: 2 }}
+            >
+              <MenuItem value="recientes">Más recientes</MenuItem>
+              <MenuItem value="antiguas">Más antiguas</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </Paper>
+
+      <CrearClasesDiplomatura
+        isOpen={modalAbierto}
+        onRequestClose={cerrarModal}
+        onSuccess={() => window.location.reload()}
+      />
+    </>
   );
 }

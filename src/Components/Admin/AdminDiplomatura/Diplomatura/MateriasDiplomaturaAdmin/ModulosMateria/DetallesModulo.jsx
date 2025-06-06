@@ -26,30 +26,30 @@ import HelpIcon from "@mui/icons-material/Help";
 import axios from "axios";
 
 export default function DetallesModulo() {
-  const { diplomaturaId, materiaId, moduloId } = useParams();
+  const { diplomaturaId, materiaId, moduloId } = useParams(); // moduloId sigue siendo el ID de la clase
   const navigate = useNavigate();
 
-  const [modulo, setModulo] = useState(null);
+  const [clase, setClase] = useState(null);
   const [verMas, setVerMas] = useState(false);
   const [mostrarPreguntas, setMostrarPreguntas] = useState(false);
 
   useEffect(() => {
-    const fetchModulo = async () => {
+    const fetchClase = async () => {
       try {
-        const res = await axios.get(`/materia/${materiaId}/modulo/${moduloId}`);
-        setModulo(res.data);
+        const res = await axios.get(`/materia/${materiaId}/clase/${moduloId}`);
+        setClase(res.data);
       } catch (error) {
-        console.error("Error al obtener detalles del módulo:", error);
+        console.error("Error al obtener detalles de la clase:", error);
       }
     };
 
-    fetchModulo();
+    fetchClase();
   }, [materiaId, moduloId]);
 
-  if (!modulo) {
+  if (!clase) {
     return (
       <div className="flex justify-center items-center h-48">
-        <Typography>Cargando módulo...</Typography>
+        <Typography>Cargando clase...</Typography>
       </div>
     );
   }
@@ -70,15 +70,15 @@ export default function DetallesModulo() {
           <Box display="flex" justifyContent="space-between" gap={4} flexWrap="wrap">
             <Box flex={1} minWidth={250}>
               <Typography variant="h5" fontWeight="bold" gutterBottom>
-                {modulo.titulo}
+                {clase.titulo}
               </Typography>
 
               <Typography variant="body1" color="text.secondary" paragraph>
                 <strong>Descripción:</strong>{" "}
-                {verMas || modulo.descripcion.length <= 200
-                  ? modulo.descripcion
-                  : `${modulo.descripcion.slice(0, 200)}... `}
-                {modulo.descripcion.length > 200 && (
+                {verMas || clase.descripcion.length <= 200
+                  ? clase.descripcion
+                  : `${clase.descripcion.slice(0, 200)}... `}
+                {clase.descripcion.length > 200 && (
                   <Button
                     onClick={() => setVerMas((prev) => !prev)}
                     size="small"
@@ -90,7 +90,7 @@ export default function DetallesModulo() {
               </Typography>
 
               <Typography variant="subtitle1" sx={{ mb: 2 }}>
-                <strong>Precio:</strong> ${Number(modulo.precio).toFixed(2)}
+                <strong>Precio:</strong> ${Number(clase.precio).toFixed(2)}
               </Typography>
 
               <Button
@@ -113,12 +113,12 @@ export default function DetallesModulo() {
                   <PeopleIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Editar módulo">
+              <Tooltip title="Editar clase">
                 <IconButton sx={{ color: "#888" }}>
                   <EditIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Eliminar módulo">
+              <Tooltip title="Eliminar clase">
                 <IconButton sx={{ color: "#888" }}>
                   <DeleteIcon />
                 </IconButton>
@@ -137,9 +137,9 @@ export default function DetallesModulo() {
       >
         <DialogTitle>Preguntas de la clase</DialogTitle>
         <DialogContent dividers>
-          {modulo.preguntas?.length > 0 ? (
+          {clase.preguntas?.length > 0 ? (
             <List>
-              {modulo.preguntas.map((p, i) => (
+              {clase.preguntas.map((p, i) => (
                 <ListItem key={i} alignItems="flex-start">
                   <ListItemText
                     primary={`${i + 1}. ${p.enunciado}`}

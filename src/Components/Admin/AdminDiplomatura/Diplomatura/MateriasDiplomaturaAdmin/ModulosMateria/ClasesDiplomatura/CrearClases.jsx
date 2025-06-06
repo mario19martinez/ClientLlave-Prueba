@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Button,
@@ -13,20 +12,23 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-// Estilo básico para el modal (puedes refinar más)
 const customStyles = {
   content: {
-    maxWidth: "600px",
+    maxWidth: "650px",
+    width: "90%",
     margin: "auto",
-    borderRadius: "16px",
-    padding: "32px",
+    borderRadius: "20px",
+    padding: "40px",
+    inset: "50% auto auto 50%",
+    transform: "translate(-50%, -50%)",
+    boxShadow: "0 10px 40px rgba(0,0,0,0.2)",
   },
 };
 
 Modal.setAppElement("#root");
 
 export default function CrearClasesDiplomatura({ isOpen, onRequestClose, onSuccess }) {
-  const { materiaId, moduloId } = useParams();
+  const { materiaId, moduloId: clasesmateriaId } = useParams(); // ahora es clasesmateriaId
 
   const formik = useFormik({
     initialValues: {
@@ -47,19 +49,21 @@ export default function CrearClasesDiplomatura({ isOpen, onRequestClose, onSucce
       try {
         const payload = {
           ...values,
-          resumen: values.resumen ? { puntos: values.resumen.split(",").map(p => p.trim()) } : null,
+          resumen: values.resumen
+            ? { puntos: values.resumen.split(",").map((p) => p.trim()) }
+            : null,
         };
 
         const res = await axios.post(
-          `/materia/${materiaId}/modulo/${moduloId}/clase`,
+          `/materia/${materiaId}/clase/${clasesmateriaId}/recurso`,
           payload
         );
 
-        if (onSuccess) onSuccess(res.data.newClaseModulo);
+        if (onSuccess) onSuccess(res.data);
         resetForm();
         onRequestClose();
       } catch (error) {
-        console.error("Error al crear clase:", error);
+        console.error("Error al crear recurso:", error);
       } finally {
         setSubmitting(false);
       }
@@ -71,10 +75,10 @@ export default function CrearClasesDiplomatura({ isOpen, onRequestClose, onSucce
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       style={customStyles}
-      contentLabel="Crear Clase"
+      contentLabel="Crear Recurso"
     >
-      <Typography variant="h6" fontWeight="bold" gutterBottom>
-        Crear Nueva Clase
+      <Typography variant="h5" fontWeight="bold" gutterBottom>
+        Crear nuevo recurso didáctico
       </Typography>
 
       <form onSubmit={formik.handleSubmit}>
@@ -82,7 +86,7 @@ export default function CrearClasesDiplomatura({ isOpen, onRequestClose, onSucce
           {/* Nombre */}
           <Grid item xs={12}>
             <TextField
-              label="Nombre de la clase"
+              label="Nombre del recurso"
               name="name"
               fullWidth
               variant="outlined"
@@ -121,10 +125,10 @@ export default function CrearClasesDiplomatura({ isOpen, onRequestClose, onSucce
             />
           </Grid>
 
-          {/* Texto de la clase */}
+          {/* Texto o contenido */}
           <Grid item xs={12}>
             <TextField
-              label="Texto o contenido de la clase (opcional)"
+              label="Texto o contenido (opcional)"
               name="texto"
               fullWidth
               multiline
@@ -151,7 +155,7 @@ export default function CrearClasesDiplomatura({ isOpen, onRequestClose, onSucce
           </Grid>
         </Grid>
 
-        <Box mt={3} display="flex" justifyContent="flex-end" gap={2}>
+        <Box mt={4} display="flex" justifyContent="flex-end" gap={2}>
           <Button variant="outlined" onClick={onRequestClose}>
             Cancelar
           </Button>
@@ -163,7 +167,7 @@ export default function CrearClasesDiplomatura({ isOpen, onRequestClose, onSucce
             {formik.isSubmitting ? (
               <CircularProgress size={24} color="inherit" />
             ) : (
-              "Crear Clase"
+              "Crear Recurso"
             )}
           </Button>
         </Box>
