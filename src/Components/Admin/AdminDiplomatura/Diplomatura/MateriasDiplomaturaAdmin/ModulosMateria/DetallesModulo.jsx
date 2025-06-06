@@ -7,31 +7,22 @@ import {
   Card,
   CardContent,
   Tooltip,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
   Box,
+  Divider,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PeopleIcon from "@mui/icons-material/People";
-import HelpIcon from "@mui/icons-material/Help";
 import axios from "axios";
 
 export default function DetallesModulo() {
-  const { diplomaturaId, materiaId, moduloId } = useParams(); // moduloId sigue siendo el ID de la clase
+  const { diplomaturaId, materiaId, moduloId } = useParams();
   const navigate = useNavigate();
 
   const [clase, setClase] = useState(null);
   const [verMas, setVerMas] = useState(false);
-  const [mostrarPreguntas, setMostrarPreguntas] = useState(false);
 
   useEffect(() => {
     const fetchClase = async () => {
@@ -48,14 +39,14 @@ export default function DetallesModulo() {
 
   if (!clase) {
     return (
-      <div className="flex justify-center items-center h-48">
-        <Typography>Cargando clase...</Typography>
-      </div>
+      <Box className="flex justify-center items-center h-48">
+        <Typography variant="body1">Cargando clase...</Typography>
+      </Box>
     );
   }
 
   return (
-    <div className="p-6 w-full">
+    <Box className="p-6 w-full">
       <IconButton
         onClick={() =>
           navigate(`/admin/diplomaturas/${diplomaturaId}/materia/${materiaId}`)
@@ -67,18 +58,18 @@ export default function DetallesModulo() {
 
       <Card className="rounded-xl shadow-md">
         <CardContent>
-          <Box display="flex" justifyContent="space-between" gap={4} flexWrap="wrap">
-            <Box flex={1} minWidth={250}>
+          <Box display="flex" justifyContent="space-between" flexWrap="wrap" gap={3}>
+            <Box flex={1} minWidth={260}>
               <Typography variant="h5" fontWeight="bold" gutterBottom>
                 {clase.titulo}
               </Typography>
 
               <Typography variant="body1" color="text.secondary" paragraph>
                 <strong>Descripción:</strong>{" "}
-                {verMas || clase.descripcion.length <= 200
+                {verMas || clase.descripcion?.length <= 200
                   ? clase.descripcion
-                  : `${clase.descripcion.slice(0, 200)}... `}
-                {clase.descripcion.length > 200 && (
+                  : `${clase.descripcion?.slice(0, 200)}...`}
+                {clase.descripcion?.length > 200 && (
                   <Button
                     onClick={() => setVerMas((prev) => !prev)}
                     size="small"
@@ -89,37 +80,35 @@ export default function DetallesModulo() {
                 )}
               </Typography>
 
-              <Typography variant="subtitle1" sx={{ mb: 2 }}>
-                <strong>Precio:</strong> ${Number(clase.precio).toFixed(2)}
+              <Divider sx={{ my: 2 }} />
+
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                <strong>Contenido:</strong> {clase.contenido?.slice(0, 100)}...
               </Typography>
 
-              <Button
-                variant="outlined"
-                startIcon={<HelpIcon />}
-                onClick={() => setMostrarPreguntas(true)}
-              >
-                Ver preguntas
-              </Button>
+              <Typography variant="subtitle1" sx={{ mt: 2 }}>
+                <strong>Precio:</strong> ${Number(clase.precio).toFixed(2)}
+              </Typography>
             </Box>
 
-            <Box display="flex" gap={1} flexWrap="wrap" alignItems="start">
-              <Tooltip title="Ver ventas">
-                <IconButton sx={{ color: "#888" }}>
+            <Box display="flex" gap={1} flexWrap="wrap" alignItems="flex-start">
+              <Tooltip title="Ver ventas o estadísticas">
+                <IconButton sx={{ color: "#555" }}>
                   <VisibilityIcon />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Gestión de usuarios">
-                <IconButton sx={{ color: "#888" }}>
+                <IconButton sx={{ color: "#555" }}>
                   <PeopleIcon />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Editar clase">
-                <IconButton sx={{ color: "#888" }}>
+                <IconButton sx={{ color: "#555" }}>
                   <EditIcon />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Eliminar clase">
-                <IconButton sx={{ color: "#888" }}>
+                <IconButton sx={{ color: "#c00" }}>
                   <DeleteIcon />
                 </IconButton>
               </Tooltip>
@@ -127,41 +116,6 @@ export default function DetallesModulo() {
           </Box>
         </CardContent>
       </Card>
-
-      {/* Modal de preguntas */}
-      <Dialog
-        open={mostrarPreguntas}
-        onClose={() => setMostrarPreguntas(false)}
-        fullWidth
-        maxWidth="sm"
-      >
-        <DialogTitle>Preguntas de la clase</DialogTitle>
-        <DialogContent dividers>
-          {clase.preguntas?.length > 0 ? (
-            <List>
-              {clase.preguntas.map((p, i) => (
-                <ListItem key={i} alignItems="flex-start">
-                  <ListItemText
-                    primary={`${i + 1}. ${p.enunciado}`}
-                    secondary={
-                      p.tipo === "multiple"
-                        ? `Opciones: ${p.opciones.join(", ")} | Respuesta: ${p.respuesta}`
-                        : `Respuesta: ${p.respuesta ? "Verdadero" : "Falso"}`
-                    }
-                  />
-                </ListItem>
-              ))}
-            </List>
-          ) : (
-            <Typography color="text.secondary">
-              Esta clase no tiene preguntas registradas.
-            </Typography>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setMostrarPreguntas(false)}>Cerrar</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    </Box>
   );
 }
