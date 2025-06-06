@@ -53,7 +53,7 @@ export default function AdministrarModulos({ search, setSearch, onModulosChange 
                   color: "white",
                 }}
               >
-                Gestionar Módulos
+                Gestionar Clases
               </Button>
             </Tooltip>
           </div>

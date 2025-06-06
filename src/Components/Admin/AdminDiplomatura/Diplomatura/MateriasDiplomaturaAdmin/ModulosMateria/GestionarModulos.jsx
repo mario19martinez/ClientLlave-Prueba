@@ -176,10 +176,10 @@ export default function GestionarModulos({ isOpen, onRequestClose, onModulosUpda
       >
         <div className="mb-6">
           <Typography variant="h5" className="font-bold text-gray-800">
-            Gestión de Módulos
+            Gestión de clase
           </Typography>
           <Typography variant="body2" className="text-gray-500">
-            Crear, asignar o desasignar módulos de la materia
+            Crear, asignar o desasignar clase de la materia
           </Typography>
         </div>
 
@@ -191,7 +191,7 @@ export default function GestionarModulos({ isOpen, onRequestClose, onModulosUpda
               sx={{ backgroundColor: "#3B82F6", color: "#fff" }}
               onClick={() => setShowCrearModal(true)}
             >
-              Crear Módulo
+              Crear Clase
             </Button>
           </Tooltip>
         </div>
@@ -199,7 +199,7 @@ export default function GestionarModulos({ isOpen, onRequestClose, onModulosUpda
         <Grid container spacing={2}>
           <Grid item xs={12} md={5}>
             <Typography variant="subtitle1" className="mb-2 font-semibold text-gray-700">
-              Módulos Disponibles
+              Clases Disponibles
             </Typography>
             <Paper variant="outlined" className="h-72 overflow-auto">
               <List>
@@ -208,7 +208,7 @@ export default function GestionarModulos({ isOpen, onRequestClose, onModulosUpda
                 )}
                 {modulosDisponibles.length === 0 && (
                   <Typography variant="body2" color="textSecondary" className="px-4 py-2">
-                    No hay módulos disponibles.
+                    No hay clases disponibles.
                   </Typography>
                 )}
               </List>
@@ -248,7 +248,7 @@ export default function GestionarModulos({ isOpen, onRequestClose, onModulosUpda
 
           <Grid item xs={12} md={5}>
             <Typography variant="subtitle1" className="mb-2 font-semibold text-gray-700">
-              Módulos de la Materia
+              Clases de la Materia
             </Typography>
             <Paper variant="outlined" className="h-72 overflow-auto">
               <List>
@@ -257,7 +257,7 @@ export default function GestionarModulos({ isOpen, onRequestClose, onModulosUpda
                 )}
                 {modulosAsignados.length === 0 && (
                   <Typography variant="body2" color="textSecondary" className="px-4 py-2">
-                    No hay módulos asignados.
+                    No hay Clases asignados.
                   </Typography>
                 )}
               </List>

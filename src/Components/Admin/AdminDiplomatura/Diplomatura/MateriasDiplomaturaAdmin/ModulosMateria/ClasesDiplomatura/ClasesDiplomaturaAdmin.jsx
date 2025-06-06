@@ -135,7 +135,7 @@ export default function ClasesDiplomaturaAdmin({ filtros }) {
   return (
     <Box px={2} py={4}>
       <Typography variant="h5" fontWeight="bold" gutterBottom>
-        Clases del Módulo
+        Recursos didacticos de la clase
       </Typography>
 
       <Grid container spacing={3}>
