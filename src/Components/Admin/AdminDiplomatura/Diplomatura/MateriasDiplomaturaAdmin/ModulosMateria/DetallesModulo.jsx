@@ -135,7 +135,7 @@ export default function DetallesModulo() {
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle>Preguntas del Módulo</DialogTitle>
+        <DialogTitle>Preguntas de la clase</DialogTitle>
         <DialogContent dividers>
           {modulo.preguntas?.length > 0 ? (
             <List>
@@ -154,7 +154,7 @@ export default function DetallesModulo() {
             </List>
           ) : (
             <Typography color="text.secondary">
-              Este módulo no tiene preguntas registradas.
+              Esta clase no tiene preguntas registradas.
             </Typography>
           )}
         </DialogContent>

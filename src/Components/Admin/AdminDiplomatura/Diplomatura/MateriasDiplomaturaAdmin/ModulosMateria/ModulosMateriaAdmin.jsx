@@ -185,8 +185,8 @@ export default function ModulosMateriaAdmin({ refreshTrigger, search }) {
     return (
       <div className="flex flex-col items-center justify-center text-center py-20 text-gray-600">
         <InfoOutlinedIcon sx={{ fontSize: 60 }} className="text-blue-500 mb-4" />
-        <p className="text-xl font-semibold">No hay módulos activos en esta materia.</p>
-        <p className="text-sm mt-1">Puedes crear uno desde la gestión de módulos.</p>
+        <p className="text-xl font-semibold">No hay clases activos en esta materia.</p>
+        <p className="text-sm mt-1">Puedes crear uno desde la gestión de clases.</p>
       </div>
     );
   }
@@ -195,7 +195,7 @@ export default function ModulosMateriaAdmin({ refreshTrigger, search }) {
     <div className="mt-8 bg-white rounded-lg shadow p-6">
       <ToastContainer position="top-right" autoClose={3000} />
       <Typography variant="h5" className="font-bold text-gray-800 mb-6">
-        Módulos Activos de la Materia
+        Clases Activas de la Materia
       </Typography>
 
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -220,7 +220,7 @@ export default function ModulosMateriaAdmin({ refreshTrigger, search }) {
         <DialogTitle>¿Eliminar módulo?</DialogTitle>
         <DialogContent>
           <Typography>
-            Estás a punto de eliminar el módulo <strong>{moduloAEliminar?.titulo}</strong>.
+            Estás a punto de eliminar el Clases <strong>{moduloAEliminar?.titulo}</strong>.
             Esta acción no se puede deshacer.
           </Typography>
         </DialogContent>

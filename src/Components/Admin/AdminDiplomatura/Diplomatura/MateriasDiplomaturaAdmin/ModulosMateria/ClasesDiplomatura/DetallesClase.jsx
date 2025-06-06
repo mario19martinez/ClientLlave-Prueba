@@ -44,7 +44,7 @@ export default function DetallesClase({
           pb: 1,
         }}
       >
-        Detalles de la Clase
+        Material Didactico
         <Stack direction="row" spacing={1}>
           <IconButton color="primary" onClick={() => onEditar(clase)}>
             <EditIcon />
