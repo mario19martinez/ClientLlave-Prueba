@@ -27,6 +27,8 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
       certificacion: false,
       description: "",
       precio: "",
+      premium: true,
+      precio_certificado: "",
     },
     validationSchema: Yup.object({
       name: Yup.string().trim().required("El nombre es obligatorio."),
@@ -36,6 +38,14 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
       precio: Yup.number()
         .min(0, "Debe ser mayor o igual a 0")
         .typeError("Debe ser un número válido"),
+      precio_certificado: Yup.number()
+        .when("premium", {
+          is: false,
+          then: Yup.number()
+            .typeError("Debe ser un número válido")
+            .required("Requerido si no es premium")
+            .min(0, "Debe ser mayor o igual a 0"),
+        }),
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
@@ -94,6 +104,36 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
             helperText={formik.touched.precio && formik.errors.precio}
           />
         </div>
+
+        <FormControlLabel
+          control={
+            <Switch
+              name="premium"
+              checked={formik.values.premium}
+              onChange={(e) => formik.setFieldValue("premium", e.target.checked)}
+              color="primary"
+            />
+          }
+          label={formik.values.premium ? "Premium" : "Gratuita"}
+        />
+
+        {!formik.values.premium && (
+          <TextField
+            label="Precio del certificado"
+            name="precio_certificado"
+            fullWidth
+            size="small"
+            value={formik.values.precio_certificado}
+            onChange={formik.handleChange}
+            error={
+              formik.touched.precio_certificado &&
+              Boolean(formik.errors.precio_certificado)
+            }
+            helperText={
+              formik.touched.precio_certificado && formik.errors.precio_certificado
+            }
+          />
+        )}
 
         <div className="flex items-center gap-4">
           <TextField
