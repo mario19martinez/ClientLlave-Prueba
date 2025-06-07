@@ -198,7 +198,7 @@ export default function Nav() {
       {/* Modal de login */}
       {isLoginFormOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+          <div className=" rounded-lg p-6 w-full max-w-md">
             <LoginForm onClose={toggleLoginForm} />
           </div>
         </div>
