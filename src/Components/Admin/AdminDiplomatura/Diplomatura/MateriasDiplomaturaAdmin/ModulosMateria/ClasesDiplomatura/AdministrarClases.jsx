@@ -48,7 +48,7 @@ export default function AdministrarClases({ onFiltroChange }) {
           mb={3}
         >
           <Typography variant="h5" fontWeight={600}>
-            Administrar Clases
+            Administrar Recursos
           </Typography>
 
           <Button
@@ -62,7 +62,7 @@ export default function AdministrarClases({ onFiltroChange }) {
               px: 3,
             }}
           >
-            Crear Clase
+            Crear Recurso
           </Button>
         </Box>
 
@@ -71,7 +71,7 @@ export default function AdministrarClases({ onFiltroChange }) {
             value={busqueda}
             onChange={manejarBusqueda}
             variant="outlined"
-            placeholder="Buscar clase por nombre..."
+            placeholder="Buscar recurso por nombre..."
             size="medium"
             sx={{ minWidth: 280, flexGrow: 1 }}
             InputProps={{
