@@ -9,6 +9,7 @@ import {
   FormControlLabel,
   IconButton,
   Tooltip,
+  CircularProgress,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import UploadWidget from "../../../UploadWidget/UploadWidget";
@@ -19,6 +20,7 @@ Modal.setAppElement("#root");
 
 export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) {
   const [previewImage, setPreviewImage] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -94,7 +96,6 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
       </h2>
 
       <form onSubmit={formik.handleSubmit} className="space-y-5">
-        {/* Nombre */}
         <TextField
           label="Nombre"
           name="name"
@@ -106,7 +107,6 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
           helperText={formik.touched.name && formik.errors.name}
         />
 
-        {/* Switch De pago */}
         <FormControlLabel
           control={
             <Switch
@@ -116,7 +116,7 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
                 const isPaid = e.target.checked;
                 formik.setFieldValue("premium", isPaid);
                 if (isPaid) {
-                  formik.setFieldValue("certificacion", true); // Forzar certificación en pagas
+                  formik.setFieldValue("certificacion", true);
                   formik.setFieldValue("precio_certificado", "");
                 } else {
                   formik.setFieldValue("precio", "");
@@ -128,7 +128,6 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
           label={formik.values.premium ? "Diplomatura de pago" : "Diplomatura gratuita"}
         />
 
-        {/* Si es de pago, mostrar precio */}
         {formik.values.premium && (
           <TextField
             label="Precio"
@@ -142,7 +141,6 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
           />
         )}
 
-        {/* Si es gratuita, permitir decidir certificación */}
         {!formik.values.premium && (
           <>
             <FormControlLabel
@@ -164,19 +162,13 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
                 size="small"
                 value={formik.values.precio_certificado}
                 onChange={formik.handleChange}
-                error={
-                  formik.touched.precio_certificado &&
-                  Boolean(formik.errors.precio_certificado)
-                }
-                helperText={
-                  formik.touched.precio_certificado && formik.errors.precio_certificado
-                }
+                error={formik.touched.precio_certificado && Boolean(formik.errors.precio_certificado)}
+                helperText={formik.touched.precio_certificado && formik.errors.precio_certificado}
               />
             )}
           </>
         )}
 
-        {/* Imagen y Upload */}
         <div className="flex items-center gap-4">
           <TextField
             label="Imagen (URL)"
@@ -192,26 +184,40 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
             <div>
               <UploadWidget
                 onImageUpload={(url) => {
-                  formik.setFieldValue("image", url);
-                  setPreviewImage(url);
+                  if (url) {
+                    formik.setFieldValue("image", url);
+                    setPreviewImage(url);
+                  } else {
+                    toast.error("Error al subir la imagen. Intenta nuevamente.");
+                  }
                 }}
+                onUploadStart={() => setUploading(true)}
+                onUploadEnd={() => setUploading(false)}
               />
             </div>
           </Tooltip>
         </div>
 
-        {/* Preview imagen */}
+        {uploading && (
+          <div className="text-center text-sm text-blue-500">
+            Subiendo imagen...
+          </div>
+        )}
+
         {previewImage && (
           <div className="mt-2 text-center">
             <img
               src={previewImage}
               alt="Vista previa"
               className="w-full h-40 object-cover rounded border"
+              onError={() => {
+                toast.error("No se pudo cargar la vista previa de la imagen.");
+                setPreviewImage("");
+              }}
             />
           </div>
         )}
 
-        {/* Descripción */}
         <TextField
           label="Descripción"
           name="description"
@@ -223,14 +229,18 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
           onChange={formik.handleChange}
         />
 
-        {/* Botón de envío */}
         <Button
           fullWidth
           type="submit"
           variant="contained"
+          disabled={formik.isSubmitting || uploading}
           className="!bg-blue-600 hover:!bg-blue-700 text-white font-semibold py-2"
         >
-          Registrar Diplomatura
+          {formik.isSubmitting ? (
+            <CircularProgress size={20} color="inherit" />
+          ) : (
+            "Registrar Diplomatura"
+          )}
         </Button>
       </form>
     </Modal>
