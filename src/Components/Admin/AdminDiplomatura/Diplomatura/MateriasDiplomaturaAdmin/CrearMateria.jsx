@@ -35,11 +35,11 @@ export default function CrearMateria({ isOpen, onRequestClose, diplomaturaId, on
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
-        const res = await axios.post(`/diplomatura/${diplomaturaId}/materia`, values);
+        await axios.post(`/diplomatura/${diplomaturaId}/materia`, values);
         toast.success("Materia creada con éxito");
         resetForm();
-        onCreated(); // notifica al padre para recargar
-        onRequestClose(); // cierra modal
+        onCreated();
+        onRequestClose();
       } catch (error) {
         console.error("Error al crear materia:", error);
         toast.error("No se pudo crear la materia");
@@ -55,7 +55,7 @@ export default function CrearMateria({ isOpen, onRequestClose, diplomaturaId, on
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="z-50 w-[95%] max-w-lg bg-white rounded-lg p-6 relative shadow-lg"
+      className="z-50 w-[95%] max-w-xl bg-white rounded-xl p-6 relative shadow-2xl overflow-y-auto max-h-[95vh]"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-center items-center"
     >
       <IconButton
@@ -81,7 +81,7 @@ export default function CrearMateria({ isOpen, onRequestClose, diplomaturaId, on
           helperText={formik.touched.name && formik.errors.name}
         />
 
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
           <TextField
             label="Imagen (URL)"
             name="image"

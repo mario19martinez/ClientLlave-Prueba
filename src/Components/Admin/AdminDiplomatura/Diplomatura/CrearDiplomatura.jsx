@@ -33,23 +33,33 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
     validationSchema: Yup.object({
       name: Yup.string().trim().required("El nombre es obligatorio."),
       image: Yup.string().url("Debe ser una URL válida").nullable(),
-      certificacion: Yup.boolean(),
       description: Yup.string(),
       precio: Yup.number()
-        .min(0, "Debe ser mayor o igual a 0")
+        .when("premium", {
+          is: true,
+          then: (schema) =>
+            schema.required("El precio es obligatorio para diplomaturas pagas").min(0, "Debe ser mayor o igual a 0"),
+        })
         .typeError("Debe ser un número válido"),
       precio_certificado: Yup.number()
-        .when("premium", {
-          is: false,
-          then: Yup.number()
-            .typeError("Debe ser un número válido")
-            .required("Requerido si no es premium")
-            .min(0, "Debe ser mayor o igual a 0"),
-        }),
+        .when(["premium", "certificacion"], {
+          is: (premium, certificacion) => !premium && certificacion,
+          then: (schema) =>
+            schema.required("Indica el precio del certificado").min(0, "Debe ser mayor o igual a 0"),
+        })
+        .typeError("Debe ser un número válido"),
     }),
     onSubmit: async (values, { resetForm }) => {
+      const payload = {
+        ...values,
+        certificacion: values.premium ? true : values.certificacion,
+        precio: values.premium ? values.precio : 0,
+        precio_certificado:
+          values.premium || !values.certificacion ? null : values.precio_certificado,
+      };
+
       try {
-        await axios.post("/diplomatura", values);
+        await axios.post("/diplomatura", payload);
         toast.success("Diplomatura creada con éxito");
         resetForm();
         onCreated();
@@ -69,7 +79,7 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="z-50 w-[95%] max-w-lg bg-white rounded-lg p-6 relative shadow-lg"
+      className="z-50 max-w-[600px] w-[95%] bg-white rounded-lg p-6 relative shadow-xl max-h-[90vh] overflow-y-auto"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-center items-center"
     >
       <IconButton
@@ -84,57 +94,89 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
       </h2>
 
       <form onSubmit={formik.handleSubmit} className="space-y-5">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <TextField
-            label="Nombre"
-            name="name"
-            size="small"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            error={formik.touched.name && Boolean(formik.errors.name)}
-            helperText={formik.touched.name && formik.errors.name}
-          />
-          <TextField
-            label="Precio"
-            name="precio"
-            size="small"
-            value={formik.values.precio}
-            onChange={formik.handleChange}
-            error={formik.touched.precio && Boolean(formik.errors.precio)}
-            helperText={formik.touched.precio && formik.errors.precio}
-          />
-        </div>
+        {/* Nombre */}
+        <TextField
+          label="Nombre"
+          name="name"
+          fullWidth
+          size="small"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
+        />
 
+        {/* Switch De pago */}
         <FormControlLabel
           control={
             <Switch
               name="premium"
               checked={formik.values.premium}
-              onChange={(e) => formik.setFieldValue("premium", e.target.checked)}
+              onChange={(e) => {
+                const isPaid = e.target.checked;
+                formik.setFieldValue("premium", isPaid);
+                if (isPaid) {
+                  formik.setFieldValue("certificacion", true); // Forzar certificación en pagas
+                  formik.setFieldValue("precio_certificado", "");
+                } else {
+                  formik.setFieldValue("precio", "");
+                }
+              }}
               color="primary"
             />
           }
-          label={formik.values.premium ? "Premium" : "Gratuita"}
+          label={formik.values.premium ? "Diplomatura de pago" : "Diplomatura gratuita"}
         />
 
-        {!formik.values.premium && (
+        {/* Si es de pago, mostrar precio */}
+        {formik.values.premium && (
           <TextField
-            label="Precio del certificado"
-            name="precio_certificado"
-            fullWidth
+            label="Precio"
+            name="precio"
             size="small"
-            value={formik.values.precio_certificado}
+            fullWidth
+            value={formik.values.precio}
             onChange={formik.handleChange}
-            error={
-              formik.touched.precio_certificado &&
-              Boolean(formik.errors.precio_certificado)
-            }
-            helperText={
-              formik.touched.precio_certificado && formik.errors.precio_certificado
-            }
+            error={formik.touched.precio && Boolean(formik.errors.precio)}
+            helperText={formik.touched.precio && formik.errors.precio}
           />
         )}
 
+        {/* Si es gratuita, permitir decidir certificación */}
+        {!formik.values.premium && (
+          <>
+            <FormControlLabel
+              control={
+                <Switch
+                  name="certificacion"
+                  checked={formik.values.certificacion}
+                  onChange={(e) => formik.setFieldValue("certificacion", e.target.checked)}
+                  color="primary"
+                />
+              }
+              label="Incluye certificación"
+            />
+            {formik.values.certificacion && (
+              <TextField
+                label="Precio del certificado"
+                name="precio_certificado"
+                fullWidth
+                size="small"
+                value={formik.values.precio_certificado}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.precio_certificado &&
+                  Boolean(formik.errors.precio_certificado)
+                }
+                helperText={
+                  formik.touched.precio_certificado && formik.errors.precio_certificado
+                }
+              />
+            )}
+          </>
+        )}
+
+        {/* Imagen y Upload */}
         <div className="flex items-center gap-4">
           <TextField
             label="Imagen (URL)"
@@ -158,6 +200,7 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
           </Tooltip>
         </div>
 
+        {/* Preview imagen */}
         {previewImage && (
           <div className="mt-2 text-center">
             <img
@@ -168,6 +211,7 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
           </div>
         )}
 
+        {/* Descripción */}
         <TextField
           label="Descripción"
           name="description"
@@ -179,18 +223,7 @@ export default function CrearDiplomatura({ isOpen, onRequestClose, onCreated }) 
           onChange={formik.handleChange}
         />
 
-        <FormControlLabel
-          control={
-            <Switch
-              name="certificacion"
-              checked={formik.values.certificacion}
-              onChange={formik.handleChange}
-              color="primary"
-            />
-          }
-          label="Incluye certificación"
-        />
-
+        {/* Botón de envío */}
         <Button
           fullWidth
           type="submit"

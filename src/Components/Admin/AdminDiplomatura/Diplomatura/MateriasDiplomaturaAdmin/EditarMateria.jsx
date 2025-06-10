@@ -44,8 +44,8 @@ export default function EditarMateria({
       try {
         await axios.put(`/diplomatura/${diplomaturaId}/materia/${materiaData.id}`, values);
         toast.success("Materia actualizada con éxito");
-        onUpdated(); // Notifica recarga
-        onRequestClose(); // Cierra modal
+        onUpdated();
+        onRequestClose();
       } catch (error) {
         console.error("Error al editar materia:", error);
         toast.error("No se pudo actualizar la materia");
@@ -61,7 +61,7 @@ export default function EditarMateria({
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="z-50 w-[95%] max-w-lg bg-white rounded-lg p-6 relative shadow-lg"
+      className="z-50 w-[95%] max-w-xl bg-white rounded-xl p-6 relative shadow-2xl overflow-y-auto max-h-[95vh]"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-center items-center"
     >
       <IconButton
@@ -87,7 +87,7 @@ export default function EditarMateria({
           helperText={formik.touched.name && formik.errors.name}
         />
 
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
           <TextField
             label="Imagen (URL)"
             name="image"

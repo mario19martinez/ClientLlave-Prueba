@@ -28,6 +28,8 @@ export default function EditarDiplomatura({ isOpen, onRequestClose, diplomaturaD
       certificacion: diplomaturaData?.certificacion || false,
       description: diplomaturaData?.description || "",
       precio: diplomaturaData?.precio || "",
+      premium: diplomaturaData?.premium ?? true,
+      precio_certificado: diplomaturaData?.precio_certificado || "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("El nombre es obligatorio."),
@@ -37,6 +39,14 @@ export default function EditarDiplomatura({ isOpen, onRequestClose, diplomaturaD
       precio: Yup.number()
         .min(0, "Debe ser mayor o igual a 0")
         .typeError("Debe ser un número válido"),
+      precio_certificado: Yup.number()
+        .when("premium", {
+          is: false,
+          then: Yup.number()
+            .typeError("Debe ser un número válido")
+            .required("Requerido si incluye certificación")
+            .min(0, "Debe ser mayor o igual a 0"),
+        }),
     }),
     onSubmit: async (values) => {
       try {
@@ -59,7 +69,7 @@ export default function EditarDiplomatura({ isOpen, onRequestClose, diplomaturaD
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="z-50 w-[95%] max-w-lg bg-white rounded-lg p-6 relative shadow-lg"
+      className="z-50 w-[95%] max-w-2xl bg-white rounded-lg p-6 relative shadow-xl overflow-y-auto max-h-[95vh]"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-center items-center"
     >
       <IconButton
@@ -85,16 +95,71 @@ export default function EditarDiplomatura({ isOpen, onRequestClose, diplomaturaD
             helperText={formik.touched.name && formik.errors.name}
           />
 
-          <TextField
-            label="Precio"
-            name="precio"
-            size="small"
-            value={formik.values.precio}
-            onChange={formik.handleChange}
-            error={formik.touched.precio && Boolean(formik.errors.precio)}
-            helperText={formik.touched.precio && formik.errors.precio}
-          />
+          {formik.values.premium ? (
+            <TextField
+              label="Precio"
+              name="precio"
+              size="small"
+              value={formik.values.precio}
+              onChange={formik.handleChange}
+              error={formik.touched.precio && Boolean(formik.errors.precio)}
+              helperText={formik.touched.precio && formik.errors.precio}
+            />
+          ) : null}
         </div>
+
+        <FormControlLabel
+          control={
+            <Switch
+              name="premium"
+              checked={formik.values.premium}
+              onChange={(e) => {
+                const isPremium = e.target.checked;
+                formik.setFieldValue("premium", isPremium);
+                if (isPremium) {
+                  formik.setFieldValue("certificacion", true);
+                }
+              }}
+              color="primary"
+            />
+          }
+          label={formik.values.premium ? "De pago" : "Gratuita"}
+        />
+
+        {!formik.values.premium && (
+          <>
+            <FormControlLabel
+              control={
+                <Switch
+                  name="certificacion"
+                  checked={formik.values.certificacion}
+                  onChange={formik.handleChange}
+                  color="primary"
+                />
+              }
+              label="Incluye certificación"
+            />
+
+            {formik.values.certificacion && (
+              <TextField
+                label="Precio del certificado"
+                name="precio_certificado"
+                fullWidth
+                size="small"
+                value={formik.values.precio_certificado}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.precio_certificado &&
+                  Boolean(formik.errors.precio_certificado)
+                }
+                helperText={
+                  formik.touched.precio_certificado &&
+                  formik.errors.precio_certificado
+                }
+              />
+            )}
+          </>
+        )}
 
         <div className="flex items-center gap-4">
           <TextField
@@ -139,18 +204,6 @@ export default function EditarDiplomatura({ isOpen, onRequestClose, diplomaturaD
           size="small"
           value={formik.values.description}
           onChange={formik.handleChange}
-        />
-
-        <FormControlLabel
-          control={
-            <Switch
-              name="certificacion"
-              checked={formik.values.certificacion}
-              onChange={formik.handleChange}
-              color="primary"
-            />
-          }
-          label="Incluye certificación"
         />
 
         <Button
