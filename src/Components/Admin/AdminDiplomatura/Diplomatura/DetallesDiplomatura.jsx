@@ -14,8 +14,11 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
+import PeopleIcon from "@mui/icons-material/People"; // 👈 nuevo ícono
 import { toast } from "react-toastify";
 import EditarDiplomatura from "./EditarDiplomatura";
+import InscribirEstudianteDiplomatura from "./EstudiantesDiplomatura/InscribirEstudianteDiplomatura";
+import AllEstudiantesDiplomatura from "./EstudiantesDiplomatura/AllEstudiantesDiplomatura"; // 👈 nuevo modal
 
 export default function DetallesDiplomatura() {
   const { diplomaturaId } = useParams();
@@ -25,6 +28,7 @@ export default function DetallesDiplomatura() {
   const [editOpen, setEditOpen] = useState(false);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [modalVerEstudiantes, setModalVerEstudiantes] = useState(false); // 👈 estado nuevo
 
   useEffect(() => {
     const fetchDiplomatura = async () => {
@@ -88,11 +92,21 @@ export default function DetallesDiplomatura() {
     <section className="bg-white shadow-lg rounded-2xl w-full p-6 md:p-8 mb-8">
       {/* Barra superior con acciones */}
       <div className="flex justify-end gap-3 mb-4">
+        <Tooltip title="Estudiantes inscritos">
+          <IconButton
+            onClick={() => setModalVerEstudiantes(true)}
+            className="hover:bg-blue-100 text-blue-600"
+          >
+            <PeopleIcon />
+          </IconButton>
+        </Tooltip>
+
         <Tooltip title="Ver ventas">
           <IconButton className="hover:bg-blue-100 text-blue-600">
             <ShowChartIcon />
           </IconButton>
         </Tooltip>
+
         <Tooltip title="Editar">
           <IconButton
             onClick={() => setEditOpen(true)}
@@ -101,6 +115,7 @@ export default function DetallesDiplomatura() {
             <EditIcon />
           </IconButton>
         </Tooltip>
+
         <Tooltip title="Eliminar">
           <IconButton
             onClick={() => setConfirmDeleteOpen(true)}
@@ -113,7 +128,6 @@ export default function DetallesDiplomatura() {
 
       {/* Contenido */}
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Imagen */}
         <div className="w-full md:w-1/3">
           <img
             src={
@@ -125,7 +139,6 @@ export default function DetallesDiplomatura() {
           />
         </div>
 
-        {/* Info */}
         <div className="w-full md:w-2/3">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
             {diplomatura.name}
@@ -161,6 +174,13 @@ export default function DetallesDiplomatura() {
           onRequestClose={() => setEditOpen(false)}
           diplomaturaData={diplomatura}
           onUpdated={handleUpdated}
+        />
+      )}
+
+      {modalVerEstudiantes && (
+        <AllEstudiantesDiplomatura
+          isOpen={modalVerEstudiantes}
+          onClose={() => setModalVerEstudiantes(false)}
         />
       )}
 
