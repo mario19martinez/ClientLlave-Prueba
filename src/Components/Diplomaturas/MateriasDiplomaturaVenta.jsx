@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -14,6 +14,7 @@ import axios from "axios";
 
 export default function MateriasDiplomaturaVenta() {
   const { diplomaturaId } = useParams();
+  const navigate = useNavigate(); 
   const [materias, setMaterias] = useState([]);
 
   useEffect(() => {
@@ -21,8 +22,7 @@ export default function MateriasDiplomaturaVenta() {
       .get(`/diplomatura/${diplomaturaId}/materias`)
       .then((res) => {
         if (Array.isArray(res.data)) {
-          // Solo materias activas
-          const activas = res.data.filter((m) => m.activo !== false); // admite undefined como true
+          const activas = res.data.filter((m) => m.activo !== false);
           setMaterias(activas);
         } else {
           console.warn("Respuesta inesperada:", res.data);
@@ -111,7 +111,7 @@ export default function MateriasDiplomaturaVenta() {
                         },
                       }}
                       onClick={() =>
-                        alert(`Ir al detalle de la materia: ${materia.name}`)
+                        navigate(`/Diplomaturas/${diplomaturaId}/Materia/${materia.id}`)
                       }
                     >
                       Ver materia

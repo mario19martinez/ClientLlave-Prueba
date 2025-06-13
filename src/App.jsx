@@ -36,6 +36,7 @@ import ViewCompraStatus from "./views/ViewsEstadosDeCompra/ViewCompraStatus";
 import ViewDonacionRespuesta from "./views/ViewsEstadosDeCompra/ViewDonacionRespuesta";
 import ViewAllDiplomaturas from "./views/ViewDiplomaturas/ViewAllDiplomaturas";
 import ViewDetallesVentaDiplomatura from "./views/ViewDiplomaturas/ViewDetallesVentaDiplomatura";
+import ViewMaterialMateriaVenta from "./views/ViewDiplomaturas/ViewMaterialMateriaVenta";
 
 //Imports de estudiantes
 import ViewMenuStudent from "./views/ViewMenuStudent/ViewMenuStudent";
@@ -363,6 +364,7 @@ function App() {
         <Route path="/Donacion_Respuesta" element={<ViewDonacionRespuesta/>} />
         <Route path="/Diplomaturas" element={<ViewAllDiplomaturas />} />
         <Route path="/Diplomaturas/:diplomaturaId" element={<ViewDetallesVentaDiplomatura />} />
+        <Route path="/Diplomaturas/:diplomaturaId/Materia/:materiaId" element={<ViewMaterialMateriaVenta />} />
         {/*<Route path="/cursos" element={<Cursos />} />*/}
     
         {/*Rutas pagina no asociadas */}
