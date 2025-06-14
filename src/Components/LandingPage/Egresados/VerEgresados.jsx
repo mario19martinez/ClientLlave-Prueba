@@ -77,66 +77,129 @@ export default function VerEgresados() {
       <h1 className="text-4xl font-bold text-center mb-10 text-gray-800">Nuestros Egresados</h1>
 
       <div className="space-y-12">
-        {egresados.map((egresado) => (
-          <div
-            key={egresado.id}
-            className={`max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 ${styles.Template}`}
-          >
-            <div className="flex flex-col md:flex-row gap-8 items-start">
-              {egresado.template === "1" && (
-                <>
-                  <div className="w-full md:w-1/2">{renderMedia(egresado.media)}</div>
-                  <div className="w-full md:w-1/2 flex flex-col gap-3">
-                    <div className="flex items-center gap-2">
-                      <h2 className="text-2xl font-semibold text-gray-800">{egresado.name}</h2>
-                      {egresado.flag && (
-                        <img src={egresado.flag} alt="bandera" className="h-6 w-auto" />
-                      )}
-                    </div>
-                    <div
-                      className="text-gray-600 text-justify"
-                      dangerouslySetInnerHTML={{ __html: truncateContent(egresado.content) }}
-                    />
-                    {egresado.content.length > 340 && (
-                      <button
-                        onClick={() => handleModalOpen(egresado.content, egresado)}
-                        className="self-start text-sm font-medium text-blue-600 hover:underline"
-                      >
-                        Ver más
-                      </button>
-                    )}
-                  </div>
-                </>
-              )}
+        {egresados.map((egresado) => {
+          const hasContent = !!egresado.content?.trim();
 
-              {egresado.template === "2" && (
-                <>
-                  <div className="w-full md:w-1/2 flex flex-col gap-3">
-                    <div className="flex items-center gap-2">
-                      <h2 className="text-2xl font-semibold text-gray-800">{egresado.name}</h2>
-                      {egresado.flag && (
-                        <img src={egresado.flag} alt="bandera" className="h-6 w-auto" />
-                      )}
+          return (
+            <div
+              key={egresado.id}
+              className={`max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 ${styles.Template}`}
+            >
+              {!hasContent ? (
+                <div className="flex flex-col md:flex-row gap-8 items-center justify-center text-center">
+                  {egresado.template === "1" && egresado.media && (
+                    <>
+                      <div className="w-full md:w-1/2 flex justify-center">
+                        <div className="max-w-[500px] w-full">{renderMedia(egresado.media)}</div>
+                      </div>
+                      <div className="w-full md:w-1/2 flex justify-center items-center">
+                        <h2 className="text-2xl font-semibold text-gray-800">
+                          {egresado.name}
+                          {egresado.flag && (
+                            <img
+                              src={egresado.flag}
+                              alt="bandera"
+                              className="h-6 w-auto inline-block ml-2"
+                            />
+                          )}
+                        </h2>
+                      </div>
+                    </>
+                  )}
+
+                  {egresado.template === "2" && egresado.media && (
+                    <>
+                      <div className="w-full md:w-1/2 flex justify-center items-center">
+                        <h2 className="text-2xl font-semibold text-gray-800">
+                          {egresado.name}
+                          {egresado.flag && (
+                            <img
+                              src={egresado.flag}
+                              alt="bandera"
+                              className="h-6 w-auto inline-block ml-2"
+                            />
+                          )}
+                        </h2>
+                      </div>
+                      <div className="w-full md:w-1/2 flex justify-center">
+                        <div className="max-w-[500px] w-full">{renderMedia(egresado.media)}</div>
+                      </div>
+                    </>
+                  )}
+
+                  {!egresado.media && (
+                    <div className="w-full text-center">
+                      <h2 className="text-2xl font-semibold text-gray-800">
+                        {egresado.name}
+                        {egresado.flag && (
+                          <img
+                            src={egresado.flag}
+                            alt="bandera"
+                            className="h-6 w-auto inline-block ml-2"
+                          />
+                        )}
+                      </h2>
                     </div>
-                    <div
-                      className="text-gray-600 text-justify"
-                      dangerouslySetInnerHTML={{ __html: truncateContent(egresado.content) }}
-                    />
-                    {egresado.content.length > 340 && (
-                      <button
-                        onClick={() => handleModalOpen(egresado.content, egresado)}
-                        className="self-start text-sm font-medium text-blue-600 hover:underline"
-                      >
-                        Ver más
-                      </button>
-                    )}
-                  </div>
-                  <div className="w-full md:w-1/2">{renderMedia(egresado.media)}</div>
-                </>
+                  )}
+                </div>
+              ) : (
+                <div className="flex flex-col md:flex-row gap-8 items-start">
+                  {egresado.template === "1" && (
+                    <>
+                      <div className="w-full md:w-1/2">{renderMedia(egresado.media)}</div>
+                      <div className="w-full md:w-1/2 flex flex-col gap-3">
+                        <div className="flex items-center gap-2">
+                          <h2 className="text-2xl font-semibold text-gray-800">{egresado.name}</h2>
+                          {egresado.flag && (
+                            <img src={egresado.flag} alt="bandera" className="h-6 w-auto" />
+                          )}
+                        </div>
+                        <div
+                          className="text-gray-600 text-justify"
+                          dangerouslySetInnerHTML={{ __html: truncateContent(egresado.content) }}
+                        />
+                        {egresado.content.length > 340 && (
+                          <button
+                            onClick={() => handleModalOpen(egresado.content, egresado)}
+                            className="self-start text-sm font-medium text-blue-600 hover:underline"
+                          >
+                            Ver más
+                          </button>
+                        )}
+                      </div>
+                    </>
+                  )}
+
+                  {egresado.template === "2" && (
+                    <>
+                      <div className="w-full md:w-1/2 flex flex-col gap-3">
+                        <div className="flex items-center gap-2">
+                          <h2 className="text-2xl font-semibold text-gray-800">{egresado.name}</h2>
+                          {egresado.flag && (
+                            <img src={egresado.flag} alt="bandera" className="h-6 w-auto" />
+                          )}
+                        </div>
+                        <div
+                          className="text-gray-600 text-justify"
+                          dangerouslySetInnerHTML={{ __html: truncateContent(egresado.content) }}
+                        />
+                        {egresado.content.length > 340 && (
+                          <button
+                            onClick={() => handleModalOpen(egresado.content, egresado)}
+                            className="self-start text-sm font-medium text-blue-600 hover:underline"
+                          >
+                            Ver más
+                          </button>
+                        )}
+                      </div>
+                      <div className="w-full md:w-1/2">{renderMedia(egresado.media)}</div>
+                    </>
+                  )}
+                </div>
               )}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Modal */}
