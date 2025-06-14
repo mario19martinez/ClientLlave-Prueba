@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchInscripcion } from "../../../Redux/features/UsersCourses/UsersCursesSlices";
 import { fetchCursoDetail } from "../../../Redux/features/courses/coursesSlice";
 import { getUserData } from "../../../Redux/features/Users/usersSlice";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 import {
   ImportContacts as ImportContactsIcon,
   EmojiEvents as EmojiEventsIcon,
@@ -18,8 +18,8 @@ function Escritorio() {
   const userData = useSelector((state) => state.users.userData);
   const navigate = useNavigate();
   const storedEmail = localStorage.getItem("email");
-  const [cursosInscritos, setCursosInscritos] = useState([]);
-  const [nivelesInscritos, setNivelesInscritos] = useState([]);
+
+  const [cursoCount, setCursoCount] = useState(0);
   const [certificados, setCertificados] = useState(0);
   const [transmisiones, setTransmisiones] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -32,147 +32,85 @@ function Escritorio() {
   }, [dispatch, storedEmail]);
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      setLoading(true);
-      setError(null);
+    const fetchData = async () => {
       try {
-        if (userData?.sub) {
-          const inscripcionResponse = await dispatch(
-            fetchInscripcion(userData.sub)
-          );
-          const inscripciones = inscripcionResponse.payload.inscripciones || [];
-          const cursoIds = inscripciones.map(
-            (inscripcion) => inscripcion.cursoId
-          );
-          const cursoPromises = cursoIds.map((cursoId) =>
-            dispatch(fetchCursoDetail(cursoId))
-          );
-          Promise.all(cursoPromises).then((responses) => {
-            const cursosNombres = responses
-              .filter((cursoResponse) => cursoResponse.payload)
-              .map((cursoResponse) => cursoResponse.payload.name);
-            setCursosInscritos(cursosNombres);
-          });
-        }
+        if (!userData?.sub) return;
+
+        setLoading(true);
+        setError(null);
+
+        const [cursoCount, certificadosCount, transmisionesCount] = await Promise.all([
+          fetchCursoNivelDiplomaturas(userData.sub),
+          fetchCertificados(userData.sub),
+          fetchTransmisiones(),
+        ]);
+
+        setCursoCount(cursoCount);
+        setCertificados(certificadosCount);
+        setTransmisiones(transmisionesCount);
       } catch (err) {
-        setError("Error al obtener los cursos.");
+        setError("Error al obtener datos del escritorio.");
       } finally {
         setLoading(false);
       }
     };
 
-    const fetchNivelesInscritos = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        if (userData?.sub) {
-          const response = await axios.get(
-            `/user/${userData.sub}/grupos-nivel`
-          );
-          setNivelesInscritos(response.data.grupos);
-        }
-      } catch (error) {
-        setError("Error al obtener los niveles inscritos.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchCertificados = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        if (userData?.sub) {
-          const [
-            certificadosCursoRes,
-            certificadosNivelRes,
-            certificadosModuloRes,
-          ] = await Promise.all([
-            axios
-              .get(`/certificadosCurso/usuario/${userData.sub}`)
-              .catch((error) => {
-                if (error.response && error.response.status === 404) {
-                  console.warn("No se encontraron certificados de curso.");
-                  return { data: [] }; // Devolver un array vacío si no hay certificados
-                } else {
-                  throw error;
-                }
-              }),
-            axios
-              .get(`/certificados/${userData.sub}`)
-              .catch((error) => {
-                if (error.response && error.response.status === 404) {
-                  console.warn("No se encontraron certificados de nivel.");
-                  return { data: [] }; // Devolver un array vacío si no hay certificados
-                } else {
-                  throw error;
-                }
-              }),
-            axios
-              .get(`/certificadosModulo/usuario/${userData.sub}`)
-              .catch((error) => {
-                if (error.response && error.response.status === 404) {
-                  console.warn("No se encontraron certificados de módulo.");
-                  return { data: [] }; // Devolver un array vacío si no hay certificados
-                } else {
-                  throw error;
-                }
-              }),
-          ]);
-
-          const certificadosCurso = certificadosCursoRes.data.length || 0;
-          const certificadosNivel = certificadosNivelRes.data.length || 0;
-          const certificadosModulo = certificadosModuloRes.data.length || 0;
-
-          const totalCertificados =
-            certificadosCurso + certificadosNivel + certificadosModulo;
-
-          setCertificados(totalCertificados);
-        }
-      } catch (error) {
-        setError("Error al obtener los certificados.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchTransmisiones = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await axios.get("/transmisiones");
-        setTransmisiones(response.data.length);
-      } catch (error) {
-        setError("Error al obtener las transmisiones.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCourses();
-    fetchNivelesInscritos();
-    fetchCertificados();
-    fetchTransmisiones();
+    fetchData();
   }, [dispatch, userData]);
 
-  const totalCursos = cursosInscritos.length + nivelesInscritos.length;
+  const fetchCursoNivelDiplomaturas = async (userId) => {
+    let total = 0;
 
-  const containerStyle =
-    "flex flex-wrap justify-center items-center h-auto p-4";
-  const cardStyle =
-    "w-48 md:w-56 h-44 md:h-52 p-4 border-2 border-blue-500 rounded-lg shadow-lg mx-2 my-4 text-center flex flex-col justify-center items-center transition-transform transform hover:scale-105 hover:shadow-2xl cursor-pointer bg-white hover:bg-blue-100";
-  const labelStyle = "text-base md:text-lg lg:text-xl font-semibold mt-2";
-  const countStyle = "font-bold text-gray-700 text-2xl md:text-3xl lg:text-4xl";
-  const iconContainerStyle =
-    "w-14 h-14 p-2 rounded-full bg-blue-100 text-center";
-  const iconStyle = "text-blue-500";
+    // Cursos
+    const inscripcionResponse = await dispatch(fetchInscripcion(userId));
+    const inscripciones = inscripcionResponse?.payload?.inscripciones || [];
+    if (inscripciones.length > 0) total += inscripciones.length;
+
+    // Niveles
+    const nivelesResponse = await axios.get(`/user/${userId}/grupos-nivel`).catch(() => ({ data: { grupos: [] } }));
+    const niveles = nivelesResponse.data.grupos || [];
+    if (niveles.length > 0) total += niveles.length;
+
+    // Diplomaturas
+    const diplomaturasResponse = await axios.get(`/diplomaturas/${userId}/mis-diplomaturas`).catch(() => ({ data: [] }));
+    const diplomaturas = diplomaturasResponse.data || [];
+    if (diplomaturas.length > 0) total += diplomaturas.length;
+
+    return total;
+  };
+
+  const fetchCertificados = async (userId) => {
+    const [curso, nivel, modulo] = await Promise.all([
+      axios.get(`/certificadosCurso/usuario/${userId}`).catch(() => ({ data: [] })),
+      axios.get(`/certificados/${userId}`).catch(() => ({ data: [] })),
+      axios.get(`/certificadosModulo/usuario/${userId}`).catch(() => ({ data: [] })),
+    ]);
+    return (curso.data.length || 0) + (nivel.data.length || 0) + (modulo.data.length || 0);
+  };
+
+  const fetchTransmisiones = async () => {
+    const res = await axios.get("/transmisiones").catch(() => ({ data: [] }));
+    return res.data.length || 0;
+  };
+
+  const Card = ({ icon, title, count, subtitle, onClick }) => (
+    <div
+      onClick={onClick}
+      className="bg-white hover:bg-blue-50 border border-blue-200 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 cursor-pointer w-64 h-48 flex flex-col items-center justify-center text-center mx-3 my-4 p-4"
+    >
+      <div className="bg-blue-100 rounded-full p-3 mb-2 text-blue-600">{icon}</div>
+      <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+      <p className="text-3xl font-bold text-blue-600">{count}</p>
+      <p className="text-sm text-gray-500">{subtitle}</p>
+    </div>
+  );
 
   const cursosInscritosRedirect = () => {
     navigate("/estudiante/cursosInscritos");
     window.location.reload();
   };
 
-  if (loading){
+  if (loading) {
     return (
       <div className="fixed inset-0 flex justify-center items-center">
         <div className="text-center">
@@ -183,66 +121,38 @@ function Escritorio() {
     );
   }
 
-  // if (error) {
-  //   return (
-  //     <div className="fixed inset-0 flex justify-center items-center">
-  //       <div className="text-center">
-  //         <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
-  //         <p className="text-red-500 mt-4 font-semibold">Oops! Algo salió mal. Vuelve a intentarlo en un momento.</p>
-  //         <p className="text-red-500 mt-4 font-semibold">
-  //         <SentimentVeryDissatisfiedIcon fontSize="large" />
-  //         </p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   return (
-    <div className="sm:pl-2 lg:pl-20">
-      <div className={containerStyle}>
-        <div className={cardStyle} onClick={cursosInscritosRedirect}>
-          <div className={iconContainerStyle}>
-            <ImportContactsIcon className={iconStyle} fontSize="large" />
-          </div>
-          <h3 className={labelStyle}>Mis Cursos</h3>
-          <p className={countStyle}>{totalCursos}</p>
-          <p className="text-sm text-gray-500">Haz clic para ver tus cursos</p>
-        </div>
-
-        <div
-          className={cardStyle}
+    <div className="sm:px-4 lg:px-20 py-10 bg-gray-50 min-h-screen">
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">Bienvenido a tu Escritorio</h2>
+      <div className="flex flex-wrap justify-center gap-6">
+        <Card
+          icon={<ImportContactsIcon fontSize="large" />}
+          title="Mis Cursos"
+          count={cursoCount}
+          subtitle="Cursos, niveles y diplomaturas"
+          onClick={cursosInscritosRedirect}
+        />
+        <Card
+          icon={<EmojiEventsIcon fontSize="large" />}
+          title="Certificados"
+          count={certificados}
+          subtitle="Ver tus certificados"
           onClick={() => navigate("/estudiante/certificados")}
-        >
-          <div className={iconContainerStyle}>
-            <EmojiEventsIcon className={iconStyle} fontSize="large" />
-          </div>
-          <h3 className={labelStyle}>Certificados</h3>
-          <p className={countStyle}>{certificados}</p>
-          <p className="text-sm text-gray-500">
-            Haz clic para ver tus certificados
-          </p>
-        </div>
-
-        <div className={cardStyle} onClick={() => navigate("/transmisiones")}>
-          <div className={iconContainerStyle}>
-            <LiveTvIcon className={iconStyle} fontSize="large" />
-          </div>
-          <h3 className={labelStyle}>Transmisiones</h3>
-          <p className={countStyle}>{transmisiones}</p>
-          <p className="text-sm text-gray-500">
-            Haz clic para ver las transmisiones
-          </p>
-        </div>
-
-        <div className={cardStyle} onClick={() => navigate("/Comunidad")}>
-          <div className={iconContainerStyle}>
-            <PeopleIcon className={iconStyle} fontSize="large" />
-          </div>
-          <h3 className={labelStyle}>Comunidad</h3>
-          <p className="text-sm text-gray-500">
-            Haz clic para ver la comunidad
-          </p>
-        </div>
+        />
+        <Card
+          icon={<LiveTvIcon fontSize="large" />}
+          title="Transmisiones"
+          count={transmisiones}
+          subtitle="Accede a transmisiones"
+          onClick={() => navigate("/transmisiones")}
+        />
+        <Card
+          icon={<PeopleIcon fontSize="large" />}
+          title="Comunidad"
+          count=""
+          subtitle="Únete a la comunidad"
+          onClick={() => navigate("/Comunidad")}
+        />
       </div>
     </div>
   );

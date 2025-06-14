@@ -41,7 +41,12 @@ export default function DetallesVentaDiplomatura() {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="60vh"
+      >
         <CircularProgress />
       </Box>
     );
@@ -99,8 +104,12 @@ export default function DetallesVentaDiplomatura() {
             Descripción
           </Typography>
 
-          <Typography variant="body1" sx={{ whiteSpace: "pre-line", color: "text.primary" }}>
-            {diplomatura.description?.trim() || "Esta diplomatura aún no tiene descripción detallada."}
+          <Typography
+            variant="body1"
+            sx={{ whiteSpace: "pre-line", color: "text.primary" }}
+          >
+            {diplomatura.description?.trim() ||
+              "Esta diplomatura aún no tiene descripción detallada."}
           </Typography>
 
           <Divider sx={{ my: 3 }} />
@@ -124,7 +133,10 @@ export default function DetallesVentaDiplomatura() {
             <CardMedia
               component="img"
               height="200"
-              image={diplomatura.image || "https://via.placeholder.com/400x250?text=Sin+Imagen"}
+              image={
+                diplomatura.image ||
+                "https://via.placeholder.com/400x250?text=Sin+Imagen"
+              }
               alt={diplomatura.name}
               sx={{ objectFit: "cover" }}
             />
@@ -140,26 +152,35 @@ export default function DetallesVentaDiplomatura() {
                   : "Gratis"}
               </Typography>
 
-              <Button
-                variant="contained"
-                color="success"
-                size="large"
-                fullWidth
-                sx={{
-                  mt: 3,
-                  fontWeight: "bold",
-                  borderRadius: 3,
-                  textTransform: "none",
-                  boxShadow: 3,
-                  transition: "all 0.3s ease-in-out",
-                  "&:hover": {
-                    transform: "scale(1.03)",
-                    boxShadow: 6,
-                  },
-                }}
+              <a
+                href="https://wa.link/868j4o"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "none" }}
               >
-                {Number(diplomatura.precio) > 0 ? "Comprar ahora" : "Inscribirse gratis"}
-              </Button>
+                <Button
+                  variant="contained"
+                  color="success"
+                  size="large"
+                  fullWidth
+                  sx={{
+                    mt: 3,
+                    fontWeight: "bold",
+                    borderRadius: 3,
+                    textTransform: "none",
+                    boxShadow: 3,
+                    transition: "all 0.3s ease-in-out",
+                    "&:hover": {
+                      transform: "scale(1.03)",
+                      boxShadow: 6,
+                    },
+                  }}
+                >
+                  {Number(diplomatura.precio) > 0
+                    ? "Comprar ahora"
+                    : "Inscribirse gratis"}
+                </Button>
+              </a>
             </CardContent>
           </Card>
         </Grid>

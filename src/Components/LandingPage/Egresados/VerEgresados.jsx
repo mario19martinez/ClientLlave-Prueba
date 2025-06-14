@@ -1,8 +1,7 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
-import styles from "./EgresadosAnimate.module.css";
 import axios from "axios";
 import { Modal, Typography, Button } from "@mui/material";
+import styles from "./EgresadosAnimate.module.css";
 
 export default function VerEgresados() {
   const [egresados, setEgresados] = useState([]);
@@ -15,43 +14,45 @@ export default function VerEgresados() {
       .get("/egresados")
       .then((response) => {
         const sortedEgresados = response.data.sort(
-          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
-        setEgresados([...sortedEgresados]); 
+        setEgresados(sortedEgresados);
       })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+      .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
   const renderMedia = (media) => {
+    const wrapperStyle = {
+      width: "100%",
+      aspectRatio: "16 / 9",
+      overflow: "hidden",
+      borderRadius: "12px",
+      backgroundColor: "#000",
+    };
+
     if (media.includes("youtube.com")) {
       const videoId = new URL(media).searchParams.get("v");
       return (
-        <div className="w-full md:w-1/2 relative overflow-hidden rounded-lg mb-4 md:mb-0 md:mr-4">
-          <div
-            style={{ paddingTop: "56.25%" }}
-            className="aspect-w-16 aspect-h-9"
-          >
-            <iframe
-              className="absolute inset-0 w-full h-full transition-opacity duration-300 opacity-100 hover:opacity-75"
-              src={`https://www.youtube.com/embed/${videoId}`}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
+        <div style={wrapperStyle} className="shadow-md hover:shadow-xl transition-all">
+          <iframe
+            src={`https://www.youtube.com/embed/${videoId}`}
+            title="YouTube video"
+            className="w-full h-full"
+            allowFullScreen
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          />
         </div>
       );
     } else {
       return (
-        <img
-          style={{ width: "auto", height: "auto" }}
-          className="md:w-1/2 object-cover object-center rounded-lg mb-4 md:mb-0 md:mr-4 transition-opacity duration-300 opacity-100 hover:opacity-75"
-          src={media}
-          alt="Media"
-        />
+        <div style={wrapperStyle} className="shadow-md hover:shadow-xl transition-all">
+          <img
+            src={media}
+            alt="Egresado"
+            className="w-full h-full object-cover object-center"
+          />
+        </div>
       );
     }
   };
@@ -72,167 +73,88 @@ export default function VerEgresados() {
   };
 
   return (
-    <div className="pt-5 pb-5">
-      <h1 className="text-3xl font-bold text-center mb-8">
-        Nuestros Egresados
-      </h1>
-      <div className="px-4 md:px-0">
+    <div className="pt-10 pb-10 px-4">
+      <h1 className="text-4xl font-bold text-center mb-10 text-gray-800">Nuestros Egresados</h1>
+
+      <div className="space-y-12">
         {egresados.map((egresado) => (
           <div
             key={egresado.id}
-            className={`max-w-4xl mx-auto p-4 pb-16 bg-gray-100 shadow-lg hover:shadow-2xl transition-shadow duration-300 mb-16 md:mb-24 ${styles.Template}`}
+            className={`max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 ${styles.Template}`}
           >
-            {/* Condición para renderizar la tarjeta para pantallas pequeñas */}
-            {window.innerWidth < 640 && (
-              <div className="flex flex-col items-center">
-                {egresado.media && renderMedia(egresado.media)}
-                <div className="flex-grow p-4 w-full">
-                  <div className="flex">
-                    <h2 className="text-xl font-semibold mb-2">
-                      {egresado.name}{" "}
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+              {egresado.template === "1" && (
+                <>
+                  <div className="w-full md:w-1/2">{renderMedia(egresado.media)}</div>
+                  <div className="w-full md:w-1/2 flex flex-col gap-3">
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-2xl font-semibold text-gray-800">{egresado.name}</h2>
                       {egresado.flag && (
-                        <img
-                          src={egresado.flag}
-                          alt="bandera"
-                          className="h-6 w-auto inline-block"
-                        />
+                        <img src={egresado.flag} alt="bandera" className="h-6 w-auto" />
                       )}
-                    </h2>
+                    </div>
+                    <div
+                      className="text-gray-600 text-justify"
+                      dangerouslySetInnerHTML={{ __html: truncateContent(egresado.content) }}
+                    />
+                    {egresado.content.length > 340 && (
+                      <button
+                        onClick={() => handleModalOpen(egresado.content, egresado)}
+                        className="self-start text-sm font-medium text-blue-600 hover:underline"
+                      >
+                        Ver más
+                      </button>
+                    )}
                   </div>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: truncateContent(egresado.content),
-                    }}
-                    className="text-gray-600"
-                    style={{ textAlign: "justify" }}
-                  ></div>
-                  {egresado.content.length > 340 && (
-                    <button
-                      className="text-blue-600"
-                      onClick={() =>
-                        handleModalOpen(egresado.content, egresado)
-                      }
-                    >
-                      Ver Más
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
+                </>
+              )}
 
-            {/* Condición para renderizar la tarjeta para pantallas medianas y grandes */}
-            {window.innerWidth >= 640 && (
-              <div className="flex flex-col md:flex-row items-center gap-8">
-                {/* Card Template 1 */}
-                {egresado.template === "1" && (
-                  <>
-                    {egresado.media && renderMedia(egresado.media)}
-                    <div className="flex-grow p-4 md:w-1/2">
-                      <div className="flex">
-                        <h2 className="text-xl font-semibold mb-2">
-                          {egresado.name}{" "}
-                          {egresado.flag && (
-                            <img
-                              src={egresado.flag}
-                              alt="bandera"
-                              className="h-6 w-auto inline-block"
-                            />
-                          )}
-                        </h2>
-                      </div>
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: truncateContent(egresado.content),
-                        }}
-                        className="text-gray-600"
-                        style={{ textAlign: "justify" }}
-                      ></div>
-                      {egresado.content.length > 340 && (
-                        <button
-                          className="text-blue-600"
-                          onClick={() =>
-                            handleModalOpen(egresado.content, egresado)
-                          }
-                        >
-                          Ver Más
-                        </button>
+              {egresado.template === "2" && (
+                <>
+                  <div className="w-full md:w-1/2 flex flex-col gap-3">
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-2xl font-semibold text-gray-800">{egresado.name}</h2>
+                      {egresado.flag && (
+                        <img src={egresado.flag} alt="bandera" className="h-6 w-auto" />
                       )}
                     </div>
-                  </>
-                )}
-
-                {/* Card Template 2 */}
-                {egresado.template === "2" && (
-                  <>
-                    <div className="flex-grow p-4 md:w-1/2">
-                      <div className="flex">
-                        <h2 className="text-xl font-semibold mb-2">
-                          {egresado.name}{" "}
-                          {egresado.flag && (
-                            <img
-                              src={egresado.flag}
-                              alt="bandera"
-                              className="h-6 w-auto inline-block"
-                            />
-                          )}
-                        </h2>
-                      </div>
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: truncateContent(egresado.content),
-                        }}
-                        className="text-gray-600"
-                        style={{ textAlign: "justify" }}
-                      ></div>
-                      {egresado.content.length > 340 && (
-                        <button
-                          className="text-blue-600"
-                          onClick={() =>
-                            handleModalOpen(egresado.content, egresado)
-                          }
-                        >
-                          Ver Más
-                        </button>
-                      )}
-                    </div>
-                    {egresado.media && renderMedia(egresado.media)}
-                  </>
-                )}
-              </div>
-            )}
+                    <div
+                      className="text-gray-600 text-justify"
+                      dangerouslySetInnerHTML={{ __html: truncateContent(egresado.content) }}
+                    />
+                    {egresado.content.length > 340 && (
+                      <button
+                        onClick={() => handleModalOpen(egresado.content, egresado)}
+                        className="self-start text-sm font-medium text-blue-600 hover:underline"
+                      >
+                        Ver más
+                      </button>
+                    )}
+                  </div>
+                  <div className="w-full md:w-1/2">{renderMedia(egresado.media)}</div>
+                </>
+              )}
+            </div>
           </div>
         ))}
       </div>
+
+      {/* Modal */}
       <Modal open={showModal} onClose={handleCloseModal}>
-        <div className="fixed inset-0 overflow-y-auto flex items-center justify-center z-50">
-          <div className="relative mx-auto max-w-3xl w-full p-8 bg-white rounded-lg shadow-lg">
-            <Typography variant="h5" component="div" className="mb-4">
-              {selectedEgresado && (
-                <>
-                  {selectedEgresado.name}{" "}
-                  {selectedEgresado.flag && (
-                    <img
-                      src={selectedEgresado.flag}
-                      alt="bandera"
-                      className="h-6 w-auto inline-block"
-                    />
-                  )}
-                </>
-              )}
-            </Typography>
-            <Typography
-              variant="body1"
-              component="div"
-              className="text-gray-600 mb-4"
-              style={{ textAlign: "justify" }}
-            >
+        <div className="fixed inset-0 overflow-y-auto flex items-center justify-center z-50 px-4">
+          <div className="bg-white p-8 rounded-lg shadow-2xl max-w-3xl w-full">
+            {selectedEgresado && (
+              <Typography variant="h5" className="mb-4 text-center font-bold text-gray-800">
+                {selectedEgresado.name}{" "}
+                {selectedEgresado.flag && (
+                  <img src={selectedEgresado.flag} alt="bandera" className="h-6 w-auto inline-block" />
+                )}
+              </Typography>
+            )}
+            <Typography variant="body1" className="text-gray-700 text-justify mb-6">
               <div dangerouslySetInnerHTML={{ __html: modalContent }} />
             </Typography>
-            <Button
-              onClick={handleCloseModal}
-              variant="contained"
-              className="w-full"
-            >
+            <Button onClick={handleCloseModal} variant="contained" fullWidth>
               Cerrar
             </Button>
           </div>

@@ -1,22 +1,23 @@
 @keyframes show {
-    from {
-        opacity: 0;
-        scale: 25%;
-    }
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(40px);
+  }
 
-    to {
-        opacity: 1;
-        scale: 100%;
-    }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .Template {
-    view-timeline-name: --components;
-    view-timeline-axis: block;
+  view-timeline-name: --components;
+  view-timeline-axis: block;
 
-    animation-timeline: --components;
-    animation-name: show;
-
-    animation-range: entry 25% cover 35%;
-    animation-fill-mode: both;
+  animation-timeline: --components;
+  animation-name: show;
+  animation-range: entry 20% cover 30%;
+  animation-fill-mode: both;
+  animation-duration: 0.6s;
+  animation-timing-function: ease-out;
 }
