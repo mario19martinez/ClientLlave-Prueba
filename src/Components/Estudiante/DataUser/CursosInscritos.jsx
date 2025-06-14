@@ -13,6 +13,7 @@ export default function CursosInscritos() {
   const userData = useSelector((state) => state.users.userData);
   const [cursosInscritos, setCursosInscritos] = useState([]);
   const [nivelesInscritos, setNivelesInscritos] = useState([]);
+  const [diplomaturas, setDiplomaturas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ export default function CursosInscritos() {
     if (userData?.sub) {
       fetchCourses(userData.sub);
       fetchNivelesInscritos(userData.sub);
+      fetchDiplomaturasInscritas(userData.sub);
     }
   }, [dispatch, userData]);
 
@@ -39,12 +41,8 @@ export default function CursosInscritos() {
       const inscripciones = inscripcionResponse.payload?.inscripciones || [];
       const cursoIds = inscripciones.map((inscripcion) => inscripcion.cursoId);
       const cursoPromises = cursoIds.map((cursoId) => dispatch(fetchCursoDetail(cursoId)));
-
       const responses = await Promise.all(cursoPromises);
-      const cursos = responses
-        .filter((cursoResponse) => cursoResponse.payload)
-        .map((cursoResponse) => cursoResponse.payload);
-
+      const cursos = responses.filter(r => r.payload).map(r => r.payload);
       setCursosInscritos(cursos);
     } catch (error) {
       console.error("Error al obtener los cursos:", error);
@@ -55,28 +53,37 @@ export default function CursosInscritos() {
   };
 
   const fetchNivelesInscritos = async (userId) => {
-    setLoading(true);
-    setError(null);
     try {
       const response = await axios.get(`/user/${userId}/grupos-nivel`);
       setNivelesInscritos(response.data.grupos);
     } catch (error) {
-      console.error('Error al obtener los niveles inscritos del usuario:', error);
+      console.error('Error al obtener niveles inscritos:', error);
       setError('Error al obtener los niveles inscritos.');
-    } finally {
-      setLoading(false);
     }
   };
 
-  const handleCursoClick = (curso) => {
-    navigate(`/user/curso/${curso.id}`);
+  const fetchDiplomaturasInscritas = async (userId) => {
+    try {
+      const response = await axios.get(`/diplomaturas/${userId}/mis-diplomaturas`);
+      setDiplomaturas(response.data);
+    } catch (error) {
+      console.error('Error al obtener diplomaturas:', error);
+      setError('Error al obtener diplomaturas.');
+    }
   };
 
-  if (loading){
+  const handleCursoClick = (curso) => navigate(`/user/curso/${curso.id}`);
+  const handleDiplomaturaClick = (id) => {
+    if (userData?.sub) {
+      navigate(`/estudiante/diplomatura/${id}/${userData.sub}`);
+    }
+  };
+
+  if (loading) {
     return (
       <div className="fixed inset-0 flex justify-center items-center">
         <div className="text-center">
-          <p className="text-gray-600 mt-4 font-semibold">Cargando...</p>
+          <p className="text-gray-600 font-semibold mb-3">Cargando tu información...</p>
           <CircularProgress />
         </div>
       </div>
@@ -85,67 +92,72 @@ export default function CursosInscritos() {
 
   if (error) {
     return (
-      <div className="fixed inset-0 flex justify-center items-center">
-        <div className="text-center">
-          <p className="text-red-500 mt-4 font-semibold">Error: {error}</p>
-          <p className="text-red-500 mt-4 font-semibold">Oops! Algo salió mal. Vuelve a intentarlo en un momento.</p>
-          <p className="text-red-500 mt-4 font-semibold">
-          <SentimentVeryDissatisfiedIcon fontSize="large" />
-          </p>
+      <div className="fixed inset-0 flex justify-center items-center text-center">
+        <div>
+          <p className="text-red-600 font-bold">{error}</p>
+          <SentimentVeryDissatisfiedIcon className="text-red-400 mt-2" fontSize="large" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="px-4 md:px-20 lg:px-40 py-8">
-      <div className="mb-8 flex flex-col items-center justify-center">
-        <h2 className="text-2xl font-bold text-gray-700">Cursos Inscritos</h2>
-      </div>
+    <div className="px-4 md:px-20 lg:px-40 py-10">
+      <h2 className="text-3xl font-bold text-gray-800 text-center mb-10">Tus Inscripciones</h2>
 
-      <div className="font-normal text-center md:text-left">
-        {cursosInscritos.length > 0 || nivelesInscritos.length > 0 ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {cursosInscritos.map((curso, index) => (
-              <div key={index} className="bg-white shadow-md rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:scale-105">
-                <img className="w-full h-48 object-cover" src={curso.image} alt={curso.name} />
-                <div className="p-4">
-                  <span className="inline-block bg-blue-500 text-white text-xs px-2 py-1 rounded-full mb-2">Curso</span>
-                  <p className="text-lg font-semibold text-gray-700">{curso.name}</p>
-                  <p className="text-gray-500">{curso.nivel}</p>
-                  <p className="text-gray-500">{curso.duracion}</p>
-                  <button
-                    onClick={() => handleCursoClick(curso)}
-                    className="mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  >
-                    Ver clases
+      {(cursosInscritos.length || nivelesInscritos.length || diplomaturas.length) ? (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {cursosInscritos.map((curso, i) => (
+            <div key={i} className="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition transform hover:scale-[1.02]">
+              <img src={curso.image} alt={curso.name} className="w-full h-44 object-cover" />
+              <div className="p-5">
+                <span className="bg-blue-500 text-white text-xs font-semibold px-3 py-1 rounded-full">Curso</span>
+                <p className="mt-3 text-lg font-bold text-gray-800">{curso.name}</p>
+                <p className="text-sm text-gray-500">{curso.nivel}</p>
+                <p className="text-sm text-gray-500 mb-4">{curso.duracion}</p>
+                <button onClick={() => handleCursoClick(curso)} className="w-full py-2 text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold rounded">
+                  Ver clases
+                </button>
+              </div>
+            </div>
+          ))}
+
+          {nivelesInscritos.map((nivel, i) => (
+            <div key={i} className="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition transform hover:scale-[1.02]">
+              <img src={nivel.image} alt={nivel.name} className="w-full h-44 object-cover" />
+              <div className="p-5">
+                <span className="bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full">Nivel</span>
+                <p className="mt-3 text-lg font-bold text-gray-800">{nivel.name}</p>
+                <p className="text-sm text-gray-500 mb-4">{nivel.descripcion}</p>
+                <Link to={`/nivel/${nivel.nivel?.id}/grupo/${nivel.id}/detalles/${userData?.sub}`}>
+                  <button className="w-full py-2 text-sm bg-green-500 hover:bg-green-600 text-white font-bold rounded">
+                    Ver nivel
                   </button>
-                </div>
+                </Link>
               </div>
-            ))}
+            </div>
+          ))}
 
-            {nivelesInscritos.map((grupo, index) => (
-              <div key={index} className="bg-white shadow-md rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:scale-105">
-                <img className="w-full h-48 object-cover" src={grupo.image} alt={grupo.name} />
-                <div className="p-4">
-                  <span className="inline-block bg-green-500 text-white text-xs px-2 py-1 rounded-full mb-2">Nivel</span>
-                  <p className="text-lg font-semibold text-gray-700">{grupo.name}</p>
-                  <p className="text-gray-500 mb-2">{grupo.descripcion}</p>
-                  <Link to={`/nivel/${grupo.nivel?.id}/grupo/${grupo.id}/detalles/${userData?.sub}`}>
-                    <button
-                      className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                      Ver nivel
-                    </button>
-                  </Link>
-                </div>
+          {diplomaturas.map((diplo, i) => (
+            <div key={i} className="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition transform hover:scale-[1.02]">
+              <img src={diplo.image} alt={diplo.name} className="w-full h-44 object-cover" />
+              <div className="p-5">
+                <span className="bg-[#60A5FA] text-white text-xs font-semibold px-3 py-1 rounded-full">Diplomatura</span>
+                <p className="mt-3 text-lg font-bold text-gray-800">{diplo.name}</p>
+                <p className="text-sm text-gray-500 mb-4">{diplo.certificacion ? 'Certificación disponible' : 'Sin certificación'}</p>
+                <button
+                  onClick={() => handleDiplomaturaClick(diplo.id)}
+                  className="w-full py-2 text-sm bg-[#60A5FA] hover:bg-blue-400 text-white font-bold rounded"
+                >
+                  Ver diplomatura
+                </button>
               </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-500">No hay cursos o niveles inscritos</p>
-        )}
-      </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-center text-gray-500 text-lg">Aún no estás inscrito en ningún contenido.</p>
+      )}
     </div>
   );
 }

@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import logo from "../../../assets/logo2.png";
 import { useNavigate } from "react-router-dom";
@@ -12,118 +11,85 @@ export default function NavUser() {
   };
 
   return (
-    <nav className="bg-blue-700 py-2 lg:py-3 px-8 lg:px-12 shadow-md">
-      <div className="flex items-center justify-between max-w-screen-lg mx-auto">
-        <div className="w-1/4 lg:w-2/12">
-          <img src={logo} alt="logo" className="h-auto" />
+    <nav className="bg-blue-700 shadow-md sticky top-0 z-50 transition-all duration-300">
+      <div className="flex items-center justify-between max-w-screen-xl mx-auto px-6 py-3">
+        {/* Logo */}
+        <div className="w-36 sm:w-44 cursor-pointer" onClick={() => navigate("/")}>
+          <img src={logo} alt="logo" className="w-full h-auto object-contain" />
         </div>
 
-        {/* Botón de menú para pantallas pequeñas */}
+        {/* Mobile Menu Button */}
         <div className="lg:hidden">
           <button
-            type="button"
             onClick={toggleMobileMenu}
-            className="focus:outline-none"
+            className="text-white focus:outline-none transition-all duration-200"
+            aria-label="Toggle Menu"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-8 h-8"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 12h18M3 6h18M3 18h18"
-              />
-            </svg>
+            {mobileMenuOpen ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-8 h-8"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.8}
+                stroke="currentColor"
+                className="w-8 h-8"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
           </button>
         </div>
 
-        {/* Menú para pantallas grandes */}
-        <nav className="hidden lg:flex justify-center items-center gap-8 text-white font-medium">
-          <a
-            href=""
-            onClick={() => navigate("/")}
-            className="hover:text-gray-300 transition-colors"
-          >
-            Inicio
-          </a>
-          <a
-            href=""
-            className="hover:text-gray-300 transition-colors"
-            onClick={() => navigate("/Blogs")}
-          >
-            Blog
-          </a>
-          <a
-            href=""
-            onClick={() => navigate("/Planes")}
-            className="hover:text-gray-300 transition-colors"
-          >
-            Planes
-          </a>
-          <a
-            href=""
-            onClick={() => navigate("/Comunidad")}
-            className="hover:text-gray-300 transition-colors"
-          >
-            Comunidad
-          </a>
-          <a
-            href=""
-            className="hover:text-gray-300 transition-colors"
-            onClick={() => navigate("/Nosotros")}
-          >
-            Nosotros
-          </a>
-        </nav>
+        {/* Desktop Menu */}
+        <div className="hidden lg:flex gap-8 text-white font-semibold text-sm tracking-wide">
+          <NavLink label="Inicio" path="/" navigate={navigate} />
+          <NavLink label="Blog" path="/Blogs" navigate={navigate} />
+          <NavLink label="Planes" path="/Planes" navigate={navigate} />
+          <NavLink label="Comunidad" path="/Comunidad" navigate={navigate} />
+          <NavLink label="Nosotros" path="/Nosotros" navigate={navigate} />
+        </div>
       </div>
 
-      {/* Menú desplegable para pantallas pequeñas */}
+      {/* Mobile Dropdown */}
       {mobileMenuOpen && (
-        <div className="max-w-screen-lg mx-auto mt-4">
-          <nav className="flex flex-col text-white font-medium">
-            <a
-              href="#"
-              onClick={() => navigate("/")}
-              className="hover:text-gray-300 transition-colors"
-            >
-              Inicio
-            </a>
-            <a
-              href="#"
-              className="hover:text-gray-300 transition-colors"
-              onClick={() => navigate("/blogs")}
-            >
-              Blog
-            </a>
-            <a
-              href="#"
-              onClick={() => navigate("/Planes")}
-              className="hover:text-gray-300 transition-colors"
-            >
-              Planes
-            </a>
-            <a
-              href=""
-              onClick={() => navigate("/Comunidad")}
-              className="hover:text-gray-300 transition-colors"
-            >
-              Comunidad
-            </a>
-            <a
-              href="#"
-              className="hover:text-gray-300 transition-colors"
-              onClick={() => navigate("/Nosotros")}
-            >
-              Nosotros
-            </a>
-          </nav>
+        <div className="lg:hidden bg-blue-600 px-6 pb-4 transition-all duration-300">
+          <div className="flex flex-col space-y-3 text-white font-medium text-sm">
+            <NavLink label="Inicio" path="/" navigate={navigate} mobile closeMenu={() => setMobileMenuOpen(false)} />
+            <NavLink label="Blog" path="/Blogs" navigate={navigate} mobile closeMenu={() => setMobileMenuOpen(false)} />
+            <NavLink label="Planes" path="/Planes" navigate={navigate} mobile closeMenu={() => setMobileMenuOpen(false)} />
+            <NavLink label="Comunidad" path="/Comunidad" navigate={navigate} mobile closeMenu={() => setMobileMenuOpen(false)} />
+            <NavLink label="Nosotros" path="/Nosotros" navigate={navigate} mobile closeMenu={() => setMobileMenuOpen(false)} />
+          </div>
         </div>
       )}
     </nav>
   );
 }
+
+// Componente reutilizable de enlace
+const NavLink = ({ label, path, navigate, mobile = false, closeMenu = () => {} }) => {
+  return (
+    <button
+      onClick={() => {
+        navigate(path);
+        closeMenu();
+      }}
+      className={`transition-colors duration-200 hover:text-gray-300 ${
+        mobile ? "text-left w-full py-1" : ""
+      }`}
+    >
+      {label}
+    </button>
+  );
+};
