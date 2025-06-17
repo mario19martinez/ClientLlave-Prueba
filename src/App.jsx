@@ -56,6 +56,7 @@ import ViewCertificadoSelected from "./views/ViewMenuStudent/ViewCertificados/Vi
 import ViewAllCertificadosNivel from "./views/ViewMenuStudent/ViewCertificados/ViewAllCertificadoNivel";
 import ViewAllCertificadoModulo from "./views/ViewMenuStudent/ViewCertificados/ViewAllCertificadoModulo";
 import ViewDiplomaturaDetailsStudent from "./views/ViewMenuStudent/ViewDiplomaturas/ViewDiplomaturaDetailsStudent";
+import ViewMateriasEstudianteDetalles from "./views/ViewMenuStudent/ViewDiplomaturas/ViewMateriaDetallesEstudiante";
 
 //imports admins
 import ViewDashBoardAdmin from "./views/ViewAdmin/ViewDashBoardAdmin";
@@ -224,6 +225,7 @@ function App() {
             <Route path="/estudiante/certificados/nivel" element={isLoggedIn ? <ViewAllCertificadosNivel /> : <Navigate to="/login" />} />
             <Route path="/estudiante/certificados/modulo" element={isLoggedIn ? <ViewAllCertificadoModulo /> : <Navigate to="/login" />} />
             <Route path="/estudiante/diplomatura/:diplomaturaId/:userSub" element={isLoggedIn ? <ViewDiplomaturaDetailsStudent /> : <Navigate to="/login" />} />
+            <Route path="/estudiante/diplomatura/:diplomaturaId/:userSub/materia/:materiaId" element={isLoggedIn ? <ViewMateriasEstudianteDetalles /> : <Navigate to="/login" />} />
           </>
         )}
 

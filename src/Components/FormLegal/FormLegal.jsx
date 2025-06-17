@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserData } from "../../Redux/features/Users/usersSlice";
@@ -11,95 +10,68 @@ import html2pdf from "html2pdf.js";
 export default function FormLegal() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.users.userData);
+
   const [selectedCountry, setSelectedCountry] = useState("");
   const [documentTypes, setDocumentTypes] = useState([]);
   const [cursosInscritos, setCursosInscritos] = useState([]);
   const [inscritoSeleccionado, setInscritoSeleccionado] = useState("");
+  const [documentType, setDocumentType] = useState("");
   const [documentNumber, setDocumentNumber] = useState("");
   const [userDataForCertificate, setUserDataForCertificate] = useState(null);
-  const [showModal, setShowModal] = useState(false); // Estado para controlar la visibilidad del modal
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
-    if (storedEmail) {
-      dispatch(getUserData(storedEmail));
-    }
+    if (storedEmail) dispatch(getUserData(storedEmail));
   }, [dispatch]);
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      if (userData?.sub && cursosInscritos.length === 0) {
+    const loadInscripciones = async () => {
+      if (userData?.sub) {
         try {
-          const inscripcionResponse = await dispatch(
-            fetchInscripcion(userData.sub)
-          );
-          const inscripciones = inscripcionResponse.payload.inscripciones || [];
-          const cursoIds = inscripciones.map(
-            (inscripcion) => inscripcion.cursoId
-          );
-          const cursoPromises = cursoIds.map((cursoId) =>
-            dispatch(fetchCursoDetail(cursoId))
+          const res = await dispatch(fetchInscripcion(userData.sub));
+          const inscripciones = res.payload.inscripciones || [];
+
+          const detalles = await Promise.all(
+            inscripciones.map((i) => dispatch(fetchCursoDetail(i.cursoId)))
           );
 
-          Promise.all(cursoPromises).then((responses) => {
-            const cursos = responses
-              .filter((cursoResponse) => cursoResponse.payload)
-              .map((cursoResponse) => cursoResponse.payload);
+          const cursos = detalles
+            .map((d) => d.payload)
+            .filter(Boolean);
 
-            setCursosInscritos(cursos);
-          });
-        } catch (error) {
-          console.error("Error al obtener los cursos:", error);
+          setCursosInscritos(cursos);
+        } catch (err) {
+          console.error("Error al cargar cursos:", err);
         }
       }
     };
 
-    fetchCourses();
-  }, [dispatch, userData, cursosInscritos]);
+    loadInscripciones();
+  }, [dispatch, userData]);
 
   useEffect(() => {
-    if (userData && userData.pais) {
+    if (userData?.pais) {
       setSelectedCountry(userData.pais);
     }
   }, [userData]);
 
   useEffect(() => {
-    if (selectedCountry) {
-      const selectedCountryData = documentos.paises.find(
-        (country) => country.nombre === selectedCountry
-      );
-      if (selectedCountryData) {
-        setDocumentTypes(selectedCountryData.tipo_documento);
-      }
-    }
+    const pais = documentos.paises.find((p) => p.nombre === selectedCountry);
+    setDocumentTypes(pais?.tipo_documento || []);
   }, [selectedCountry]);
-
-  const handleCountryChange = (e) => {
-    setSelectedCountry(e.target.value);
-  };
-
-  const handleInscritoChange = (e) => {
-    setInscritoSeleccionado(e.target.value);
-  };
-
-  const handleDocumentNumberChange = (e) => {
-    setDocumentNumber(e.target.value);
-  };
 
   const handleGenerateCertificate = () => {
     setUserDataForCertificate({
       nombre: userData?.name,
       apellido: userData?.last_name,
-      tipoDocumento: document.getElementById("documentType").value,
+      tipoDocumento: documentType,
       numeroDocumento: documentNumber,
       nivel: inscritoSeleccionado,
     });
-
-    // Mostrar el modal después de generar el certificado
     setShowModal(true);
   };
 
-  // Función para generar y descargar el certificado en PDF
   const handleDownloadPDF = () => {
     const element = document.getElementById("certificate-container");
     const filename = `Certificación ${inscritoSeleccionado} de ${userData?.name}.pdf`;
@@ -107,144 +79,98 @@ export default function FormLegal() {
   };
 
   return (
-    <div>
-      <div className="justify-center items-center">
-        <div className="max-w-md p-6 bg-slate-300 rounded-md shadow-md">
-          <div className="mb-4">
-            <label
-              htmlFor="country"
-              className="block text-sm font-medium text-gray-700"
-            >
-              País
-            </label>
+    <div className="flex justify-center items-center mt-10">
+      <div className="w-full max-w-lg bg-white p-6 rounded shadow">
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">País</label>
             <select
-              id="country"
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
               value={selectedCountry}
-              onChange={handleCountryChange}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              onChange={(e) => setSelectedCountry(e.target.value)}
             >
               <option value="">Seleccione un país</option>
-              {documentos.paises.map((country) => (
-                <option key={country.nombre} value={country.nombre}>
-                  {country.nombre}
+              {documentos.paises.map((pais) => (
+                <option key={pais.nombre} value={pais.nombre}>
+                  {pais.nombre}
                 </option>
               ))}
             </select>
           </div>
 
-          <div className="mb-4">
-            <label
-              htmlFor="documentType"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Tipo de Documento
-            </label>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Tipo de Documento</label>
             <select
-              id="documentType"
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
+              value={documentType}
+              onChange={(e) => setDocumentType(e.target.value)}
             >
-              <option value="">Seleccione un tipo de documento</option>
-              {documentTypes.map((type, index) => (
-                <option key={index} value={type}>
-                  {type}
-                </option>
+              <option value="">Seleccione un tipo</option>
+              {documentTypes.map((tipo, i) => (
+                <option key={i} value={tipo}>{tipo}</option>
               ))}
             </select>
           </div>
 
-          <div className="mb-4">
-            <label
-              htmlFor="cursoInscrito"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Curso Inscrito
-            </label>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Curso Inscrito</label>
             <select
-              id="cursoInscrito"
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
               value={inscritoSeleccionado}
-              onChange={handleInscritoChange}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              onChange={(e) => setInscritoSeleccionado(e.target.value)}
             >
-              <option value="">Seleccione un curso inscrito</option>
-              {cursosInscritos.map((curso, index) => {
-                const nivelLabel =
-                  curso.nivel.length <= 2
-                    ? `Nivel ${curso.nivel}`
-                    : curso.nivel;
-                return (
-                  <option key={index} value={curso.nivel}>
-                    {nivelLabel}
-                  </option>
-                );
-              })}
+              <option value="">Seleccione un curso</option>
+              {cursosInscritos.map((curso, i) => (
+                <option key={i} value={curso.nivel}>
+                  {curso.nivel.length <= 2 ? `Nivel ${curso.nivel}` : curso.nivel}
+                </option>
+              ))}
             </select>
           </div>
 
-          <div className="mb-4">
-            <label
-              htmlFor="documentNumber"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Número de Documento
-            </label>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Número de Documento</label>
             <input
               type="text"
-              id="documentNumber"
               value={documentNumber}
-              onChange={handleDocumentNumberChange}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              onChange={(e) => setDocumentNumber(e.target.value)}
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
             />
           </div>
 
-          {/* Botón para generar el certificado */}
-          <div className="flex justify-center">
-            <button
-              onClick={handleGenerateCertificate}
-              className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Generar Certificado
-            </button>
-          </div>
+          <button
+            onClick={handleGenerateCertificate}
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Generar Certificado
+          </button>
         </div>
       </div>
-      {/* Modal */}
-      {showModal && (
-        <div className="fixed z-10 inset-0 overflow-y-auto">
-          <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div className="fixed inset-0 transition-opacity">
-              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
-            &#8203;
-            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:max-w-4xl">
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                {/* Agregar un ID al contenedor del certificado */}
-                <div id="certificate-container">
-                  <Certificado
-                    userData={userDataForCertificate}
-                    selectedCountry={selectedCountry}
-                    inscritoSeleccionado={inscritoSeleccionado}
-                    numeroDocumento={documentNumber}
-                  />
-                </div>
-              </div>
-              <div className="flex bg-gray-50 px-4 py-3 ">
-                {/* Botón para descargar el certificado en PDF */}
-                <button
-                  onClick={handleDownloadPDF}
-                  className="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto sm:text-sm"
-                >
-                  Descargar
-                </button>
 
-                {/* Botón para cerrar el modal */}
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm"
-                >
-                  Cerrar
-                </button>
-              </div>
+      {showModal && (
+        <div className="fixed z-50 inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl">
+            <div id="certificate-container">
+              <Certificado
+                userData={userDataForCertificate}
+                selectedCountry={selectedCountry}
+                inscritoSeleccionado={inscritoSeleccionado}
+                numeroDocumento={documentNumber}
+              />
+            </div>
+            <div className="mt-4 flex justify-end space-x-2">
+              <button
+                onClick={handleDownloadPDF}
+                className="bg-white border border-gray-300 px-4 py-2 rounded hover:bg-gray-100"
+              >
+                Descargar
+              </button>
+              <button
+                onClick={() => setShowModal(false)}
+                className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+              >
+                Cerrar
+              </button>
             </div>
           </div>
         </div>
