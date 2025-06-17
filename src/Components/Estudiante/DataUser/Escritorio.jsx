@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { fetchInscripcion } from "../../../Redux/features/UsersCourses/UsersCursesSlices";
-import { fetchCursoDetail } from "../../../Redux/features/courses/coursesSlice";
 import { getUserData } from "../../../Redux/features/Users/usersSlice";
 import CircularProgress from "@mui/material/CircularProgress";
 import {
@@ -35,7 +34,6 @@ function Escritorio() {
     const fetchData = async () => {
       try {
         if (!userData?.sub) return;
-
         setLoading(true);
         setError(null);
 
@@ -60,21 +58,15 @@ function Escritorio() {
 
   const fetchCursoNivelDiplomaturas = async (userId) => {
     let total = 0;
-
-    // Cursos
     const inscripcionResponse = await dispatch(fetchInscripcion(userId));
     const inscripciones = inscripcionResponse?.payload?.inscripciones || [];
-    if (inscripciones.length > 0) total += inscripciones.length;
+    total += inscripciones.length;
 
-    // Niveles
     const nivelesResponse = await axios.get(`/user/${userId}/grupos-nivel`).catch(() => ({ data: { grupos: [] } }));
-    const niveles = nivelesResponse.data.grupos || [];
-    if (niveles.length > 0) total += niveles.length;
+    total += nivelesResponse.data.grupos?.length || 0;
 
-    // Diplomaturas
     const diplomaturasResponse = await axios.get(`/diplomaturas/${userId}/mis-diplomaturas`).catch(() => ({ data: [] }));
-    const diplomaturas = diplomaturasResponse.data || [];
-    if (diplomaturas.length > 0) total += diplomaturas.length;
+    total += diplomaturasResponse.data?.length || 0;
 
     return total;
   };
@@ -85,20 +77,22 @@ function Escritorio() {
       axios.get(`/certificados/${userId}`).catch(() => ({ data: [] })),
       axios.get(`/certificadosModulo/usuario/${userId}`).catch(() => ({ data: [] })),
     ]);
-    return (curso.data.length || 0) + (nivel.data.length || 0) + (modulo.data.length || 0);
+    return curso.data.length + nivel.data.length + modulo.data.length;
   };
 
   const fetchTransmisiones = async () => {
     const res = await axios.get("/transmisiones").catch(() => ({ data: [] }));
-    return res.data.length || 0;
+    return res.data.length;
   };
 
   const Card = ({ icon, title, count, subtitle, onClick }) => (
     <div
       onClick={onClick}
-      className="bg-white hover:bg-blue-50 border border-blue-200 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 cursor-pointer w-64 h-48 flex flex-col items-center justify-center text-center mx-3 my-4 p-4"
+      className="flex flex-col justify-center items-center w-full min-w-[250px] sm:w-[300px] h-48 bg-white border border-blue-200 shadow-md rounded-2xl p-4 hover:shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer"
     >
-      <div className="bg-blue-100 rounded-full p-3 mb-2 text-blue-600">{icon}</div>
+      <div className="bg-blue-100 rounded-full p-3 mb-3 text-blue-600">
+        {icon}
+      </div>
       <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
       <p className="text-3xl font-bold text-blue-600">{count}</p>
       <p className="text-sm text-gray-500">{subtitle}</p>
@@ -112,9 +106,9 @@ function Escritorio() {
 
   if (loading) {
     return (
-      <div className="fixed inset-0 flex justify-center items-center">
+      <div className="w-full h-screen flex justify-center items-center bg-white">
         <div className="text-center">
-          <p className="text-gray-600 mt-4 font-semibold">Cargando Escritorio...</p>
+          <p className="text-gray-600 mb-3 text-lg font-medium">Cargando Escritorio...</p>
           <CircularProgress />
         </div>
       </div>
@@ -122,8 +116,8 @@ function Escritorio() {
   }
 
   return (
-    <div className="sm:px-4 lg:px-20 py-10 bg-gray-50 min-h-screen">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">Bienvenido a tu Escritorio</h2>
+    <div className="px-4 sm:px-8 md:px-16 lg:px-24 py-10 bg-gray-50 min-h-screen">
+      <h2 className="text-3xl font-bold text-center text-gray-800 mb-10">Bienvenido a tu Escritorio</h2>
       <div className="flex flex-wrap justify-center gap-6">
         <Card
           icon={<ImportContactsIcon fontSize="large" />}
