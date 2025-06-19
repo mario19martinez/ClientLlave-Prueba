@@ -1,120 +1,75 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
-import llave from "../../../../logos/llaveblanca.png";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import llave from "../../../../logos/llaveblanca.png";
 
 export default function NavAdmin() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
+  const navItems = [
+    { label: "Inicio", path: "/" },
+    { label: "Blog", path: "/Blogs" },
+    { label: "Entrenamiento", path: "/entrenamiento" },
+    { label: "Nosotros", path: "/Nosotros" },
+  ];
 
   return (
-    <div className="bg-blue-700 py-2 lg:py-3 px-8 lg:px-12 shadow-md w-screen top-0 z-50">
-      <div className="flex items-center justify-between max-w-screen-lg mx-auto">
-        <div className="w-1/4 lg:w-2/12">
-          <img src={llave} alt="logo" className="h-auto translate-x-10" />
+    <header className="bg-blue-700 shadow-md w-full z-50">
+      <div className="max-w-screen-xl mx-auto flex items-center justify-between px-6 py-3">
+        {/* Logo */}
+        <div className="flex-shrink-0">
+          <img src={llave} alt="Logo" className="h-14 w-auto lg:h-16" />
         </div>
 
-        <div className="w-1/4 lg:hidden flex justify-end">
-          <button
-            type="button"
-            onClick={toggleMobileMenu}
-            className="focus:outline-none"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-8 h-8 text-white"
+        {/* Desktop nav */}
+        <nav className="hidden lg:flex gap-6 text-white font-medium">
+          {navItems.map(({ label, path }) => (
+            <button
+              key={label}
+              onClick={() => navigate(path)}
+              className="hover:text-gray-200 transition-colors px-3 py-1 rounded"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 12h18M3 6h18M3 18h18"
-              />
-            </svg>
-          </button>
-        </div>
-
-        <nav className="hidden lg:flex justify-center items-center gap-2 text-white font-medium">
-          <a
-            href="#"
-            onClick={() => navigate("/")}
-            className="hover:text-gray-300 transition-colors px-4 py-2 rounded cursor-pointer"
-          >
-            Inicio
-          </a>
-          <a
-            href="#"
-            onClick={() => navigate("/Blogs")}
-            className="hover:text-gray-300 transition-colors px-4 py-2 rounded cursor-pointer"
-          >
-            Blog
-          </a>
-          <a
-            href="#"
-            onClick={() => navigate("/entrenamiento")}
-            className="hover:text-gray-300 transition-colors px-4 py-2 rounded cursor-pointer"
-          >
-            Entrenamiento
-          </a>
-          {/* <a
-            href="#"
-            className="hover:text-gray-300 transition-colors px-4 py-2 rounded"
-          >
-            Miembros
-          </a> */}
-          <a
-            href="#"
-            onClick={() => navigate("/Nosotros")}
-            className="hover:text-gray-300 transition-colors px-4 py-2 rounded cursor-pointer"
-          >
-            Nosotros
-          </a>
+              {label}
+            </button>
+          ))}
         </nav>
+
+        {/* Mobile button */}
+        <button
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+          className="lg:hidden text-white focus:outline-none"
+          aria-label="Abrir menú"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-7 h-7"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
       </div>
 
+      {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="mt-4 max-w-screen-lg mx-auto">
-          <nav className="flex flex-col text-white font-medium">
-            <a
-              href="#"
-              className="hover:text-gray-300 transition-colors px-4 py-2"
+        <nav className="lg:hidden bg-blue-700 px-6 pb-4 text-white font-medium">
+          {navItems.map(({ label, path }) => (
+            <button
+              key={label}
+              onClick={() => {
+                navigate(path);
+                setMobileMenuOpen(false);
+              }}
+              className="block w-full text-left py-2 hover:text-gray-200 transition-colors"
             >
-              Inicio
-            </a>
-            <a
-              href="#"
-              className="hover:text-gray-300 transition-colors px-4 py-2"
-            >
-              Blog
-            </a>
-            <a
-              href="#"
-              className="hover:text-gray-300 transition-colors px-4 py-2"
-            >
-              Entrenamiento
-            </a>
-            <a
-              href="#"
-              className="hover:text-gray-300 transition-colors px-4 py-2"
-            >
-              Miembros
-            </a>
-            <a
-              href="#"
-              className="hover:text-gray-300 transition-colors px-4 py-2"
-            >
-              Nosotros
-            </a>
-          </nav>
-        </div>
+              {label}
+            </button>
+          ))}
+        </nav>
       )}
-    </div>
+    </header>
   );
 }

@@ -12,29 +12,31 @@ import { toast } from "react-toastify";
 import HomeIcon from "@mui/icons-material/Home";
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import fondo from "../../assets/apostol_profeta.jpg";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner"; 
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { VITE_ADMIN_EMAIL, VITE_ADMIN_PASSWORD } = import.meta.env;
 
-  const [showModal, setShowModal] = useState(false); 
-  const [isLoading, setIsLoading] = useState(false); 
+  const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     dispatch(clearRegistrationStatus());
     const isNewUser = localStorage.getItem("NewUser");
     if (isNewUser === "true") {
-      setShowModal(true); 
-      localStorage.removeItem("NewUser"); 
+      setShowModal(true);
+      localStorage.removeItem("NewUser");
     }
   }, [dispatch]);
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+  const handleCloseModal = () => setShowModal(false);
+  const handleGoBack = () => navigate("/");
+  const handleRegistration = () => navigate("/RegistroUser");
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -50,12 +52,11 @@ export default function Login() {
     },
     validationSchema,
     onSubmit: async (values) => {
-      setIsLoading(true); 
+      setIsLoading(true);
       try {
         const userDataResponse = await dispatch(getUserData(values.email));
         const userRole = userDataResponse.payload?.rol || "";
-
-        let isLoggedIn = "false"; 
+        let isLoggedIn = "false";
 
         if (
           values.email === VITE_ADMIN_EMAIL &&
@@ -65,35 +66,26 @@ export default function Login() {
           localStorage.setItem("SuperAdmin", "true");
           localStorage.setItem("userRole", "SuperAdmin");
           navigate("/admin");
-        } else if (userRole === "admin") {
-          const token = await dispatch(loginUser(values)).unwrap();
-          isLoggedIn = "true";
-          localStorage.setItem("token", token);
-          localStorage.setItem("email", values.email);
-          localStorage.setItem("userRole", userRole);
-          navigate("/admin");
-        } else if (userRole === "editor") {
-          const token = await dispatch(loginUser(values)).unwrap();
-          isLoggedIn = "true";
-          localStorage.setItem("token", token);
-          localStorage.setItem("email", values.email);
-          localStorage.setItem("userRole", userRole);
-          navigate("/Editor");
-        }  else if (userRole === "monitor") {
-          // Iniciar sesión para el rol de monitor
-          const token = await dispatch(loginUser(values)).unwrap();
-          isLoggedIn = "true";
-          localStorage.setItem("token", token);
-          localStorage.setItem("email", values.email);
-          localStorage.setItem("userRole", userRole);
-          navigate("/Monitor");
         } else {
           const token = await dispatch(loginUser(values)).unwrap();
           isLoggedIn = "true";
           localStorage.setItem("token", token);
           localStorage.setItem("email", values.email);
           localStorage.setItem("userRole", userRole);
-          navigate("/estudiante/Escritorio");
+
+          switch (userRole) {
+            case "admin":
+              navigate("/admin");
+              break;
+            case "editor":
+              navigate("/Editor");
+              break;
+            case "monitor":
+              navigate("/Monitor");
+              break;
+            default:
+              navigate("/estudiante/Escritorio");
+          }
         }
 
         localStorage.setItem("isLoggedIn", isLoggedIn);
@@ -108,30 +100,22 @@ export default function Login() {
           theme: "colored",
         });
       } finally {
-        setIsLoading(false); 
+        setIsLoading(false);
       }
     },
   });
 
-  const handleGoBack = () => {
-    navigate("/");
-  };
-
-  const handleRegistration = () => {
-    navigate("/RegistroUser");
-  };
-
   return (
     <div
       className="min-h-screen bg-cover bg-center relative"
-      style={{
-        backgroundImage: `url(${fondo})`,
-      }}
+      style={{ backgroundImage: `url(${fondo})` }}
     >
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
+
       <div className="flex flex-col items-center justify-center h-full relative z-10 pt-10 px-4 md:px-0">
+        {/* Modal de nuevo usuario */}
         {showModal && (
-          <div className="fixed top-0 left-0 w-full h-full px-1 flex items-center justify-center">
+          <div className="fixed top-0 left-0 w-full h-full px-1 flex items-center justify-center z-50">
             <div className="fixed top-0 left-0 w-full h-full bg-gray-900 opacity-50"></div>
             <div className="relative bg-white rounded-lg p-8 z-10 max-w-md mx-auto">
               <p className="text-lg text-center mb-4">
@@ -140,14 +124,17 @@ export default function Login() {
               </p>
               <button
                 onClick={handleCloseModal}
-                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 block mx-auto"
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 block mx-auto"
               >
                 Aceptar
               </button>
             </div>
           </div>
         )}
+
         {isLoading && <LoadingSpinner />}
+
+        {/* Botón volver */}
         <div className="flex justify-center py-3 w-full">
           <button
             onClick={handleGoBack}
@@ -157,6 +144,7 @@ export default function Login() {
           </button>
         </div>
 
+        {/* Formulario */}
         <form
           onSubmit={formik.handleSubmit}
           className="max-w-md w-full bg-gray-900 bg-opacity-80 p-8 rounded-lg shadow-md"
@@ -164,6 +152,8 @@ export default function Login() {
           <h2 className="text-4xl font-semibold mb-6 text-center text-white">
             Iniciar Sesión
           </h2>
+
+          {/* Email */}
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -180,13 +170,15 @@ export default function Login() {
                 value={formik.values.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="pl-10 block w-full rounded-lg bg-white border-transparent focus:border-blue-500 focus:bg-gray-100 focus:ring-0 text-gray-900 py-3 px-4 text-lg"
+                className="pl-10 w-full rounded-lg bg-white text-gray-900 py-3 px-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            {formik.touched.email && formik.errors.email ? (
+            {formik.touched.email && formik.errors.email && (
               <p className="text-red-500 text-sm mt-1">{formik.errors.email}</p>
-            ) : null}
+            )}
           </div>
+
+          {/* Contraseña con toggle */}
           <div className="mb-6">
             <label
               htmlFor="password"
@@ -198,27 +190,38 @@ export default function Login() {
               <LockIcon className="absolute left-3 top-3 text-gray-400" />
               <input
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formik.values.password}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="pl-10 block w-full rounded-lg bg-white border-transparent focus:border-blue-500 focus:bg-gray-100 focus:ring-0 text-gray-900 py-3 px-4 text-lg"
+                className="pl-10 pr-10 w-full rounded-lg bg-white text-gray-900 py-3 px-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-3 text-gray-600 text-xl"
+                tabIndex={-1}
+              >
+                {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+              </button>
             </div>
-            {formik.touched.password && formik.errors.password ? (
+            {formik.touched.password && formik.errors.password && (
               <p className="text-red-500 text-sm mt-1">{formik.errors.password}</p>
-            ) : null}
+            )}
           </div>
+
+          {/* Submit y links */}
           <div className="flex justify-between items-center mb-4">
             <p className="text-sm text-white">¿Olvidaste tu contraseña?</p>
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300"
             >
               Acceder
             </button>
           </div>
+
           <p className="text-center text-white">
             ¿No tienes una cuenta?{" "}
             <button

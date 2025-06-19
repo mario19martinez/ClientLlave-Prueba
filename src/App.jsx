@@ -34,6 +34,9 @@ import ViewPlanes from "./views/ViewPlanes/ViewPlanes";
 import ViewPlanesDetailsHome from "./views/ViewPlanes/ViewPlanesDetails";
 import ViewCompraStatus from "./views/ViewsEstadosDeCompra/ViewCompraStatus";
 import ViewDonacionRespuesta from "./views/ViewsEstadosDeCompra/ViewDonacionRespuesta";
+import ViewAllDiplomaturas from "./views/ViewDiplomaturas/ViewAllDiplomaturas";
+import ViewDetallesVentaDiplomatura from "./views/ViewDiplomaturas/ViewDetallesVentaDiplomatura";
+import ViewMaterialMateriaVenta from "./views/ViewDiplomaturas/ViewMaterialMateriaVenta";
 
 //Imports de estudiantes
 import ViewMenuStudent from "./views/ViewMenuStudent/ViewMenuStudent";
@@ -52,6 +55,8 @@ import ViewMyPost from "./views/ViewMenuStudent/ViewMyPost";
 import ViewCertificadoSelected from "./views/ViewMenuStudent/ViewCertificados/ViewCertificadoSelected";
 import ViewAllCertificadosNivel from "./views/ViewMenuStudent/ViewCertificados/ViewAllCertificadoNivel";
 import ViewAllCertificadoModulo from "./views/ViewMenuStudent/ViewCertificados/ViewAllCertificadoModulo";
+import ViewDiplomaturaDetailsStudent from "./views/ViewMenuStudent/ViewDiplomaturas/ViewDiplomaturaDetailsStudent";
+import ViewMateriasEstudianteDetalles from "./views/ViewMenuStudent/ViewDiplomaturas/ViewMateriaDetallesEstudiante";
 
 //imports admins
 import ViewDashBoardAdmin from "./views/ViewAdmin/ViewDashBoardAdmin";
@@ -135,6 +140,10 @@ import ViewUsersNoInscritoAll from "./views/ViewAdmin/ViewUsersNoInscrtosAll";
 import ViewRegistroPlanes from "./views/ViewAdmin/ViewPlanesAdmin/ViewRegistroPlanes";
 import ViewUserHistorial from "./views/ViewAdmin/ViewUserHistorial/ViewUserHistorial";
 import ViewSeguimientoGeneral from "./views/ViewAdmin/ViewRegistroActividad/ViewSeguimientoGeneral";
+import ViewAdminDiplomatura from "./views/ViewAdmin/ViewAdminDiplomaturas/ViewAdminDiplomatura";
+import ViewDiplomaturaDetailsAdmin from "./views/ViewAdmin/ViewAdminDiplomaturas/ViewDiplomaturaDetailsAdmin";
+import ViewAdminMateria from "./views/ViewAdmin/ViewAdminDiplomaturas/ViewAdminMateria";
+import ViewAdminModuloMateria from "./views/ViewAdmin/ViewAdminDiplomaturas/ViewAdminModuloMateria";
 
 //imports editor
 import ViewEscritorioEditor from "./views/ViewEditor/ViewEscritorioEditor";
@@ -188,8 +197,9 @@ import ViewModuloUserDetail from "./views/ViewMenuStudent/ViewModulosUser/ViewMo
 
 import axios from "axios";
 
-//axios.defaults.baseURL = "http://localhost:3001";
-axios.defaults.baseURL = "https://llaveapi-507c8c7c7bbf.herokuapp.com/";  
+// axios.defaults.baseURL = "http://localhost:3001";
+// axios.defaults.baseURL = "https://llaveapi-507c8c7c7bbf.herokuapp.com/";  
+axios.defaults.baseURL = "https://apillave-prueba.onrender.com";  
 
 const isLoggedIn = localStorage.getItem("isLoggedIn");
 const userRole = localStorage.getItem("userRole");
@@ -215,6 +225,8 @@ function App() {
             <Route path="/estudiante/certificados/cursos" element={isLoggedIn ? <ViewCertificado /> : <Navigate to="/login" />} />
             <Route path="/estudiante/certificados/nivel" element={isLoggedIn ? <ViewAllCertificadosNivel /> : <Navigate to="/login" />} />
             <Route path="/estudiante/certificados/modulo" element={isLoggedIn ? <ViewAllCertificadoModulo /> : <Navigate to="/login" />} />
+            <Route path="/estudiante/diplomatura/:diplomaturaId/:userSub" element={isLoggedIn ? <ViewDiplomaturaDetailsStudent /> : <Navigate to="/login" />} />
+            <Route path="/estudiante/diplomatura/:diplomaturaId/:userSub/materia/:materiaId" element={isLoggedIn ? <ViewMateriasEstudianteDetalles /> : <Navigate to="/login" />} />
           </>
         )}
 
@@ -285,6 +297,10 @@ function App() {
             <Route path="/admin/registro-planes" element={isLoggedIn? <ViewRegistroPlanes /> : <Navigate to="/login" />} />
             <Route path="/admin/historial-usuarios" element={isLoggedIn? <ViewUserHistorial /> : <Navigate to="/login" />} />
             <Route path="/admin/nivel/:nivelId/grupo/:grupoId" element={isLoggedIn? <ViewSeguimientoGeneral /> : <Navigate to="/login" />} />
+            <Route path="/admin/diplomaturas" element={isLoggedIn? <ViewAdminDiplomatura /> : <Navigate to="/login" />} />
+            <Route path="/admin/diplomaturas/detalles/:diplomaturaId" element={isLoggedIn? <ViewDiplomaturaDetailsAdmin /> : <Navigate to="/login" />} />
+            <Route path="/admin/diplomaturas/:diplomaturaId/materia/:materiaId" element={isLoggedIn? <ViewAdminMateria /> : <Navigate to="/login" />} />
+            <Route path="/admin/diplomaturas/:diplomaturaId/materia/:materiaId/modulo/:moduloId" element={isLoggedIn? <ViewAdminModuloMateria /> : <Navigate to="/login" />} />
           </>
         )}
         
@@ -351,6 +367,9 @@ function App() {
         <Route path="/Planes/:idPlan" element={<ViewPlanesDetailsHome/>} />
         <Route path="/Compra_Status" element={<ViewCompraStatus/>} />
         <Route path="/Donacion_Respuesta" element={<ViewDonacionRespuesta/>} />
+        <Route path="/Diplomaturas" element={<ViewAllDiplomaturas />} />
+        <Route path="/Diplomaturas/:diplomaturaId" element={<ViewDetallesVentaDiplomatura />} />
+        <Route path="/Diplomaturas/:diplomaturaId/Materia/:materiaId" element={<ViewMaterialMateriaVenta />} />
         {/*<Route path="/cursos" element={<Cursos />} />*/}
     
         {/*Rutas pagina no asociadas */}
