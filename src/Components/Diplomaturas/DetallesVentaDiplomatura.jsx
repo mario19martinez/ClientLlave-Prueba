@@ -39,6 +39,32 @@ export default function DetallesVentaDiplomatura() {
     if (diplomaturaId) fetchDiplomatura();
   }, [diplomaturaId]);
 
+  const handleBuy = async () => {
+  try {
+    const userSub = localStorage.getItem("userSub"); // o como lo manejes
+
+    if (!userSub) {
+      toast.warning("Debes iniciar sesión para comprar.");
+      return;
+    }
+
+    const { data } = await axios.post("/pagos/crear-preferencia", {
+      userSub,
+      diplomaturaId,
+    });
+
+    if (data.init_point) {
+      window.location.href = data.init_point;
+    } else {
+      toast.error("No se pudo generar el enlace de pago.");
+    }
+  } catch (error) {
+    console.error("Error al generar preferencia:", error);
+    toast.error("Error al iniciar el proceso de pago.");
+  }
+};
+
+
   if (loading) {
     return (
       <Box
@@ -181,6 +207,31 @@ export default function DetallesVentaDiplomatura() {
                     : "Inscribirse gratis"}
                 </Button>
               </a>
+
+              {/* Nuevo botón de Mercado Pago */}
+              {Number(diplomatura.precio) > 0 && (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  size="large"
+                  fullWidth
+                  sx={{
+                    mt: 2,
+                    fontWeight: "medium",
+                    borderRadius: 3,
+                    textTransform: "none",
+                    boxShadow: 2,
+                    transition: "all 0.3s ease-in-out",
+                    "&:hover": {
+                      transform: "scale(1.03)",
+                      boxShadow: 4,
+                    },
+                  }}
+                  onClick={handleBuy}
+                >
+                  Pagar con Mercado Pago
+                </Button>
+              )}
             </CardContent>
           </Card>
         </Grid>

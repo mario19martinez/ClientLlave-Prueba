@@ -195,6 +195,10 @@ import ViewModuloUserDetail from "./views/ViewMenuStudent/ViewModulosUser/ViewMo
 //import ModuloDetailUser from "./Components/Estudiante/EstudianteNiveles/ModuloDetailUser";
 //import ViewModuloClases from "./views/ViewMenuStudent/ViewsLevels/ViewModuloClases";
 
+import PurchaseSuccess from "./Components/PaymentResponse/PurchaseSuccess";
+import PurchaseFailed from "./Components/PaymentResponse/PurchaseFailed";
+import PurchasePending from "./Components/PaymentResponse/PurchasePending";
+
 import axios from "axios";
 
 // axios.defaults.baseURL = "http://localhost:3001";
@@ -412,6 +416,12 @@ function App() {
         {/* Es de el componente de modulo de usuario, es provicional */}
         <Route path="/modulos-de-usuario" element={<ViewModulosUser />} />
         <Route path="/modulo/:moduloId" element={<ViewModuloUserDetail />} />
+
+        <Route path="/compra-success" element={<PurchaseSuccess />} />
+        <Route path="/compra-failed" element={<PurchaseFailed/>} />
+        <Route path="/compra-pending" element={<PurchasePending />} />
+
+
       </Routes>
     </Router>
   );
