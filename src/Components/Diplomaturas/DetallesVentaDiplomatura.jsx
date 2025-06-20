@@ -22,6 +22,7 @@ export default function DetallesVentaDiplomatura() {
   const navigate = useNavigate();
   const [diplomatura, setDiplomatura] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     const fetchDiplomatura = async () => {
@@ -39,17 +40,35 @@ export default function DetallesVentaDiplomatura() {
     if (diplomaturaId) fetchDiplomatura();
   }, [diplomaturaId]);
 
+  useEffect(() => {
+  const getUserInfo = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const response = await axios.get("/user-info", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setUserInfo(response.data);
+    } catch (error) {
+      console.error("Error al obtener información del usuario:", error);
+    }
+  };
+
+  getUserInfo();
+}, []);
+
+
   const handleBuy = async () => {
   try {
-    const userSub = localStorage.getItem("userSub"); // o como lo manejes
-
-    if (!userSub) {
+    if (!userInfo || !userInfo.sub) {
       toast.warning("Debes iniciar sesión para comprar.");
       return;
     }
 
     const { data } = await axios.post("/crear-preferencia", {
-      userSub,
+      userSub: userInfo.sub,
       diplomaturaId,
     });
 
