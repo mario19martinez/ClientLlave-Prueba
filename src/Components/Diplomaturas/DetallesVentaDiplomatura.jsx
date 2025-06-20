@@ -48,7 +48,7 @@ export default function DetallesVentaDiplomatura() {
       return;
     }
 
-    const { data } = await axios.post("/pagos/crear-preferencia", {
+    const { data } = await axios.post("/crear-preferencia", {
       userSub,
       diplomaturaId,
     });
