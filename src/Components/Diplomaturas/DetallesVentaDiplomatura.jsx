@@ -16,6 +16,7 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
 import { toast } from "react-toastify";
+import PaypalButton from "../PaypalButton/PaypalButton";
 
 export default function DetallesVentaDiplomatura() {
   const { diplomaturaId } = useParams();
@@ -41,48 +42,46 @@ export default function DetallesVentaDiplomatura() {
   }, [diplomaturaId]);
 
   useEffect(() => {
-  const getUserInfo = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
+    const getUserInfo = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
 
-      const response = await axios.get("/user-info", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+        const response = await axios.get("/user-info", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-      setUserInfo(response.data);
-    } catch (error) {
-      console.error("Error al obtener información del usuario:", error);
-    }
-  };
+        setUserInfo(response.data);
+      } catch (error) {
+        console.error("Error al obtener información del usuario:", error);
+      }
+    };
 
-  getUserInfo();
-}, []);
-
+    getUserInfo();
+  }, []);
 
   const handleBuy = async () => {
-  try {
-    if (!userInfo || !userInfo.sub) {
-      toast.warning("Debes iniciar sesión para comprar.");
-      return;
+    try {
+      if (!userInfo || !userInfo.sub) {
+        toast.warning("Debes iniciar sesión para comprar.");
+        return;
+      }
+
+      const { data } = await axios.post("/crear-preferencia", {
+        userSub: userInfo.sub,
+        diplomaturaId,
+      });
+
+      if (data.init_point) {
+        window.location.href = data.init_point;
+      } else {
+        toast.error("No se pudo generar el enlace de pago.");
+      }
+    } catch (error) {
+      console.error("Error al generar preferencia:", error);
+      toast.error("Error al iniciar el proceso de pago.");
     }
-
-    const { data } = await axios.post("/crear-preferencia", {
-      userSub: userInfo.sub,
-      diplomaturaId,
-    });
-
-    if (data.init_point) {
-      window.location.href = data.init_point;
-    } else {
-      toast.error("No se pudo generar el enlace de pago.");
-    }
-  } catch (error) {
-    console.error("Error al generar preferencia:", error);
-    toast.error("Error al iniciar el proceso de pago.");
-  }
-};
-
+  };
 
   if (loading) {
     return (
@@ -250,6 +249,16 @@ export default function DetallesVentaDiplomatura() {
                 >
                   Pagar con Mercado Pago
                 </Button>
+              )}
+              
+              {userInfo && (
+                <Box mt={2}>
+                  <PaypalButton
+                    amount={Number(diplomatura.precio)}
+                    userSub={userInfo.sub}
+                    diplomaturaId={diplomatura.id}
+                  />
+                </Box>
               )}
             </CardContent>
           </Card>
