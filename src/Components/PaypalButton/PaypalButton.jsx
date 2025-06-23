@@ -3,7 +3,7 @@ import { useEffect } from "react";
 export default function PaypalButton({ amout, userSub, diplomaturaId }) {
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "https://www.paypal.com/sdk/js?ATp7Ngm4NNWCQnnXjrCsk8ch8z0O01Ah4WpV73aMAbU9UXwncgcxAIb4_FF6Al-Cb_v1WdOdue1ftexa";
+    script.src = "https://www.paypal.com/sdk/js?client-id=ATp7Ngm4NNWCQnnXjrCsk8ch8z0O01Ah4WpV73aMAbU9UXwncgcxAIb4_FF6Al-Cb_v1WdOdue1ftexa";
     script.addEventListener("load", () => {
       window.paypal
         .Buttons({
