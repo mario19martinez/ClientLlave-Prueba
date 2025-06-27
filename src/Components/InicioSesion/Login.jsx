@@ -19,7 +19,7 @@ import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { VITE_ADMIN_EMAIL, VITE_ADMIN_PASSWORD } = import.meta.env;
+  //const { VITE_ADMIN_EMAIL, VITE_ADMIN_PASSWORD } = import.meta.env;
 
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -58,15 +58,15 @@ export default function Login() {
         const userRole = userDataResponse.payload?.rol || "";
         let isLoggedIn = "false";
 
-        if (
-          values.email === VITE_ADMIN_EMAIL &&
-          values.password === VITE_ADMIN_PASSWORD
-        ) {
-          isLoggedIn = "true";
-          localStorage.setItem("SuperAdmin", "true");
-          localStorage.setItem("userRole", "SuperAdmin");
-          navigate("/admin");
-        } else {
+        // if (
+        //   values.email === VITE_ADMIN_EMAIL &&
+        //   values.password === VITE_ADMIN_PASSWORD
+        // // ) {
+        //   isLoggedIn = "true";
+        //   localStorage.setItem("SuperAdmin", "true");
+        //   localStorage.setItem("userRole", "SuperAdmin");
+        //   navigate("/admin");
+        // } else {
           const token = await dispatch(loginUser(values)).unwrap();
           isLoggedIn = "true";
           localStorage.setItem("token", token);
@@ -86,7 +86,7 @@ export default function Login() {
             default:
               navigate("/estudiante/Escritorio");
           }
-        }
+        //}
 
         localStorage.setItem("isLoggedIn", isLoggedIn);
         window.location.reload();
