@@ -35,6 +35,7 @@ export default function PaypalButton({
                 body: JSON.stringify({
                   orderID: data.orderID,
                   userSub,
+                  tipo,
                   diplomaturaId,
                   materiaId,
                   clasesmateriaId,
