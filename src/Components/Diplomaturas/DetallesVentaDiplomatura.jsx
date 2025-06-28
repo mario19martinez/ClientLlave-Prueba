@@ -256,6 +256,7 @@ export default function DetallesVentaDiplomatura() {
                   <PaypalButton
                     amount={Number(diplomatura.precio)}
                     userSub={userInfo.sub}
+                    tipo="diplomatura"
                     diplomaturaId={diplomatura.id}
                   />
                 </Box>

@@ -1,6 +1,13 @@
 import { useEffect } from "react";
 
-export default function PaypalButton({ amount, userSub, diplomaturaId }) {
+export default function PaypalButton({ 
+  amount, 
+  userSub,
+  tipo, // "diplomatura" | "materia" | "clase"
+  diplomaturaId = null,
+  materiaId = null,
+  clasesmateriaId = null,
+ }) {
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://www.paypal.com/sdk/js?client-id=ATp7Ngm4NNWCQnnXjrCsk8ch8z0O01Ah4WpV73aMAbU9UXwncgcxAIb4_FF6Al-Cb_v1WdOdue1ftexa";
@@ -29,6 +36,8 @@ export default function PaypalButton({ amount, userSub, diplomaturaId }) {
                   orderID: data.orderID,
                   userSub,
                   diplomaturaId,
+                  materiaId,
+                  clasesmateriaId,
                 }),
               }
             );

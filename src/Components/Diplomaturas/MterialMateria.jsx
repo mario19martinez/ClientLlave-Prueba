@@ -1,18 +1,30 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { CircularProgress, Box, Typography, Button, Card, CardMedia, CardContent } from "@mui/material";
+import {
+  CircularProgress,
+  Box,
+  Typography,
+  Button,
+  Card,
+  CardMedia,
+  CardContent,
+} from "@mui/material";
 import { toast } from "react-toastify";
+import PaypalButton from "../PaypalButton/PaypalButton";
 
 export default function MaterialMateriaVenta() {
   const { diplomaturaId, materiaId } = useParams();
   const [materia, setMateria] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     const fetchMateria = async () => {
       try {
-        const { data } = await axios.get(`/diplomatura/${diplomaturaId}/materia/${materiaId}`);
+        const { data } = await axios.get(
+          `/diplomatura/${diplomaturaId}/materia/${materiaId}`
+        );
         setMateria(data);
       } catch (error) {
         console.error("Error al obtener los detalles de la materia:", error);
@@ -26,6 +38,25 @@ export default function MaterialMateriaVenta() {
       fetchMateria();
     }
   }, [diplomaturaId, materiaId]);
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const response = await axios.get("/user-info", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        setUserInfo(response.data);
+      } catch (error) {
+        console.error("Error al obtener información del usuario:", error);
+      }
+    };
+
+    getUserInfo();
+  }, []);
 
   if (loading) {
     return (
@@ -97,6 +128,17 @@ export default function MaterialMateriaVenta() {
           >
             Comprar materia
           </Button>
+          {userInfo && (
+            <Box mt={2}>
+              <PaypalButton
+                amount={Number(materia.precio)}
+                userSub={userInfo.sub}
+                tipo="materia"
+                materiaId={materia.id}
+                diplomaturaId={materia.diplomaturaId}
+              />
+            </Box>
+          )}
         </CardContent>
       </Card>
 
@@ -110,10 +152,7 @@ export default function MaterialMateriaVenta() {
           Individual disponible para todos las diplomaturas.
         </Typography>
 
-        <Typography
-          variant="body1"
-          sx={{ whiteSpace: "pre-line", mt: 3 }}
-        >
+        <Typography variant="body1" sx={{ whiteSpace: "pre-line", mt: 3 }}>
           {materia.description || "Sin descripción disponible."}
         </Typography>
       </Box>
