@@ -16,7 +16,7 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
 import { toast } from "react-toastify";
-import PaypalButton from "../PaypalButton/PaypalButton";
+import PayPalButtonsComponent from "../PaypalButton/PayPalButtonsComponent";
 
 export default function DetallesVentaDiplomatura() {
   const { diplomaturaId } = useParams();
@@ -83,31 +83,43 @@ export default function DetallesVentaDiplomatura() {
     }
   };
 
-  if (loading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="60vh"
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
+  const handlePaymentSuccess = () => {
+    // La notificación de éxito ya la muestra el PayPalButtonsComponent.
+    // Aquí solo gestionamos la redirección.
+    // Usamos un timeout para dar tiempo al usuario a leer el toast.
+    setTimeout(() => {
+      navigate("/mis-cursos"); // Redirige al usuario a su dashboard o a la página de "mis cursos"
+    }, 3000);
+  };
 
-  if (!diplomatura) {
-    return (
-      <Box textAlign="center" mt={6}>
-        <Typography variant="h6" color="error">
-          No se pudo encontrar esta diplomatura.
-        </Typography>
-        <Button onClick={() => navigate(-1)} sx={{ mt: 2 }}>
-          Volver
-        </Button>
-      </Box>
-    );
-  }
+  if (loading) {
+  return (
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="60vh"
+    >
+      <CircularProgress />
+    </Box>
+  );
+}
+
+if (!diplomatura) {
+  return (
+    <Box textAlign="center" mt={6}>
+      <Typography variant="h6" color="error">
+        No se pudo encontrar esta diplomatura.
+      </Typography>
+      <Button onClick={() => navigate(-1)} sx={{ mt: 2 }}>
+        Volver
+      </Button>
+    </Box>
+  );
+}
+
+// ✅ Ya es seguro acceder a diplomatura.precio
+const isPaidCourse = Number(diplomatura.precio) > 0;
 
   return (
     <Box px={{ xs: 2, md: 8 }} py={4}>
@@ -226,41 +238,48 @@ export default function DetallesVentaDiplomatura() {
                 </Button>
               </a>
 
-              {/* Nuevo botón de Mercado Pago */}
-              {Number(diplomatura.precio) > 0 && (
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  size="large"
-                  fullWidth
-                  sx={{
-                    mt: 2,
-                    fontWeight: "medium",
-                    borderRadius: 3,
-                    textTransform: "none",
-                    boxShadow: 2,
-                    transition: "all 0.3s ease-in-out",
-                    "&:hover": {
-                      transform: "scale(1.03)",
-                      boxShadow: 4,
-                    },
-                  }}
-                  onClick={handleBuy}
-                >
-                  Pagar con Mercado Pago
-                </Button>
-              )}
-              
-              {userInfo && (
-                <Box mt={2}>
-                  <PaypalButton
-                    amount={Number(diplomatura.precio)}
+              {/* Métodos de pago online solo para cursos de pago y usuarios logueados */}
+              {isPaidCourse && userInfo && (
+                <>
+                  {/* Botón de Mercado Pago */}
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="large"
+                    fullWidth
+                    sx={{
+                      mt: 2,
+                      fontWeight: "medium",
+                      borderRadius: 3,
+                      textTransform: "none",
+                    }}
+                    onClick={handleBuy}
+                  >
+                    Pagar con Mercado Pago
+                  </Button>
+                  
+                  {/* 3. Divider y componente de PayPal */}
+                  <Divider sx={{ my: 2, fontSize: "0.8rem", color: "text.secondary" }}>
+                    o
+                  </Divider>
+
+                  <PayPalButtonsComponent
+                    diplomaturaId={diplomaturaId}
                     userSub={userInfo.sub}
-                    tipo="diplomatura"
-                    diplomaturaId={diplomatura.id}
+                    onPaymentSuccess={handlePaymentSuccess}
                   />
-                </Box>
+                </>
               )}
+
+              {/* Mensaje para iniciar sesión */}
+              {isPaidCourse && !userInfo && (
+                <Typography variant="body2" color="text.secondary" textAlign="center" sx={{ mt: 2 }}>
+                  <a href="/login" style={{textDecoration: 'none'}}>Inicia sesión</a> para ver las opciones de pago online.
+                </Typography>
+              )}
+
+              
+              
             </CardContent>
           </Card>
         </Grid>
